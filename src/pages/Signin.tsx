@@ -8,6 +8,8 @@ import {
 } from '@material-ui/core';
 import { Facebook, Google, PageWrapper, Twitter } from 'components';
 import firebase from 'firebase/app';
+import { random } from 'lodash';
+import { quotes } from 'models';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
@@ -16,8 +18,7 @@ import { createSignin, selectIsAuthLoading, useActions } from 'services';
 export interface SigninProps extends RouteComponentProps {}
 
 const useButtonStyles = makeStyles(() => ({
-  root: { width: 140 },
-  label: { justifyContent: 'flex-start' },
+  label: { textTransform: 'capitalize' },
 }));
 
 export const Signin: React.FC<SigninProps> = () => {
@@ -27,44 +28,64 @@ export const Signin: React.FC<SigninProps> = () => {
 
   const buttonClasses = useButtonStyles();
 
+  const quote = quotes[random(0, quotes.length - 1)];
+
   return isAuthLoading ? (
     <Box mt={4} display="flex" justifyContent="center">
       <CircularProgress size="3em" />
     </Box>
   ) : (
     <PageWrapper>
-      <Typography variant="h2">Sign in</Typography>
+      <Box display="flex" flexDirection="column" alignItems="center">
+        <Box mb={6} display="flex" flexDirection="column" alignItems="center">
+          <Typography variant="h2">Sign in</Typography>
 
-      <Box ml={2} mt={4}>
-        <ButtonGroup orientation="vertical" color="primary">
-          <Button
-            onClick={() => {
-              signIn(firebase.auth.GoogleAuthProvider.PROVIDER_ID);
-            }}
-            classes={buttonClasses}
-            startIcon={<Google />}
+          <Box ml={2} mt={4}>
+            <ButtonGroup color="primary">
+              <Button
+                onClick={() => {
+                  signIn(firebase.auth.GoogleAuthProvider.PROVIDER_ID);
+                }}
+                classes={buttonClasses}
+                startIcon={<Google />}
+              >
+                Google
+              </Button>
+              <Button
+                onClick={() => {
+                  signIn(firebase.auth.FacebookAuthProvider.PROVIDER_ID);
+                }}
+                classes={buttonClasses}
+                startIcon={<Facebook />}
+              >
+                Facebook
+              </Button>
+              <Button
+                onClick={() => {
+                  signIn(firebase.auth.TwitterAuthProvider.PROVIDER_ID);
+                }}
+                classes={buttonClasses}
+                startIcon={<Twitter />}
+              >
+                Twitter
+              </Button>
+            </ButtonGroup>
+          </Box>
+        </Box>
+        <Box maxWidth="80vw">
+          <Typography
+            align="center"
+            style={{ opacity: 0.8, fontSize: '2.2rem' }}
           >
-            Google
-          </Button>
-          <Button
-            onClick={() => {
-              signIn(firebase.auth.FacebookAuthProvider.PROVIDER_ID);
-            }}
-            classes={buttonClasses}
-            startIcon={<Facebook />}
+            “{quote.message}”
+          </Typography>
+          <Typography
+            align="center"
+            style={{ opacity: 0.8, fontSize: '1.8rem', fontStyle: 'italic' }}
           >
-            Facebook
-          </Button>
-          <Button
-            onClick={() => {
-              signIn(firebase.auth.TwitterAuthProvider.PROVIDER_ID);
-            }}
-            classes={buttonClasses}
-            startIcon={<Twitter />}
-          >
-            Twitter
-          </Button>
-        </ButtonGroup>
+            {quote.author}
+          </Typography>
+        </Box>
       </Box>
     </PageWrapper>
   );
