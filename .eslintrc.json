@@ -1,0 +1,9 @@
+{
+  "extends": "react-app",
+  "rules": {
+    "@typescript-eslint/switch-exhaustiveness-check": "error"
+  },
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  }
+}
