@@ -1,4 +1,4 @@
-import { Person } from '@material-ui/icons';
+import { Create, Person } from '@material-ui/icons';
 import { LightBulb } from 'components/icons/LightBulb';
 import { Routes } from 'models';
 import React from 'react';
@@ -28,6 +28,11 @@ export const absolutePublicRoute = toAbsolute(publicRoute);
 export const absolutePublicRoutes = Object.values(publicRoute);
 
 export const privateRoute = {
+  create: {
+    path: 'create',
+    label: 'Create',
+    icon: <Create />,
+  },
   ideas: {
     path: 'ideas',
     label: 'Ideas',

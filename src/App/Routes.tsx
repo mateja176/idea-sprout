@@ -1,4 +1,4 @@
-import { Ideas, Signin } from 'pages';
+import { Create, Ideas, Signin } from 'pages';
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { useIsSignedIn } from 'services/hooks';
@@ -15,11 +15,12 @@ export const Routes: React.FC<RoutesProps> = () => {
       {isSignedIn && (
         <Route
           path={absolutePublicRoute.login.path}
-          render={(props) => {
+          render={() => {
             return <Redirect to={privateRoute.ideas.path} />;
           }}
         />
       )}
+      <Route path={absolutePrivateRoute.create.path} component={Create} />
       <Route path={absolutePrivateRoute.ideas.path} component={Ideas} />
     </Switch>
   );
