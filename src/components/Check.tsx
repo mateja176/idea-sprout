@@ -11,6 +11,7 @@ import {
   FormControlLabel,
   FormHelperText,
   IconButton,
+  Tooltip,
   Typography,
 } from '@material-ui/core';
 import { Info } from '@material-ui/icons';
@@ -49,14 +50,16 @@ export const Check: React.FC<CheckProps> = ({
         label={
           <Box display="flex" alignItems="center">
             <Typography>{label}</Typography>
-            <IconButton
-              onClick={(e) => {
-                e.preventDefault();
-                toggleIsModalOpen();
-              }}
-            >
-              <Info color="primary" />
-            </IconButton>
+            <Tooltip title="Opens modal with more info">
+              <IconButton
+                onClick={(e) => {
+                  e.preventDefault();
+                  toggleIsModalOpen();
+                }}
+              >
+                <Info color="primary" />
+              </IconButton>
+            </Tooltip>
             <Dialog onClose={toggleIsModalOpen} open={isModalOpen}>
               <DialogTitle>{label}</DialogTitle>
               <DialogContent>

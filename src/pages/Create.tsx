@@ -1,36 +1,37 @@
 import {
   Box,
+  Button,
   ExpansionPanel,
   ExpansionPanelDetails,
   ExpansionPanelSummary,
+  TextField,
   Tooltip,
   Typography,
 } from '@material-ui/core';
-import { Error as ErrorIcon, ExpandMore } from '@material-ui/icons';
+import { Error as ErrorIcon, ExpandMore, Info } from '@material-ui/icons';
 import { Check, PageWrapper } from 'components';
 import { useFormik } from 'formik';
+import { CreationIdea, ideaSchemaDefinition } from 'models';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
+import { inputStyle, textareaStyle } from 'styles';
 import * as yup from 'yup';
 
 export interface CreateProps extends RouteComponentProps {}
 
-const initialValues = {
+const initialValues: CreationIdea = {
   niche: false,
   expectations: false,
+  name: '',
+  storyURL: '',
+  problemSolution: '',
+  imageURLs: [],
+  rationale: '',
 };
-
-const checkSchema = yup
-  .bool()
-  .test('Checked', 'Field has to be checked', Boolean)
-  .required();
 
 type Values = typeof initialValues;
 
-const validationSchema = yup.object().shape<Values>({
-  niche: checkSchema,
-  expectations: checkSchema,
-});
+const validationSchema = yup.object().shape<Values>(ideaSchemaDefinition);
 
 export const Create: React.FC<CreateProps> = () => {
   const [expanded, setExpanded] = React.useState(true);
@@ -38,35 +39,66 @@ export const Create: React.FC<CreateProps> = () => {
     setExpanded(!expanded);
   };
 
-  const { touched, errors, getFieldProps, handleSubmit } = useFormik({
+  const {
+    isValid,
+    isSubmitting,
+    touched,
+    errors,
+    getFieldProps,
+    handleSubmit,
+    handleChange,
+    values,
+  } = useFormik({
     initialValues,
     validationSchema,
     onSubmit: (formValues) => console.log(formValues),
+    validateOnMount: true,
   });
 
   const hasNicheError = !!touched.niche && !!errors.niche;
 
   const hasExpectationsError = !!touched.expectations && !!errors.expectations;
 
-  const hasError = hasNicheError || hasExpectationsError;
+  const hasFailedChecks = hasNicheError || hasExpectationsError;
+
+  const handleCheckChange: typeof handleChange = (e) => {
+    if ([values.niche && values.expectations]) {
+      toggleExpanded();
+    }
+
+    handleChange(e);
+  };
+
+  const getCheckFieldProps: typeof getFieldProps = (name) => ({
+    ...getFieldProps(name),
+    handleChange: handleCheckChange,
+  });
 
   return (
     <PageWrapper>
-      <ExpansionPanel expanded={expanded} onChange={toggleExpanded}>
-        <ExpansionPanelSummary expandIcon={<ExpandMore />}>
-          <Box display="flex" alignItems="center">
-            <Typography variant="h5">Preflight Checklist</Typography>
-            {hasError && (
+      <form onSubmit={handleSubmit}>
+        <ExpansionPanel expanded={expanded} onChange={toggleExpanded}>
+          <ExpansionPanelSummary expandIcon={<ExpandMore />}>
+            <Box display="flex" alignItems="center">
+              <Typography variant="h5">Preflight Checklist</Typography>
               <Box ml={1}>
-                <Tooltip title={expanded ? '' : 'Expand to see errors'}>
-                  <ErrorIcon color="secondary" />
+                <Tooltip
+                  title={
+                    expanded && hasFailedChecks
+                      ? 'Expand to see errors'
+                      : 'You can leave this for later'
+                  }
+                >
+                  {hasFailedChecks ? (
+                    <ErrorIcon color="secondary" />
+                  ) : (
+                    <Info color="action" />
+                  )}
                 </Tooltip>
               </Box>
-            )}
-          </Box>
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails>
-          <form onSubmit={handleSubmit}>
+            </Box>
+          </ExpansionPanelSummary>
+          <ExpansionPanelDetails style={{ flexDirection: 'column' }}>
             <Check
               name="niche"
               label="Choose a niche"
@@ -96,7 +128,7 @@ export const Create: React.FC<CreateProps> = () => {
                   </p>
                 </section>
               }
-              getFieldProps={getFieldProps}
+              getFieldProps={getCheckFieldProps}
               hasError={hasNicheError}
               errorMessage={errors.niche}
             />
@@ -124,13 +156,62 @@ export const Create: React.FC<CreateProps> = () => {
                   </p>
                 </section>
               }
-              getFieldProps={getFieldProps}
+              getFieldProps={getCheckFieldProps}
               hasError={hasExpectationsError}
               errorMessage={errors.niche}
             />
-          </form>
-        </ExpansionPanelDetails>
-      </ExpansionPanel>
+          </ExpansionPanelDetails>
+        </ExpansionPanel>
+        <TextField
+          required
+          style={inputStyle}
+          {...getFieldProps('name')}
+          label="Name"
+          error={touched.name && !!errors.name}
+          helperText={
+            (touched.name && errors.name) ||
+            'Netflix, if you come up with an abstract name like that, it will be easier to reach the first page of Google.'
+          }
+        />
+        <TextField
+          required
+          style={textareaStyle}
+          {...getFieldProps('problemSolution')}
+          label="Problem-Solution"
+          multiline
+          rows={5}
+          fullWidth
+          error={touched.problemSolution && !!errors.problemSolution}
+          helperText={
+            (touched.problemSolution && errors.problemSolution) ||
+            'Start with the why, like Simon Sinek famously said. While writing this section, have your ideal customer.'
+          }
+        />
+        <TextField
+          required
+          style={textareaStyle}
+          {...getFieldProps('rationale')}
+          label="Rationale"
+          multiline
+          rows={5}
+          fullWidth
+          error={touched.rationale && !!errors.rationale}
+          helperText={
+            (touched.rationale && errors.rationale) ||
+            'Win over the hearts of customers with your story. Win over the minds of customers with common logic.'
+          }
+        />
+        <Box mt={5}>
+          <Button
+            type="submit"
+            color="primary"
+            variant="contained"
+            disabled={!isValid || isSubmitting}
+          >
+            Create Idea
+          </Button>
+        </Box>
+      </form>
     </PageWrapper>
   );
 };
