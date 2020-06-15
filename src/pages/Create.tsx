@@ -10,6 +10,7 @@ import {
 } from '@material-ui/core';
 import { Error as ErrorIcon, ExpandMore, Info } from '@material-ui/icons';
 import { Check, PageWrapper } from 'components';
+import { Drop } from 'containers';
 import { useFormik } from 'formik';
 import { CreationIdea, ideaSchemaDefinition } from 'models';
 import React from 'react';
@@ -48,6 +49,7 @@ export const Create: React.FC<CreateProps> = () => {
     handleSubmit,
     handleChange,
     values,
+    setFieldValue,
   } = useFormik({
     initialValues,
     validationSchema,
@@ -173,6 +175,14 @@ export const Create: React.FC<CreateProps> = () => {
             'Netflix, if you come up with an abstract name like that, it will be easier to reach the first page of Google.'
           }
         />
+        <Drop
+          heading="Story"
+          path="video"
+          onUploadSuccess={([video]) => setFieldValue('storyURL', video)}
+          accept="video/*"
+          // 50MB
+          maxSize={52428800}
+        />
         <TextField
           required
           style={textareaStyle}
@@ -186,6 +196,16 @@ export const Create: React.FC<CreateProps> = () => {
             (touched.problemSolution && errors.problemSolution) ||
             'Start with the why, like Simon Sinek famously said. While writing this section, have your ideal customer.'
           }
+        />
+        <Drop
+          heading="Images"
+          path="images"
+          onUploadSuccess={(imageURLs) => setFieldValue('imageURLs', imageURLs)}
+          accept="image/*"
+          // 5MB
+          maxSize={5242880}
+          multiple
+          fileLimit={2}
         />
         <TextField
           required
