@@ -164,10 +164,16 @@ export const Create: React.FC<CreateProps> = () => {
             />
           </ExpansionPanelDetails>
         </ExpansionPanel>
-        <Box my={3}>
+        <Box my={3} style={{ opacity: 0.8 }}>
           <Typography style={{ fontStyle: 'italic' }}>
-            Note that you can refine all the values later, before publishing
-            your idea.
+            Note that you can <strong>refine</strong> all the values{' '}
+            <strong>later</strong>, before publishing your idea.
+          </Typography>
+          <Typography style={{ fontStyle: 'italic' }}>
+            Feeling <strong>overwhelmed</strong>? Or <strong>not sure</strong>{' '}
+            how to proceed exactly?&nbsp;
+            {/* TODO link to Sprout Zero */}
+            Check out this example.
           </Typography>
         </Box>
         <TextField
