@@ -54,7 +54,7 @@ export const Drop: React.FC<DropProps> = ({
           &nbsp;
           {fileLimit && (
             <Typography color="textSecondary">
-              ( between 1 and {fileLimit} )
+              ( 1 - {fileLimit} )
             </Typography>
           )}
         </Box>

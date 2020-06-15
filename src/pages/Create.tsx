@@ -164,6 +164,12 @@ export const Create: React.FC<CreateProps> = () => {
             />
           </ExpansionPanelDetails>
         </ExpansionPanel>
+        <Box my={3}>
+          <Typography style={{ fontStyle: 'italic' }}>
+            Note that you can refine all the values later, before publishing
+            your idea.
+          </Typography>
+        </Box>
         <TextField
           required
           style={inputStyle}
@@ -194,7 +200,7 @@ export const Create: React.FC<CreateProps> = () => {
           error={touched.problemSolution && !!errors.problemSolution}
           helperText={
             (touched.problemSolution && errors.problemSolution) ||
-            'Start with the why, like Simon Sinek famously said. While writing this section, have your ideal customer.'
+            'Start with the why, like Simon Sinek famously said. While writing this section, have your ideal customer. ( 100 - 200 )'
           }
         />
         <Drop
@@ -218,7 +224,7 @@ export const Create: React.FC<CreateProps> = () => {
           error={touched.rationale && !!errors.rationale}
           helperText={
             (touched.rationale && errors.rationale) ||
-            'Win over the hearts of customers with your story. Win over the minds of customers with common logic.'
+            'Win over the hearts of customers with your story. Win over the minds of customers with common logic. ( 100 - 200 )'
           }
         />
         <Box mt={5}>
