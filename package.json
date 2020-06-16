@@ -32,7 +32,7 @@
     "rxjs": "^6.5.5",
     "typesafe-actions": "^5.1.0",
     "typescript": "~3.7.2",
-    "url": "^0.11.0",
+    "url-join": "^4.0.1",
     "yup": "^0.29.1"
   },
   "scripts": {
@@ -62,6 +62,7 @@
     "@types/ramda": "^0.27.6",
     "@types/react-redux": "^7.1.9",
     "@types/react-router-dom": "^5.1.5",
+    "@types/url-join": "^4.0.0",
     "@types/yup": "^0.29.3",
     "react-hot-loader": "^4.12.21",
     "utility-types": "^3.10.0"

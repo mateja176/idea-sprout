@@ -2,7 +2,7 @@ import { Create, Person } from '@material-ui/icons';
 import { LightBulb } from 'components/icons/LightBulb';
 import { Routes } from 'models';
 import React from 'react';
-import url from 'url';
+import urljoin from 'url-join';
 
 const toAbsolute = <R extends Routes>(routes: R) =>
   Object.fromEntries(
@@ -10,7 +10,7 @@ const toAbsolute = <R extends Routes>(routes: R) =>
       key,
       {
         ...route,
-        path: url.resolve('/', path),
+        path: urljoin('/', path),
       },
     ]),
   );

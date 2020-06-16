@@ -1,8 +1,8 @@
 import firebase from 'firebase/app';
 import 'firebase/storage';
 import { useState } from 'react';
-import { getDownloadURL, putString } from 'rxfire/storage';
-import { resolve } from 'url';
+import { putString } from 'rxfire/storage';
+import urljoin from 'url-join';
 
 export const useUpload = (path: string) => {
   const [status, setStatus] = useState<
@@ -16,7 +16,7 @@ export const useUpload = (path: string) => {
       files.map((file) => {
         const { name } = file;
 
-        const ref = firebase.storage().ref(resolve(path, name));
+        const ref = firebase.storage().ref(urljoin(path, name));
 
         const reader = new FileReader();
 
@@ -34,14 +34,12 @@ export const useUpload = (path: string) => {
               firebase.storage.StringFormat.DATA_URL,
             ).toPromise(),
           )
-          .then(() => {
-            return getDownloadURL(ref).toPromise();
+          .then(({ ref }) => {
+            return ref.fullPath;
           });
       }),
     )
       .then((urls) => {
-        setStatus('success');
-
         return urls;
       })
       .catch(() => {
