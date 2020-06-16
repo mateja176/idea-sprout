@@ -115,7 +115,7 @@ export const Drop: React.FC<DropProps> = ({
           >
             {isDragActive
               ? 'Drop your files here'
-              : files
+              : files.length
               ? 'Choose new file'
               : 'Choose file'}
           </Button>
@@ -126,9 +126,11 @@ export const Drop: React.FC<DropProps> = ({
           files.map((file) => (
             <TextField
               key={file.name}
-              disabled
               label="File"
               value={file.name}
+              InputProps={{
+                readOnly: true,
+              }}
             />
           ))
         ) : (
