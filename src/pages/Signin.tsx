@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   ButtonGroup,
-  CircularProgress,
   makeStyles,
   Typography,
 } from '@material-ui/core';
@@ -28,20 +27,16 @@ export const Signin: React.FC<SigninProps> = () => {
 
   const buttonClasses = useButtonStyles();
 
-  const quote = quotes[random(0, quotes.length - 1)];
+  const quote = React.useMemo(() => quotes[random(0, quotes.length - 1)], []);
 
-  return isAuthLoading ? (
-    <Box mt={4} display="flex" justifyContent="center">
-      <CircularProgress size="3em" />
-    </Box>
-  ) : (
+  return (
     <PageWrapper>
       <Box display="flex" flexDirection="column" alignItems="center">
         <Box mb={6} display="flex" flexDirection="column" alignItems="center">
           <Typography variant="h2">Sign in</Typography>
 
           <Box ml={2} mt={4}>
-            <ButtonGroup color="primary">
+            <ButtonGroup color="primary" disabled={isAuthLoading}>
               <Button
                 onClick={() => {
                   signIn(firebase.auth.GoogleAuthProvider.PROVIDER_ID);
