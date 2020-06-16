@@ -7,7 +7,7 @@ export const ideaSchemaDefinition: yup.ObjectSchemaDefinition<CreationIdea> = {
   expectations: checkSchema,
   name: yup.string().min(1).max(30).required(),
   storyURL: URLSchema,
-  problemSolution: yup.string().min(100).max(200).required(),
+  problemSolution: yup.string().min(80).max(201).required(),
   imageURLs: yup.array().of(URLSchema).max(2).required(),
-  rationale: yup.string().min(100).max(200).required(),
+  rationale: yup.string().min(100).max(401).required(),
 };
