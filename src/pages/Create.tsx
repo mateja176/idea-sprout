@@ -9,8 +9,8 @@ import {
   Typography,
 } from '@material-ui/core';
 import { Error as ErrorIcon, ExpandMore, Info } from '@material-ui/icons';
-import { Check, PageWrapper } from 'components';
-import { Drop } from 'containers';
+import { PageWrapper } from 'components';
+import { Check, Drop } from 'containers';
 import { useFormik } from 'formik';
 import { CreationIdea, ideaSchemaDefinition } from 'models';
 import React from 'react';
