@@ -234,7 +234,7 @@ export const Create: React.FC<CreateProps> = () => {
           error={touched.problemSolution && !!errors.problemSolution}
           helperText={
             (touched.problemSolution && errors.problemSolution) ||
-            'Start with the why, like Simon Sinek famously said. While writing this section, have your ideal customer. ( 100 - 200 )'
+            'What do all successful business have in common? They either solve a problem or bring a feeling of well-being to their customers. Write this section with your ideal customer in mind. ( 100 - 200 )'
           }
         />
         <Drop
