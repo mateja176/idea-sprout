@@ -234,41 +234,43 @@ export const Create: React.FC<CreateProps> = () => {
           error={touched.problemSolution && !!errors.problemSolution}
           helperText={
             (touched.problemSolution && errors.problemSolution) ||
-            'What do all successful business have in common? They either solve a problem or bring a feeling of well-being to their customers. Write this section with your ideal customer in mind. ( 100 - 200 )'
+            'What do all successful businesses have in common? They either solve a problem or bring a feeling of well-being to their customers. Write this section with your ideal customer in mind. ( 100 - 200 )'
           }
         />
-        <Drop
-          heading="Images"
-          description={
-            <section>
-              <p>
-                There was once an amateur photographer who created an online
-                photo gallery for himself.
-              </p>
-              <p>
-                He included all of his best images at the top, followed by a
-                number of lesser photos which were, none the less, still good.
-                He received positive feedback on his images and people though
-                that he was quite a good photographer.
-              </p>
-              <p>
-                Then, one day he tried something different. He removed all the
-                lesser images form his collection and left only the highest
-                quality images. He was shocked at the reactions of new
-                reviewers! While people thought of him as a good photographer
-                before, they now perceived him as a professional.
-              </p>
-              <p>Be amazing like the photographer.</p>
-            </section>
-          }
-          path="images"
-          onUploadSuccess={(imageURLs) => setFieldValue('imageURLs', imageURLs)}
-          accept="image/*"
-          // 5MB
-          maxSize={5242880}
-          multiple
-          fileLimit={2}
-        />
+        <Box mt={6}>
+          <Drop
+            heading="Images"
+            description={
+              <section>
+                <p>
+                  There was once an amateur photographer who created an online
+                  photo gallery for himself.
+                </p>
+                <p>
+                  He included all of his best images at the top, followed by a
+                  number of lesser photos which were, none the less, still good.
+                  He received positive feedback on his images and people though
+                  that he was quite a good photographer.
+                </p>
+                <p>
+                  Then, one day he tried something different. He removed all the
+                  lesser images form his collection and left only the highest
+                  quality images. He was shocked at the reactions of new
+                  reviewers! While people thought of him as a good photographer
+                  before, they now perceived him as a professional.
+                </p>
+                <p>Be amazing like the photographer.</p>
+              </section>
+            }
+            path="images"
+            onUploadSuccess={(imageURLs) => setFieldValue('imageURLs', imageURLs)}
+            accept="image/*"
+            // 5MB
+            maxSize={5242880}
+            multiple
+            fileLimit={2}
+          />
+        </Box>
         <TextField
           required
           style={textareaStyle}
