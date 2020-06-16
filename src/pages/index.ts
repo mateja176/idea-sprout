@@ -1,3 +1,4 @@
 export * from './Create';
-export * from './Ideas';
+export * from './Discover';
+export * from './MyIdeas';
 export * from './Signin';

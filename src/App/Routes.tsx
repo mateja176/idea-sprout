@@ -1,4 +1,6 @@
-import { Create, Ideas, Signin } from 'pages';
+import { Create, Signin } from 'pages';
+import { Discover } from 'pages/Discover';
+import { MyIdeas } from 'pages/MyIdeas';
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { useIsSignedIn } from 'services/hooks';
@@ -16,12 +18,17 @@ export const Routes: React.FC<RoutesProps> = () => {
         <Route
           path={absolutePublicRoute.login.path}
           render={() => {
-            return <Redirect to={privateRoute.ideas.path} />;
+            return <Redirect to={privateRoute.discover.path} />;
           }}
         />
       )}
+      <Route
+        exact
+        path={absolutePrivateRoute.discover.path}
+        component={Discover}
+      />
       <Route path={absolutePrivateRoute.create.path} component={Create} />
-      <Route path={absolutePrivateRoute.ideas.path} component={Ideas} />
+      <Route path={absolutePrivateRoute.myIdeas.path} component={MyIdeas} />
     </Switch>
   );
 };
