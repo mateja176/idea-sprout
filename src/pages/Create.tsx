@@ -189,6 +189,34 @@ export const Create: React.FC<CreateProps> = () => {
         />
         <Drop
           heading="Story"
+          description={
+            <section>
+              <p>
+                There's 6 reasons why things go viral according to the book
+                Contagions by Jonah Berger. In the following paragraphs, I'll
+                outline 3 of them.
+              </p>
+              <p>
+                Emotions, perhaps the number one thing which makes an idea catch
+                on. Coca cola, being the marketing powerhouse it is, takes full
+                advantage of this. I've never seen them market Coca Cola as a
+                sugary drink, instead I've seen them associating their product
+                with a feeling of happiness and having a good time with your
+                family and friends. No wonder the phrase "Taste the feeling" in
+                written next to their logo.
+              </p>
+              <p>
+                Practical value, to whom is your product actually helpful? For
+                example, WhatsApp enabled people in Ukraine, where the company's
+                founder is from, to communicate for free at a time where text
+                messages were quire pricy.
+              </p>
+              <p>
+                Stories, make your product part of a larger narrative. Take the
+                example of, SpaceX is associated with bringing humans to Mars.
+              </p>
+            </section>
+          }
           path="video"
           onUploadSuccess={([video]) => setFieldValue('storyURL', video)}
           accept="video/*"
@@ -211,6 +239,28 @@ export const Create: React.FC<CreateProps> = () => {
         />
         <Drop
           heading="Images"
+          description={
+            <section>
+              <p>
+                There was once an amateur photographer who created an online
+                photo gallery for himself.
+              </p>
+              <p>
+                He included all of his best images at the top, followed by a
+                number of lesser photos which were, none the less, still good.
+                He received positive feedback on his images and people though
+                that he was quite a good photographer.
+              </p>
+              <p>
+                Then, one day he tried something different. He removed all the
+                lesser images form his collection and left only the highest
+                quality images. He was shocked at the reactions of new
+                reviewers! While people thought of him as a good photographer
+                before, they now perceived him as a professional.
+              </p>
+              <p>Be amazing like the photographer.</p>
+            </section>
+          }
           path="images"
           onUploadSuccess={(imageURLs) => setFieldValue('imageURLs', imageURLs)}
           accept="image/*"

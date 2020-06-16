@@ -1,11 +1,24 @@
-import { Box, Button, TextField, Typography } from '@material-ui/core';
-import { ArrowDownward, CloudUpload } from '@material-ui/icons';
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  IconButton,
+  TextField,
+  Tooltip,
+  Typography,
+} from '@material-ui/core';
+import { ArrowDownward, CloudUpload, Info } from '@material-ui/icons';
 import React from 'react';
 import { DropzoneOptions, useDropzone } from 'react-dropzone';
 import { useUpload } from 'services';
 
 export interface DropProps extends DropzoneOptions {
   heading: string;
+  description: React.ReactNode;
   path: string;
   onUploadSuccess: (url: string[]) => void;
   fileLimit?: number;
@@ -13,6 +26,7 @@ export interface DropProps extends DropzoneOptions {
 
 export const Drop: React.FC<DropProps> = ({
   heading,
+  description,
   path,
   onUploadSuccess,
   fileLimit,
@@ -41,22 +55,42 @@ export const Drop: React.FC<DropProps> = ({
       });
   };
 
+  const [isDialogOpen, setIsDialogOpen] = React.useState(false);
+  const toggleIsDialogOpen: React.MouseEventHandler = (e) => {
+    e.stopPropagation();
+    setIsDialogOpen(!isDialogOpen);
+  };
+
   return (
     <Box my={3}>
       <Box {...getRootProps()}>
-        <Box mb={2} display="flex" alignItems="center">
-          <Typography
-            variant="h5"
-            color={isDragActive ? 'primary' : 'textPrimary'}
-          >
-            {heading}
-          </Typography>
-          &nbsp;
-          {fileLimit && (
-            <Typography color="textSecondary">
-              ( 1 - {fileLimit} )
+        <Box mb={2}>
+          <Box display="flex" alignItems="center">
+            <Typography
+              variant="h5"
+              color={isDragActive ? 'primary' : 'textPrimary'}
+            >
+              {heading}
             </Typography>
-          )}
+            <Tooltip title="Open dialog with more info" placement="top">
+              <IconButton onClick={toggleIsDialogOpen}>
+                <Info color="primary" />
+              </IconButton>
+            </Tooltip>
+            <Dialog open={isDialogOpen} onClose={toggleIsDialogOpen}>
+              <DialogTitle>
+                <DialogContent>
+                  <DialogContentText>{description}</DialogContentText>
+                </DialogContent>
+              </DialogTitle>
+              <DialogActions>
+                <Button onClick={toggleIsDialogOpen}>Clear</Button>
+              </DialogActions>
+            </Dialog>
+            {fileLimit && (
+              <Typography color="textSecondary">( 1 - {fileLimit} )</Typography>
+            )}
+          </Box>
         </Box>
         <input {...getInputProps()} />
         <Box
@@ -69,7 +103,7 @@ export const Drop: React.FC<DropProps> = ({
             variant="contained"
             color="primary"
             startIcon={<CloudUpload />}
-            disabled={!files || status === 'loading'}
+            disabled={!files.length || status === 'loading'}
             onClick={handleUpload}
           >
             Upload

@@ -37,9 +37,9 @@ export const Check: React.FC<CheckProps> = ({
   hasError,
   errorMessage,
 }) => {
-  const [isModalOpen, setIsModalOpen] = React.useState(false);
-  const toggleIsModalOpen = () => {
-    setIsModalOpen(!isModalOpen);
+  const [isDialogOpen, setIsDialogOpen] = React.useState(false);
+  const toggleIsDialogOpen = () => {
+    setIsDialogOpen(!isDialogOpen);
   };
 
   const fieldProps = getFieldProps(name);
@@ -50,23 +50,23 @@ export const Check: React.FC<CheckProps> = ({
         label={
           <Box display="flex" alignItems="center">
             <Typography>{label}</Typography>
-            <Tooltip title="Opens modal with more info">
+            <Tooltip title="Opens dialog with more info">
               <IconButton
                 onClick={(e) => {
-                  e.preventDefault();
-                  toggleIsModalOpen();
+                  e.stopPropagation();
+                  toggleIsDialogOpen();
                 }}
               >
                 <Info color="primary" />
               </IconButton>
             </Tooltip>
-            <Dialog onClose={toggleIsModalOpen} open={isModalOpen}>
+            <Dialog onClose={toggleIsDialogOpen} open={isDialogOpen}>
               <DialogTitle>{label}</DialogTitle>
               <DialogContent>
                 <DialogContentText>{description}</DialogContentText>
               </DialogContent>
               <DialogActions>
-                <Button onClick={toggleIsModalOpen}>Clear</Button>
+                <Button onClick={toggleIsDialogOpen}>Clear</Button>
               </DialogActions>
             </Dialog>
           </Box>
