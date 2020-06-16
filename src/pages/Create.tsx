@@ -217,7 +217,7 @@ export const Create: React.FC<CreateProps> = () => {
               </p>
             </section>
           }
-          path="video"
+          path="videos"
           onUploadSuccess={([video]) => setFieldValue('storyURL', video)}
           accept="video/*"
           // 50MB
