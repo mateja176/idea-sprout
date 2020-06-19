@@ -16,7 +16,10 @@ import {
   useActions,
   useIsSignedIn,
 } from 'services';
-import { absolutePrivateRoutes, absolutePublicRoutes } from 'utils';
+import {
+  absolutePrivateNavigationRoutes,
+  absolutePublicNavigationRoutes,
+} from 'utils';
 
 export interface NavProps {}
 
@@ -34,7 +37,9 @@ export const Nav: React.FC<NavProps> = () => {
   const isSignedIn = useIsSignedIn();
 
   const routes = Object.values(
-    isSignedIn ? absolutePrivateRoutes : absolutePublicRoutes,
+    isSignedIn
+      ? absolutePrivateNavigationRoutes
+      : absolutePublicNavigationRoutes,
   );
 
   return (

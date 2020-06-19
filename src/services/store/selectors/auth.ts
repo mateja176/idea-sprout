@@ -3,18 +3,20 @@ import { State } from '../reducer';
 
 export const selectAuth = ({ auth }: State) => auth;
 
+export const selectUser = createSelector([selectAuth], ({ user }) => user);
+
 export const selectIsSignedIn = createSelector(
-  [selectAuth],
-  ({ user }) =>
+  [selectUser],
+  (user) =>
     user !== 'initial' && user !== 'loading' && !(user instanceof Error),
 );
 
 export const selectIsSignedOut = createSelector(
-  [selectAuth],
-  ({ user }) => user === 'initial' || user instanceof Error,
+  [selectUser],
+  (user) => user === 'initial' || user instanceof Error,
 );
 
 export const selectIsAuthLoading = createSelector(
-  [selectAuth],
-  ({ user }) => user === 'loading',
+  [selectUser],
+  (user) => user === 'loading',
 );

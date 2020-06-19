@@ -9,9 +9,16 @@ export const ideaStatuses = [
 export type IdeaStatuses = typeof ideaStatuses;
 export type IdeaStatus = IdeaStatuses[number];
 
-export interface Idea {
+export interface IdeaModel {
   id: string;
-  rating: number;
+  /**
+   * author email
+   */
+  author: string;
+  rating: {
+    average: number;
+    total: number;
+  };
   /**
    * the checks are a way of guiding creators towards publishing high quality ideas
    */
@@ -21,14 +28,20 @@ export interface Idea {
   };
   status: IdeaStatus;
   name: string;
-  /**
-   * video which may be up to 5 minutes in length
-   */
   storyURL: string;
   problemSolution: string;
   imageURLs: string[];
   rationale: string;
+  /**
+   * number of times an idea has been shared
+   * the count is incremented only when an user shares the idea for the first time
+   * used to pass the "mom test"
+   */
+  shareCount: number;
 }
 
-export type CreationIdea = Omit<Idea, 'id' | 'rating' | 'status' | 'checks'> &
-  Idea['checks'];
+export type CreationIdea = Omit<
+  IdeaModel,
+  'id' | 'author' | 'rating' | 'status' | 'checks'
+> &
+  IdeaModel['checks'] & { doNotShare?: boolean };

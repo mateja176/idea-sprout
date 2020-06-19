@@ -12,9 +12,11 @@ import { Error as ErrorIcon, ExpandMore, Info } from '@material-ui/icons';
 import { PageWrapper } from 'components';
 import { Check, Drop } from 'containers';
 import { useFormik } from 'formik';
-import { CreationIdea, ideaSchemaDefinition } from 'models';
+import { CreationIdea, ideaSchemaDefinition, User } from 'models';
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
+import { selectUser } from 'services';
 import { inputStyle, textareaStyle } from 'styles';
 import * as yup from 'yup';
 
@@ -28,6 +30,8 @@ const initialValues: CreationIdea = {
   problemSolution: '',
   imageURLs: [],
   rationale: '',
+  shareCount: 0,
+  doNotShare: false,
 };
 
 type Values = typeof initialValues;
@@ -35,6 +39,8 @@ type Values = typeof initialValues;
 const validationSchema = yup.object().shape<Values>(ideaSchemaDefinition);
 
 export const Create: React.FC<CreateProps> = () => {
+  const user = useSelector(selectUser);
+
   const [expanded, setExpanded] = React.useState(true);
   const toggleExpanded = () => {
     setExpanded(!expanded);
@@ -53,7 +59,8 @@ export const Create: React.FC<CreateProps> = () => {
   } = useFormik({
     initialValues,
     validationSchema,
-    onSubmit: (formValues) => console.log(formValues),
+    onSubmit: ({ doNotShare, ...formValues }) =>
+      console.log({ ...formValues, author: (user as User).email }),
     validateOnMount: true,
   });
 
@@ -263,7 +270,9 @@ export const Create: React.FC<CreateProps> = () => {
               </section>
             }
             path="images"
-            onUploadSuccess={(imageURLs) => setFieldValue('imageURLs', imageURLs)}
+            onUploadSuccess={(imageURLs) =>
+              setFieldValue('imageURLs', imageURLs)
+            }
             accept="image/*"
             // 5MB
             maxSize={5242880}
