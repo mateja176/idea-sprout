@@ -15,11 +15,11 @@ import { Check, Drop } from 'containers';
 import { useFormik } from 'formik';
 import {
   CheckFieldNames,
+  checkNames,
   CreationIdea,
   GetCheckFieldProps,
   ideaSchemaDefinition,
   User,
-  checkNames,
 } from 'models';
 import React from 'react';
 import { useSelector } from 'react-redux';
@@ -34,9 +34,9 @@ const initialValues: CreationIdea = {
   niche: false,
   expectations: false,
   name: '',
-  storyURL: '',
+  storyPath: '',
   problemSolution: '',
-  imageURLs: [],
+  imagePaths: [],
   rationale: '',
   shareCount: 0,
   doNotShare: false,
@@ -239,7 +239,7 @@ export const Create: React.FC<CreateProps> = () => {
             </section>
           }
           path="videos"
-          onUploadSuccess={([video]) => setFieldValue('storyURL', video)}
+          onUploadSuccess={([video]) => setFieldValue('storyPath', video)}
           accept="video/*"
           // 50MB
           maxSize={52428800}
@@ -284,8 +284,8 @@ export const Create: React.FC<CreateProps> = () => {
               </section>
             }
             path="images"
-            onUploadSuccess={(imageURLs) =>
-              setFieldValue('imageURLs', imageURLs)
+            onUploadSuccess={(imagePaths) =>
+              setFieldValue('imagePaths', imagePaths)
             }
             accept="image/*"
             // 5MB

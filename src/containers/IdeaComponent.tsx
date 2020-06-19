@@ -12,28 +12,31 @@ const breakWordStyle: React.CSSProperties = {
 
 const height = 300;
 
-export const IdeaComponent: React.FC<IdeaComponentProps> = (idea) => (
-  <Box p={3}>
-    <Box>
-      <Typography variant="h5">Story</Typography>
-      {idea.storyURL}
+export const IdeaComponent: React.FC<IdeaComponentProps> = (idea) => {
+  console.log(idea);
+  return (
+    <Box p={3}>
+      <Box>
+        <Typography variant="h5">Story</Typography>
+        {idea.storyPath}
+      </Box>
+      <Box>
+        <Typography variant="h5">Problem-Solution</Typography>
+        <Typography style={breakWordStyle}>{idea.problemSolution}</Typography>
+      </Box>
+      <Box>
+        <Typography variant="h5">Images</Typography>
+        <React.Suspense fallback={<Skeleton variant="rect" height={height} />}>
+          {idea.imagePaths.map((url) => (
+            <StorageImage key={url} storagePath={url} height={height} />
+          ))}
+        </React.Suspense>
+      </Box>
+      <Box>
+        <Typography variant="h5">Rationale</Typography>
+        <Typography style={breakWordStyle}>{idea.rationale}</Typography>
+      </Box>
+      {/* TODO add call to action for reviewers */}
     </Box>
-    <Box>
-      <Typography variant="h5">Problem-Solution</Typography>
-      <Typography style={breakWordStyle}>{idea.problemSolution}</Typography>
-    </Box>
-    <Box>
-      <Typography variant="h5">Images</Typography>
-      <React.Suspense fallback={<Skeleton variant="rect" height={height} />}>
-        {idea.imageURLs.map((url) => (
-          <StorageImage key={url} storagePath={url} height={height} />
-        ))}
-      </React.Suspense>
-    </Box>
-    <Box>
-      <Typography variant="h5">Rationale</Typography>
-      <Typography style={breakWordStyle}>{idea.rationale}</Typography>
-    </Box>
-    {/* TODO add call to action for reviewers */}
-  </Box>
-);
+  );
+};

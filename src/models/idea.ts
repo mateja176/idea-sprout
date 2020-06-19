@@ -29,9 +29,9 @@ export interface IdeaModel {
   checks: { [key in CheckName]: boolean };
   status: IdeaStatus;
   name: string;
-  storyURL: string;
+  storyPath: string;
   problemSolution: string;
-  imageURLs: string[];
+  imagePaths: string[];
   rationale: string;
   /**
    * number of times an idea has been shared

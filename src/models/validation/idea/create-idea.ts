@@ -1,14 +1,14 @@
 import { CreationIdea } from 'models';
 import * as yup from 'yup';
-import { checkSchema, URLSchema } from './idea';
+import { checkSchema, PathSchema } from './idea';
 
 export const ideaSchemaDefinition: yup.ObjectSchemaDefinition<CreationIdea> = {
   niche: checkSchema,
   expectations: checkSchema,
   name: yup.string().required().min(1).max(30),
-  storyURL: URLSchema,
+  storyPath: PathSchema,
   problemSolution: yup.string().required().min(80).max(201),
-  imageURLs: yup.array().required().of(URLSchema).max(2),
+  imagePaths: yup.array().required().of(PathSchema).max(2),
   rationale: yup.string().required().min(100).max(401),
   shareCount: yup
     .number()
