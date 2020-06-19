@@ -29,7 +29,7 @@ import {
 } from '@material-ui/icons';
 import { Rating } from '@material-ui/lab';
 import { Link } from 'components';
-import { Idea } from 'containers';
+import { IdeaContainer } from 'containers';
 import { IdeaModel } from 'models';
 import React from 'react';
 import Draggable from 'react-draggable';
@@ -137,7 +137,7 @@ export const Ideas: React.FC<IdeasProps> = () => {
               </ListItemSecondaryAction>
             </ListItem>
             <Collapse in={expanded} timeout="auto" mountOnEnter>
-              <Idea {...idea} />
+              <IdeaContainer {...idea} />
             </Collapse>
             <Dialog // TODO replace modal with custom implementation since elements outside of the dialog cannot be interacted with
               open={reviewOpen}
