@@ -19,19 +19,19 @@ export const Routes: React.FC<RoutesProps> = () => {
         <Route
           path={absolutePublicRoute.login.path}
           render={() => {
-            return <Redirect to={privateRoute.discover.path} />;
+            return <Redirect to={privateRoute.ideas.path} />;
           }}
         />
       )}
       <Route
         exact
-        path={absolutePrivateRoute.discover.path}
+        path={absolutePrivateRoute.ideas.path}
         component={Discover}
       />
       <Route path={absolutePrivateRoute.create.path} component={Create} />
       <Route path={absolutePrivateRoute.myIdeas.path} component={MyIdeas} />
       <Route
-        path={urljoin(absolutePrivateRoute.idea.path, ':id')}
+        path={urljoin(absolutePrivateRoute.ideas.path, ':id')}
         component={IdeaPage}
       />
     </Switch>

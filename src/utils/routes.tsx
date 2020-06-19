@@ -36,7 +36,7 @@ export const absolutePublicNavigationRoutes = Object.values(
 export const absolutePublicRoute = toAbsolute(publicRoute);
 
 export const privateNavigationRoute = {
-  discover: {
+  ideas: {
     path: '/',
     label: 'Discover',
     icon: <Search />,
@@ -55,7 +55,6 @@ export const privateNavigationRoute = {
 
 export const privateRoute = {
   ...privateNavigationRoute,
-  idea: { path: 'idea', label: 'Idea', icon: <LightBulb /> },
 };
 
 export const absolutePrivateNavigationRoutes = Object.values(

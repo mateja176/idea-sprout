@@ -22,16 +22,17 @@ import {
   DragIndicator,
   ExpandLess,
   ExpandMore,
-  OpenInNew,
+  OpenInBrowser,
   RateReview,
   StarRate,
 } from '@material-ui/icons';
 import { Rating } from '@material-ui/lab';
-import { Idea, Link } from 'components';
+import { Idea } from 'components';
 import firebase from 'firebase/app';
 import { IdeaModel, RawIdea } from 'models';
 import React from 'react';
 import Draggable from 'react-draggable';
+import { useHistory } from 'react-router-dom';
 import { useFirestore, useFirestoreCollection } from 'reactfire';
 import urljoin from 'url-join';
 import { absolutePrivateRoute } from 'utils';
@@ -76,6 +77,8 @@ export const IdeasContainer: React.FC<IdeasContainerProps> = () => {
     setReviewOpen(!reviewOpen);
   };
 
+  const history = useHistory();
+
   return (
     <Box>
       <List>
@@ -97,23 +100,24 @@ export const IdeasContainer: React.FC<IdeasContainerProps> = () => {
                   >
                     <Box display="flex">
                       <Typography color="textSecondary">
-                        {idea.rating.average}
+                        {idea.rating.average} / {idea.rating.total}
                       </Typography>
                       <StarRate style={{ color: '#FFB400' }} />
                     </Box>
                   </Tooltip>
-                  <Tooltip placement="top" title="Open in new tab">
-                    <Link
-                      to={urljoin(absolutePrivateRoute.idea.path, idea.id)}
+                  <Tooltip placement="top" title="Open in full">
+                    <IconButton
                       onClick={(e) => {
                         e.stopPropagation();
+
+                        history.push(
+                          urljoin(absolutePrivateRoute.ideas.path, idea.id),
+                          idea,
+                        );
                       }}
-                      target="__blank"
                     >
-                      <IconButton>
-                        <OpenInNew />
-                      </IconButton>
-                    </Link>
+                      <OpenInBrowser />
+                    </IconButton>
                   </Tooltip>
                   <Box ml={1}>{idea.name}</Box>
                 </Box>
