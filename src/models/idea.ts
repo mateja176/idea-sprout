@@ -41,6 +41,8 @@ export interface IdeaModel {
   shareCount: number;
 }
 
+export type RawIdea = Omit<IdeaModel, 'id'>;
+
 export type CreationIdea = Omit<
   IdeaModel,
   'id' | 'author' | 'rating' | 'status' | 'checks'
