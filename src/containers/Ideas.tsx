@@ -94,7 +94,7 @@ export const Ideas: React.FC<IdeasProps> = () => {
     <Box>
       <List>
         {ideas.map((idea) => (
-          <Box>
+          <Box key={idea.id}>
             <ListItem key={idea.id} button onClick={toggleExpanded}>
               <ListItemIcon>
                 <Tooltip title="Review" placement="top">

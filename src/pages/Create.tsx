@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  CheckboxProps,
   ExpansionPanel,
   ExpansionPanelDetails,
   ExpansionPanelSummary,
@@ -12,7 +13,14 @@ import { Error as ErrorIcon, ExpandMore, Info } from '@material-ui/icons';
 import { PageWrapper } from 'components';
 import { Check, Drop } from 'containers';
 import { useFormik } from 'formik';
-import { CreationIdea, ideaSchemaDefinition, User } from 'models';
+import {
+  CheckFieldNames,
+  CreationIdea,
+  GetCheckFieldProps,
+  ideaSchemaDefinition,
+  User,
+  checkNames,
+} from 'models';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
@@ -70,17 +78,23 @@ export const Create: React.FC<CreateProps> = () => {
 
   const hasFailedChecks = hasNicheError || hasExpectationsError;
 
-  const handleCheckChange: typeof handleChange = (e) => {
-    if ([values.niche && values.expectations]) {
+  const handleCheckChange = (
+    name: CheckFieldNames,
+  ): CheckboxProps['onChange'] => (e, value) => {
+    if (
+      checkNames.every((checkName) =>
+        checkName === name ? values[checkName] || value : values[checkName],
+      )
+    ) {
       toggleExpanded();
     }
 
     handleChange(e);
   };
 
-  const getCheckFieldProps: typeof getFieldProps = (name) => ({
+  const getCheckFieldProps: GetCheckFieldProps = (name) => ({
     ...getFieldProps(name),
-    handleChange: handleCheckChange,
+    onChange: handleCheckChange(name),
   });
 
   return (

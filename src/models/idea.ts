@@ -1,3 +1,7 @@
+export const checkNames = ['niche', 'expectations'] as const;
+export type CheckNames = typeof checkNames;
+export type CheckName = CheckNames[number];
+
 export const ideaStatuses = [
   'draft',
   'readyForPublishing',
@@ -22,10 +26,7 @@ export interface IdeaModel {
   /**
    * the checks are a way of guiding creators towards publishing high quality ideas
    */
-  checks: {
-    niche: boolean;
-    expectations: boolean;
-  };
+  checks: { [key in CheckName]: boolean };
   status: IdeaStatus;
   name: string;
   storyURL: string;

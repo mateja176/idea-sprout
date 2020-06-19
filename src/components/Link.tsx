@@ -6,16 +6,19 @@ export interface LinkProps extends Omit<NavLinkProps, 'color'> {
   to: string;
 }
 
-export const Link: React.FC<LinkProps> = ({ style, ...props }: LinkProps) => {
-  return (
-    <MaterialLink
-      {...props}
-      style={{
-        ...style,
-        color: style?.color ?? 'inherit',
-        textDecoration: style?.textDecorationStyle ?? 'none',
-      }}
-      component={NavLink}
-    />
-  );
-};
+export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
+  ({ style, ...props }, ref) => {
+    return (
+      <MaterialLink
+        ref={ref}
+        {...props}
+        style={{
+          ...style,
+          color: style?.color ?? 'inherit',
+          textDecoration: style?.textDecorationStyle ?? 'none',
+        }}
+        component={NavLink}
+      />
+    );
+  },
+);

@@ -15,14 +15,14 @@ import {
   Typography,
 } from '@material-ui/core';
 import { Info } from '@material-ui/icons';
-import { FieldInputProps } from 'formik';
+import { CheckFieldNames, GetCheckFieldProps } from 'models';
 import React from 'react';
 
 export interface CheckProps {
-  name: string;
+  name: CheckFieldNames;
   label: string;
   description: React.ReactNode;
-  getFieldProps: (name: string) => FieldInputProps<boolean>;
+  getFieldProps: GetCheckFieldProps;
   hasError: boolean;
   errorMessage?: string;
 }
