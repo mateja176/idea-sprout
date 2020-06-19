@@ -1,14 +1,18 @@
 import { Box, Typography } from '@material-ui/core';
+import { Skeleton } from '@material-ui/lab';
 import { IdeaModel } from 'models';
 import React from 'react';
+import { StorageImage } from 'reactfire';
 
-export interface IdeaProps extends IdeaModel {}
+export interface IdeaComponentProps extends IdeaModel {}
 
 const breakWordStyle: React.CSSProperties = {
   wordBreak: 'break-word',
 };
 
-export const Idea: React.FC<IdeaProps> = (idea) => (
+const height = 300;
+
+export const IdeaComponent: React.FC<IdeaComponentProps> = (idea) => (
   <Box p={3}>
     <Box>
       <Typography variant="h5">Story</Typography>
@@ -20,7 +24,11 @@ export const Idea: React.FC<IdeaProps> = (idea) => (
     </Box>
     <Box>
       <Typography variant="h5">Images</Typography>
-      {idea.imageURLs}
+      <React.Suspense fallback={<Skeleton variant="rect" height={height} />}>
+        {idea.imageURLs.map((url) => (
+          <StorageImage key={url} storagePath={url} height={height} />
+        ))}
+      </React.Suspense>
     </Box>
     <Box>
       <Typography variant="h5">Rationale</Typography>

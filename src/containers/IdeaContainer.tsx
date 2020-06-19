@@ -1,4 +1,4 @@
-import { Idea } from 'components';
+import { IdeaComponent } from 'containers';
 import { IdeaModel } from 'models';
 import React from 'react';
 import { useFirestore, useFirestoreDocData } from 'reactfire';
@@ -10,5 +10,5 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({ id }) => {
 
   const idea = useFirestoreDocData<IdeaModel>(ideaRef);
 
-  return <Idea {...idea} />;
+  return <IdeaComponent {...idea} />;
 };

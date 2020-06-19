@@ -11,4 +11,3 @@ export const textareaStyle: React.CSSProperties = {
   ...inputStyle,
   height: 146,
 };
-

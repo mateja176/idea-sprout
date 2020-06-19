@@ -27,7 +27,7 @@ import {
   StarRate,
 } from '@material-ui/icons';
 import { Rating } from '@material-ui/lab';
-import { Idea } from 'components';
+import { IdeaComponent } from 'containers';
 import firebase from 'firebase/app';
 import { IdeaModel, RawIdea } from 'models';
 import React from 'react';
@@ -127,7 +127,7 @@ export const IdeasContainer: React.FC<IdeasContainerProps> = () => {
               </ListItemSecondaryAction>
             </ListItem>
             <Collapse in={expanded} timeout="auto" mountOnEnter>
-              <Idea {...idea} />
+              <IdeaComponent {...idea} />
             </Collapse>
             <Dialog // TODO replace modal with custom implementation since elements outside of the dialog cannot be interacted with
               open={reviewOpen}
