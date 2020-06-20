@@ -26,7 +26,12 @@ import {
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
-import { createQueueSnackbar, selectUser, useActions, useIdea } from 'services';
+import {
+  createQueueSnackbar,
+  selectUser,
+  useActions,
+  useIdeas,
+} from 'services';
 import { inputStyle, textareaStyle } from 'styles';
 import * as yup from 'yup';
 
@@ -49,7 +54,7 @@ const validationSchema = yup.object().shape<Values>(ideaSchemaDefinition);
 export const Create: React.FC<CreateProps> = () => {
   const { queueSnackbar } = useActions({ queueSnackbar: createQueueSnackbar });
 
-  const ideaRef = useIdea();
+  const ideaRef = useIdeas().doc();
 
   const user = useSelector(selectUser);
 

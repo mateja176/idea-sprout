@@ -1,6 +1,5 @@
-import firebase from 'firebase/app';
-import 'firebase/firestore';
+import { useFirestore } from 'reactfire';
 
-export const useIdea = () => {
-  return firebase.firestore().collection('ideas').doc();
+export const useIdeas = () => {
+  return useFirestore().collection('ideas');
 };

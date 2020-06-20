@@ -11,3 +11,5 @@ export const textareaStyle: React.CSSProperties = {
   ...inputStyle,
   height: 146,
 };
+
+export const speedDialZIndex = 1050;

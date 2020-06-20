@@ -50,8 +50,9 @@ import {
   WhatsappIcon,
   WhatsappShareButton,
 } from 'react-share';
-import { useFirestore, useFirestoreCollection } from 'reactfire';
-import { createQueueSnackbar, useActions } from 'services';
+import { useFirestoreCollection } from 'reactfire';
+import { createQueueSnackbar, useActions, useIdeas } from 'services';
+import { speedDialZIndex } from 'styles';
 import urljoin from 'url-join';
 import { absolutePrivateRoute } from 'utils';
 
@@ -67,7 +68,7 @@ const useStyles = makeStyles(() => ({
     marginTop: '0 !important',
   },
   badge: {
-    zIndex: 1051,
+    zIndex: speedDialZIndex + 1,
   },
 }));
 
@@ -84,7 +85,7 @@ const PaperComponent: React.FC<PaperProps> = (props) => {
 export const IdeasContainer: React.FC<IdeasContainerProps> = () => {
   const { queueSnackbar } = useActions({ queueSnackbar: createQueueSnackbar });
 
-  const ideasRef = useFirestore().collection('ideas');
+  const ideasRef = useIdeas();
 
   const ideasSnapshot = (useFirestoreCollection<RawIdea>(
     ideasRef,
