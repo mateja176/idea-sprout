@@ -146,8 +146,11 @@ export const IdeasContainer: React.FC<IdeasContainerProps> = () => {
                       title={`Average rating ${idea.rating.average} out of total ${idea.rating.total}`}
                     >
                       <Box display="flex" mr={1}>
-                        <Typography color="textSecondary">
-                          {idea.rating.average} / {idea.rating.total}
+                        <Typography
+                          color="textSecondary"
+                          style={{ minWidth: 40, textAlign: 'center' }}
+                        >
+                          {idea.rating.average}/{idea.rating.total}
                         </Typography>
                         <StarRate style={{ color: '#FFB400' }} />
                       </Box>
@@ -244,18 +247,20 @@ export const IdeasContainer: React.FC<IdeasContainerProps> = () => {
                       </Badge>
                     </Tooltip>
                     <Tooltip placement="top" title="Open in full">
-                      <IconButton
-                        onClick={(e) => {
-                          e.stopPropagation();
+                      <Box ml={1}>
+                        <IconButton
+                          onClick={(e) => {
+                            e.stopPropagation();
 
-                          history.push(
-                            urljoin(absolutePrivateRoute.ideas.path, idea.id),
-                            idea,
-                          );
-                        }}
-                      >
-                        <OpenInBrowser />
-                      </IconButton>
+                            history.push(
+                              urljoin(absolutePrivateRoute.ideas.path, idea.id),
+                              idea,
+                            );
+                          }}
+                        >
+                          <OpenInBrowser />
+                        </IconButton>
+                      </Box>
                     </Tooltip>
                     <Box ml={1}>{idea.name}</Box>
                   </Box>
