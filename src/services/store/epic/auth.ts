@@ -4,6 +4,7 @@ import { authProviders } from 'models';
 import { Epic, ofType } from 'redux-observable';
 import { authState } from 'rxfire/auth';
 import { from, of } from 'rxjs';
+import { AjaxError } from 'rxjs/ajax';
 import {
   catchError,
   exhaustMap,
@@ -45,7 +46,7 @@ export const signin = ((action$) =>
             severity: 'success',
           }),
         ),
-        catchError((error) =>
+        catchError((error: AjaxError) =>
           of(
             createSignin.failure(error),
             createQueueSnackbar({ message: error.message, severity: 'error' }),
@@ -74,7 +75,7 @@ export const authStateChange: AuthStateEpic = (action$) =>
             return createAuthStateChange.success({ user: 'initial' });
           }
         }),
-        catchError((error) =>
+        catchError((error: AjaxError) =>
           of(
             createAuthStateChange.failure(error),
             createQueueSnackbar({ message: error.message, severity: 'error' }),
@@ -97,7 +98,7 @@ export const signout: SignoutEpic = (action$) =>
           createSignout.success(),
           createQueueSnackbar({ message: 'Signed out', severity: 'success' }),
         ]),
-        catchError((error) =>
+        catchError((error: AjaxError) =>
           of(
             createSignout.failure(error),
             createQueueSnackbar({ message: error.message, severity: 'error' }),
