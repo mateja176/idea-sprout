@@ -1,21 +1,9 @@
-import {
-  CircularProgress,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-} from '@material-ui/core';
-import { ExitToApp } from '@material-ui/icons';
+import { List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
+import { Skeleton } from '@material-ui/lab';
 import { Link } from 'components';
+import { Signout } from 'containers';
 import React from 'react';
-import { useSelector } from 'react-redux';
-import {
-  createSignout,
-  selectIsAuthLoading,
-  selectIsSignedOut,
-  useActions,
-  useIsSignedIn,
-} from 'services';
+import { useIsSignedIn } from 'services';
 import {
   absolutePrivateNavigationRoutes,
   absolutePublicNavigationRoutes,
@@ -28,12 +16,6 @@ const listStyle: React.CSSProperties = {
 };
 
 export const Nav: React.FC<NavProps> = () => {
-  const { signOut } = useActions({ signOut: createSignout.request });
-
-  const isSignedOut = useSelector(selectIsSignedOut);
-
-  const isAuthLoading = useSelector(selectIsAuthLoading);
-
   const isSignedIn = useIsSignedIn();
 
   const routes = Object.values(
@@ -52,21 +34,9 @@ export const Nav: React.FC<NavProps> = () => {
           </ListItem>
         </Link>
       ))}
-      {!isSignedOut && (
-        <ListItem
-          button
-          onClick={() => {
-            signOut();
-          }}
-        >
-          <ListItemIcon>
-            <ExitToApp />
-          </ListItemIcon>
-          <ListItemText>
-            Sign out {isAuthLoading && <CircularProgress />}
-          </ListItemText>
-        </ListItem>
-      )}
+      <React.Suspense fallback={<Skeleton variant="rect" />}>
+        <Signout />
+      </React.Suspense>
     </List>
   );
 };
