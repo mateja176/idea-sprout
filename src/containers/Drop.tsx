@@ -11,7 +11,7 @@ import {
   Tooltip,
   Typography,
 } from '@material-ui/core';
-import { ArrowDownward, CloudUpload, Info } from '@material-ui/icons';
+import { ArrowDownward, Info } from '@material-ui/icons';
 import React from 'react';
 import { DropzoneOptions, useDropzone } from 'react-dropzone';
 import { useUpload } from 'services';
@@ -34,26 +34,21 @@ export const Drop: React.FC<DropProps> = ({
 }) => {
   const { upload, status } = useUpload(path);
 
+  const isLoading = status === 'loading';
+
   const [files, setFiles] = React.useState<File[]>([]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop: (acceptedFiles) => {
       setFiles(acceptedFiles);
+
+      upload(acceptedFiles.slice(0, fileLimit)).then((url) => {
+        onUploadSuccess(url);
+      });
     },
+    disabled: isLoading,
     ...props,
   });
-
-  const handleUpload: React.MouseEventHandler = (e) => {
-    e.stopPropagation();
-
-    upload(files.slice(0, fileLimit))
-      .then((url) => {
-        onUploadSuccess(url);
-      })
-      .then(() => {
-        setFiles([]);
-      });
-  };
 
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
   const toggleIsDialogOpen: React.MouseEventHandler = (e) => {
@@ -102,16 +97,8 @@ export const Drop: React.FC<DropProps> = ({
           <Button
             variant="contained"
             color="primary"
-            startIcon={<CloudUpload />}
-            disabled={!files.length || status === 'loading'}
-            onClick={handleUpload}
-          >
-            Upload
-          </Button>
-          <Button
-            variant="contained"
-            color="primary"
             startIcon={<ArrowDownward />}
+            disabled={isLoading}
           >
             {isDragActive
               ? 'Drop your files here'

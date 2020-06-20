@@ -35,6 +35,8 @@ export const useUpload = (path: string) => {
             ).toPromise(),
           )
           .then(({ ref }) => {
+            setStatus('success');
+
             return ref.fullPath;
           });
       }),

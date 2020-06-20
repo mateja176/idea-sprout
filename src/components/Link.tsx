@@ -15,7 +15,7 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
         style={{
           ...style,
           color: style?.color ?? 'inherit',
-          textDecoration: style?.textDecorationStyle ?? 'none',
+          textDecoration: style?.textDecoration ?? 'none',
         }}
         component={NavLink}
       />

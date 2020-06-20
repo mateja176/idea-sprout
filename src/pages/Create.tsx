@@ -10,7 +10,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import { Error as ErrorIcon, ExpandMore, Info } from '@material-ui/icons';
-import { PageWrapper } from 'components';
+import { Link, PageWrapper } from 'components';
 import { Check, Drop } from 'containers';
 import { useFormik } from 'formik';
 import {
@@ -19,12 +19,14 @@ import {
   CreationIdea,
   GetCheckFieldProps,
   ideaSchemaDefinition,
+  ProblemSolutionLength,
+  RationaleLength,
   User,
 } from 'models';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
-import { selectUser } from 'services';
+import { createQueueSnackbar, selectUser, useActions, useIdea } from 'services';
 import { inputStyle, textareaStyle } from 'styles';
 import * as yup from 'yup';
 
@@ -38,8 +40,6 @@ const initialValues: CreationIdea = {
   problemSolution: '',
   imagePaths: [],
   rationale: '',
-  shareCount: 0,
-  doNotShare: false,
 };
 
 type Values = typeof initialValues;
@@ -47,6 +47,10 @@ type Values = typeof initialValues;
 const validationSchema = yup.object().shape<Values>(ideaSchemaDefinition);
 
 export const Create: React.FC<CreateProps> = () => {
+  const { queueSnackbar } = useActions({ queueSnackbar: createQueueSnackbar });
+
+  const ideaRef = useIdea();
+
   const user = useSelector(selectUser);
 
   const [expanded, setExpanded] = React.useState(true);
@@ -67,8 +71,25 @@ export const Create: React.FC<CreateProps> = () => {
   } = useFormik({
     initialValues,
     validationSchema,
-    onSubmit: ({ doNotShare, ...formValues }) =>
-      console.log({ ...formValues, author: (user as User).email }),
+    onSubmit: (formValues) => {
+      const idea = { ...formValues, author: (user as User).email };
+
+      return ideaRef
+        .set(idea)
+        .then(() => {
+          queueSnackbar({
+            severity: 'success',
+            message: `Success! Sharing your idea increase the likelihood of success drastically`,
+            autoHideDuration: 60000,
+          });
+        })
+        .catch((error: Error) => {
+          queueSnackbar({
+            severity: 'error',
+            message: error.message,
+          });
+        });
+    },
     validateOnMount: true,
   });
 
@@ -194,7 +215,14 @@ export const Create: React.FC<CreateProps> = () => {
             Feeling <strong>overwhelmed</strong>? Or <strong>not sure</strong>{' '}
             how to proceed exactly?&nbsp;
             {/* TODO link to Sprout Zero */}
-            Check out this example.
+            Check out{' '}
+            <Link
+              to="dF6lqaZgkEWWj9qWNuiy"
+              target="__blank"
+              style={{ textDecoration: 'underline' }}
+            >
+              this example.
+            </Link>
           </Typography>
         </Box>
         <TextField
@@ -239,7 +267,11 @@ export const Create: React.FC<CreateProps> = () => {
             </section>
           }
           path="videos"
-          onUploadSuccess={([video]) => setFieldValue('storyPath', video)}
+          onUploadSuccess={([video]) => {
+            console.log(video);
+
+            setFieldValue('storyPath', video);
+          }}
           accept="video/*"
           // 50MB
           maxSize={52428800}
@@ -248,14 +280,14 @@ export const Create: React.FC<CreateProps> = () => {
           required
           style={textareaStyle}
           {...getFieldProps('problemSolution')}
-          label="Problem-Solution"
+          label={`Problem-Solution: ${values.problemSolution.length} (${ProblemSolutionLength.min}-${ProblemSolutionLength.max})`}
           multiline
           rows={5}
           fullWidth
           error={touched.problemSolution && !!errors.problemSolution}
           helperText={
             (touched.problemSolution && errors.problemSolution) ||
-            'What do all successful businesses have in common? They either solve a problem or bring a feeling of well-being to their customers. Write this section with your ideal customer in mind. ( 100 - 200 )'
+            `What do all successful businesses have in common? They either solve a problem or bring a feeling of well-being to their customers. Write this section with your ideal customer in mind.`
           }
         />
         <Box mt={6}>
@@ -284,9 +316,10 @@ export const Create: React.FC<CreateProps> = () => {
               </section>
             }
             path="images"
-            onUploadSuccess={(imagePaths) =>
-              setFieldValue('imagePaths', imagePaths)
-            }
+            onUploadSuccess={(imagePaths) => {
+              console.log(imagePaths);
+              setFieldValue('imagePaths', imagePaths);
+            }}
             accept="image/*"
             // 5MB
             maxSize={5242880}
@@ -298,17 +331,17 @@ export const Create: React.FC<CreateProps> = () => {
           required
           style={textareaStyle}
           {...getFieldProps('rationale')}
-          label="Rationale"
+          label={`Rationale: ${values.rationale.length} (${RationaleLength.min}-${RationaleLength.max})`}
           multiline
           rows={5}
           fullWidth
           error={touched.rationale && !!errors.rationale}
           helperText={
             (touched.rationale && errors.rationale) ||
-            'Win over the hearts of customers with your story. Win over the minds of customers with common logic. ( 100 - 200 )'
+            `Win over the hearts of customers with your story. Win over the minds of customers with common logic.`
           }
         />
-        <Box mt={5}>
+        <Box mt={5} mb={15}>
           <Button
             type="submit"
             color="primary"
