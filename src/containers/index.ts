@@ -8,3 +8,4 @@ export * from './IdeaRow';
 export * from './Ideas';
 export * from './IdeasSuspender';
 export * from './Signout';
+export * from './Video';

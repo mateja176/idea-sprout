@@ -267,7 +267,9 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ i, idea }) => {
         </ListItemSecondaryAction>
       </ListItem>
       <Collapse in={expanded} timeout="auto" mountOnEnter>
-        <Idea {...idea} />
+        <Box mb={3}>
+          <Idea {...idea} />
+        </Box>
       </Collapse>
       <Dialog // TODO replace modal with custom implementation since elements outside of the dialog cannot be interacted with
         open={reviewOpen}

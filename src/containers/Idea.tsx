@@ -5,18 +5,21 @@ import {
   DialogActions,
   DialogContent,
   Typography,
+  useTheme,
 } from '@material-ui/core';
 import { Skeleton } from '@material-ui/lab';
 import { IdeaModel } from 'models';
 import React from 'react';
 import { StorageImage } from 'reactfire';
+import { videoMaxHeight } from 'styles';
+import { Video } from './Video';
 export interface IdeaProps extends IdeaModel {}
 
 const breakWordStyle: React.CSSProperties = {
   wordBreak: 'break-word',
 };
 
-const height = 300;
+const imageHeight = 300;
 
 const initialFocusedImagePath = '';
 
@@ -31,11 +34,20 @@ export const Idea: React.FC<IdeaProps> = (idea) => {
     setDialogOpen(!dialogOpen);
   };
 
+  const theme = useTheme();
+
   return (
-    <Box p={3}>
+    <Box>
       <Box>
-        <Typography variant="h5">Story</Typography>
-        {idea.storyPath}
+        <Box
+          bgcolor={theme.palette.grey[900]}
+          display="flex"
+          justifyContent="center"
+        >
+          <React.Suspense fallback={<Skeleton height={videoMaxHeight} />}>
+            <Video storyPath={idea.storyPath} />
+          </React.Suspense>
+        </Box>
       </Box>
       <Box>
         <Typography variant="h5">Problem-Solution</Typography>
@@ -43,12 +55,12 @@ export const Idea: React.FC<IdeaProps> = (idea) => {
       </Box>
       <Box>
         <Typography variant="h5">Images</Typography>
-        <React.Suspense fallback={<Skeleton variant="rect" height={height} />}>
+        <React.Suspense fallback={<Skeleton height={imageHeight} />}>
           {idea.imagePaths.map((path) => (
             <StorageImage
               key={path}
               storagePath={path}
-              height={height}
+              height={imageHeight}
               onClick={(e) => {
                 setFocusedImagePath(path);
 

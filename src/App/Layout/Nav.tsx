@@ -34,7 +34,7 @@ export const Nav: React.FC<NavProps> = () => {
           </ListItem>
         </Link>
       ))}
-      <React.Suspense fallback={<Skeleton variant="rect" />}>
+      <React.Suspense fallback={<Skeleton />}>
         <Signout />
       </React.Suspense>
     </List>

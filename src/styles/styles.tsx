@@ -15,3 +15,5 @@ export const textareaStyle: React.CSSProperties = {
 export const speedDialZIndex = 1050;
 
 export const pageMargin = 3;
+
+export const videoMaxHeight = 720;
