@@ -228,7 +228,7 @@ export const Create: React.FC<CreateProps> = ({ history }) => {
           <Typography style={{ fontStyle: 'italic' }}>
             Feeling <strong>overwhelmed</strong>? Or <strong>not sure</strong>{' '}
             how to proceed exactly?&nbsp;
-            {/* TODO link to Sprout Zero */}
+            {/* TODO turn into collapsible */}
             Check out{' '}
             <Link
               to="dF6lqaZgkEWWj9qWNuiy"
