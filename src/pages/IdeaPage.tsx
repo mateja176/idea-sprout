@@ -1,6 +1,6 @@
-import { Box, IconButton, Tooltip } from '@material-ui/core';
+import { IconButton, Tooltip } from '@material-ui/core';
 import { KeyboardArrowLeft } from '@material-ui/icons';
-import { Link, PageWrapper } from 'components';
+import { Link, Loading, PageWrapper } from 'components';
 import { Idea, IdeaContainer } from 'containers';
 import { IdeaModel } from 'models';
 import React, { Suspense } from 'react';
@@ -32,7 +32,7 @@ export const IdeaPage: React.FC<IdeaPageProps> = ({
       {idea ? (
         <Idea {...idea} />
       ) : (
-        <Suspense fallback={<Box>Loading...</Box>}>
+        <Suspense fallback={<Loading />}>
           <IdeaContainer id={id} />
         </Suspense>
       )}

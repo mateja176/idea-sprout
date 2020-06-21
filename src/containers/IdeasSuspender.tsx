@@ -1,4 +1,4 @@
-import { Box } from '@material-ui/core';
+import { Loading } from 'components';
 import React, { Suspense } from 'react';
 import { Ideas } from './Ideas';
 
@@ -6,7 +6,7 @@ export interface IdeasSuspenderProps {}
 
 export const IdeasSuspender: React.FC<IdeasSuspenderProps> = () => {
   return (
-    <Suspense fallback={<Box>Loading...</Box>}>
+    <Suspense fallback={<Loading />}>
       <Ideas />
     </Suspense>
   );

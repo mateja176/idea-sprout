@@ -167,6 +167,7 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ i, idea }) => {
                     fab: classes.fab,
                     actions: classes.actions,
                   }}
+                  onClick={handleIconClick}
                 >
                   <SpeedDialAction
                     tooltipTitle="Copy link"
