@@ -297,7 +297,7 @@ export const IdeaForm: React.FC<IdeaFormProps> = () => {
           {...getFieldProps('problemSolution')}
           label={`Problem-Solution: ${values.problemSolution.length} (${ProblemSolutionLength.min}-${ProblemSolutionLength.max})`}
           multiline
-          rows={5}
+          rows={4}
           fullWidth
           error={touched.problemSolution && !!errors.problemSolution}
           helperText={
@@ -348,7 +348,7 @@ export const IdeaForm: React.FC<IdeaFormProps> = () => {
           {...getFieldProps('rationale')}
           label={`Rationale: ${values.rationale.length} (${RationaleLength.min}-${RationaleLength.max})`}
           multiline
-          rows={5}
+          rows={6}
           fullWidth
           error={touched.rationale && !!errors.rationale}
           helperText={
@@ -356,7 +356,7 @@ export const IdeaForm: React.FC<IdeaFormProps> = () => {
             `Win over the hearts of customers with your story. Win over the minds of customers with common logic.`
           }
         />
-        <Box mt={5} mb={15}>
+        <Box mt={10} mb={15}>
           <Button
             type="submit"
             color="primary"
