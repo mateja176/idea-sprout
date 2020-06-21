@@ -16,7 +16,7 @@ export const Routes: React.FC<RoutesProps> = () => {
       {!isSignedIn && <Route component={Signin} />}
       {isSignedIn && (
         <Route
-          path={absolutePublicRoute.login.path}
+          path={absolutePublicRoute.signin.path}
           render={() => {
             return <Redirect to={privateRoute.ideas.path} />;
           }}

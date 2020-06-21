@@ -6,19 +6,26 @@ import {
   Tooltip,
 } from '@material-ui/core';
 import { ExitToApp } from '@material-ui/icons';
+import { FirebaseError } from 'firebase/app';
+import { AsyncState } from 'models';
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { useUser } from 'reactfire';
-import { createSignout, selectIsAuthLoading, useActions } from 'services';
+import { useHistory } from 'react-router-dom';
+import { useAuth, useUser } from 'reactfire';
+import { createQueueSnackbar, useActions } from 'services';
+import { absolutePublicRoute } from 'utils';
 
 export interface SignoutProps {
   onClick: React.MouseEventHandler;
 }
 
 export const Signout: React.FC<SignoutProps> = ({ onClick }) => {
-  const { signOut } = useActions({ signOut: createSignout.request });
+  const { queueSnackbar } = useActions({ queueSnackbar: createQueueSnackbar });
 
-  const isAuthLoading = useSelector(selectIsAuthLoading);
+  const history = useHistory();
+
+  const [status, setStatus] = React.useState<AsyncState<null>>('initial');
+
+  const auth = useAuth();
 
   const user = useUser<null>();
 
@@ -27,16 +34,34 @@ export const Signout: React.FC<SignoutProps> = ({ onClick }) => {
       <ListItem
         button
         onClick={(e) => {
-          onClick(e);
+          setStatus('loading');
 
-          signOut();
+          auth
+            .signOut()
+            .then(() => {
+              queueSnackbar({
+                message: 'Successfully signed out',
+                severity: 'success',
+              });
+
+              setStatus(null);
+
+              onClick(e);
+
+              history.push(absolutePublicRoute.signin.path);
+            })
+            .catch((error: FirebaseError) => {
+              queueSnackbar({ message: error.message, severity: 'success' });
+
+              setStatus(error);
+            });
         }}
       >
         <ListItemIcon>
           <ExitToApp />
         </ListItemIcon>
         <ListItemText>
-          Sign out {isAuthLoading && <CircularProgress size="1em" />}
+          Sign out {status === 'loading' && <CircularProgress size="1em" />}
         </ListItemText>
       </ListItem>
     </Tooltip>

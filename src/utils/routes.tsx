@@ -18,7 +18,7 @@ const toAbsolute = <R extends Routes>(routes: R) => {
 };
 
 export const publicNavigationRoute = {
-  login: {
+  signin: {
     path: 'signin',
     label: 'Sign in',
     icon: <Person />,
