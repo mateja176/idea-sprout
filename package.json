@@ -36,6 +36,7 @@
     "typesafe-actions": "^5.1.0",
     "typescript": "~3.7.2",
     "url-join": "^4.0.1",
+    "uuid": "^8.1.0",
     "yup": "^0.29.1"
   },
   "scripts": {
@@ -70,6 +71,7 @@
     "@types/react-redux": "^7.1.9",
     "@types/react-router-dom": "^5.1.5",
     "@types/url-join": "^4.0.0",
+    "@types/uuid": "^8.0.0",
     "@types/yup": "^0.29.3",
     "react-hot-loader": "^4.12.21",
     "utility-types": "^3.10.0"
