@@ -2,14 +2,7 @@ export const checkNames = ['niche', 'expectations'] as const;
 export type CheckNames = typeof checkNames;
 export type CheckName = CheckNames[number];
 
-export const ideaStatuses = [
-  'draft',
-  'readyForPublishing',
-  'published',
-  'grown',
-  'discarded',
-  'unpublished',
-] as const;
+export const ideaStatuses = ['seed', 'sprout', 'bloom', 'shrivel'] as const;
 export type IdeaStatuses = typeof ideaStatuses;
 export type IdeaStatus = IdeaStatuses[number];
 

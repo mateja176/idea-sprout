@@ -18,22 +18,19 @@ import {
   checkNames,
   CreationIdea,
   GetCheckFieldProps,
+  IdeaModel,
   ideaSchemaDefinition,
   ProblemSolutionLength,
   RationaleLength,
   User,
 } from 'models';
 import React from 'react';
-import { useSelector } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
-import {
-  createQueueSnackbar,
-  selectUser,
-  useActions,
-  useIdeas,
-} from 'services';
+import { useUser } from 'reactfire';
+import { createQueueSnackbar, useActions, useIdeas } from 'services';
 import { inputStyle, textareaStyle } from 'styles';
 import * as yup from 'yup';
+import { absolutePrivateRoute } from 'utils';
 
 export interface CreateProps extends RouteComponentProps {}
 
@@ -51,12 +48,12 @@ type Values = typeof initialValues;
 
 const validationSchema = yup.object().shape<Values>(ideaSchemaDefinition);
 
-export const Create: React.FC<CreateProps> = () => {
+export const Create: React.FC<CreateProps> = ({ history }) => {
   const { queueSnackbar } = useActions({ queueSnackbar: createQueueSnackbar });
 
   const ideaRef = useIdeas().doc();
 
-  const user = useSelector(selectUser);
+  const user = useUser<User>();
 
   const [expanded, setExpanded] = React.useState(true);
   const toggleExpanded = () => {
@@ -76,12 +73,24 @@ export const Create: React.FC<CreateProps> = () => {
   } = useFormik({
     initialValues,
     validationSchema,
-    onSubmit: (formValues) => {
-      const idea = { ...formValues, author: (user as User).email };
+    onSubmit: ({ niche, expectations, ...formValues }) => {
+      const idea: Omit<IdeaModel, 'id'> = {
+        ...formValues,
+        author: user.email || '',
+        shareCount: 0,
+        rating: { average: 0, total: 0 },
+        checks: {
+          niche,
+          expectations,
+        },
+        status: 'seed',
+      };
 
       return ideaRef
         .set(idea)
         .then(() => {
+          history.push(absolutePrivateRoute.ideas.path);
+
           queueSnackbar({
             severity: 'success',
             message: `Success! Sharing your idea increase the likelihood of success drastically`,
