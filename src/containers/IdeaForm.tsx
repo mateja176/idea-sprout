@@ -291,6 +291,7 @@ export const IdeaForm: React.FC<IdeaFormProps> = () => {
           maxSize={52428800}
         />
         <TextField
+          variant="outlined"
           required
           style={textareaStyle}
           {...getFieldProps('problemSolution')}
@@ -341,6 +342,7 @@ export const IdeaForm: React.FC<IdeaFormProps> = () => {
           />
         </Box>
         <TextField
+          variant="outlined"
           required
           style={textareaStyle}
           {...getFieldProps('rationale')}

@@ -23,12 +23,18 @@ const imageHeight = 300;
 
 const initialFocusedImagePath = '';
 
-const Section: React.FC = ({ children }) => (
+const TitleWrapper: React.FC = ({ children }) => (
   <Box mx={3} my={4}>
+    {children}
+  </Box>
+);
+
+const Section: React.FC = ({ children }) => (
+  <TitleWrapper>
     {React.Children.map(children, (child, i) =>
       i === 0 ? <Box mb={2}>{child}</Box> : child,
     )}
-  </Box>
+  </TitleWrapper>
 );
 
 export const Idea: React.FC<IdeaProps> = (idea) => {
@@ -59,22 +65,36 @@ export const Idea: React.FC<IdeaProps> = (idea) => {
         <Typography variant="h5">Problem-Solution</Typography>
         <Typography style={breakWordStyle}>{idea.problemSolution}</Typography>
       </Section>
-      <Section>
-        <Typography variant="h5">Images</Typography>
-        <React.Suspense fallback={<Skeleton height={imageHeight} />}>
-          {idea.imagePaths.map((path) => (
-            <StorageImage
-              key={path}
-              storagePath={path}
-              height={imageHeight}
-              onClick={(e) => {
-                setFocusedImagePath(path);
+      <Box>
+        <TitleWrapper>
+          <Typography variant="h5">Images</Typography>
+        </TitleWrapper>
+        {idea.imagePaths.map((path, i) => (
+          <Box
+            key={path}
+            display="flex"
+            justifyContent="center"
+            bgcolor={theme.palette.grey[900]}
+            borderBottom={
+              i !== idea.imagePaths.length - 1
+                ? `1px solid ${theme.palette.grey[900]}`
+                : 'none'
+            }
+          >
+            <React.Suspense fallback={<Skeleton height={imageHeight} />}>
+              <StorageImage
+                key={path}
+                storagePath={path}
+                height={imageHeight}
+                onClick={() => {
+                  setFocusedImagePath(path);
 
-                toggleDialogOpen();
-              }}
-            />
-          ))}
-        </React.Suspense>
+                  toggleDialogOpen();
+                }}
+              />
+            </React.Suspense>
+          </Box>
+        ))}
         <Dialog
           open={dialogOpen}
           onClose={toggleDialogOpen}
@@ -90,7 +110,7 @@ export const Idea: React.FC<IdeaProps> = (idea) => {
             <Button onClick={toggleDialogOpen}>Close</Button>
           </DialogActions>
         </Dialog>
-      </Section>
+      </Box>
       <Section>
         <Typography variant="h5">Rationale</Typography>
         <Typography style={breakWordStyle}>{idea.rationale}</Typography>
