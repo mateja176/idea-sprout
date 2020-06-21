@@ -284,8 +284,6 @@ export const IdeaForm: React.FC<IdeaFormProps> = () => {
           }
           path="videos"
           onUploadSuccess={([video]) => {
-            console.log(video);
-
             setFieldValue('storyPath', video);
           }}
           accept="video/*"
@@ -333,7 +331,6 @@ export const IdeaForm: React.FC<IdeaFormProps> = () => {
             }
             path="images"
             onUploadSuccess={(imagePaths) => {
-              console.log(imagePaths);
               setFieldValue('imagePaths', imagePaths);
             }}
             accept="image/*"

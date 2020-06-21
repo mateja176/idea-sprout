@@ -1,10 +1,14 @@
 import firebase from 'firebase/app';
 import 'firebase/storage';
+import { StoragePath, User } from 'models';
 import { useState } from 'react';
+import { useUser } from 'reactfire';
 import { putString } from 'rxfire/storage';
 import urljoin from 'url-join';
 
-export const useUpload = (path: string) => {
+export const useUpload = (path: StoragePath) => {
+  const user = useUser<User>();
+
   const [status, setStatus] = useState<
     'initial' | 'loading' | 'success' | 'failure'
   >('initial');
@@ -16,7 +20,7 @@ export const useUpload = (path: string) => {
       files.map((file) => {
         const { name } = file;
 
-        const ref = firebase.storage().ref(urljoin(path, name));
+        const ref = firebase.storage().ref(urljoin(path, user.uid, name));
 
         const reader = new FileReader();
 

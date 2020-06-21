@@ -12,6 +12,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import { ArrowDownward, Info } from '@material-ui/icons';
+import { StoragePath } from 'models';
 import React from 'react';
 import { DropzoneOptions, useDropzone } from 'react-dropzone';
 import { useUpload } from 'services';
@@ -19,7 +20,7 @@ import { useUpload } from 'services';
 export interface DropProps extends DropzoneOptions {
   heading: string;
   description: React.ReactNode;
-  path: string;
+  path: StoragePath;
   onUploadSuccess: (url: string[]) => void;
   fileLimit?: number;
 }
