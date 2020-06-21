@@ -10,7 +10,7 @@ import { Skeleton } from '@material-ui/lab';
 import { IdeaModel } from 'models';
 import React from 'react';
 import { StorageImage } from 'reactfire';
-export interface IdeaComponentProps extends IdeaModel {}
+export interface IdeaProps extends IdeaModel {}
 
 const breakWordStyle: React.CSSProperties = {
   wordBreak: 'break-word',
@@ -20,7 +20,7 @@ const height = 300;
 
 const initialFocusedImagePath = '';
 
-export const IdeaComponent: React.FC<IdeaComponentProps> = (idea) => {
+export const Idea: React.FC<IdeaProps> = (idea) => {
   const [focusedImagePath, setFocusedImagePath] = React.useState(
     initialFocusedImagePath,
   );

@@ -1,5 +1,4 @@
-import { IdeaFormPage, IdeaPage, Signin } from 'pages';
-import { Discover } from 'pages/Discover';
+import { IdeaForm, IdeaPage, Ideas, Signin } from 'pages';
 import { MyIdeas } from 'pages/MyIdeas';
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
@@ -23,12 +22,8 @@ export const Routes: React.FC<RoutesProps> = () => {
           }}
         />
       )}
-      <Route
-        exact
-        path={absolutePrivateRoute.ideas.path}
-        component={Discover}
-      />
-      <Route path={absolutePrivateRoute.create.path} component={IdeaFormPage} />
+      <Route exact path={absolutePrivateRoute.ideas.path} component={Ideas} />
+      <Route path={absolutePrivateRoute.create.path} component={IdeaForm} />
       <Route path={absolutePrivateRoute.myIdeas.path} component={MyIdeas} />
       <Route
         path={urljoin(absolutePrivateRoute.ideas.path, ':id')}

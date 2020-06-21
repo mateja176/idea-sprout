@@ -1,13 +1,13 @@
 import { Box } from '@material-ui/core';
 import React, { Suspense } from 'react';
-import { IdeasContainer } from './Ideas';
+import { Ideas } from './Ideas';
 
-export interface IdeasProps {}
+export interface IdeasSuspenderProps {}
 
-export const Ideas: React.FC<IdeasProps> = () => {
+export const IdeasSuspender: React.FC<IdeasSuspenderProps> = () => {
   return (
     <Suspense fallback={<Box>Loading...</Box>}>
-      <IdeasContainer />
+      <Ideas />
     </Suspense>
   );
 };

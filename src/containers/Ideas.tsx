@@ -31,7 +31,7 @@ import {
   StarRate,
 } from '@material-ui/icons';
 import { Rating, SpeedDial, SpeedDialAction } from '@material-ui/lab';
-import { IdeaComponent } from 'containers';
+import { Idea } from 'containers';
 import firebase from 'firebase/app';
 import { IdeaModel, RawIdea } from 'models';
 import React from 'react';
@@ -56,7 +56,7 @@ import { speedDialZIndex } from 'styles';
 import urljoin from 'url-join';
 import { absolutePrivateRoute } from 'utils';
 
-export interface IdeasContainerProps {}
+export interface IdeasProps {}
 
 const dragHandleId = 'drag-handle';
 
@@ -82,7 +82,7 @@ const PaperComponent: React.FC<PaperProps> = (props) => {
     </Draggable>
   );
 };
-export const IdeasContainer: React.FC<IdeasContainerProps> = () => {
+export const Ideas: React.FC<IdeasProps> = () => {
   const { queueSnackbar } = useActions({ queueSnackbar: createQueueSnackbar });
 
   const ideasRef = useIdeas();
@@ -271,7 +271,7 @@ export const IdeasContainer: React.FC<IdeasContainerProps> = () => {
                 </ListItemSecondaryAction>
               </ListItem>
               <Collapse in={expanded} timeout="auto" mountOnEnter>
-                <IdeaComponent {...idea} />
+                <Idea {...idea} />
               </Collapse>
               <Dialog // TODO replace modal with custom implementation since elements outside of the dialog cannot be interacted with
                 open={reviewOpen}
