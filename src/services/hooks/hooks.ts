@@ -40,8 +40,8 @@ export const useValueWithFallback: typeof useDeferredValue = (
   const deferredValue = useDeferredValue(value, suspenseConfig);
 
   return {
-    ...value,
     ...deferredValue,
+    ...value,
   };
 };
 
