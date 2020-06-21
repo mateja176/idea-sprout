@@ -1,4 +1,4 @@
-import { Create, IdeaPage, Signin } from 'pages';
+import { IdeaFormPage, IdeaPage, Signin } from 'pages';
 import { Discover } from 'pages/Discover';
 import { MyIdeas } from 'pages/MyIdeas';
 import React from 'react';
@@ -28,7 +28,7 @@ export const Routes: React.FC<RoutesProps> = () => {
         path={absolutePrivateRoute.ideas.path}
         component={Discover}
       />
-      <Route path={absolutePrivateRoute.create.path} component={Create} />
+      <Route path={absolutePrivateRoute.create.path} component={IdeaFormPage} />
       <Route path={absolutePrivateRoute.myIdeas.path} component={MyIdeas} />
       <Route
         path={urljoin(absolutePrivateRoute.ideas.path, ':id')}

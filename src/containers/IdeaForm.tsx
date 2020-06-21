@@ -25,14 +25,14 @@ import {
   User,
 } from 'models';
 import React from 'react';
-import { RouteComponentProps } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useUser } from 'reactfire';
 import { createQueueSnackbar, useActions, useIdeas } from 'services';
 import { inputStyle, textareaStyle } from 'styles';
-import * as yup from 'yup';
 import { absolutePrivateRoute } from 'utils';
+import * as yup from 'yup';
 
-export interface CreateProps extends RouteComponentProps {}
+export interface IdeaFormProps {}
 
 const initialValues: CreationIdea = {
   niche: false,
@@ -48,7 +48,9 @@ type Values = typeof initialValues;
 
 const validationSchema = yup.object().shape<Values>(ideaSchemaDefinition);
 
-export const Create: React.FC<CreateProps> = ({ history }) => {
+export const IdeaForm: React.FC<IdeaFormProps> = () => {
+  const history = useHistory();
+
   const { queueSnackbar } = useActions({ queueSnackbar: createQueueSnackbar });
 
   const ideaRef = useIdeas().doc();
