@@ -1,5 +1,5 @@
 import { WithTimeout } from 'models';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { ActionCreatorsMapObject, bindActionCreators } from 'redux';
 import { Action } from 'services';
@@ -43,4 +43,26 @@ export const useValueWithFallback: typeof useDeferredValue = (
     ...value,
     ...deferredValue,
   };
+};
+
+export const useTransition = ({ timeoutMs }: WithTimeout) => {
+  const [isPending, setIsPending] = useState(false);
+
+  const startTransition = useCallback(
+    (callback: () => void) => {
+      setIsPending(true);
+      const timeout = setTimeout(() => {
+        callback();
+
+        setIsPending(false);
+      }, timeoutMs);
+
+      return () => {
+        clearTimeout(timeout);
+      };
+    },
+    [timeoutMs],
+  );
+
+  return [startTransition, isPending] as const;
 };
