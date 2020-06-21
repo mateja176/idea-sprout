@@ -17,3 +17,5 @@ export const speedDialZIndex = 1050;
 export const pageMargin = 3;
 
 export const videoMaxHeight = 720;
+
+export const starColor = '#FFB400';

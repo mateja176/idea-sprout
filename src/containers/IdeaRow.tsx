@@ -46,7 +46,7 @@ import {
   WhatsappShareButton,
 } from 'react-share';
 import { createQueueSnackbar, useActions } from 'services';
-import { speedDialZIndex } from 'styles';
+import { speedDialZIndex, starColor } from 'styles';
 import urljoin from 'url-join';
 import { absolutePrivateRoute } from 'utils';
 import { Idea } from './Idea';
@@ -60,14 +60,20 @@ const dragHandleId = 'drag-handle';
 
 const iconSize = 48;
 
-const getZIndex = (i: number) => speedDialZIndex - i;
+interface StyleProps {
+  i: number;
+  isOver: boolean;
+}
+
+const getZIndex = ({ i }: StyleProps) => speedDialZIndex - i;
 
 const useStyles = makeStyles((theme) => ({
   root: {
     zIndex: getZIndex,
   },
   fab: {
-    color: theme.palette.primary.main,
+    boxShadow: ({ isOver }: StyleProps) =>
+      isOver ? theme.shadows[13] : 'none',
   },
   actions: {
     position: 'absolute',
@@ -76,13 +82,20 @@ const useStyles = makeStyles((theme) => ({
   },
   badge: {
     zIndex: getZIndex,
+    background: theme.palette.grey[600],
+    color: theme.palette.common.white,
   },
 }));
 
 export const IdeaRow: React.FC<IdeaRowProps> = ({ i, idea }) => {
   const { queueSnackbar } = useActions({ queueSnackbar: createQueueSnackbar });
 
-  const classes = useStyles(i);
+  const [isOver, setIsOver] = React.useState(false);
+  const toggleIsOver = () => {
+    setIsOver(!isOver);
+  };
+
+  const classes = useStyles({ i, isOver });
 
   const [expanded, setExpended] = React.useState(false);
   const toggleExpanded = () => {
@@ -136,7 +149,7 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ i, idea }) => {
                 >
                   {idea.rating.average}/{idea.rating.total}
                 </Typography>
-                <StarRate style={{ color: '#FFB400' }} />
+                <StarRate style={{ color: starColor }} />
               </Box>
             </Tooltip>
             <Tooltip
@@ -145,7 +158,6 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ i, idea }) => {
             >
               <Badge
                 badgeContent={idea.shareCount}
-                color="secondary"
                 classes={{
                   badge: classes.badge,
                 }}
@@ -156,11 +168,18 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ i, idea }) => {
                   icon={<Share fontSize="small" />}
                   open={shareOptionsOpen}
                   direction="down"
-                  onMouseEnter={() => setShareOptionsOpen(true)}
-                  onMouseLeave={() => setShareOptionsOpen(false)}
+                  onMouseEnter={() => {
+                    setShareOptionsOpen(true);
+
+                    toggleIsOver();
+                  }}
+                  onMouseLeave={() => {
+                    setShareOptionsOpen(false);
+
+                    toggleIsOver();
+                  }}
                   FabProps={{
                     size: 'small',
-                    color: 'default',
                   }}
                   classes={{
                     root: classes.root,
