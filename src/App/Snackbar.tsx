@@ -5,7 +5,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import {
   createCloseSnackbar,
-  selectSnackbarState,
+  selectSnackbarQueue,
   useActions,
   useValueWithFallback,
 } from 'services';
@@ -15,7 +15,7 @@ export interface SnackbarProps {}
 export const Snackbar: React.FC<SnackbarProps> = () => {
   const { closeSnackbar } = useActions({ closeSnackbar: createCloseSnackbar });
 
-  const { queue } = useSelector(selectSnackbarState);
+  const queue = useSelector(selectSnackbarQueue);
 
   const first = head(queue);
 
