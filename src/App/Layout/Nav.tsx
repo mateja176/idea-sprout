@@ -9,13 +9,15 @@ import {
   absolutePublicNavigationRoutes,
 } from 'utils';
 
-export interface NavProps {}
+export interface NavProps {
+  onClick: React.MouseEventHandler;
+}
 
 const listStyle: React.CSSProperties = {
   width: 250,
 };
 
-export const Nav: React.FC<NavProps> = () => {
+export const Nav: React.FC<NavProps> = ({ onClick }) => {
   const isSignedIn = useIsSignedIn();
 
   const routes = Object.values(
@@ -27,7 +29,7 @@ export const Nav: React.FC<NavProps> = () => {
   return (
     <List style={listStyle}>
       {routes.map(({ label, path, icon }) => (
-        <Link key={path} to={path}>
+        <Link key={path} to={path} onClick={onClick}>
           <ListItem button>
             <ListItemIcon>{icon}</ListItemIcon>
             <ListItemText>{label}</ListItemText>
@@ -35,7 +37,7 @@ export const Nav: React.FC<NavProps> = () => {
         </Link>
       ))}
       <React.Suspense fallback={<Skeleton />}>
-        <Signout />
+        <Signout onClick={onClick} />
       </React.Suspense>
     </List>
   );

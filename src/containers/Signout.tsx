@@ -1,19 +1,21 @@
 import {
+  CircularProgress,
   ListItem,
   ListItemIcon,
   ListItemText,
   Tooltip,
-  CircularProgress,
 } from '@material-ui/core';
 import { ExitToApp } from '@material-ui/icons';
 import React from 'react';
-import { useUser } from 'reactfire';
-import { createSignout, useActions, selectIsAuthLoading } from 'services';
 import { useSelector } from 'react-redux';
+import { useUser } from 'reactfire';
+import { createSignout, selectIsAuthLoading, useActions } from 'services';
 
-export interface SignoutProps {}
+export interface SignoutProps {
+  onClick: React.MouseEventHandler;
+}
 
-export const Signout: React.FC<SignoutProps> = () => {
+export const Signout: React.FC<SignoutProps> = ({ onClick }) => {
   const { signOut } = useActions({ signOut: createSignout.request });
 
   const isAuthLoading = useSelector(selectIsAuthLoading);
@@ -24,7 +26,9 @@ export const Signout: React.FC<SignoutProps> = () => {
     <Tooltip title={`Sign out of ${user.email}`}>
       <ListItem
         button
-        onClick={() => {
+        onClick={(e) => {
+          onClick(e);
+
           signOut();
         }}
       >

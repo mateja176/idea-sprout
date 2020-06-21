@@ -54,7 +54,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
               <ChevronLeft />
             </IconButton>
           </Box>
-          <Nav />
+          <Nav onClick={toggleDrawerOpen} />
         </Box>
       </Drawer>
       <Box>{children}</Box>
