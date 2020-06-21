@@ -21,12 +21,16 @@ export const Snackbar: React.FC<SnackbarProps> = () => {
 
   const firstWithFallback = useValueWithFallback(first, { timeoutMs: 500 });
 
+  React.useEffect(() => {
+    if (first) {
+      setTimeout(() => {
+        closeSnackbar();
+      }, first.autoHideDuration);
+    }
+  }, [first]); // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
-    <MaterialSnackbar
-      open={!!first}
-      autoHideDuration={first?.autoHideDuration}
-      onClose={closeSnackbar}
-    >
+    <MaterialSnackbar open={!!first}>
       <Badge badgeContent={queue.length} color="primary">
         <Alert severity={firstWithFallback?.severity} onClose={closeSnackbar}>
           {firstWithFallback?.message}
