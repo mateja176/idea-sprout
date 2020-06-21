@@ -4,6 +4,7 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
+  makeStyles,
   Typography,
   useTheme,
 } from '@material-ui/core';
@@ -15,13 +16,24 @@ import { videoMaxHeight } from 'styles';
 import { Video } from './Video';
 export interface IdeaProps extends IdeaModel {}
 
+export const maxMediaHeight = 720;
+export const maxMediaWidth = 1280;
+
+const videoAspectRatio = maxMediaWidth / maxMediaHeight;
+
+const imageMaxWidth = maxMediaWidth;
+
+const initialFocusedImagePath = '';
+
+const useStyles = makeStyles(() => ({
+  text: {
+    transform: 'none',
+  },
+}));
+
 const breakWordStyle: React.CSSProperties = {
   wordBreak: 'break-word',
 };
-
-const imageHeight = 300;
-
-const initialFocusedImagePath = '';
 
 const TitleWrapper: React.FC = ({ children }) => (
   <Box mx={3} my={4}>
@@ -38,6 +50,8 @@ const Section: React.FC = ({ children }) => (
 );
 
 export const Idea: React.FC<IdeaProps> = (idea) => {
+  const classes = useStyles();
+
   const [focusedImagePath, setFocusedImagePath] = React.useState(
     initialFocusedImagePath,
   );
@@ -50,14 +64,35 @@ export const Idea: React.FC<IdeaProps> = (idea) => {
 
   const theme = useTheme();
 
+  const [screenWidth, setScreenWidth] = React.useState(0);
+
+  React.useEffect(() => {
+    const handleResize = () => {
+      setScreenWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    handleResize();
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  const videoHeight = Math.min(screenWidth / videoAspectRatio, videoMaxHeight);
+
   return (
     <Box>
       <Box
         bgcolor={theme.palette.grey[900]}
         display="flex"
         justifyContent="center"
+        height={videoHeight}
       >
-        <React.Suspense fallback={<Skeleton height={videoMaxHeight} />}>
+        <React.Suspense
+          fallback={<Skeleton width="100%" classes={{ text: classes.text }} />}
+        >
           <Video storyPath={idea.storyPath} />
         </React.Suspense>
       </Box>
@@ -81,11 +116,15 @@ export const Idea: React.FC<IdeaProps> = (idea) => {
                 : 'none'
             }
           >
-            <React.Suspense fallback={<Skeleton height={imageHeight} />}>
+            <React.Suspense
+              fallback={
+                <Skeleton style={{ width: '100%', maxWidth: imageMaxWidth }} />
+              }
+            >
               <StorageImage
                 key={path}
                 storagePath={path}
-                height={imageHeight}
+                style={{ width: '100%', maxWidth: imageMaxWidth }}
                 onClick={() => {
                   setFocusedImagePath(path);
 
