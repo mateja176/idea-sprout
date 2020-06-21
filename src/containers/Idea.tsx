@@ -23,6 +23,14 @@ const imageHeight = 300;
 
 const initialFocusedImagePath = '';
 
+const Section: React.FC = ({ children }) => (
+  <Box mx={3} my={4}>
+    {React.Children.map(children, (child, i) =>
+      i === 0 ? <Box mb={2}>{child}</Box> : child,
+    )}
+  </Box>
+);
+
 export const Idea: React.FC<IdeaProps> = (idea) => {
   const [focusedImagePath, setFocusedImagePath] = React.useState(
     initialFocusedImagePath,
@@ -38,22 +46,20 @@ export const Idea: React.FC<IdeaProps> = (idea) => {
 
   return (
     <Box>
-      <Box>
-        <Box
-          bgcolor={theme.palette.grey[900]}
-          display="flex"
-          justifyContent="center"
-        >
-          <React.Suspense fallback={<Skeleton height={videoMaxHeight} />}>
-            <Video storyPath={idea.storyPath} />
-          </React.Suspense>
-        </Box>
+      <Box
+        bgcolor={theme.palette.grey[900]}
+        display="flex"
+        justifyContent="center"
+      >
+        <React.Suspense fallback={<Skeleton height={videoMaxHeight} />}>
+          <Video storyPath={idea.storyPath} />
+        </React.Suspense>
       </Box>
-      <Box>
+      <Section>
         <Typography variant="h5">Problem-Solution</Typography>
         <Typography style={breakWordStyle}>{idea.problemSolution}</Typography>
-      </Box>
-      <Box>
+      </Section>
+      <Section>
         <Typography variant="h5">Images</Typography>
         <React.Suspense fallback={<Skeleton height={imageHeight} />}>
           {idea.imagePaths.map((path) => (
@@ -84,11 +90,11 @@ export const Idea: React.FC<IdeaProps> = (idea) => {
             <Button onClick={toggleDialogOpen}>Close</Button>
           </DialogActions>
         </Dialog>
-      </Box>
-      <Box>
+      </Section>
+      <Section>
         <Typography variant="h5">Rationale</Typography>
         <Typography style={breakWordStyle}>{idea.rationale}</Typography>
-      </Box>
+      </Section>
       {/* TODO add call to action for reviewers */}
     </Box>
   );
