@@ -1,8 +1,14 @@
-import { Snackbar as MaterialSnackbar, Badge } from '@material-ui/core';
+import { Badge, Snackbar as MaterialSnackbar } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
+import { head } from 'ramda';
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { createCloseSnackbar, selectSnackbarState, useActions } from 'services';
+import {
+  createCloseSnackbar,
+  selectSnackbarState,
+  useActions,
+  useDeferredValue,
+} from 'services';
 
 export interface SnackbarProps {}
 
@@ -11,19 +17,23 @@ export const Snackbar: React.FC<SnackbarProps> = () => {
 
   const { queue } = useSelector(selectSnackbarState);
 
-  const [first] = queue;
+  const first = head(queue);
 
-  return first ? (
+  const deferredFirst = useDeferredValue(first, { timeoutMs: 500 });
+
+  const firstWithFallback = { ...deferredFirst, ...first } as typeof first;
+
+  return (
     <MaterialSnackbar
-      open
-      autoHideDuration={first.autoHideDuration || 5000}
+      open={!!first}
+      autoHideDuration={first?.autoHideDuration}
       onClose={closeSnackbar}
     >
       <Badge badgeContent={queue.length} color="primary">
-        <Alert severity={first.severity} onClose={closeSnackbar}>
-          {first.message}
+        <Alert severity={firstWithFallback?.severity} onClose={closeSnackbar}>
+          {firstWithFallback?.message}
         </Alert>
       </Badge>
     </MaterialSnackbar>
-  ) : null;
+  );
 };
