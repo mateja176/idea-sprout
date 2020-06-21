@@ -263,7 +263,16 @@ export const Ideas: React.FC<IdeasProps> = () => {
                         </IconButton>
                       </Box>
                     </Tooltip>
-                    <Box ml={1}>{idea.name}</Box>
+                    <Tooltip placement="top" title={idea.name}>
+                      <Box
+                        ml={1}
+                        textOverflow="ellipsis"
+                        whiteSpace="nowrap"
+                        overflow="hidden"
+                      >
+                        {idea.name}
+                      </Box>
+                    </Tooltip>
                   </Box>
                 </ListItemText>
                 <ListItemSecondaryAction onClick={toggleExpanded}>
