@@ -35,7 +35,7 @@ export const snackbar = (
 ): SnackbarState => {
   switch (action.type) {
     case getType(createQueueSnackbar):
-      return { ...state, queue: [action.payload, ...state.queue] };
+      return { ...state, queue: state.queue.concat(action.payload) };
 
     case getType(createCloseSnackbar):
       const [_, ...queue] = state.queue; // eslint-disable-line @typescript-eslint/no-unused-vars
