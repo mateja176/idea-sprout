@@ -1,7 +1,8 @@
+import { WithTimeout } from 'models';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { ActionCreatorsMapObject, bindActionCreators } from 'redux';
 import { Action } from 'services';
-import { useState, useEffect } from 'react';
 
 export const useActions = <
   ActionCreators extends ActionCreatorsMapObject<Action>
@@ -15,7 +16,7 @@ export const useActions = <
 
 export const useDeferredValue = <Value>(
   value: Value,
-  { timeoutMs }: { timeoutMs: number },
+  { timeoutMs }: WithTimeout,
 ) => {
   const [deferredValue, setDeferredValue] = useState<Value>(value);
 
@@ -26,8 +27,20 @@ export const useDeferredValue = <Value>(
 
     return () => {
       clearTimeout(timeout);
-    }
+    };
   }, [timeoutMs, value]);
 
   return deferredValue;
+};
+
+export const useValueWithFallback: typeof useDeferredValue = (
+  value,
+  suspenseConfig,
+) => {
+  const deferredValue = useDeferredValue(value, suspenseConfig);
+
+  return {
+    ...value,
+    ...deferredValue,
+  };
 };

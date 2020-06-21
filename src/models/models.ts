@@ -8,3 +8,7 @@ export interface ISnackbar
     Pick<AlertProps, 'severity'> {
   message: string;
 }
+
+export interface WithTimeout {
+  timeoutMs: number;
+}

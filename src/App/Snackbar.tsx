@@ -7,7 +7,7 @@ import {
   createCloseSnackbar,
   selectSnackbarState,
   useActions,
-  useDeferredValue,
+  useValueWithFallback,
 } from 'services';
 
 export interface SnackbarProps {}
@@ -19,9 +19,7 @@ export const Snackbar: React.FC<SnackbarProps> = () => {
 
   const first = head(queue);
 
-  const deferredFirst = useDeferredValue(first, { timeoutMs: 500 });
-
-  const firstWithFallback = { ...deferredFirst, ...first } as typeof first;
+  const firstWithFallback = useValueWithFallback(first, { timeoutMs: 500 });
 
   return (
     <MaterialSnackbar
