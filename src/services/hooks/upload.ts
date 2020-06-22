@@ -2,7 +2,7 @@ import firebase from 'firebase/app';
 import 'firebase/storage';
 import { StorageFile, StoragePath, User } from 'models';
 import { useState } from 'react';
-import { useUser } from 'reactfire';
+import { useStorage, useUser } from 'reactfire';
 import { putString } from 'rxfire/storage';
 import { createQueueSnackbar } from 'services/store';
 import urljoin from 'url-join';
@@ -19,6 +19,8 @@ export const useUpload = (path: StoragePath) => {
     'initial' | 'loading' | 'success' | 'failure'
   >('initial');
 
+  const storage = useStorage();
+
   const upload = (files: File[]): Promise<StorageFile[]> => {
     setStatus('loading');
 
@@ -26,7 +28,7 @@ export const useUpload = (path: StoragePath) => {
       files.map((file) => {
         const { name } = file;
 
-        const ref = firebase.storage().ref(urljoin(path, user.uid, name));
+        const ref = storage.ref(urljoin(path, user.uid, name));
 
         const reader = new FileReader();
 
