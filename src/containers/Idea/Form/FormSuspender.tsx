@@ -1,6 +1,6 @@
 import { Loading } from 'components';
 import React from 'react';
-import { IdeaForm } from './IdeaForm';
+import { IdeaForm } from './Form';
 
 export interface IdeaFormSuspenderProps {}
 
