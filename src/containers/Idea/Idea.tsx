@@ -31,12 +31,7 @@ export const Idea: React.FC<IdeaProps> = (idea) => {
         <Typography variant="h5">Problem-Solution</Typography>
         <Typography style={breakWordStyle}>{idea.problemSolution}</Typography>
       </Section>
-      <Box>
-        <TitleWrapper>
-          <Typography variant="h5">Images</Typography>
-        </TitleWrapper>
-        <Images images={idea.images} />
-      </Box>
+      <Images images={idea.images} />
       <Section>
         <Typography variant="h5">Rationale</Typography>
         <Typography style={breakWordStyle}>{idea.rationale}</Typography>
