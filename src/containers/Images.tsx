@@ -29,6 +29,7 @@ export const Images: React.FC<ImagesProps> = ({ images }) => {
     <Box>
       {images.map((image, i) => (
         <Image
+          key={`${image.path}${i}`}
           isLast={i === images.length - 1 && images.length > 1}
           {...image}
           onClick={() => {
