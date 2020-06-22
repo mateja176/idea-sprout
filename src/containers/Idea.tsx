@@ -2,7 +2,7 @@ import { Box, Typography } from '@material-ui/core';
 import { IdeaModel } from 'models';
 import React from 'react';
 import { Images } from './Images';
-import { FullVideo } from './VideoSuspender';
+import { VideoSuspender } from './VideoSuspender';
 export interface IdeaProps extends IdeaModel {}
 
 const breakWordStyle: React.CSSProperties = {
@@ -26,7 +26,7 @@ const Section: React.FC = ({ children }) => (
 export const Idea: React.FC<IdeaProps> = (idea) => {
   return (
     <Box>
-      <FullVideo {...idea.story} />
+      <VideoSuspender {...idea.story} />
       <Section>
         <Typography variant="h5">Problem-Solution</Typography>
         <Typography style={breakWordStyle}>{idea.problemSolution}</Typography>

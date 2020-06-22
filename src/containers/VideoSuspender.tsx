@@ -4,7 +4,7 @@ import React from 'react';
 import { useFileDimensions } from 'services';
 import { Video, VideoProps } from './Video';
 
-export interface FullVideoProps extends VideoProps {}
+export interface VideoSuspenderProps extends VideoProps {}
 
 const useStyles = makeStyles(() => ({
   text: {
@@ -12,7 +12,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export const FullVideo: React.FC<FullVideoProps> = ({
+export const VideoSuspender: React.FC<VideoSuspenderProps> = ({
   path,
   width,
   height,
@@ -21,6 +21,8 @@ export const FullVideo: React.FC<FullVideoProps> = ({
 
   const classes = useStyles();
 
+  // * since a new reference is created on each render, the object cannot be used as a hook dependency
+  // * given the fact that it fails the shallow comparison
   const dimensions = useFileDimensions({ width, height });
 
   return (

@@ -67,19 +67,19 @@ export const useTransition = ({ timeoutMs }: WithTimeout) => {
   return [startTransition, isPending] as const;
 };
 
-export const useFileDimensions = (fileDimensions: FileDimensions) => {
+export const useFileDimensions = ({ width, height }: FileDimensions) => {
   const [dimensions, setDimensions] = useState({ height: 0, width: 0 });
 
   useEffect(() => {
     const handleResize = () => {
       const ratio = Math.min(
-        window.innerWidth / fileDimensions.width,
-        window.innerHeight / fileDimensions.height,
+        window.innerWidth / width,
+        window.innerHeight / height,
       );
 
       setDimensions({
-        width: fileDimensions.width * ratio,
-        height: fileDimensions.height * ratio,
+        width: width * ratio,
+        height: height * ratio,
       });
     };
 
@@ -90,7 +90,7 @@ export const useFileDimensions = (fileDimensions: FileDimensions) => {
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  }, [fileDimensions]);
+  }, [width, height]);
 
   return dimensions;
 };
