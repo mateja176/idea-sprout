@@ -22,7 +22,7 @@ export const IdeaPage: React.FC<IdeaPageProps> = ({
   location: { state: idea },
 }) => {
   return (
-    <Box my={1}>
+    <Box mt={1} mb={10}>
       <Box ml={1} display="flex" alignItems="center">
         <Link to={absolutePrivateRoute.ideas.path}>
           <Tooltip placement="top" title="Back to list">
