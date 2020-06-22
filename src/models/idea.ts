@@ -49,6 +49,5 @@ export type RawIdea = Omit<IdeaModel, 'id'>;
 
 export type CreationIdea = Omit<
   IdeaModel,
-  'id' | 'author' | 'rating' | 'status' | 'checks' | 'shareCount'
-> &
-  IdeaModel['checks'];
+  'id' | 'author' | 'rating' | 'status' | 'shareCount'
+>;

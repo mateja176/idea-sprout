@@ -13,8 +13,10 @@ export const RationaleLength = {
 };
 
 export const ideaSchemaDefinition: yup.ObjectSchemaDefinition<CreationIdea> = {
-  niche: checkSchema,
-  expectations: checkSchema,
+  checks: yup
+    .object()
+    .required()
+    .shape({ niche: checkSchema, expectations: checkSchema }),
   name: yup.string().required().min(1).max(30),
   story: StorageFileSchema,
   problemSolution: yup

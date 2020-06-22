@@ -14,7 +14,7 @@ import { Link, PageWrapper } from 'components';
 import { Check, Drop } from 'containers';
 import { useFormik } from 'formik';
 import {
-  CheckFieldNames,
+  CheckName,
   checkNames,
   CreationIdea,
   GetCheckFieldProps,
@@ -34,13 +34,13 @@ import * as yup from 'yup';
 
 export interface IdeaFormProps {}
 
-const initialStorageFile = { path: '', width: 0, height: 0 };
-
 const initialValues: CreationIdea = {
-  niche: false,
-  expectations: false,
+  checks: {
+    niche: false,
+    expectations: false,
+  },
   name: '',
-  story: initialStorageFile,
+  story: { path: '', width: 0, height: 0 },
   problemSolution: '',
   images: [],
   rationale: '',
@@ -77,16 +77,12 @@ export const IdeaForm: React.FC<IdeaFormProps> = () => {
   } = useFormik({
     initialValues,
     validationSchema,
-    onSubmit: ({ niche, expectations, ...formValues }) => {
+    onSubmit: (formValues) => {
       const idea: Omit<IdeaModel, 'id'> = {
         ...formValues,
         author: user.email || '',
         shareCount: 0,
         rating: { average: 0, total: 0 },
-        checks: {
-          niche,
-          expectations,
-        },
         status: 'seed',
       };
 
@@ -111,18 +107,20 @@ export const IdeaForm: React.FC<IdeaFormProps> = () => {
     validateOnMount: true,
   });
 
-  const hasNicheError = !!touched.niche && !!errors.niche;
+  const hasNicheError = !!touched.checks?.niche && !!errors.checks?.niche;
 
-  const hasExpectationsError = !!touched.expectations && !!errors.expectations;
+  const hasExpectationsError =
+    !!touched.checks?.expectations && !!errors.checks?.expectations;
 
   const hasFailedChecks = hasNicheError || hasExpectationsError;
 
-  const handleCheckChange = (
-    name: CheckFieldNames,
-  ): CheckboxProps['onChange'] => (e, value) => {
+  const handleCheckChange = (name: CheckName): CheckboxProps['onChange'] => (
+    e,
+    value,
+  ) => {
     if (
       checkNames.every((checkName) =>
-        checkName === name ? values[checkName] || value : values[checkName],
+        checkName === name ? value : values.checks[checkName],
       )
     ) {
       toggleExpanded();
@@ -132,7 +130,7 @@ export const IdeaForm: React.FC<IdeaFormProps> = () => {
   };
 
   const getCheckFieldProps: GetCheckFieldProps = (name) => ({
-    ...getFieldProps(name),
+    ...getFieldProps(`checks.${name}`),
     onChange: handleCheckChange(name),
   });
 
@@ -192,7 +190,7 @@ export const IdeaForm: React.FC<IdeaFormProps> = () => {
               }
               getFieldProps={getCheckFieldProps}
               hasError={hasNicheError}
-              errorMessage={errors.niche}
+              errorMessage={errors.checks?.niche}
             />
             <Check
               name="expectations"
@@ -220,7 +218,7 @@ export const IdeaForm: React.FC<IdeaFormProps> = () => {
               }
               getFieldProps={getCheckFieldProps}
               hasError={hasExpectationsError}
-              errorMessage={errors.niche}
+              errorMessage={errors.checks?.niche}
             />
           </ExpansionPanelDetails>
         </ExpansionPanel>
