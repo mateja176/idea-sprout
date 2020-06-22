@@ -1,4 +1,4 @@
-import { WithTimeout } from 'models';
+import { FileDimensions, WithTimeout } from 'models';
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { ActionCreatorsMapObject, bindActionCreators } from 'redux';
@@ -65,4 +65,32 @@ export const useTransition = ({ timeoutMs }: WithTimeout) => {
   );
 
   return [startTransition, isPending] as const;
+};
+
+export const useFileDimensions = (fileDimensions: FileDimensions) => {
+  const [dimensions, setDimensions] = useState({ height: 0, width: 0 });
+
+  useEffect(() => {
+    const handleResize = () => {
+      const ratio = Math.min(
+        window.innerWidth / fileDimensions.width,
+        window.innerHeight / fileDimensions.height,
+      );
+
+      setDimensions({
+        width: fileDimensions.width * ratio,
+        height: fileDimensions.height * ratio,
+      });
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    handleResize();
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [fileDimensions]);
+
+  return dimensions;
 };

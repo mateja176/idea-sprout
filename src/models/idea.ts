@@ -6,11 +6,16 @@ export const ideaStatuses = ['seed', 'sprout', 'bloom', 'shrivel'] as const;
 export type IdeaStatuses = typeof ideaStatuses;
 export type IdeaStatus = IdeaStatuses[number];
 
-export interface StorageFile {
-  path: string;
+export interface FileDimensions {
   width: number;
   height: number;
 }
+
+export interface WithPath {
+  path: string;
+}
+
+export interface StorageFile extends FileDimensions, WithPath {}
 
 export interface IdeaModel {
   id: string;
