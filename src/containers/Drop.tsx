@@ -12,7 +12,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import { ArrowDownward, Info } from '@material-ui/icons';
-import { StoragePath } from 'models';
+import { StorageFile, StoragePath } from 'models';
 import React from 'react';
 import { DropzoneOptions, useDropzone } from 'react-dropzone';
 import { useUpload } from 'services';
@@ -21,7 +21,7 @@ export interface DropProps extends DropzoneOptions {
   heading: string;
   description: React.ReactNode;
   path: StoragePath;
-  onUploadSuccess: (url: string[]) => void;
+  onUploadSuccess: (files: StorageFile[]) => void;
   fileLimit?: number;
 }
 
@@ -43,8 +43,8 @@ export const Drop: React.FC<DropProps> = ({
     onDrop: (acceptedFiles) => {
       setFiles(acceptedFiles);
 
-      upload(acceptedFiles.slice(0, fileLimit)).then((url) => {
-        onUploadSuccess(url);
+      upload(acceptedFiles.slice(0, fileLimit)).then((files) => {
+        onUploadSuccess(files);
       });
     },
     disabled: isLoading,
@@ -83,9 +83,9 @@ export const Drop: React.FC<DropProps> = ({
                 <Button onClick={toggleIsDialogOpen}>Clear</Button>
               </DialogActions>
             </Dialog>
-            {fileLimit && (
-              <Typography color="textSecondary">( 1 - {fileLimit} )</Typography>
-            )}
+            <Typography color="textSecondary">
+              {fileLimit ? `( 1 - ${fileLimit} )` : `( ${fileLimit ?? 1} )`}
+            </Typography>
           </Box>
         </Box>
         <input {...getInputProps()} />

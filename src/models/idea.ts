@@ -6,6 +6,12 @@ export const ideaStatuses = ['seed', 'sprout', 'bloom', 'shrivel'] as const;
 export type IdeaStatuses = typeof ideaStatuses;
 export type IdeaStatus = IdeaStatuses[number];
 
+export interface StorageFile {
+  path: string;
+  width: number;
+  height: number;
+}
+
 export interface IdeaModel {
   id: string;
   /**
@@ -22,9 +28,9 @@ export interface IdeaModel {
   checks: { [key in CheckName]: boolean };
   status: IdeaStatus;
   name: string;
-  storyPath: string;
+  story: StorageFile;
   problemSolution: string;
-  imagePaths: string[];
+  images: StorageFile[];
   rationale: string;
   /**
    * number of times an idea has been shared

@@ -34,13 +34,15 @@ import * as yup from 'yup';
 
 export interface IdeaFormProps {}
 
+const initialStorageFile = { path: '', width: 0, height: 0 };
+
 const initialValues: CreationIdea = {
   niche: false,
   expectations: false,
   name: '',
-  storyPath: '',
+  story: initialStorageFile,
   problemSolution: '',
-  imagePaths: [],
+  images: [],
   rationale: '',
 };
 
@@ -163,14 +165,14 @@ export const IdeaForm: React.FC<IdeaFormProps> = () => {
               name="niche"
               label="Choose a niche"
               description={
-                <section>
-                  <p>
+                <Box>
+                  <Box>
                     Almost every product has a potential to reach the mass
                     market and become a household name. However, almost no
                     product reached mass market adoption out of the box, since
                     there are only so many Aspirins to be in the world.
-                  </p>
-                  <p>
+                  </Box>
+                  <Box>
                     Take the example of Tesla Motors, everybody can and perhaps
                     should drive an electric car, but around 2008, there was
                     almost no interest in electric vehicles among the public.
@@ -181,12 +183,12 @@ export const IdeaForm: React.FC<IdeaFormProps> = () => {
                     added benefit of putting the company in the public limelight
                     which ultimately enabled them to sway peoples opinion on how
                     cool electric cars can be.
-                  </p>
-                  <p>
+                  </Box>
+                  <Box>
                     And nowadays with the Model 3, they are on the brink on
                     producing an electric car for the masses.
-                  </p>
-                </section>
+                  </Box>
+                </Box>
               }
               getFieldProps={getCheckFieldProps}
               hasError={hasNicheError}
@@ -196,25 +198,25 @@ export const IdeaForm: React.FC<IdeaFormProps> = () => {
               name="expectations"
               label="Set expectations"
               description={
-                <section>
-                  <p>
+                <Box>
+                  <Box>
                     Setting up high expectations can sometimes increase
                     motivation and interest for a product, however setting the
                     bar up too high can have the opposite effect.
-                  </p>
-                  <p>
+                  </Box>
+                  <Box>
                     It's possible for your to get manufacturing costs down
                     significantly after having scaled your company, however, it
                     takes time to get up to scale and process is gradual with
                     ups and downs.
-                  </p>
-                  <p>
+                  </Box>
+                  <Box>
                     Establishing trust with your early adopters by cherishing
                     transparency and honesty can bring you a long way. Hence, be
                     realistic of what you can offer to users in this period of
                     time.
-                  </p>
-                </section>
+                  </Box>
+                </Box>
               }
               getFieldProps={getCheckFieldProps}
               hasError={hasExpectationsError}
@@ -283,8 +285,10 @@ export const IdeaForm: React.FC<IdeaFormProps> = () => {
             </section>
           }
           path="videos"
-          onUploadSuccess={([video]) => {
-            setFieldValue('storyPath', video);
+          onUploadSuccess={([file]) => {
+            setFieldValue('story.path', file.path);
+            setFieldValue('story.width', file.width);
+            setFieldValue('story.height', file.height);
           }}
           accept="video/*"
           // 50MB
@@ -331,8 +335,12 @@ export const IdeaForm: React.FC<IdeaFormProps> = () => {
               </section>
             }
             path="images"
-            onUploadSuccess={(imagePaths) => {
-              setFieldValue('imagePaths', imagePaths);
+            onUploadSuccess={(files) => {
+              files.forEach((file, i) => {
+                setFieldValue(`images[${i}].path`, file.path);
+                setFieldValue(`images[${i}].width`, file.width);
+                setFieldValue(`images[${i}].height`, file.height);
+              });
             }}
             accept="image/*"
             // 5MB

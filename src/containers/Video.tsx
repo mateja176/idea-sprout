@@ -2,10 +2,10 @@ import { IdeaModel } from 'models';
 import React from 'react';
 import { useStorage, useStorageDownloadURL } from 'reactfire';
 
-export interface VideoProps extends Pick<IdeaModel, 'storyPath'> {}
+export interface VideoProps extends Pick<IdeaModel, 'story'> {}
 
-export const Video: React.FC<VideoProps> = ({ storyPath }) => {
-  const storyRef = useStorage().ref(storyPath);
+export const Video: React.FC<VideoProps> = ({ story }) => {
+  const storyRef = useStorage().ref(story.path);
 
   const storyURL = useStorageDownloadURL(storyRef);
 

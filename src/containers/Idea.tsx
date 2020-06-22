@@ -93,7 +93,7 @@ export const Idea: React.FC<IdeaProps> = (idea) => {
         <React.Suspense
           fallback={<Skeleton width="100%" classes={{ text: classes.text }} />}
         >
-          <Video storyPath={idea.storyPath} />
+          <Video story={idea.story} />
         </React.Suspense>
       </Box>
       <Section>
@@ -104,14 +104,14 @@ export const Idea: React.FC<IdeaProps> = (idea) => {
         <TitleWrapper>
           <Typography variant="h5">Images</Typography>
         </TitleWrapper>
-        {idea.imagePaths.map((path, i) => (
+        {idea.images.map(({ path }, i) => (
           <Box
             key={path}
             display="flex"
             justifyContent="center"
             bgcolor={theme.palette.grey[900]}
             borderBottom={
-              i !== idea.imagePaths.length - 1
+              i !== idea.images.length - 1
                 ? `1px solid ${theme.palette.grey[900]}`
                 : 'none'
             }

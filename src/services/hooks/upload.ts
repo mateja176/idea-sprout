@@ -1,19 +1,25 @@
 import firebase from 'firebase/app';
 import 'firebase/storage';
-import { StoragePath, User } from 'models';
+import { StorageFile, StoragePath, User } from 'models';
 import { useState } from 'react';
 import { useUser } from 'reactfire';
 import { putString } from 'rxfire/storage';
+import { createQueueSnackbar } from 'services/store';
 import urljoin from 'url-join';
+import { useActions } from './hooks';
 
 export const useUpload = (path: StoragePath) => {
+  const { queueSnackbar } = useActions({
+    queueSnackbar: createQueueSnackbar,
+  });
+
   const user = useUser<User>();
 
   const [status, setStatus] = useState<
     'initial' | 'loading' | 'success' | 'failure'
   >('initial');
 
-  const upload = (files: File[]) => {
+  const upload = (files: File[]): Promise<StorageFile[]> => {
     setStatus('loading');
 
     return Promise.all(
@@ -31,28 +37,61 @@ export const useUpload = (path: StoragePath) => {
             resolve(String(reader.result));
           };
         })
-          .then((data) =>
-            putString(
-              ref,
-              data,
-              firebase.storage.StringFormat.DATA_URL,
-            ).toPromise(),
-          )
+          .then((data) => {
+            const size =
+              path === 'images'
+                ? new Promise<HTMLImageElement>((resolve) => {
+                    const instance = new Image();
+
+                    instance.src = data;
+
+                    instance.addEventListener('load', () => {
+                      resolve(instance);
+                    });
+                  }).then((instance) => ({
+                    width: instance.width,
+                    height: instance.height,
+                  }))
+                : new Promise<HTMLVideoElement>((resolve) => {
+                    const instance = document.createElement('video');
+
+                    instance.src = data;
+
+                    instance.addEventListener('loadedmetadata', () => {
+                      resolve(instance);
+                    });
+                  }).then((instance) => ({
+                    width: instance.videoWidth,
+                    height: instance.videoHeight,
+                  }));
+
+            return size.then(({ width, height }) =>
+              putString(ref, data, firebase.storage.StringFormat.DATA_URL, {
+                customMetadata: {
+                  width: width.toString(),
+                  height: height.toString(),
+                },
+              }).toPromise(),
+            );
+          })
           .then(({ ref }) => {
             setStatus('success');
 
-            return ref.fullPath;
+            queueSnackbar({
+              severity: 'success',
+              message: `"${file.name}" uploaded`,
+            });
+
+            return { path: ref.fullPath, width: 0, height: 0 };
           });
       }),
-    )
-      .then((urls) => {
-        return urls;
-      })
-      .catch(() => {
-        setStatus('failure');
+    ).catch((error: Error) => {
+      setStatus('failure');
 
-        return [] as string[];
-      });
+      queueSnackbar({ severity: 'error', message: error.message });
+
+      return [] as StorageFile[];
+    });
   };
 
   return { upload, status };
