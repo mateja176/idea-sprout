@@ -1,8 +1,8 @@
 import { Box, Typography } from '@material-ui/core';
 import { IdeaModel } from 'models';
 import React from 'react';
-import { Images } from './Images';
-import { VideoSuspender } from './VideoSuspender';
+import { Images } from '../Image';
+import { VideoSuspender } from '../Video';
 export interface IdeaProps extends IdeaModel {}
 
 const breakWordStyle: React.CSSProperties = {
