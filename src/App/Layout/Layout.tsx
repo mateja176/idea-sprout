@@ -8,6 +8,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import { ChevronLeft, Menu } from '@material-ui/icons';
+import { Loading } from 'components';
 import React from 'react';
 import { Nav } from './Nav';
 
@@ -54,7 +55,9 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
               <ChevronLeft />
             </IconButton>
           </Box>
-          <Nav onClick={toggleDrawerOpen} />
+          <React.Suspense fallback={<Loading />}>
+            <Nav onClick={toggleDrawerOpen} />
+          </React.Suspense>
         </Box>
       </Drawer>
       <Box>{children}</Box>

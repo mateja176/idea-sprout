@@ -3,7 +3,7 @@ import { Skeleton } from '@material-ui/lab';
 import { Link } from 'components';
 import { Signout } from 'containers';
 import React from 'react';
-import { useIsSignedIn } from 'services';
+import { useUser } from 'reactfire';
 import {
   absolutePrivateNavigationRoutes,
   absolutePublicNavigationRoutes,
@@ -18,7 +18,7 @@ const listStyle: React.CSSProperties = {
 };
 
 export const Nav: React.FC<NavProps> = ({ onClick }) => {
-  const isSignedIn = useIsSignedIn();
+  const isSignedIn = !!useUser();
 
   const routes = Object.values(
     isSignedIn

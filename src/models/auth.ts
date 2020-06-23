@@ -1,17 +1,13 @@
 import firebase from 'firebase/app';
+import 'firebase/auth';
 
 export type User = firebase.UserInfo;
 
-export type AuthProviderId = string;
-
-export const authProviders: Record<
-  AuthProviderId,
-  firebase.auth.AuthProvider
-> = {
-  [firebase.auth.GoogleAuthProvider
-    .PROVIDER_ID]: new firebase.auth.GoogleAuthProvider(),
-  [firebase.auth.FacebookAuthProvider
-    .PROVIDER_ID]: new firebase.auth.FacebookAuthProvider(),
-  [firebase.auth.TwitterAuthProvider
-    .PROVIDER_ID]: new firebase.auth.TwitterAuthProvider(),
+export const initialUser: User = {
+  uid: '',
+  displayName: null,
+  email: null,
+  phoneNumber: null,
+  photoURL: null,
+  providerId: firebase.auth.GoogleAuthProvider.PROVIDER_ID,
 };

@@ -1,6 +1,5 @@
 import React from 'react';
 import { hot } from 'react-hot-loader';
-import { Auth } from './Auth';
 import { Layout } from './Layout';
 import { Provider } from './Provider';
 import { Routes } from './Routes';
@@ -12,10 +11,8 @@ const AppComponent: React.FC<AppProps> = () => {
   return (
     <Provider>
       <Layout>
-        <Auth>
-          <Routes />
-          <Snackbar />
-        </Auth>
+        <Routes />
+        <Snackbar />
       </Layout>
     </Provider>
   );

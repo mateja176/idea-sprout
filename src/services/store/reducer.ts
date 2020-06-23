@@ -1,8 +1,7 @@
 import { combineReducers } from 'redux';
-import { auth, snackbar } from './slices';
+import { snackbar } from './slices';
 
 const reducers = {
-  auth,
   snackbar,
 };
 

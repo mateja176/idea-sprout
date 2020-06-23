@@ -7,12 +7,11 @@ import {
 } from '@material-ui/core';
 import { Facebook, Google, PageWrapper, Twitter } from 'components';
 import firebase from 'firebase/app';
+import 'firebase/auth';
 import { random } from 'lodash';
-import { quotes } from 'models';
+import { AsyncState, quotes } from 'models';
 import React from 'react';
-import { useSelector } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
-import { createSignin, selectIsAuthLoading, useActions } from 'services';
 
 export interface SigninProps extends RouteComponentProps {}
 
@@ -21,13 +20,27 @@ const useButtonStyles = makeStyles(() => ({
 }));
 
 export const Signin: React.FC<SigninProps> = () => {
-  const { signIn } = useActions({ signIn: createSignin.request });
-
-  const isAuthLoading = useSelector(selectIsAuthLoading);
+  const [status, setStatus] = React.useState<
+    AsyncState<firebase.auth.UserCredential>
+  >('initial');
 
   const buttonClasses = useButtonStyles();
 
   const quote = React.useMemo(() => quotes[random(0, quotes.length - 1)], []);
+
+  const signIn = (provider: firebase.auth.AuthProvider) => {
+    setStatus('loading');
+
+    return firebase
+      .auth()
+      .signInWithPopup(provider)
+      .then((userCredential) => {
+        setStatus(userCredential);
+      })
+      .catch((error: firebase.FirebaseError) => {
+        setStatus(error);
+      });
+  };
 
   return (
     <PageWrapper>
@@ -36,10 +49,10 @@ export const Signin: React.FC<SigninProps> = () => {
           <Typography variant="h2">Sign in</Typography>
 
           <Box ml={2} mt={4}>
-            <ButtonGroup color="primary" disabled={isAuthLoading}>
+            <ButtonGroup color="primary" disabled={status === 'loading'}>
               <Button
                 onClick={() => {
-                  signIn(firebase.auth.GoogleAuthProvider.PROVIDER_ID);
+                  signIn(new firebase.auth.GoogleAuthProvider());
                 }}
                 classes={buttonClasses}
                 startIcon={<Google />}
@@ -48,7 +61,7 @@ export const Signin: React.FC<SigninProps> = () => {
               </Button>
               <Button
                 onClick={() => {
-                  signIn(firebase.auth.FacebookAuthProvider.PROVIDER_ID);
+                  signIn(new firebase.auth.FacebookAuthProvider());
                 }}
                 classes={buttonClasses}
                 startIcon={<Facebook />}
@@ -57,7 +70,7 @@ export const Signin: React.FC<SigninProps> = () => {
               </Button>
               <Button
                 onClick={() => {
-                  signIn(firebase.auth.TwitterAuthProvider.PROVIDER_ID);
+                  signIn(new firebase.auth.TwitterAuthProvider());
                 }}
                 classes={buttonClasses}
                 startIcon={<Twitter />}

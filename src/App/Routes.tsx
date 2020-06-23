@@ -1,15 +1,20 @@
+import firebase from 'firebase/app';
+import 'firebase/auth';
+import { initialUser } from 'models';
 import { IdeaForm, IdeaPage, Ideas, Signin } from 'pages';
 import { MyIdeas } from 'pages/MyIdeas';
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import { useIsSignedIn } from 'services/hooks';
+import { useUser } from 'reactfire';
 import urljoin from 'url-join';
 import { absolutePrivateRoute, absolutePublicRoute, privateRoute } from 'utils';
 
 export interface RoutesProps {}
 
 export const Routes: React.FC<RoutesProps> = () => {
-  const isSignedIn = useIsSignedIn();
+  const isSignedIn = !!useUser(firebase.auth(), {
+    startWithValue: initialUser,
+  }).uid;
 
   return (
     <Switch>
