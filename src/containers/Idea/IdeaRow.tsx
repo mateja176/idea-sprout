@@ -1,5 +1,4 @@
 import {
-  Badge,
   Box,
   Button,
   Collapse,
@@ -12,7 +11,6 @@ import {
   ListItemIcon,
   ListItemSecondaryAction,
   ListItemText,
-  makeStyles,
   TextField,
   Tooltip,
   Typography,
@@ -21,32 +19,17 @@ import {
   DragIndicator,
   ExpandLess,
   ExpandMore,
-  Link,
   OpenInBrowser,
   RateReview,
-  Share,
   StarRate,
 } from '@material-ui/icons';
-import { Rating, SpeedDial, SpeedDialAction } from '@material-ui/lab';
+import { Rating } from '@material-ui/lab';
 import { DraggablePaper } from 'components';
+import { Share } from 'containers';
 import { IdeaModel } from 'models';
 import React from 'react';
-import CopyToClipboard from 'react-copy-to-clipboard';
 import { useHistory } from 'react-router-dom';
-import {
-  FacebookIcon,
-  FacebookShareButton,
-  LinkedinIcon,
-  LinkedinShareButton,
-  TwitterIcon,
-  TwitterShareButton,
-  ViberIcon,
-  ViberShareButton,
-  WhatsappIcon,
-  WhatsappShareButton,
-} from 'react-share';
-import { createQueueSnackbar, useActions } from 'services';
-import { speedDialZIndex, starColor } from 'styles';
+import { starColor } from 'styles';
 import urljoin from 'url-join';
 import { absolutePrivateRoute } from 'utils';
 import { Idea } from './Idea';
@@ -58,45 +41,7 @@ export interface IdeaRowProps {
 
 const dragHandleId = 'drag-handle';
 
-const iconSize = 48;
-
-interface StyleProps {
-  i: number;
-  isOver: boolean;
-}
-
-const getZIndex = ({ i }: StyleProps) => speedDialZIndex - i;
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    zIndex: getZIndex,
-  },
-  fab: {
-    boxShadow: ({ isOver }: StyleProps) =>
-      isOver ? theme.shadows[13] : 'none',
-  },
-  actions: {
-    position: 'absolute',
-    marginTop: '0 !important',
-    zIndex: getZIndex,
-  },
-  badge: {
-    zIndex: getZIndex,
-    background: theme.palette.grey[600],
-    color: theme.palette.common.white,
-  },
-}));
-
 export const IdeaRow: React.FC<IdeaRowProps> = ({ i, idea }) => {
-  const { queueSnackbar } = useActions({ queueSnackbar: createQueueSnackbar });
-
-  const [isOver, setIsOver] = React.useState(false);
-  const toggleIsOver = () => {
-    setIsOver(!isOver);
-  };
-
-  const classes = useStyles({ i, isOver });
-
   const [expanded, setExpended] = React.useState(false);
   const toggleExpanded = () => {
     setExpended(!expanded);
@@ -113,18 +58,12 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ i, idea }) => {
 
   const history = useHistory();
 
-  const [shareOptionsOpen, setShareOptionsOpen] = React.useState(false);
-
   const [origin, setOrigin] = React.useState('');
   React.useEffect(() => {
     setOrigin(window.location.origin);
   }, []);
 
-  const ideaLink = urljoin(origin, idea.id);
-
-  const handleIconClick: React.MouseEventHandler = (e) => {
-    e.stopPropagation();
-  };
+  const ideaUrl = urljoin(origin, idea.id);
 
   return (
     <Box key={idea.id}>
@@ -152,107 +91,7 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ i, idea }) => {
                 <StarRate style={{ color: starColor }} />
               </Box>
             </Tooltip>
-            <Tooltip
-              placement="top"
-              title={`Unique share count is ${idea.shareCount}`}
-            >
-              <Badge
-                badgeContent={idea.shareCount}
-                classes={{
-                  badge: classes.badge,
-                }}
-                showZero
-              >
-                <SpeedDial
-                  ariaLabel="Share options"
-                  icon={<Share fontSize="small" />}
-                  open={shareOptionsOpen}
-                  direction="down"
-                  onMouseEnter={() => {
-                    setShareOptionsOpen(true);
-
-                    toggleIsOver();
-                  }}
-                  onMouseLeave={() => {
-                    setShareOptionsOpen(false);
-
-                    toggleIsOver();
-                  }}
-                  FabProps={{
-                    size: 'small',
-                  }}
-                  classes={{
-                    root: classes.root,
-                    fab: classes.fab,
-                    actions: classes.actions,
-                  }}
-                  onClick={handleIconClick}
-                >
-                  <SpeedDialAction
-                    tooltipTitle="Copy link"
-                    onClick={handleIconClick}
-                    icon={
-                      <CopyToClipboard
-                        text={ideaLink}
-                        onCopy={() => {
-                          queueSnackbar({
-                            severity: 'info',
-                            message: 'Link to idea copied',
-                          });
-                        }}
-                      >
-                        <Link />
-                      </CopyToClipboard>
-                    }
-                  />
-                  <SpeedDialAction
-                    tooltipTitle="Share on Facebook"
-                    onClick={handleIconClick}
-                    icon={
-                      <FacebookShareButton url={ideaLink}>
-                        <FacebookIcon size={iconSize} round />
-                      </FacebookShareButton>
-                    }
-                  />
-                  <SpeedDialAction
-                    tooltipTitle="Share on Twitter"
-                    onClick={handleIconClick}
-                    icon={
-                      <TwitterShareButton url={ideaLink}>
-                        <TwitterIcon size={iconSize} round />
-                      </TwitterShareButton>
-                    }
-                  />
-                  <SpeedDialAction
-                    tooltipTitle="Share on Linkedin"
-                    onClick={handleIconClick}
-                    icon={
-                      <LinkedinShareButton url={ideaLink}>
-                        <LinkedinIcon size={iconSize} round />
-                      </LinkedinShareButton>
-                    }
-                  />
-                  <SpeedDialAction
-                    tooltipTitle="Share on Whatsapp"
-                    onClick={handleIconClick}
-                    icon={
-                      <WhatsappShareButton url={ideaLink}>
-                        <WhatsappIcon size={iconSize} round />
-                      </WhatsappShareButton>
-                    }
-                  />
-                  <SpeedDialAction
-                    tooltipTitle="Share on Viber"
-                    onClick={handleIconClick}
-                    icon={
-                      <ViberShareButton url={ideaLink}>
-                        <ViberIcon size={iconSize} round />
-                      </ViberShareButton>
-                    }
-                  />
-                </SpeedDial>
-              </Badge>
-            </Tooltip>
+            <Share i={i} shareCount={idea.shareCount} url={ideaUrl} />
             <Tooltip placement="top" title="Open in full">
               <Box ml={1}>
                 <IconButton
