@@ -91,6 +91,8 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ i, idea }) => {
     </span>
   );
 
+  const ratingTooltip = `Average rating ${idea.rating.average} out of total ${idea.rating.total}`;
+
   return (
     <Box key={idea.id}>
       <ListItem key={idea.id}>
@@ -112,10 +114,7 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ i, idea }) => {
                     url={ideaUrl}
                   />
                 </Badge>
-                <Tooltip
-                  placement="top"
-                  title={`Average rating ${idea.rating.average} out of total ${idea.rating.total}`}
-                >
+                <Tooltip placement="top" title={ratingTooltip}>
                   <Button
                     style={{
                       ...style,
@@ -200,7 +199,13 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ i, idea }) => {
         </DialogTitle>
         <DialogContent>
           <Box mb={2}>
-            <Rating name="rating" value={idea.rating.average} precision={0.5} />
+            <Tooltip title={ratingTooltip}>
+              <Rating
+                name="rating"
+                value={idea.rating.average}
+                precision={0.5}
+              />
+            </Tooltip>
           </Box>
           <TextField
             required
