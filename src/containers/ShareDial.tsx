@@ -1,10 +1,11 @@
 import { Badge, makeStyles, Tooltip } from '@material-ui/core';
 import { Share as ShareIcon } from '@material-ui/icons';
 import { SpeedDial, SpeedDialAction } from '@material-ui/lab';
-import { IdeaModel, shareConfigs } from 'models';
+import { IdeaModel } from 'models';
 import React from 'react';
 import { FacebookShareButton } from 'react-share';
 import { shareIconSize, speedDialZIndex } from 'styles';
+import { shareConfigs } from './share';
 
 interface StyleProps {
   i: number;

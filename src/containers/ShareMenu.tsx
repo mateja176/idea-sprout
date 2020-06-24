@@ -11,10 +11,11 @@ import {
 } from '@material-ui/core';
 import { Share } from '@material-ui/icons';
 import { useBoolean } from 'ahooks';
-import { IdeaModel, shareConfigs } from 'models';
+import { IdeaModel } from 'models';
 import React from 'react';
 import { FacebookShareButton } from 'react-share';
 import { shareIconSize } from 'styles';
+import { shareConfigs } from './share';
 
 export interface ShareMenuProps
   extends Pick<React.ComponentProps<typeof FacebookShareButton>, 'url'>,

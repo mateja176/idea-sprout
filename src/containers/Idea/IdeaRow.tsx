@@ -26,9 +26,10 @@ import {
 } from '@material-ui/icons';
 import { Rating } from '@material-ui/lab';
 import { DraggablePaper } from 'components';
-import { ButtonGroup } from 'containers';
-import { shareConfigs } from 'containers/share';
-import { IdeaModel } from 'models';
+import { ButtonGroup, shareConfigs } from 'containers';
+import { useFormik } from 'formik';
+import { createReviewSchema, IdeaModel } from 'models';
+import { Review } from 'models/review';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useIdeaUrl } from 'services';
@@ -45,6 +46,10 @@ export interface IdeaRowProps {
 
 const dragHandleId = 'drag-handle';
 
+const initialValues: Review = {
+  id: '',
+};
+
 const useStyles = makeStyles((theme) => ({
   label: {
     marginLeft: theme.spacing(1),
@@ -58,6 +63,12 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ i, idea }) => {
   const theme = useTheme();
 
   const classes = useStyles();
+
+  const { handleSubmit } = useFormik({
+    initialValues,
+    validationSchema: createReviewSchema,
+    onSubmit: () => {},
+  });
 
   const [expanded, setExpended] = React.useState(false);
   const toggleExpanded = () => {
@@ -198,52 +209,54 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ i, idea }) => {
           </Box>
         </DialogTitle>
         <DialogContent>
-          <Box mb={2}>
-            <Tooltip title={ratingTooltip}>
-              <Rating
-                name="rating"
-                value={idea.rating.average}
-                precision={0.5}
-              />
-            </Tooltip>
-          </Box>
-          <TextField
-            required
-            multiline
-            rows={5}
-            label="Feedback"
-            helperText="What did you like or dislike about the idea? Your feedback directly shapes the course of the idea. ( 40 - )"
-          ></TextField>
-          <Box mt={4}>
-            <Typography>
-              {idea.shareCount > 0 ? sharePrompt1 : sharePrompt0}
-            </Typography>
-            <Box mt={1} display="flex" flexWrap="wrap">
-              {shareConfigs.map((config) => (
-                <Tooltip
-                  key={config.label}
-                  placement="top"
-                  title={config.label}
-                >
-                  <Box mr={1}>
-                    <config.Button url={ideaUrl}>
-                      <config.Icon size={50} />
-                    </config.Button>
-                  </Box>
-                </Tooltip>
-              ))}
+          <form onSubmit={handleSubmit}>
+            <Box mb={2}>
+              <Tooltip title={ratingTooltip}>
+                <Rating
+                  name="rating"
+                  value={idea.rating.average}
+                  precision={0.5}
+                />
+              </Tooltip>
             </Box>
-          </Box>
-          <DialogActions>
-            <Button
-              onClick={() => {
-                setReviewOpen(false);
-              }}
-            >
-              Cancel
-            </Button>
-            <Button type="submit">Submit</Button>
-          </DialogActions>
+            <TextField
+              required
+              multiline
+              rows={5}
+              label="Feedback"
+              helperText="What did you like or dislike about the idea? Your feedback directly shapes the course of the idea. ( 40 - )"
+            ></TextField>
+            <Box mt={4}>
+              <Typography>
+                {idea.shareCount > 0 ? sharePrompt1 : sharePrompt0}
+              </Typography>
+              <Box mt={1} display="flex" flexWrap="wrap">
+                {shareConfigs.map((config) => (
+                  <Tooltip
+                    key={config.label}
+                    placement="top"
+                    title={config.label}
+                  >
+                    <Box mr={1}>
+                      <config.Button url={ideaUrl}>
+                        <config.Icon size={50} />
+                      </config.Button>
+                    </Box>
+                  </Tooltip>
+                ))}
+              </Box>
+            </Box>
+            <DialogActions>
+              <Button
+                onClick={() => {
+                  setReviewOpen(false);
+                }}
+              >
+                Cancel
+              </Button>
+              <Button type="submit">Submit</Button>
+            </DialogActions>
+          </form>
         </DialogContent>
       </Dialog>
     </Box>
