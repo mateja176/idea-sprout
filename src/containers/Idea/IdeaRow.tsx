@@ -8,13 +8,13 @@ import {
   DialogContent,
   DialogTitle,
   Hidden,
-  IconButton,
   ListItem,
   makeStyles,
   TextField,
   Tooltip,
   Typography,
   useTheme,
+  Icon,
 } from '@material-ui/core';
 import {
   DragIndicator,
@@ -154,9 +154,9 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ i, idea }) => {
                         {idea.name}
                       </Box>
                       <Hidden xsDown>
-                        <IconButton size="small">
+                        <Icon color={'action'} style={{ display: 'flex' }}>
                           {expanded ? <ExpandLess /> : <ExpandMore />}
-                        </IconButton>
+                        </Icon>
                       </Hidden>
                     </Box>
                   </Button>
