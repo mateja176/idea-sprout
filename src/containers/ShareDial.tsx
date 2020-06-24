@@ -1,23 +1,10 @@
 import { Badge, makeStyles, Tooltip } from '@material-ui/core';
-import { Link, Share as ShareIcon } from '@material-ui/icons';
+import { Share as ShareIcon } from '@material-ui/icons';
 import { SpeedDial, SpeedDialAction } from '@material-ui/lab';
-import { IdeaModel } from 'models';
+import { IdeaModel, socialMediaConfigs } from 'models';
 import React from 'react';
-import CopyToClipboard from 'react-copy-to-clipboard';
-import {
-  FacebookIcon,
-  FacebookShareButton,
-  LinkedinIcon,
-  LinkedinShareButton,
-  TwitterIcon,
-  TwitterShareButton,
-  ViberIcon,
-  ViberShareButton,
-  WhatsappIcon,
-  WhatsappShareButton,
-} from 'react-share';
-import { createQueueSnackbar, useActions } from 'services';
-import { speedDialZIndex } from 'styles';
+import { FacebookShareButton } from 'react-share';
+import { shareIconSize, speedDialZIndex } from 'styles';
 
 interface StyleProps {
   i: number;
@@ -28,8 +15,6 @@ export interface ShareProps
   extends Pick<React.ComponentProps<typeof FacebookShareButton>, 'url'>,
     Pick<IdeaModel, 'shareCount'>,
     Partial<Pick<StyleProps, 'i'>> {}
-
-const iconSize = 48;
 
 const getZIndex = ({ i }: StyleProps) => speedDialZIndex - i;
 
@@ -54,8 +39,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const Share: React.FC<ShareProps> = ({ url, shareCount, i = 1 }) => {
-  const { queueSnackbar } = useActions({ queueSnackbar: createQueueSnackbar });
-
   const [isOver, setIsOver] = React.useState(false);
   const toggleIsOver = () => {
     setIsOver(!isOver);
@@ -98,62 +81,17 @@ export const Share: React.FC<ShareProps> = ({ url, shareCount, i = 1 }) => {
             actions: classes.actions,
           }}
         >
-          <SpeedDialAction
-            tooltipTitle="Copy link"
-            icon={
-              <CopyToClipboard
-                text={url}
-                onCopy={() => {
-                  queueSnackbar({
-                    severity: 'info',
-                    message: 'Link to idea copied',
-                  });
-                }}
-              >
-                <Link />
-              </CopyToClipboard>
-            }
-          />
-          <SpeedDialAction
-            tooltipTitle="Share on Facebook"
-            icon={
-              <FacebookShareButton url={url}>
-                <FacebookIcon size={iconSize} round />
-              </FacebookShareButton>
-            }
-          />
-          <SpeedDialAction
-            tooltipTitle="Share on Twitter"
-            icon={
-              <TwitterShareButton url={url}>
-                <TwitterIcon size={iconSize} round />
-              </TwitterShareButton>
-            }
-          />
-          <SpeedDialAction
-            tooltipTitle="Share on Linkedin"
-            icon={
-              <LinkedinShareButton url={url}>
-                <LinkedinIcon size={iconSize} round />
-              </LinkedinShareButton>
-            }
-          />
-          <SpeedDialAction
-            tooltipTitle="Share on Whatsapp"
-            icon={
-              <WhatsappShareButton url={url}>
-                <WhatsappIcon size={iconSize} round />
-              </WhatsappShareButton>
-            }
-          />
-          <SpeedDialAction
-            tooltipTitle="Share on Viber"
-            icon={
-              <ViberShareButton url={url}>
-                <ViberIcon size={iconSize} round />
-              </ViberShareButton>
-            }
-          />
+          {socialMediaConfigs.map((config) => (
+            <SpeedDialAction
+              key={config.label}
+              tooltipTitle={config.label}
+              icon={
+                <config.Button url={url}>
+                  <config.Icon size={shareIconSize} />
+                </config.Button>
+              }
+            />
+          ))}
         </SpeedDial>
       </Badge>
     </Tooltip>

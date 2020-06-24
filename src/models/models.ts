@@ -12,3 +12,15 @@ export interface ISnackbar
 export interface WithTimeout {
   timeoutMs: number;
 }
+
+export interface WithUrl {
+  url: string;
+}
+
+export interface SocialButtonProps extends WithUrl {
+  children: React.ReactNode;
+}
+
+export interface SocialIconProps {
+  size: number;
+}

@@ -10,6 +10,8 @@ export const videoMaxHeight = 720;
 
 export const starColor = '#FFB400';
 
+export const shareIconSize = 40;
+
 export const inputStyle: React.CSSProperties = {
   display: 'block',
   height: 70,

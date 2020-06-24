@@ -8,13 +8,13 @@ import {
   DialogContent,
   DialogTitle,
   Hidden,
+  Icon,
   ListItem,
   makeStyles,
   TextField,
   Tooltip,
   Typography,
   useTheme,
-  Icon,
 } from '@material-ui/core';
 import {
   DragIndicator,
@@ -27,9 +27,11 @@ import {
 import { Rating } from '@material-ui/lab';
 import { DraggablePaper } from 'components';
 import { ButtonGroup } from 'containers';
+import { socialMediaConfigs } from 'containers/socialMedia';
 import { IdeaModel } from 'models';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import { useIdeaUrl } from 'services';
 import { starColor } from 'styles';
 import urljoin from 'url-join';
 import { absolutePrivateRoute } from 'utils';
@@ -71,12 +73,23 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ i, idea }) => {
 
   const history = useHistory();
 
-  const [origin, setOrigin] = React.useState('');
-  React.useEffect(() => {
-    setOrigin(window.location.origin);
-  }, []);
+  const ideaUrl = useIdeaUrl(idea.id);
 
-  const ideaUrl = urljoin(origin, idea.id);
+  const sharePrompt0 = (
+    <span>
+      Be the first one to share <i>{idea.name}</i>.
+    </span>
+  );
+
+  const sharePrompt1 = (
+    <span>
+      <i>{idea.name}</i> has been shared by{' '}
+      <span style={{ textDecoration: 'underline' }}>
+        {idea.shareCount} {idea.shareCount > 1 ? 'people' : 'person'}
+      </span>{' '}
+      so far. Would you like to share it too?
+    </span>
+  );
 
   return (
     <Box key={idea.id}>
@@ -179,7 +192,7 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ i, idea }) => {
       >
         <DialogTitle style={{ cursor: 'grab' }}>
           <Box display="flex" alignItems="center">
-            "{idea.name}" Review
+            <i>{idea.name}</i>&nbsp;Review
             <Box ml="auto" id={dragHandleId}>
               <DragIndicator color="action" />
             </Box>
@@ -198,11 +211,24 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ i, idea }) => {
           ></TextField>
           <Box mt={4}>
             <Typography>
-              Would you like to share the idea with a friend who might be
-              interest in it?
+              {idea.shareCount > 0 ? sharePrompt1 : sharePrompt0}
             </Typography>
+            <Box mt={1} display="flex" flexWrap="wrap">
+              {socialMediaConfigs.map((config) => (
+                <Tooltip
+                  key={config.label}
+                  placement="top"
+                  title={config.label}
+                >
+                  <Box mr={1}>
+                    <config.Button url={ideaUrl}>
+                      <config.Icon size={50} />
+                    </config.Button>
+                  </Box>
+                </Tooltip>
+              ))}
+            </Box>
           </Box>
-          {/* TODO add share section */}
           <DialogActions>
             <Button
               onClick={() => {

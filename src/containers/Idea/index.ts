@@ -1,3 +1,4 @@
+export * from './CopyUrl';
 export * from './Form';
 export * from './Idea';
 export * from './IdeaContainer';

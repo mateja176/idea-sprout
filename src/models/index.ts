@@ -1,3 +1,4 @@
+export * from '../containers/socialMedia';
 export * from './auth';
 export * from './components';
 export * from './env';
