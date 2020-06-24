@@ -53,10 +53,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const handleIconClick: React.MouseEventHandler = (e) => {
-  e.stopPropagation();
-};
-
 export const Share: React.FC<ShareProps> = ({ url, shareCount, i = 1 }) => {
   const { queueSnackbar } = useActions({ queueSnackbar: createQueueSnackbar });
 
@@ -101,11 +97,9 @@ export const Share: React.FC<ShareProps> = ({ url, shareCount, i = 1 }) => {
             fab: classes.fab,
             actions: classes.actions,
           }}
-          onClick={handleIconClick}
         >
           <SpeedDialAction
             tooltipTitle="Copy link"
-            onClick={handleIconClick}
             icon={
               <CopyToClipboard
                 text={url}
@@ -122,7 +116,6 @@ export const Share: React.FC<ShareProps> = ({ url, shareCount, i = 1 }) => {
           />
           <SpeedDialAction
             tooltipTitle="Share on Facebook"
-            onClick={handleIconClick}
             icon={
               <FacebookShareButton url={url}>
                 <FacebookIcon size={iconSize} round />
@@ -131,7 +124,6 @@ export const Share: React.FC<ShareProps> = ({ url, shareCount, i = 1 }) => {
           />
           <SpeedDialAction
             tooltipTitle="Share on Twitter"
-            onClick={handleIconClick}
             icon={
               <TwitterShareButton url={url}>
                 <TwitterIcon size={iconSize} round />
@@ -140,7 +132,6 @@ export const Share: React.FC<ShareProps> = ({ url, shareCount, i = 1 }) => {
           />
           <SpeedDialAction
             tooltipTitle="Share on Linkedin"
-            onClick={handleIconClick}
             icon={
               <LinkedinShareButton url={url}>
                 <LinkedinIcon size={iconSize} round />
@@ -149,7 +140,6 @@ export const Share: React.FC<ShareProps> = ({ url, shareCount, i = 1 }) => {
           />
           <SpeedDialAction
             tooltipTitle="Share on Whatsapp"
-            onClick={handleIconClick}
             icon={
               <WhatsappShareButton url={url}>
                 <WhatsappIcon size={iconSize} round />
@@ -158,7 +148,6 @@ export const Share: React.FC<ShareProps> = ({ url, shareCount, i = 1 }) => {
           />
           <SpeedDialAction
             tooltipTitle="Share on Viber"
-            onClick={handleIconClick}
             icon={
               <ViberShareButton url={url}>
                 <ViberIcon size={iconSize} round />

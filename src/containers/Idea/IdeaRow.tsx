@@ -1,4 +1,5 @@
 import {
+  Badge,
   Box,
   Button,
   Collapse,
@@ -6,14 +7,14 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  Hidden,
   IconButton,
   ListItem,
-  ListItemIcon,
-  ListItemSecondaryAction,
-  ListItemText,
+  makeStyles,
   TextField,
   Tooltip,
   Typography,
+  useTheme,
 } from '@material-ui/core';
 import {
   DragIndicator,
@@ -25,13 +26,14 @@ import {
 } from '@material-ui/icons';
 import { Rating } from '@material-ui/lab';
 import { DraggablePaper } from 'components';
-import { Share } from 'containers';
+import { ButtonGroup } from 'containers';
 import { IdeaModel } from 'models';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { starColor } from 'styles';
 import urljoin from 'url-join';
 import { absolutePrivateRoute } from 'utils';
+import { ShareMenu } from '../ShareMenu';
 import { Idea } from './Idea';
 
 export interface IdeaRowProps {
@@ -41,7 +43,20 @@ export interface IdeaRowProps {
 
 const dragHandleId = 'drag-handle';
 
+const useStyles = makeStyles((theme) => ({
+  label: {
+    marginLeft: theme.spacing(1),
+    textAlign: 'initial',
+    display: 'inline-block',
+    overflowX: 'hidden',
+  },
+}));
+
 export const IdeaRow: React.FC<IdeaRowProps> = ({ i, idea }) => {
+  const theme = useTheme();
+
+  const classes = useStyles();
+
   const [expanded, setExpended] = React.useState(false);
   const toggleExpanded = () => {
     setExpended(!expanded);
@@ -49,8 +64,6 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ i, idea }) => {
 
   const [reviewOpen, setReviewOpen] = React.useState(false);
   const toggleReviewOpen: React.MouseEventHandler = (e) => {
-    e.stopPropagation();
-
     setExpended(true);
 
     setReviewOpen(!reviewOpen);
@@ -67,62 +80,91 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ i, idea }) => {
 
   return (
     <Box key={idea.id}>
-      <ListItem key={idea.id} button onClick={toggleExpanded}>
-        <ListItemIcon>
-          <Tooltip title="Review" placement="top">
-            <IconButton onClick={toggleReviewOpen}>
-              <RateReview color="primary" />
-            </IconButton>
-          </Tooltip>
-        </ListItemIcon>
-        <ListItemText>
-          <Box display="flex" alignItems="center">
-            <Tooltip
-              placement="top"
-              title={`Average rating ${idea.rating.average} out of total ${idea.rating.total}`}
-            >
-              <Box display="flex" mr={1}>
-                <Typography
-                  color="textSecondary"
-                  style={{ minWidth: 40, textAlign: 'center' }}
-                >
-                  {idea.rating.average}/{idea.rating.total}
-                </Typography>
-                <StarRate style={{ color: starColor }} />
-              </Box>
-            </Tooltip>
-            <Share i={i} shareCount={idea.shareCount} url={ideaUrl} />
-            <Tooltip placement="top" title="Open in full">
-              <Box ml={1}>
-                <IconButton
-                  onClick={(e) => {
-                    e.stopPropagation();
-
-                    history.push(
-                      urljoin(absolutePrivateRoute.ideas.path, idea.id),
-                      idea,
-                    );
+      <ListItem key={idea.id}>
+        <Box display="flex" alignItems="center" my={1} width="100%">
+          <ButtonGroup>
+            {({ firstStyle, style, lastStyle }) => (
+              <>
+                <Badge
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'left',
                   }}
+                  color="primary"
+                  badgeContent={idea.shareCount}
                 >
-                  <OpenInBrowser />
-                </IconButton>
-              </Box>
-            </Tooltip>
-            <Tooltip placement="top" title={idea.name}>
-              <Box
-                ml={1}
-                textOverflow="ellipsis"
-                whiteSpace="nowrap"
-                overflow="hidden"
-              >
-                {idea.name}
-              </Box>
-            </Tooltip>
-          </Box>
-        </ListItemText>
-        <ListItemSecondaryAction onClick={toggleExpanded}>
-          {expanded ? <ExpandLess /> : <ExpandMore />}
-        </ListItemSecondaryAction>
+                  <ShareMenu
+                    style={firstStyle}
+                    shareCount={idea.shareCount}
+                    url={ideaUrl}
+                  />
+                </Badge>
+                <Tooltip title="Review" placement="top">
+                  <Button style={style} onClick={toggleReviewOpen}>
+                    <RateReview color="primary" />
+                  </Button>
+                </Tooltip>
+                <Tooltip
+                  placement="top"
+                  title={`Average rating ${idea.rating.average} out of total ${idea.rating.total}`}
+                >
+                  <Button
+                    style={{
+                      ...style,
+                      color: theme.palette.action.active,
+                    }}
+                    endIcon={<StarRate style={{ color: starColor }} />}
+                  >
+                    {idea.rating.average}/{idea.rating.total}
+                  </Button>
+                </Tooltip>
+                <Tooltip placement="top" title="Open in full">
+                  <Button
+                    style={{ ...style, color: theme.palette.action.active }}
+                    onClick={(e) => {
+                      history.push(
+                        urljoin(absolutePrivateRoute.ideas.path, idea.id),
+                        idea,
+                      );
+                    }}
+                  >
+                    <OpenInBrowser />
+                  </Button>
+                </Tooltip>
+                <Tooltip placement="top" title={idea.name}>
+                  <Button
+                    style={{
+                      ...lastStyle,
+                      textTransform: 'capitalize',
+                      fontWeight: 400,
+                      flexGrow: 1,
+                    }}
+                    classes={{
+                      label: classes.label,
+                    }}
+                    onClick={toggleExpanded}
+                  >
+                    <Box display="flex" alignItems="center">
+                      <Box
+                        flex={1}
+                        textOverflow={'ellipsis'}
+                        whiteSpace={'nowrap'}
+                        overflow={'hidden'}
+                      >
+                        {idea.name.repeat(7)}
+                      </Box>
+                      <Hidden xsDown>
+                        <IconButton size="small">
+                          {expanded ? <ExpandLess /> : <ExpandMore />}
+                        </IconButton>
+                      </Hidden>
+                    </Box>
+                  </Button>
+                </Tooltip>
+              </>
+            )}
+          </ButtonGroup>
+        </Box>
       </ListItem>
       <Collapse in={expanded} timeout="auto" mountOnEnter>
         <Box mb={3}>
