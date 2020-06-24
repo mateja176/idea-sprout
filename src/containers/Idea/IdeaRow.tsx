@@ -99,11 +99,6 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ i, idea }) => {
                     url={ideaUrl}
                   />
                 </Badge>
-                <Tooltip title="Review" placement="top">
-                  <Button style={style} onClick={toggleReviewOpen}>
-                    <RateReview color="primary" />
-                  </Button>
-                </Tooltip>
                 <Tooltip
                   placement="top"
                   title={`Average rating ${idea.rating.average} out of total ${idea.rating.total}`}
@@ -115,13 +110,18 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ i, idea }) => {
                     }}
                     endIcon={<StarRate style={{ color: starColor }} />}
                   >
-                    {idea.rating.average}/{idea.rating.total}
+                    {idea.rating.average}
+                  </Button>
+                </Tooltip>
+                <Tooltip title="Review" placement="top">
+                  <Button style={style} onClick={toggleReviewOpen}>
+                    <RateReview color="primary" />
                   </Button>
                 </Tooltip>
                 <Tooltip placement="top" title="Open in full">
                   <Button
                     style={{ ...style, color: theme.palette.action.active }}
-                    onClick={(e) => {
+                    onClick={() => {
                       history.push(
                         urljoin(absolutePrivateRoute.ideas.path, idea.id),
                         idea,
