@@ -27,7 +27,7 @@ import {
 import { Rating } from '@material-ui/lab';
 import { DraggablePaper } from 'components';
 import { ButtonGroup } from 'containers';
-import { shareConfigs } from 'containers/socialMedia';
+import { shareConfigs } from 'containers/share';
 import { IdeaModel } from 'models';
 import React from 'react';
 import { useHistory } from 'react-router-dom';

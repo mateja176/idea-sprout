@@ -1,4 +1,4 @@
-export * from '../containers/socialMedia';
+export * from '../containers/share';
 export * from './auth';
 export * from './components';
 export * from './env';
