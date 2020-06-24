@@ -1,10 +1,11 @@
-import { Box, makeStyles, useTheme } from '@material-ui/core';
+import { makeStyles, useTheme } from '@material-ui/core';
 import { Skeleton } from '@material-ui/lab';
+import { StorageFile } from 'models';
 import React from 'react';
-import { useFileDimensions } from 'services';
-import { Video, VideoProps } from './Video';
+import { useComputedHeight } from 'services';
+import { Video } from './Video';
 
-export interface VideoSuspenderProps extends VideoProps {}
+export interface VideoSuspenderProps extends StorageFile {}
 
 const useStyles = makeStyles(() => ({
   text: {
@@ -21,22 +22,29 @@ export const VideoSuspender: React.FC<VideoSuspenderProps> = ({
 
   const classes = useStyles();
 
-  // * since a new reference is created on each render, the object cannot be used as a hook dependency
-  // * given the fact that it fails the shallow comparison
-  const dimensions = useFileDimensions({ width, height });
+  const { computedHeight, ref } = useComputedHeight({ width, height });
 
   return (
-    <Box
-      bgcolor={theme.palette.grey[900]}
-      display="flex"
-      justifyContent="center"
-      height={dimensions.height}
+    <div
+      ref={ref}
+      style={{
+        backgroundColor: theme.palette.grey[900],
+        display: 'flex',
+        justifyContent: 'center',
+        height: computedHeight,
+      }}
     >
       <React.Suspense
-        fallback={<Skeleton {...dimensions} classes={{ text: classes.text }} />}
+        fallback={
+          <Skeleton
+            width={'100%'}
+            style={{ maxWidth: width }}
+            classes={{ text: classes.text }}
+          />
+        }
       >
-        <Video path={path} {...dimensions} />
+        <Video path={path} />
       </React.Suspense>
-    </Box>
+    </div>
   );
 };

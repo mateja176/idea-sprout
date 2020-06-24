@@ -1,9 +1,9 @@
-import { Box, useTheme } from '@material-ui/core';
+import { useTheme } from '@material-ui/core';
 import { Skeleton } from '@material-ui/lab';
 import { StorageFile } from 'models';
 import React from 'react';
 import { StorageImage } from 'reactfire';
-import { useFileDimensions } from 'services';
+import { useComputedHeight } from 'services';
 
 export interface ImageProps
   extends StorageFile,
@@ -20,24 +20,31 @@ export const Image: React.FC<ImageProps> = ({
 }) => {
   const theme = useTheme();
 
-  const dimensions = useFileDimensions({ width, height });
+  const { computedHeight, ref } = useComputedHeight({ width, height });
 
   return (
-    <Box
+    <div
       key={path}
-      display="flex"
-      justifyContent="center"
-      bgcolor={theme.palette.grey[900]}
-      borderBottom={isLast ? 'none' : `1px solid ${theme.palette.grey[900]}`}
+      ref={ref}
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        backgroundColor: theme.palette.grey[900],
+        borderBottom: isLast ? 'none' : `1px solid ${theme.palette.grey[900]}`,
+        height: computedHeight,
+      }}
     >
-      <React.Suspense fallback={<Skeleton {...dimensions} />}>
+      <React.Suspense
+        fallback={<Skeleton width={'100%'} style={{ maxWidth: width }} />}
+      >
         <StorageImage
-          key={path}
           storagePath={path}
-          {...dimensions}
+          width={'100%'}
+          style={{ maxWidth: width }}
+          height={computedHeight}
           onClick={onClick}
         />
       </React.Suspense>
-    </Box>
+    </div>
   );
 };
