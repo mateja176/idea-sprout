@@ -1,7 +1,7 @@
 import { Badge, makeStyles, Tooltip } from '@material-ui/core';
 import { Share as ShareIcon } from '@material-ui/icons';
 import { SpeedDial, SpeedDialAction } from '@material-ui/lab';
-import { IdeaModel, socialMediaConfigs } from 'models';
+import { IdeaModel, shareConfigs } from 'models';
 import React from 'react';
 import { FacebookShareButton } from 'react-share';
 import { shareIconSize, speedDialZIndex } from 'styles';
@@ -81,7 +81,7 @@ export const Share: React.FC<ShareProps> = ({ url, shareCount, i = 1 }) => {
             actions: classes.actions,
           }}
         >
-          {socialMediaConfigs.map((config) => (
+          {shareConfigs.map((config) => (
             <SpeedDialAction
               key={config.label}
               tooltipTitle={config.label}

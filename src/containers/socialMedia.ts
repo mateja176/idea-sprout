@@ -1,4 +1,4 @@
-import { CopyUrlIcon, withSocialIconAdapter } from 'components';
+import { CopyUrlIcon, withShareIconAdapter } from 'components';
 import {
   FacebookIcon,
   FacebookShareButton,
@@ -11,16 +11,16 @@ import {
   WhatsappIcon,
   WhatsappShareButton,
 } from 'react-share';
-import { SocialButtonProps, SocialIconProps } from '../models/models';
+import { ShareButtonProps, ShareIconProps } from '../models/models';
 import { CopyUrl } from './Idea/CopyUrl';
 
-export interface SocialMediaConfig {
+export interface ShareConfig {
   label: string;
-  Button: React.ComponentType<SocialButtonProps>;
-  Icon: React.ComponentType<SocialIconProps>;
+  Button: React.ComponentType<ShareButtonProps>;
+  Icon: React.ComponentType<ShareIconProps>;
 }
 
-export const socialMediaKeys = [
+export const shareKeys = [
   'copyLink',
   'facebook',
   'twitter',
@@ -28,10 +28,10 @@ export const socialMediaKeys = [
   'whatsapp',
   'viber',
 ] as const;
-export type SocialMediaKeys = typeof socialMediaKeys;
-export type SocialMediaKey = SocialMediaKeys[number];
+export type ShareKeys = typeof shareKeys;
+export type ShareKey = ShareKeys[number];
 
-export const socialMediaConfig: Record<SocialMediaKey, SocialMediaConfig> = {
+export const shareConfig: Record<ShareKey, ShareConfig> = {
   copyLink: {
     label: 'Copy Link',
     Button: CopyUrl,
@@ -40,28 +40,28 @@ export const socialMediaConfig: Record<SocialMediaKey, SocialMediaConfig> = {
   facebook: {
     label: 'Facebook',
     Button: FacebookShareButton,
-    Icon: withSocialIconAdapter(FacebookIcon),
+    Icon: withShareIconAdapter(FacebookIcon),
   },
   twitter: {
     label: 'Twitter',
     Button: TwitterShareButton,
-    Icon: withSocialIconAdapter(TwitterIcon),
+    Icon: withShareIconAdapter(TwitterIcon),
   },
   linkedin: {
     label: 'Linkedin',
     Button: LinkedinShareButton,
-    Icon: withSocialIconAdapter(LinkedinIcon),
+    Icon: withShareIconAdapter(LinkedinIcon),
   },
   whatsapp: {
     label: 'Whatsapp',
     Button: WhatsappShareButton,
-    Icon: withSocialIconAdapter(WhatsappIcon),
+    Icon: withShareIconAdapter(WhatsappIcon),
   },
   viber: {
     label: 'Viber',
     Button: ViberShareButton,
-    Icon: withSocialIconAdapter(ViberIcon),
+    Icon: withShareIconAdapter(ViberIcon),
   },
 };
 
-export const socialMediaConfigs = Object.values(socialMediaConfig);
+export const shareConfigs = Object.values(shareConfig);

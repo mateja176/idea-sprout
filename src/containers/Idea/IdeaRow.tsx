@@ -27,7 +27,7 @@ import {
 import { Rating } from '@material-ui/lab';
 import { DraggablePaper } from 'components';
 import { ButtonGroup } from 'containers';
-import { socialMediaConfigs } from 'containers/socialMedia';
+import { shareConfigs } from 'containers/socialMedia';
 import { IdeaModel } from 'models';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
@@ -214,7 +214,7 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ i, idea }) => {
               {idea.shareCount > 0 ? sharePrompt1 : sharePrompt0}
             </Typography>
             <Box mt={1} display="flex" flexWrap="wrap">
-              {socialMediaConfigs.map((config) => (
+              {shareConfigs.map((config) => (
                 <Tooltip
                   key={config.label}
                   placement="top"

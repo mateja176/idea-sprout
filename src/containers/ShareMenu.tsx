@@ -11,7 +11,7 @@ import {
 } from '@material-ui/core';
 import { Share } from '@material-ui/icons';
 import { useBoolean } from 'ahooks';
-import { IdeaModel, socialMediaConfigs } from 'models';
+import { IdeaModel, shareConfigs } from 'models';
 import React from 'react';
 import { FacebookShareButton } from 'react-share';
 import { shareIconSize } from 'styles';
@@ -57,7 +57,7 @@ export const ShareMenu: React.FC<ShareMenuProps> = ({
           toggle();
         }}
       >
-        {socialMediaConfigs.map((config) => (
+        {shareConfigs.map((config) => (
           <MenuItem>
             <config.Button key={config.label} url={url}>
               <Box display="flex" alignItems="center" my={'3px'}>

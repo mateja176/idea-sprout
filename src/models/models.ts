@@ -17,10 +17,10 @@ export interface WithUrl {
   url: string;
 }
 
-export interface SocialButtonProps extends WithUrl {
+export interface ShareButtonProps extends WithUrl {
   children: React.ReactNode;
 }
 
-export interface SocialIconProps {
+export interface ShareIconProps {
   size: number;
 }

@@ -1,9 +1,9 @@
-import { SocialButtonProps } from 'models';
+import { ShareButtonProps } from 'models';
 import React from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { createQueueSnackbar, useActions } from 'services';
 
-export interface CopyUrlProps extends SocialButtonProps {}
+export interface CopyUrlProps extends ShareButtonProps {}
 
 export const CopyUrl: React.FC<CopyUrlProps> = ({ url, children }) => {
   const { queueSnackbar } = useActions({ queueSnackbar: createQueueSnackbar });
