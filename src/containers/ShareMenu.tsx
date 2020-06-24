@@ -43,11 +43,14 @@ export const ShareMenu: React.FC<ShareMenuProps> = ({
 
   const [menuOpen, { toggle }] = useBoolean();
 
+  const buttonRef = React.useRef<HTMLButtonElement | null>(null);
+
   return (
     <>
       <Tooltip placement="top" title={`Unique share count is ${shareCount}`}>
         <Button
           {...props}
+          ref={buttonRef}
           style={{
             ...style,
             color: theme.palette.primary.main,
@@ -60,6 +63,7 @@ export const ShareMenu: React.FC<ShareMenuProps> = ({
         </Button>
       </Tooltip>
       <Menu
+        anchorEl={buttonRef.current}
         open={menuOpen}
         onClose={() => {
           toggle();
