@@ -151,7 +151,7 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ i, idea }) => {
                         whiteSpace={'nowrap'}
                         overflow={'hidden'}
                       >
-                        {idea.name.repeat(7)}
+                        {idea.name}
                       </Box>
                       <Hidden xsDown>
                         <IconButton size="small">
