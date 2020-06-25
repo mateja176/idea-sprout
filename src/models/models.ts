@@ -6,7 +6,7 @@ export type AsyncState<State> = 'initial' | 'loading' | Error | State;
 
 export interface ISnackbar
   extends Pick<SnackbarProps, 'message' | 'autoHideDuration'>,
-    Pick<AlertProps, 'severity'> {
+    Required<Pick<AlertProps, 'severity'>> {
   message: string;
 }
 
