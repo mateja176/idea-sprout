@@ -4,11 +4,11 @@ import firebase from 'firebase/app';
 import { IdeaModel, RawIdea } from 'models';
 import React from 'react';
 import { useFirestoreCollection } from 'reactfire';
-import { useIdeas } from 'services';
+import { useIdeasRef } from 'services';
 
 export interface IdeasProps {}
 export const Ideas: React.FC<IdeasProps> = () => {
-  const ideasRef = useIdeas();
+  const ideasRef = useIdeasRef();
 
   const ideasSnapshot = (useFirestoreCollection<RawIdea>(
     ideasRef,
@@ -21,8 +21,8 @@ export const Ideas: React.FC<IdeasProps> = () => {
   return (
     <Box>
       <List>
-        {ideas.map((idea, i) => {
-          return <IdeaRow key={idea.id} i={i} idea={idea} />;
+        {ideas.map((idea) => {
+          return <IdeaRow key={idea.id} idea={idea} />;
         })}
       </List>
     </Box>

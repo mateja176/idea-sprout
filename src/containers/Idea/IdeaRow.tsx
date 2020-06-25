@@ -3,60 +3,35 @@ import {
   Box,
   Button,
   Collapse,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
   Hidden,
   Icon,
   ListItem,
   makeStyles,
-  TextField,
   Tooltip,
-  Typography,
   useTheme,
 } from '@material-ui/core';
 import {
-  DragIndicator,
   ExpandLess,
   ExpandMore,
   OpenInBrowser,
   RateReview,
   StarRate,
 } from '@material-ui/icons';
-import { Rating } from '@material-ui/lab';
-import { DraggablePaper } from 'components';
-import { ButtonGroup, Check, shareConfigs } from 'containers';
-import { useFormik } from 'formik';
-import {
-  createReviewSchema,
-  CreationReview,
-  FeedbackLength,
-  IdeaModel,
-  User,
-} from 'models';
+import { useBoolean } from 'ahooks';
+import { ButtonGroup, ReviewDialog } from 'containers';
+import { IdeaModel } from 'models';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useUser } from 'reactfire';
-import {
-  createQueueSnackbar,
-  useActions,
-  useIdeaUrl,
-  useReviews,
-  useSubscriptions,
-} from 'services';
+import { useIdeaUrl } from 'services';
 import { starColor } from 'styles';
 import urljoin from 'url-join';
-import { absolutePrivateRoute } from 'utils';
+import { absolutePrivateRoute, getRatingTooltip } from 'utils';
 import { ShareMenu } from '../ShareMenu';
 import { Idea } from './Idea';
 
 export interface IdeaRowProps {
-  i: number;
   idea: IdeaModel;
 }
-
-const dragHandleId = 'drag-handle';
 
 const useStyles = makeStyles((theme) => ({
   label: {
@@ -67,97 +42,25 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const IdeaRow: React.FC<IdeaRowProps> = ({ i, idea }) => {
-  const { queueSnackbar } = useActions({ queueSnackbar: createQueueSnackbar });
-
+export const IdeaRow: React.FC<IdeaRowProps> = ({ idea }) => {
   const theme = useTheme();
 
   const classes = useStyles();
 
-  const reviews = useReviews({ id: idea.id });
-  const subscriptions = useSubscriptions();
-
-  const user = useUser<User>();
-
-  const initialValues: CreationReview = {
-    rating: idea.rating.average,
-    feedback: '',
-    shared: false,
-    doNotShare: false,
-    subscribed: false,
-  };
-
-  const {
-    handleSubmit,
-    isSubmitting,
-    getFieldProps,
-    isValid,
-    errors,
-    touched,
-    values,
-  } = useFormik({
-    validationSchema: createReviewSchema,
-    initialValues,
-    onSubmit: ({ rating, feedback, subscribed }) => {
-      return Promise.all([
-        reviews.doc(user.uid).set({ rating, feedback }),
-        subscriptions.doc(idea.id).set({ subscribed: subscribed }),
-      ])
-        .then(() => {
-          queueSnackbar({
-            severity: 'success',
-            message: 'Review submitted',
-          });
-          
-          toggleReviewOpen();
-        })
-        .catch(() => {
-          queueSnackbar({
-            severity: 'error',
-            message: 'Failed to submit, please retry',
-          });
-        });
-    },
-  });
-
-  const [expanded, setExpended] = React.useState(false);
-  const toggleExpanded = () => {
-    setExpended(!expanded);
-  };
-
-  const [reviewOpen, setReviewOpen] = React.useState(false);
-  const toggleReviewOpen = () => {
-    setExpended(true);
-
-    setReviewOpen(!reviewOpen);
-  };
+  const [expanded, setExpanded] = useBoolean(false);
 
   const history = useHistory();
 
   const ideaUrl = useIdeaUrl(idea.id);
 
-  const sharePrompt0 = (
-    <span>
-      Be the first one to share <i>{idea.name}</i>.
-    </span>
-  );
+  const ratingTooltip = getRatingTooltip(idea.rating);
 
-  const sharePrompt1 = (
-    <span>
-      <i>{idea.name}</i> has been shared by{' '}
-      <span style={{ textDecoration: 'underline' }}>
-        {idea.shareCount} {idea.shareCount > 1 ? 'people' : 'person'}
-      </span>{' '}
-      so far. Would you like to share it too?
-    </span>
-  );
+  const [reviewOpen, setReviewOpen] = useBoolean(false);
+  const toggleReviewOpen = () => {
+    setExpanded.setTrue();
 
-  const ratingTooltip = `Average rating ${
-    values.rating
-      ? (idea.rating.average + values.rating) /
-        (idea.rating.total === 0 ? 1 : 2)
-      : idea.rating.average
-  } out of total ${values.rating ? idea.rating.total + 1 : idea.rating.total}`;
+    setReviewOpen.toggle();
+  };
 
   return (
     <Box key={idea.id}>
@@ -220,7 +123,9 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ i, idea }) => {
                     classes={{
                       label: classes.label,
                     }}
-                    onClick={toggleExpanded}
+                    onClick={() => {
+                      setExpanded.toggle();
+                    }}
                   >
                     <Box display="flex" alignItems="center">
                       <Box
@@ -249,106 +154,12 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ i, idea }) => {
           <Idea {...idea} />
         </Box>
       </Collapse>
-      <Dialog // TODO replace modal with custom implementation since elements outside of the dialog cannot be interacted with
+      <ReviewDialog
+        idea={idea}
+        ideaUrl={ideaUrl}
         open={reviewOpen}
-        onClose={toggleReviewOpen}
-        hideBackdrop
-        PaperComponent={DraggablePaper}
-      >
-        <DialogTitle style={{ cursor: 'grab' }}>
-          <Box display="flex" alignItems="center">
-            <i>{idea.name}</i>&nbsp;Review
-            <Box ml="auto" id={dragHandleId}>
-              <DragIndicator color="action" />
-            </Box>
-          </Box>
-        </DialogTitle>
-        <DialogContent>
-          <form onSubmit={handleSubmit}>
-            <Box mb={2}>
-              <Tooltip title={ratingTooltip}>
-                <Rating {...getFieldProps('rating')} precision={0.5} />
-              </Tooltip>
-            </Box>
-            <TextField
-              {...getFieldProps('feedback')}
-              required
-              multiline
-              rows={5}
-              label="Feedback"
-              helperText={`What did you like or dislike about the idea? Your feedback directly shapes the course of the idea. ( ${FeedbackLength.min} - )`}
-            ></TextField>
-            <Box mt={4}>
-              <Typography>
-                {idea.shareCount > 0 ? sharePrompt1 : sharePrompt0}
-              </Typography>
-              <Box mt={1} display="flex" flexWrap="wrap">
-                {shareConfigs.map((config) => (
-                  <Tooltip
-                    key={config.label}
-                    placement="top"
-                    title={config.label}
-                  >
-                    <Box mr={1}>
-                      <config.Button url={ideaUrl}>
-                        <config.Icon size={50} />
-                      </config.Button>
-                    </Box>
-                  </Tooltip>
-                ))}
-              </Box>
-              <Check
-                name="doNotShare"
-                label="Do not share"
-                description={
-                  <Box>
-                    <Box>
-                      It's not required, however sharing the idea with a friend
-                      or friends who may be interested in it, helps the idea
-                      grow.
-                    </Box>
-                    <Box>
-                      Ideas which are not shared are like plants which are not
-                      watered, eventually they shrivel and die.
-                    </Box>
-                  </Box>
-                }
-                getFieldProps={getFieldProps}
-                errorMessage={(touched.doNotShare || '') && errors.doNotShare}
-              />
-              <Check
-                name="subscribed"
-                label="Subscribe"
-                description={
-                  <Box>
-                    <Box>
-                      Is <i>{idea.name}</i> going to bloom or shrivel?
-                    </Box>
-                    <Box>
-                      Subscribe to get exclusive updates about the growth of the
-                      idea.
-                    </Box>
-                  </Box>
-                }
-                getFieldProps={getFieldProps}
-                errorMessage={(touched.subscribed || '') && errors.doNotShare}
-              />
-            </Box>
-            <DialogActions>
-              <Button
-                onClick={() => {
-                  setReviewOpen(false);
-                }}
-              >
-                Cancel
-              </Button>
-              <Button type="submit" disabled={isSubmitting || !isValid}>
-                Submit
-              </Button>
-            </DialogActions>
-          </form>
-        </DialogContent>
-      </Dialog>
+        toggleOpen={toggleReviewOpen}
+      />
     </Box>
   );
 };

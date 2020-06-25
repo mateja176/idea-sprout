@@ -26,7 +26,7 @@ import {
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useUser } from 'reactfire';
-import { createQueueSnackbar, useActions, useIdeas } from 'services';
+import { createQueueSnackbar, useActions, useIdeasRef } from 'services';
 import { inputStyle, textareaStyle } from 'styles';
 import { absolutePrivateRoute } from 'utils';
 
@@ -49,7 +49,7 @@ export const IdeaForm: React.FC<IdeaFormProps> = () => {
 
   const { queueSnackbar } = useActions({ queueSnackbar: createQueueSnackbar });
 
-  const ideaRef = useIdeas().doc();
+  const ideaRef = useIdeasRef().doc();
 
   const user = useUser<User>();
 

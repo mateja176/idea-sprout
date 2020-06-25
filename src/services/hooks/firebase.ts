@@ -1,24 +1,16 @@
-import { IdeaModel, User } from 'models';
-import { useFirestore, useUser } from 'reactfire';
+import { IdeaModel } from 'models';
+import { useFirestore } from 'reactfire';
 
-export const useIdeas = () => {
+export const useIdeasRef = () => {
   return useFirestore().collection('ideas');
 };
 
-export const useReviews = ({ id }: Pick<IdeaModel, 'id'>) => {
-  const ideas = useIdeas();
+export const useReviewsRef = ({ id }: Pick<IdeaModel, 'id'>) => {
+  const ideas = useIdeasRef();
 
   return ideas.doc(id).collection('reviews');
 };
 
-export const useUsers = () => {
+export const useUsersRef = () => {
   return useFirestore().collection('users');
-};
-
-export const useSubscriptions = () => {
-  const users = useUsers();
-
-  const id = useUser<User>().uid;
-
-  return users.doc(id).collection('subscriptions');
 };

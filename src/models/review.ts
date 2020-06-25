@@ -4,12 +4,12 @@ export interface Review {
   id: string;
   rating: number;
   feedback: string;
+  subscribed: boolean;
 }
 
 export type CreationReview = Omit<Review, 'id'> & {
   shared: boolean;
   doNotShare: boolean;
-  subscribed: boolean;
 };
 
 export enum FeedbackLength {
@@ -31,3 +31,11 @@ export const createReviewSchema = yup
       ),
     subscribed: yup.bool().required(),
   });
+
+export const initialCreationReview: CreationReview = {
+  rating: 0,
+  feedback: '',
+  shared: false,
+  doNotShare: false,
+  subscribed: false,
+};
