@@ -5,13 +5,15 @@ import {
   makeStyles,
   Typography,
 } from '@material-ui/core';
+import { useBoolean } from 'ahooks';
 import { Facebook, Google, PageWrapper, Twitter } from 'components';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import { random } from 'lodash';
-import { AsyncState, quotes } from 'models';
+import { quotes } from 'models';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
+import { createQueueSnackbar, useActions } from 'services';
 
 export interface SigninProps extends RouteComponentProps {}
 
@@ -20,25 +22,28 @@ const useButtonStyles = makeStyles(() => ({
 }));
 
 export const Signin: React.FC<SigninProps> = () => {
-  const [status, setStatus] = React.useState<
-    AsyncState<firebase.auth.UserCredential>
-  >('initial');
+  const { queueSnackbar } = useActions({ queueSnackbar: createQueueSnackbar });
+
+  const [loading, setLoading] = useBoolean(false);
 
   const buttonClasses = useButtonStyles();
 
   const quote = React.useMemo(() => quotes[random(0, quotes.length - 1)], []);
 
   const signIn = (provider: firebase.auth.AuthProvider) => {
-    setStatus('loading');
+    setLoading.setTrue();
 
     return firebase
       .auth()
       .signInWithPopup(provider)
-      .then((userCredential) => {
-        setStatus(userCredential);
-      })
       .catch((error: firebase.FirebaseError) => {
-        setStatus(error);
+        queueSnackbar({
+          severity: 'error',
+          message: error.message,
+        });
+      })
+      .finally(() => {
+        setLoading.setFalse();
       });
   };
 
@@ -49,7 +54,7 @@ export const Signin: React.FC<SigninProps> = () => {
           <Typography variant="h2">Sign in</Typography>
 
           <Box ml={2} mt={4}>
-            <ButtonGroup color="primary" disabled={status === 'loading'}>
+            <ButtonGroup color="primary" disabled={loading}>
               <Button
                 onClick={() => {
                   signIn(new firebase.auth.GoogleAuthProvider());
