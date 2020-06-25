@@ -5,7 +5,7 @@ export const useIdeasRef = () => {
   return useFirestore().collection('ideas');
 };
 
-export const useReviewsRef = ({ id }: Pick<IdeaModel, 'id'>) => {
+export const useReviewsRef = (id: IdeaModel['id']) => {
   const ideasRef = useIdeasRef();
 
   return ideasRef.doc(id).collection('reviews');

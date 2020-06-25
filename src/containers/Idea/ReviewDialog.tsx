@@ -25,12 +25,18 @@ import {
 } from 'models';
 import { equals } from 'ramda';
 import React from 'react';
-import { useFirestoreDocData, useUser } from 'reactfire';
-import { createQueueSnackbar, useActions, useReviewsRef } from 'services';
+import { useUser } from 'reactfire';
+import {
+  createQueueSnackbar,
+  useActions,
+  useIdeasRef,
+  useReviewsRef,
+} from 'services';
 
 export interface ReviewDialogProps {
   idea: IdeaModel;
   ideaUrl: string;
+  review: Review | null;
   open: boolean;
   toggleOpen: () => void;
 }
@@ -40,18 +46,17 @@ const dragHandleId = 'drag-handle';
 export const ReviewDialog: React.FC<ReviewDialogProps> = ({
   idea,
   ideaUrl,
+  review,
   open,
   toggleOpen,
 }) => {
   const { queueSnackbar } = useActions({ queueSnackbar: createQueueSnackbar });
 
-  const reviewsRef = useReviewsRef({ id: idea.id });
+  const ideaRef = useIdeasRef().doc(idea.id);
+
+  const reviewsRef = useReviewsRef(idea.id);
 
   const user = useUser<User>();
-
-  const reviewRef = reviewsRef.doc(user.uid);
-
-  const review = useFirestoreDocData<Review | null>(reviewRef);
 
   const hasShared = idea.sharedBy.includes(user.uid);
 
@@ -155,7 +160,15 @@ export const ReviewDialog: React.FC<ReviewDialogProps> = ({
                     title={config.label}
                   >
                     <Box mr={1}>
-                      <config.Button url={ideaUrl}>
+                      <config.Button
+                        url={ideaUrl}
+                        onShareWindowClose={() => {
+                          const update: Pick<IdeaModel, 'sharedBy'> = {
+                            sharedBy: idea.sharedBy.concat(user.uid),
+                          };
+                          ideaRef.update(update);
+                        }}
+                      >
                         <config.Icon size={50} />
                       </config.Button>
                     </Box>

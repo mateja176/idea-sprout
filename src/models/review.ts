@@ -6,6 +6,8 @@ export interface Review {
   feedback: string;
 }
 
+export type RawReview = Omit<Review, 'id'>;
+
 export type CreationReview = Omit<Review, 'id'> & {
   shared: boolean;
   doNotShare: boolean;

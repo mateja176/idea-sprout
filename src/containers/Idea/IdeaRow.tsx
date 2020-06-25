@@ -19,10 +19,10 @@ import {
 } from '@material-ui/icons';
 import { useBoolean } from 'ahooks';
 import { ButtonGroup, ReviewDialog } from 'containers';
-import { IdeaModel, Review } from 'models';
+import { IdeaModel, RawReview, User } from 'models';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useFirestoreCollectionData } from 'reactfire';
+import { useFirestoreCollection, useUser } from 'reactfire';
 import { useIdeaUrl, useReviewsRef } from 'services';
 import { starColor } from 'styles';
 import urljoin from 'url-join';
@@ -48,15 +48,21 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ idea }) => {
 
   const classes = useStyles();
 
+  const user = useUser<User>();
+
   const [expanded, setExpanded] = useBoolean(false);
 
   const history = useHistory();
 
   const ideaUrl = useIdeaUrl(idea.id);
 
-  const reviews = useFirestoreCollectionData<Review>(
-    useReviewsRef({ id: idea.id }),
-  );
+  const reviewsSnapshot = useFirestoreCollection<undefined>(
+    useReviewsRef(idea.id),
+  ) as firebase.firestore.QuerySnapshot<RawReview>;
+  const reviews = reviewsSnapshot.docs.map((doc) => ({
+    ...doc.data(),
+    id: doc.id,
+  }));
 
   const ratingsCount = reviews.length;
 
@@ -172,6 +178,7 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ idea }) => {
       <ReviewDialog
         idea={idea}
         ideaUrl={ideaUrl}
+        review={reviews.find(({ id }) => id === user.uid) || null}
         open={reviewOpen}
         toggleOpen={toggleReviewOpen}
       />

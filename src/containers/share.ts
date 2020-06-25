@@ -1,4 +1,4 @@
-import { CopyUrlIcon, withShareIconAdapter } from 'components';
+import { withShareIconAdapter } from 'components';
 import {
   FacebookIcon,
   FacebookShareButton,
@@ -12,7 +12,6 @@ import {
   WhatsappShareButton,
 } from 'react-share';
 import { ShareButtonProps, ShareIconProps } from '../models/models';
-import { CopyUrl } from './Idea/CopyUrl';
 
 export interface ShareConfig {
   label: string;
@@ -21,7 +20,7 @@ export interface ShareConfig {
 }
 
 export const shareKeys = [
-  'copyLink',
+  // 'copyLink',
   'facebook',
   'twitter',
   'linkedin',
@@ -32,11 +31,12 @@ export type ShareKeys = typeof shareKeys;
 export type ShareKey = ShareKeys[number];
 
 export const shareConfig: Record<ShareKey, ShareConfig> = {
-  copyLink: {
-    label: 'Copy Link',
-    Button: CopyUrl,
-    Icon: CopyUrlIcon,
-  },
+  // * there's no way of determining whether the user actually shared the link
+  // copyLink: {
+  //   label: 'Copy Link',
+  //   Button: CopyUrl,
+  //   Icon: CopyUrlIcon,
+  // },
   facebook: {
     label: 'Facebook',
     Button: FacebookShareButton,

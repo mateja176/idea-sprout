@@ -10,9 +10,9 @@ export interface IdeasProps {}
 export const Ideas: React.FC<IdeasProps> = () => {
   const ideasRef = useIdeasRef();
 
-  const ideasSnapshot = (useFirestoreCollection<RawIdea>(
+  const ideasSnapshot = useFirestoreCollection<undefined>(
     ideasRef,
-  ) as unknown) as firebase.firestore.QuerySnapshot<RawIdea>;
+  ) as firebase.firestore.QuerySnapshot<RawIdea>;
   const ideas: IdeaModel[] = ideasSnapshot.docs.map((doc) => ({
     ...doc.data(),
     id: doc.id,
