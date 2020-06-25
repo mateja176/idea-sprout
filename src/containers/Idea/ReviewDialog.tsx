@@ -5,6 +5,9 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  FormControl,
+  FormControlLabel,
+  FormHelperText,
   TextField,
   Tooltip,
   Typography,
@@ -26,7 +29,8 @@ import {
 import React from 'react';
 import { useFirestoreDocData, useUser } from 'reactfire';
 import { createQueueSnackbar, useActions, useReviewsRef } from 'services';
-import { getRatingTooltip } from 'utils';
+import { getRatingHelperText } from 'utils';
+import { equals } from 'ramda';
 
 export interface ReviewDialogProps {
   idea: IdeaModel;
@@ -66,6 +70,7 @@ export const ReviewDialog: React.FC<ReviewDialogProps> = ({
     errors,
     touched,
     values,
+    isValid,
   } = useFormik({
     validationSchema: createReviewSchema,
     initialValues,
@@ -90,7 +95,9 @@ export const ReviewDialog: React.FC<ReviewDialogProps> = ({
     },
   });
 
-  const ratingTooltip = getRatingTooltip({
+  const areValuesEqualToInitial = equals(initialValues)(values);
+
+  const ratingHelperText = getRatingHelperText({
     average: values.rating
       ? (idea.rating.average + values.rating) /
         (idea.rating.total === 0 ? 1 : 2)
@@ -134,9 +141,15 @@ export const ReviewDialog: React.FC<ReviewDialogProps> = ({
       <DialogContent>
         <form onSubmit={handleSubmit}>
           <Box mb={2}>
-            <Tooltip title={ratingTooltip}>
-              <Rating {...getFieldProps('rating')} precision={0.5} />
-            </Tooltip>
+            <FormControl>
+              <FormControlLabel
+                label={<Typography color="textSecondary">*</Typography>}
+                control={
+                  <Rating {...getFieldProps('rating')} precision={0.5} />
+                }
+              />
+              <FormHelperText>{ratingHelperText}</FormHelperText>
+            </FormControl>
           </Box>
           <TextField
             {...getFieldProps('feedback')}
@@ -167,7 +180,7 @@ export const ReviewDialog: React.FC<ReviewDialogProps> = ({
             </Box>
             <Check
               name="doNotShare"
-              label="Do not share"
+              label="Do not share*"
               description={
                 <Box>
                   <Box>
@@ -203,7 +216,10 @@ export const ReviewDialog: React.FC<ReviewDialogProps> = ({
           </Box>
           <DialogActions>
             <Button onClick={toggleOpen}>Cancel</Button>
-            <Button type="submit" disabled={isSubmitting}>
+            <Button
+              type="submit"
+              disabled={isSubmitting || !isValid || areValuesEqualToInitial}
+            >
               Submit
             </Button>
           </DialogActions>

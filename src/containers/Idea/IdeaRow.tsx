@@ -25,7 +25,7 @@ import { useHistory } from 'react-router-dom';
 import { useIdeaUrl } from 'services';
 import { starColor } from 'styles';
 import urljoin from 'url-join';
-import { absolutePrivateRoute, getRatingTooltip } from 'utils';
+import { absolutePrivateRoute, getRatingHelperText } from 'utils';
 import { ShareMenu } from '../ShareMenu';
 import { Idea } from './Idea';
 
@@ -53,7 +53,7 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ idea }) => {
 
   const ideaUrl = useIdeaUrl(idea.id);
 
-  const ratingTooltip = getRatingTooltip(idea.rating);
+  const ratingTooltip = getRatingHelperText(idea.rating);
 
   const [reviewOpen, setReviewOpen] = useBoolean(false);
   const toggleReviewOpen = () => {
