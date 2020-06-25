@@ -17,9 +17,9 @@ import {
   CheckName,
   checkNames,
   CreationIdea,
+  creationIdeaSchema,
   GetCheckFieldProps,
   IdeaModel,
-  ideaSchemaDefinition,
   ProblemSolutionLength,
   RationaleLength,
   User,
@@ -30,7 +30,6 @@ import { useUser } from 'reactfire';
 import { createQueueSnackbar, useActions, useIdeas } from 'services';
 import { inputStyle, textareaStyle } from 'styles';
 import { absolutePrivateRoute } from 'utils';
-import * as yup from 'yup';
 
 export interface IdeaFormProps {}
 
@@ -45,10 +44,6 @@ const initialValues: CreationIdea = {
   images: [],
   rationale: '',
 };
-
-type Values = typeof initialValues;
-
-const validationSchema = yup.object().shape<Values>(ideaSchemaDefinition);
 
 export const IdeaForm: React.FC<IdeaFormProps> = () => {
   const history = useHistory();
@@ -75,8 +70,8 @@ export const IdeaForm: React.FC<IdeaFormProps> = () => {
     values,
     setFieldValue,
   } = useFormik({
+    validationSchema: creationIdeaSchema,
     initialValues,
-    validationSchema,
     onSubmit: (formValues) => {
       const idea: Omit<IdeaModel, 'id'> = {
         ...formValues,
