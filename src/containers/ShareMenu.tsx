@@ -44,7 +44,7 @@ export const ShareMenu: React.FC<ShareMenuProps> = ({
             ...style,
             color: theme.palette.primary.main,
           }}
-          onClick={(e) => {
+          onClick={() => {
             toggle();
           }}
         >
@@ -59,7 +59,7 @@ export const ShareMenu: React.FC<ShareMenuProps> = ({
         }}
       >
         {shareConfigs.map((config) => (
-          <MenuItem>
+          <MenuItem key={config.label}>
             <config.Button key={config.label} url={url}>
               <Box display="flex" alignItems="center" my={'3px'}>
                 <ListItemIcon>
