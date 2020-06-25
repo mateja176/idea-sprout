@@ -1,4 +1,4 @@
-import { IdeaModel } from 'models';
+import { RatingConfig } from 'models';
 
-export const getRatingHelperText = (rating: IdeaModel['rating']) =>
-  `Average rating ${rating.average} out of total ${rating.total}`;
+export const getRatingHelperText = (rating: RatingConfig) =>
+  `Average rating ${rating.average} out of total ${rating.count}`;

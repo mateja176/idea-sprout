@@ -19,10 +19,11 @@ import {
 } from '@material-ui/icons';
 import { useBoolean } from 'ahooks';
 import { ButtonGroup, ReviewDialog } from 'containers';
-import { IdeaModel } from 'models';
+import { IdeaModel, Review } from 'models';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useIdeaUrl } from 'services';
+import { useFirestoreCollectionData } from 'reactfire';
+import { useIdeaUrl, useReviewsRef } from 'services';
 import { starColor } from 'styles';
 import urljoin from 'url-join';
 import { absolutePrivateRoute, getRatingHelperText } from 'utils';
@@ -53,7 +54,21 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ idea }) => {
 
   const ideaUrl = useIdeaUrl(idea.id);
 
-  const ratingTooltip = getRatingHelperText(idea.rating);
+  const reviews = useFirestoreCollectionData<Review>(
+    useReviewsRef({ id: idea.id }),
+  );
+
+  const ratingsCount = reviews.length;
+
+  const averageRating =
+    reviews.reduce((total, { rating }) => total + rating, 0) / ratingsCount;
+
+  const ratingConfig = {
+    count: ratingsCount,
+    average: averageRating,
+  };
+
+  const ratingTooltip = getRatingHelperText(ratingConfig);
 
   const [reviewOpen, setReviewOpen] = useBoolean(false);
   const toggleReviewOpen = () => {
@@ -75,11 +90,11 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ idea }) => {
                     horizontal: 'left',
                   }}
                   color="primary"
-                  badgeContent={idea.shareCount}
+                  badgeContent={idea.sharedBy.length}
                 >
                   <ShareMenu
                     style={firstStyle}
-                    shareCount={idea.shareCount}
+                    shareCount={idea.sharedBy.length}
                     url={ideaUrl}
                   />
                 </Badge>
@@ -91,7 +106,7 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ idea }) => {
                     }}
                     endIcon={<StarRate style={{ color: starColor }} />}
                   >
-                    {idea.rating.average}
+                    {averageRating}
                   </Button>
                 </Tooltip>
                 <Tooltip title="Review" placement="top">

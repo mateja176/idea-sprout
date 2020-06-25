@@ -36,10 +36,6 @@ export interface IdeaModel {
    * author email
    */
   author: string;
-  rating: {
-    average: number;
-    total: number;
-  };
   /**
    * the checks are a way of guiding creators towards publishing high quality ideas
    */
@@ -50,19 +46,14 @@ export interface IdeaModel {
   problemSolution: string;
   images: StorageFile[];
   rationale: string;
-  /**
-   * number of times an idea has been shared
-   * the count is incremented only when an user shares the idea for the first time
-   * used to pass the "mom test"
-   */
-  shareCount: number;
+  sharedBy: string[];
 }
 
 export type RawIdea = Omit<IdeaModel, 'id'>;
 
 export type CreationIdea = Omit<
   IdeaModel,
-  'id' | 'author' | 'rating' | 'status' | 'shareCount'
+  'id' | 'author' | 'status' | 'sharedBy'
 >;
 
 export enum ProblemSolutionLength {

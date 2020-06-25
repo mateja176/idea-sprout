@@ -6,11 +6,7 @@ export const useIdeasRef = () => {
 };
 
 export const useReviewsRef = ({ id }: Pick<IdeaModel, 'id'>) => {
-  const ideas = useIdeasRef();
+  const ideasRef = useIdeasRef();
 
-  return ideas.doc(id).collection('reviews');
-};
-
-export const useUsersRef = () => {
-  return useFirestore().collection('users');
+  return ideasRef.doc(id).collection('reviews');
 };

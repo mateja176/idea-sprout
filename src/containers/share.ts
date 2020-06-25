@@ -64,4 +64,4 @@ export const shareConfig: Record<ShareKey, ShareConfig> = {
   },
 };
 
-export const shareConfigs = Object.values(shareConfig);
+export const sharingOptions = Object.values(shareConfig);

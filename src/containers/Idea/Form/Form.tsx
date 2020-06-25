@@ -75,9 +75,8 @@ export const IdeaForm: React.FC<IdeaFormProps> = () => {
       const idea: Omit<IdeaModel, 'id'> = {
         ...formValues,
         author: user.email || '',
-        shareCount: 0,
-        rating: { average: 0, total: 0 },
         status: 'seed',
+        sharedBy: [],
       };
 
       return ideaRef

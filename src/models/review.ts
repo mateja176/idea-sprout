@@ -4,7 +4,6 @@ export interface Review {
   id: string;
   rating: number;
   feedback: string;
-  subscribed: boolean;
 }
 
 export type CreationReview = Omit<Review, 'id'> & {
@@ -29,7 +28,6 @@ export const createReviewSchema = yup
         [yup.ref('shared')],
         "Don't think the idea is good enough to share?",
       ),
-    subscribed: yup.bool().required(),
   });
 
 export const initialCreationReview: CreationReview = {
@@ -37,5 +35,9 @@ export const initialCreationReview: CreationReview = {
   feedback: '',
   shared: false,
   doNotShare: false,
-  subscribed: false,
 };
+
+export interface RatingConfig {
+  average: number;
+  count: number;
+}

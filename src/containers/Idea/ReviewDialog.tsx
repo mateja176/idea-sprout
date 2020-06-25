@@ -5,9 +5,6 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  FormControl,
-  FormControlLabel,
-  FormHelperText,
   TextField,
   Tooltip,
   Typography,
@@ -15,7 +12,7 @@ import {
 import { DragIndicator } from '@material-ui/icons';
 import { Rating } from '@material-ui/lab';
 import { DraggablePaper } from 'components';
-import { Check, shareConfigs } from 'containers';
+import { Check, sharingOptions } from 'containers';
 import { User } from 'firebase';
 import { useFormik } from 'formik';
 import {
@@ -26,11 +23,10 @@ import {
   initialCreationReview,
   Review,
 } from 'models';
+import { equals } from 'ramda';
 import React from 'react';
 import { useFirestoreDocData, useUser } from 'reactfire';
 import { createQueueSnackbar, useActions, useReviewsRef } from 'services';
-import { getRatingHelperText } from 'utils';
-import { equals } from 'ramda';
 
 export interface ReviewDialogProps {
   idea: IdeaModel;
@@ -57,10 +53,12 @@ export const ReviewDialog: React.FC<ReviewDialogProps> = ({
 
   const review = useFirestoreDocData<Review | null>(reviewRef);
 
+  const hasShared = idea.sharedBy.includes(user.uid);
+
   const initialValues: CreationReview = {
     ...initialCreationReview,
-    rating: idea.rating.average,
     ...review,
+    shared: hasShared,
   };
 
   const {
@@ -74,10 +72,10 @@ export const ReviewDialog: React.FC<ReviewDialogProps> = ({
   } = useFormik({
     validationSchema: createReviewSchema,
     initialValues,
-    onSubmit: ({ rating, feedback, subscribed }) => {
+    onSubmit: ({ rating, feedback }) => {
       return reviewsRef
         .doc(user.uid)
-        .set({ rating, feedback, subscribed })
+        .set({ rating, feedback })
         .then(() => {
           queueSnackbar({
             severity: 'success',
@@ -97,14 +95,6 @@ export const ReviewDialog: React.FC<ReviewDialogProps> = ({
 
   const areValuesEqualToInitial = equals(initialValues)(values);
 
-  const ratingHelperText = getRatingHelperText({
-    average: values.rating
-      ? (idea.rating.average + values.rating) /
-        (idea.rating.total === 0 ? 1 : 2)
-      : idea.rating.average,
-    total: values.rating ? idea.rating.total + 1 : idea.rating.total,
-  });
-
   const sharePrompt0 = (
     <span>
       Be the first one to share <i>{idea.name}</i>.
@@ -115,7 +105,7 @@ export const ReviewDialog: React.FC<ReviewDialogProps> = ({
     <span>
       <i>{idea.name}</i> has been shared by{' '}
       <span style={{ textDecoration: 'underline' }}>
-        {idea.shareCount} {idea.shareCount > 1 ? 'people' : 'person'}
+        {idea.sharedBy.length} {idea.sharedBy.length > 1 ? 'people' : 'person'}
       </span>{' '}
       so far. Would you like to share it too?
     </span>
@@ -141,15 +131,8 @@ export const ReviewDialog: React.FC<ReviewDialogProps> = ({
       <DialogContent>
         <form onSubmit={handleSubmit}>
           <Box mb={2}>
-            <FormControl>
-              <FormControlLabel
-                label={<Typography color="textSecondary">*</Typography>}
-                control={
-                  <Rating {...getFieldProps('rating')} precision={0.5} />
-                }
-              />
-              <FormHelperText>{ratingHelperText}</FormHelperText>
-            </FormControl>
+            <Typography color="textSecondary">Rating*</Typography>
+            <Rating {...getFieldProps('rating')} precision={0.5} />
           </Box>
           <TextField
             {...getFieldProps('feedback')}
@@ -159,61 +142,47 @@ export const ReviewDialog: React.FC<ReviewDialogProps> = ({
             label="Feedback"
             helperText={`What did you like or dislike about the idea? Your feedback directly shapes the course of the idea. ( ${FeedbackLength.min} - )`}
           ></TextField>
-          <Box mt={4}>
-            <Typography>
-              {idea.shareCount > 0 ? sharePrompt1 : sharePrompt0}
-            </Typography>
-            <Box mt={1} display="flex" flexWrap="wrap">
-              {shareConfigs.map((config) => (
-                <Tooltip
-                  key={config.label}
-                  placement="top"
-                  title={config.label}
-                >
-                  <Box mr={1}>
-                    <config.Button url={ideaUrl}>
-                      <config.Icon size={50} />
-                    </config.Button>
+          {!false && (
+            <Box mt={4}>
+              <Typography>
+                {idea.sharedBy.length > 0 ? sharePrompt1 : sharePrompt0}
+              </Typography>
+              <Box mt={1} display="flex" flexWrap="wrap">
+                {sharingOptions.map((config) => (
+                  <Tooltip
+                    key={config.label}
+                    placement="top"
+                    title={config.label}
+                  >
+                    <Box mr={1}>
+                      <config.Button url={ideaUrl}>
+                        <config.Icon size={50} />
+                      </config.Button>
+                    </Box>
+                  </Tooltip>
+                ))}
+              </Box>
+              <Check
+                name="doNotShare"
+                label="Do not share*"
+                description={
+                  <Box>
+                    <Box>
+                      It's not required, however sharing the idea with a friend
+                      or friends who may be interested in it, helps the idea
+                      grow.
+                    </Box>
+                    <Box>
+                      Ideas which are not shared are like plants which are not
+                      watered, eventually they shrivel and die.
+                    </Box>
                   </Box>
-                </Tooltip>
-              ))}
+                }
+                getFieldProps={getFieldProps}
+                errorMessage={(touched.doNotShare || '') && errors.doNotShare}
+              />
             </Box>
-            <Check
-              name="doNotShare"
-              label="Do not share*"
-              description={
-                <Box>
-                  <Box>
-                    It's not required, however sharing the idea with a friend or
-                    friends who may be interested in it, helps the idea grow.
-                  </Box>
-                  <Box>
-                    Ideas which are not shared are like plants which are not
-                    watered, eventually they shrivel and die.
-                  </Box>
-                </Box>
-              }
-              getFieldProps={getFieldProps}
-              errorMessage={(touched.doNotShare || '') && errors.doNotShare}
-            />
-            <Check
-              name="subscribed"
-              label="Subscribe"
-              description={
-                <Box>
-                  <Box>
-                    Is <i>{idea.name}</i> going to bloom or shrivel?
-                  </Box>
-                  <Box>
-                    Subscribe to get exclusive updates about the growth of the
-                    idea.
-                  </Box>
-                </Box>
-              }
-              getFieldProps={getFieldProps}
-              errorMessage={(touched.subscribed || '') && errors.doNotShare}
-            />
-          </Box>
+          )}
           <DialogActions>
             <Button onClick={toggleOpen}>Cancel</Button>
             <Button
