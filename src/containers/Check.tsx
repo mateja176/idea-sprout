@@ -15,15 +15,14 @@ import {
   Typography,
 } from '@material-ui/core';
 import { Info } from '@material-ui/icons';
-import { CheckFieldNames, GetCheckFieldProps } from 'models';
+import { GetCheckFieldProps } from 'models';
 import React from 'react';
 
 export interface CheckProps {
-  name: CheckFieldNames;
+  name: string;
   label: string;
   description: React.ReactNode;
   getFieldProps: GetCheckFieldProps;
-  hasError: boolean;
   errorMessage?: string;
 }
 
@@ -34,7 +33,6 @@ export const Check: React.FC<CheckProps> = ({
   label,
   description,
   getFieldProps,
-  hasError,
   errorMessage,
 }) => {
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
@@ -43,6 +41,8 @@ export const Check: React.FC<CheckProps> = ({
   };
 
   const fieldProps = getFieldProps(name);
+
+  const hasError = !!errorMessage;
 
   return (
     <FormControl error={hasError} style={formControlStyle}>
@@ -73,7 +73,7 @@ export const Check: React.FC<CheckProps> = ({
         }
         control={<Checkbox {...fieldProps} checked={fieldProps.value} />}
       />
-      {hasError && <FormHelperText>{errorMessage}</FormHelperText>}
+      {errorMessage && <FormHelperText>{errorMessage}</FormHelperText>}
     </FormControl>
   );
 };

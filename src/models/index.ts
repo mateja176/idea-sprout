@@ -7,4 +7,3 @@ export * from './models';
 export * from './quotes';
 export * from './review';
 export * from './routes';
-export * from './validation';

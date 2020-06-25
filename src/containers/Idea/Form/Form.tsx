@@ -14,7 +14,6 @@ import { Link, PageWrapper } from 'components';
 import { Check, Drop } from 'containers';
 import { useFormik } from 'formik';
 import {
-  CheckName,
   checkNames,
   CreationIdea,
   creationIdeaSchema,
@@ -109,7 +108,7 @@ export const IdeaForm: React.FC<IdeaFormProps> = () => {
 
   const hasFailedChecks = hasNicheError || hasExpectationsError;
 
-  const handleCheckChange = (name: CheckName): CheckboxProps['onChange'] => (
+  const handleCheckChange = (name: string): CheckboxProps['onChange'] => (
     e,
     value,
   ) => {
@@ -184,7 +183,6 @@ export const IdeaForm: React.FC<IdeaFormProps> = () => {
                 </Box>
               }
               getFieldProps={getCheckFieldProps}
-              hasError={hasNicheError}
               errorMessage={errors.checks?.niche}
             />
             <Check
@@ -212,7 +210,6 @@ export const IdeaForm: React.FC<IdeaFormProps> = () => {
                 </Box>
               }
               getFieldProps={getCheckFieldProps}
-              hasError={hasExpectationsError}
               errorMessage={errors.checks?.niche}
             />
           </ExpansionPanelDetails>

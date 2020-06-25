@@ -26,13 +26,25 @@ import {
 } from '@material-ui/icons';
 import { Rating } from '@material-ui/lab';
 import { DraggablePaper } from 'components';
-import { ButtonGroup, shareConfigs } from 'containers';
+import { ButtonGroup, Check, shareConfigs } from 'containers';
 import { useFormik } from 'formik';
-import { createReviewSchema, IdeaModel } from 'models';
-import { Review } from 'models/review';
+import {
+  createReviewSchema,
+  CreationReview,
+  FeedbackLength,
+  IdeaModel,
+  User,
+} from 'models';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useIdeaUrl } from 'services';
+import { useUser } from 'reactfire';
+import {
+  createQueueSnackbar,
+  useActions,
+  useIdeaUrl,
+  useReviews,
+  useSubscriptions,
+} from 'services';
 import { starColor } from 'styles';
 import urljoin from 'url-join';
 import { absolutePrivateRoute } from 'utils';
@@ -46,10 +58,6 @@ export interface IdeaRowProps {
 
 const dragHandleId = 'drag-handle';
 
-const initialValues: Review = {
-  id: '',
-};
-
 const useStyles = makeStyles((theme) => ({
   label: {
     marginLeft: theme.spacing(1),
@@ -60,14 +68,56 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const IdeaRow: React.FC<IdeaRowProps> = ({ i, idea }) => {
+  const { queueSnackbar } = useActions({ queueSnackbar: createQueueSnackbar });
+
   const theme = useTheme();
 
   const classes = useStyles();
 
-  const { handleSubmit } = useFormik({
-    initialValues,
+  const reviews = useReviews({ id: idea.id });
+  const subscriptions = useSubscriptions();
+
+  const user = useUser<User>();
+
+  const initialValues: CreationReview = {
+    rating: idea.rating.average,
+    feedback: '',
+    shared: false,
+    doNotShare: false,
+    subscribed: false,
+  };
+
+  const {
+    handleSubmit,
+    isSubmitting,
+    getFieldProps,
+    isValid,
+    errors,
+    touched,
+    values,
+  } = useFormik({
     validationSchema: createReviewSchema,
-    onSubmit: () => {},
+    initialValues,
+    onSubmit: ({ rating, feedback, subscribed }) => {
+      return Promise.all([
+        reviews.doc(user.uid).set({ rating, feedback }),
+        subscriptions.doc(idea.id).set({ subscribed: subscribed }),
+      ])
+        .then(() => {
+          queueSnackbar({
+            severity: 'success',
+            message: 'Review submitted',
+          });
+          
+          toggleReviewOpen();
+        })
+        .catch(() => {
+          queueSnackbar({
+            severity: 'error',
+            message: 'Failed to submit, please retry',
+          });
+        });
+    },
   });
 
   const [expanded, setExpended] = React.useState(false);
@@ -76,7 +126,7 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ i, idea }) => {
   };
 
   const [reviewOpen, setReviewOpen] = React.useState(false);
-  const toggleReviewOpen: React.MouseEventHandler = (e) => {
+  const toggleReviewOpen = () => {
     setExpended(true);
 
     setReviewOpen(!reviewOpen);
@@ -102,7 +152,12 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ i, idea }) => {
     </span>
   );
 
-  const ratingTooltip = `Average rating ${idea.rating.average} out of total ${idea.rating.total}`;
+  const ratingTooltip = `Average rating ${
+    values.rating
+      ? (idea.rating.average + values.rating) /
+        (idea.rating.total === 0 ? 1 : 2)
+      : idea.rating.average
+  } out of total ${values.rating ? idea.rating.total + 1 : idea.rating.total}`;
 
   return (
     <Box key={idea.id}>
@@ -212,19 +267,16 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ i, idea }) => {
           <form onSubmit={handleSubmit}>
             <Box mb={2}>
               <Tooltip title={ratingTooltip}>
-                <Rating
-                  name="rating"
-                  value={idea.rating.average}
-                  precision={0.5}
-                />
+                <Rating {...getFieldProps('rating')} precision={0.5} />
               </Tooltip>
             </Box>
             <TextField
+              {...getFieldProps('feedback')}
               required
               multiline
               rows={5}
               label="Feedback"
-              helperText="What did you like or dislike about the idea? Your feedback directly shapes the course of the idea. ( 40 - )"
+              helperText={`What did you like or dislike about the idea? Your feedback directly shapes the course of the idea. ( ${FeedbackLength.min} - )`}
             ></TextField>
             <Box mt={4}>
               <Typography>
@@ -245,6 +297,42 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ i, idea }) => {
                   </Tooltip>
                 ))}
               </Box>
+              <Check
+                name="doNotShare"
+                label="Do not share"
+                description={
+                  <Box>
+                    <Box>
+                      It's not required, however sharing the idea with a friend
+                      or friends who may be interested in it, helps the idea
+                      grow.
+                    </Box>
+                    <Box>
+                      Ideas which are not shared are like plants which are not
+                      watered, eventually they shrivel and die.
+                    </Box>
+                  </Box>
+                }
+                getFieldProps={getFieldProps}
+                errorMessage={(touched.doNotShare || '') && errors.doNotShare}
+              />
+              <Check
+                name="subscribed"
+                label="Subscribe"
+                description={
+                  <Box>
+                    <Box>
+                      Is <i>{idea.name}</i> going to bloom or shrivel?
+                    </Box>
+                    <Box>
+                      Subscribe to get exclusive updates about the growth of the
+                      idea.
+                    </Box>
+                  </Box>
+                }
+                getFieldProps={getFieldProps}
+                errorMessage={(touched.subscribed || '') && errors.doNotShare}
+              />
             </Box>
             <DialogActions>
               <Button
@@ -254,7 +342,9 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ i, idea }) => {
               >
                 Cancel
               </Button>
-              <Button type="submit">Submit</Button>
+              <Button type="submit" disabled={isSubmitting || !isValid}>
+                Submit
+              </Button>
             </DialogActions>
           </form>
         </DialogContent>
