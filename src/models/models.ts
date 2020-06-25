@@ -1,6 +1,6 @@
 import { SnackbarProps } from '@material-ui/core';
 import { AlertProps } from '@material-ui/lab';
-import { FacebookShareButton } from 'react-share';
+import { FacebookIcon, FacebookShareButton } from 'react-share';
 
 export type AsyncState<State> = 'initial' | 'loading' | Error | State;
 
@@ -15,13 +15,7 @@ export interface WithTimeout {
 }
 
 export interface ShareButtonProps
-  extends Pick<
-    React.ComponentProps<typeof FacebookShareButton>,
-    'url' | 'onShareWindowClose'
-  > {
-  children: React.ReactNode;
-}
+  extends React.ComponentProps<typeof FacebookShareButton> {}
 
-export interface ShareIconProps {
-  size: number;
-}
+export interface ShareIconProps
+  extends React.ComponentProps<typeof FacebookIcon> {}

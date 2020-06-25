@@ -1,4 +1,5 @@
-import { withShareIconAdapter } from 'components';
+import { ShareButtonProps, ShareIconProps } from 'models';
+import React from 'react';
 import {
   FacebookIcon,
   FacebookShareButton,
@@ -11,7 +12,6 @@ import {
   WhatsappIcon,
   WhatsappShareButton,
 } from 'react-share';
-import { ShareButtonProps, ShareIconProps } from '../models/models';
 
 export interface ShareConfig {
   label: string;
@@ -30,7 +30,7 @@ export const shareKeys = [
 export type ShareKeys = typeof shareKeys;
 export type ShareKey = ShareKeys[number];
 
-export const shareConfig: Record<ShareKey, ShareConfig> = {
+export const rawShareConfig: Record<ShareKey, ShareConfig> = {
   // * there's no way of determining whether the user actually shared the link
   // copyLink: {
   //   label: 'Copy Link',
@@ -40,28 +40,41 @@ export const shareConfig: Record<ShareKey, ShareConfig> = {
   facebook: {
     label: 'Facebook',
     Button: FacebookShareButton,
-    Icon: withShareIconAdapter(FacebookIcon),
+    Icon: FacebookIcon,
   },
   twitter: {
     label: 'Twitter',
     Button: TwitterShareButton,
-    Icon: withShareIconAdapter(TwitterIcon),
+    Icon: TwitterIcon,
   },
   linkedin: {
     label: 'Linkedin',
     Button: LinkedinShareButton,
-    Icon: withShareIconAdapter(LinkedinIcon),
+    Icon: LinkedinIcon,
   },
   whatsapp: {
     label: 'Whatsapp',
     Button: WhatsappShareButton,
-    Icon: withShareIconAdapter(WhatsappIcon),
+    Icon: WhatsappIcon,
   },
   viber: {
     label: 'Viber',
     Button: ViberShareButton,
-    Icon: withShareIconAdapter(ViberIcon),
+    Icon: ViberIcon,
   },
 };
+
+export const shareConfig = Object.fromEntries(
+  Object.entries(rawShareConfig).map(([key, { Button, Icon, ...config }]) => [
+    key,
+    {
+      ...config,
+      Button: ({ type = 'button', ...props }) => (
+        <Button {...props} type={type} />
+      ),
+      Icon: ({ round = true, ...props }) => <Icon {...props} round={round} />,
+    },
+  ]),
+) as typeof rawShareConfig;
 
 export const sharingOptions = Object.values(shareConfig);

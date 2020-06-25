@@ -24,6 +24,7 @@ export interface CheckProps {
   description: React.ReactNode;
   getFieldProps: GetCheckFieldProps;
   errorMessage?: string;
+  disabled?: boolean;
 }
 
 const formControlStyle: React.CSSProperties = { height: 64, display: 'block' };
@@ -34,6 +35,7 @@ export const Check: React.FC<CheckProps> = ({
   description,
   getFieldProps,
   errorMessage,
+  disabled = false,
 }) => {
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
   const toggleIsDialogOpen = () => {
@@ -45,13 +47,14 @@ export const Check: React.FC<CheckProps> = ({
   const hasError = !!errorMessage;
 
   return (
-    <FormControl error={hasError} style={formControlStyle}>
+    <FormControl disabled={disabled} error={hasError} style={formControlStyle}>
       <FormControlLabel
         label={
           <Box display="flex" alignItems="center">
             <Typography>{label}</Typography>
-            <Tooltip title="Opens dialog with more info">
+            <Tooltip title={disabled ? '' : 'Opens dialog with more info'}>
               <IconButton
+                disabled={disabled}
                 onClick={(e) => {
                   e.stopPropagation();
                   toggleIsDialogOpen();

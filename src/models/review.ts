@@ -28,7 +28,7 @@ export const createReviewSchema = yup
       .required()
       .notOneOf(
         [yup.ref('shared')],
-        "Don't think the idea is good enough to share?",
+        'Share the idea to help it grow, or just tick the above checkbox',
       ),
   });
 
