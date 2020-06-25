@@ -1,6 +1,6 @@
 import firebase from 'firebase/app';
 import 'firebase/auth';
-import { initialUser } from 'models';
+import { initialUser, User } from 'models';
 import { IdeaForm, IdeaPage, Ideas, Signin } from 'pages';
 import { MyIdeas } from 'pages/MyIdeas';
 import React from 'react';
@@ -12,9 +12,9 @@ import { absolutePrivateRoute, absolutePublicRoute, privateRoute } from 'utils';
 export interface RoutesProps {}
 
 export const Routes: React.FC<RoutesProps> = () => {
-  const isSignedIn = !!useUser(firebase.auth(), {
+  const isSignedIn = !!useUser<User | null>(firebase.auth(), {
     startWithValue: initialUser,
-  }).uid;
+  })?.uid;
 
   return (
     <Switch>
