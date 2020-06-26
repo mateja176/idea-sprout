@@ -57,8 +57,10 @@ export const IdeaOptions: React.FC<IdeaOptionsProps> = ({
 
   const ratingsCount = reviews.length;
 
-  const averageRating =
+  const totalRating =
     reviews.reduce((total, { rating }) => total + rating, 0) / ratingsCount;
+
+  const averageRating = totalRating ? totalRating / ratingsCount : 0;
 
   const ratingConfig = {
     count: ratingsCount,
