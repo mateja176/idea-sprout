@@ -1,4 +1,4 @@
-import { FormIdea, RatingConfig, RawIdea } from 'models';
+import { FormIdea, RatingConfig, RawIdea, StorageFile } from 'models';
 
 export const getRatingHelperText = (rating: RatingConfig) =>
   `Average rating ${rating.average} out of total ${rating.count}`;
@@ -18,3 +18,9 @@ export const getFormIdea = ({
   images,
   rationale,
 });
+
+export const getFileName = (file: StorageFile) =>
+  file.path.split('/').slice(-1);
+
+export const getFileNames = (files: StorageFile[]) =>
+  files.flatMap(getFileName);

@@ -22,8 +22,22 @@ export interface DropProps extends DropzoneOptions {
   description: React.ReactNode;
   path: StoragePath;
   onUploadSuccess: (files: StorageFile[]) => void;
+  preloadedFileNames: File['name'][];
   fileLimit?: number;
 }
+
+const DisplayFile: React.FC<Pick<File, 'name'>> = ({ name }) => (
+  <Box mb={2}>
+    <TextField
+      key={name}
+      label="File"
+      value={name}
+      InputProps={{
+        readOnly: true,
+      }}
+    />
+  </Box>
+);
 
 export const Drop: React.FC<DropProps> = ({
   heading,
@@ -31,6 +45,7 @@ export const Drop: React.FC<DropProps> = ({
   path,
   onUploadSuccess,
   fileLimit,
+  preloadedFileNames,
   ...props
 }) => {
   const { upload, status } = useUpload(path);
@@ -109,17 +124,12 @@ export const Drop: React.FC<DropProps> = ({
           </Button>
         </Box>
       </Box>
-      <Box mt={2}>
+      <Box mt={2} mb={4}>
         {files.length ? (
-          files.map((file) => (
-            <TextField
-              key={file.name}
-              label="File"
-              value={file.name}
-              InputProps={{
-                readOnly: true,
-              }}
-            />
+          files.map(({ name }) => <DisplayFile key={name} name={name} />)
+        ) : preloadedFileNames.length ? (
+          preloadedFileNames.map((name) => (
+            <DisplayFile key={name} name={name} />
           ))
         ) : (
           <Box visibility="hidden">

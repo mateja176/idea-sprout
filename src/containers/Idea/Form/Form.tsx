@@ -31,7 +31,7 @@ import {
   useSignedInUser,
 } from 'services';
 import { inputStyle, textareaStyle } from 'styles';
-import { absolutePrivateRoute } from 'utils';
+import { absolutePrivateRoute, getFileName, getFileNames } from 'utils';
 
 export interface IdeaFormProps {
   initialValues: FormIdea;
@@ -275,6 +275,11 @@ export const IdeaForm: React.FC<IdeaFormProps> = ({ initialValues }) => {
           accept="video/*"
           // 50MB
           maxSize={52428800}
+          preloadedFileNames={
+            initialValues.story.path
+              ? getFileName(initialValues.story)
+              : []
+          }
         />
         <TextField
           variant="outlined"
@@ -329,6 +334,7 @@ export const IdeaForm: React.FC<IdeaFormProps> = ({ initialValues }) => {
             maxSize={5242880}
             multiple
             fileLimit={2}
+            preloadedFileNames={getFileNames(initialValues.images)}
           />
         </Box>
         <TextField
