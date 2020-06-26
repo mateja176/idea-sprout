@@ -1,4 +1,5 @@
-export * from './IdeaForm';
+export * from './CreateForm';
+export * from './EditIdea';
 export * from './IdeaPage';
-export * from './Ideas';
+export * from './IdeasPage';
 export * from './Signin';

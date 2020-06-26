@@ -8,14 +8,9 @@ import {
   Tooltip,
   useTheme,
 } from '@material-ui/core';
-import {
-  ExpandLess,
-  ExpandMore,
-  RateReview,
-  StarRate,
-} from '@material-ui/icons';
+import { ExpandLess, ExpandMore, StarRate } from '@material-ui/icons';
 import { ButtonGroup, ShareMenu } from 'containers';
-import { IdeaModel, Review } from 'models';
+import { IdeaModel, Review, WithStyle } from 'models';
 import { isNil } from 'ramda';
 import React from 'react';
 import { starColor } from 'styles';
@@ -26,8 +21,8 @@ export interface IdeaOptionsProps {
   ideaUrl: string;
   reviews: Review[];
   toggleReviewsOpen: () => void;
-  toggleReviewOpen: () => void;
-  NavigationButton: React.ComponentType<{ style: React.CSSProperties }>;
+  ConfigButton: React.ComponentType<WithStyle>;
+  NavigationButton: React.ComponentType<WithStyle>;
   expanded?: boolean;
   toggleExpanded?: () => void;
 }
@@ -46,7 +41,7 @@ export const IdeaOptions: React.FC<IdeaOptionsProps> = ({
   ideaUrl,
   reviews,
   toggleReviewsOpen,
-  toggleReviewOpen,
+  ConfigButton,
   NavigationButton,
   expanded,
   toggleExpanded = () => {},
@@ -100,11 +95,7 @@ export const IdeaOptions: React.FC<IdeaOptionsProps> = ({
                 {averageRating}
               </Button>
             </Tooltip>
-            <Tooltip title="Review" placement="top">
-              <Button style={style} onClick={toggleReviewOpen}>
-                <RateReview color="primary" />
-              </Button>
-            </Tooltip>
+            <ConfigButton style={style} />
             <NavigationButton style={style} />
             <Tooltip placement="top" title={idea.name}>
               <Button

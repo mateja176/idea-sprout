@@ -45,10 +45,21 @@ export interface IdeaModel extends WithId, WithAuthor {
   sharedBy: string[];
 }
 
-export type CreationIdea = Omit<
-  IdeaModel,
-  'id' | 'author' | 'status' | 'sharedBy'
->;
+export type RawIdea = Omit<IdeaModel, 'id'>;
+
+export type FormIdea = Omit<IdeaModel, 'id' | 'author' | 'status' | 'sharedBy'>;
+
+export const initialFormIdea: FormIdea = {
+  checks: {
+    niche: false,
+    expectations: false,
+  },
+  name: '',
+  story: { path: '', width: 0, height: 0 },
+  problemSolution: '',
+  images: [],
+  rationale: '',
+};
 
 export enum ProblemSolutionLength {
   min = 80,
@@ -63,7 +74,7 @@ export enum RationaleLength {
 export const creationIdeaSchema = yup
   .object()
   .required()
-  .shape<CreationIdea>({
+  .shape<FormIdea>({
     checks: yup
       .object()
       .required()

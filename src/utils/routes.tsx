@@ -1,4 +1,4 @@
-import { Create, Person, Search } from '@material-ui/icons';
+import { Create, Edit, Person, Search } from '@material-ui/icons';
 import { LightBulb } from 'components/icons/LightBulb';
 import { Routes } from 'models';
 import React from 'react';
@@ -55,6 +55,11 @@ export const privateNavigationRoute = {
 
 export const privateRoute = {
   ...privateNavigationRoute,
+  edit: {
+    path: 'edit',
+    label: 'Edit',
+    icon: <Edit />,
+  },
 };
 
 export const absolutePrivateNavigationRoutes = Object.values(

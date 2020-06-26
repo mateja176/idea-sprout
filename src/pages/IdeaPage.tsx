@@ -8,20 +8,22 @@ export interface IdeaPageProps
   extends RouteComponentProps<
     { id: IdeaModel['id'] },
     {},
-    { idea?: IdeaModel; reviews?: Review[] }
+    { idea: IdeaModel; reviews: Review[] } | null
   > {}
 
 export const IdeaPage: React.FC<IdeaPageProps> = ({
   match: {
     params: { id },
   },
-  location: {
-    state: { idea, reviews },
-  },
+  location: { state },
 }) => {
   return (
     <Suspense fallback={<Loading />}>
-      <IdeaContainer id={id} initialIdea={idea} initialReviews={reviews} />
+      <IdeaContainer
+        id={id}
+        initialIdea={state?.idea}
+        initialReviews={state?.reviews}
+      />
     </Suspense>
   );
 };

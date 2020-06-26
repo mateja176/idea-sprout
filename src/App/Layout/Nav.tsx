@@ -13,8 +13,10 @@ export interface NavProps {
   onClick: React.MouseEventHandler;
 }
 
+export const navWidth = 250;
+
 const listStyle: React.CSSProperties = {
-  width: 250,
+  width: navWidth,
 };
 
 export const Nav: React.FC<NavProps> = ({ onClick }) => {

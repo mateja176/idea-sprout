@@ -1,5 +1,6 @@
 import { Box, Button, Tooltip, useTheme } from '@material-ui/core';
 import { KeyboardArrowLeft } from '@material-ui/icons';
+import { ReviewButton } from 'components';
 import { Idea, ReviewDialog, ReviewsDialog } from 'containers';
 import 'firebase/firestore';
 import { IdeaModel, Review } from 'models';
@@ -50,13 +51,12 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({
 
   const ideaUrl = useIdeaUrl(idea.id);
 
-  const reviewDialogs = useReviewDialogs();
   const {
     reviewOpen,
     reviewsOpen,
     toggleReviewOpen,
     toggleReviewsOpen,
-  } = reviewDialogs;
+  } = useReviewDialogs();
 
   return (
     <Box mt={pageMargin + 3} mb={10}>
@@ -65,7 +65,10 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({
           idea={idea}
           ideaUrl={ideaUrl}
           reviews={reviews}
-          {...reviewDialogs}
+          toggleReviewsOpen={toggleReviewOpen}
+          ConfigButton={({ style }) => (
+            <ReviewButton style={style} onClick={toggleReviewOpen} />
+          )}
           NavigationButton={({ style }) => (
             <Tooltip placement="top" title="Open in full">
               <Button

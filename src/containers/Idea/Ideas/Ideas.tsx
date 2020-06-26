@@ -14,10 +14,11 @@ export const Ideas: React.FC<IdeasProps> = () => {
 
   const { path } = useRouteMatch();
 
-  const filteredIdeasRef =
-    path === absolutePrivateRoute.myIdeas.path
-      ? ideasRef.where('author', '==', user.email)
-      : ideasRef;
+  const isAuthor = path === absolutePrivateRoute.myIdeas.path;
+
+  const filteredIdeasRef = isAuthor
+    ? ideasRef.where('author', '==', user.email)
+    : ideasRef;
 
   const ideas = useFirestoreCollection<IdeaModel>(filteredIdeasRef);
 
@@ -25,7 +26,7 @@ export const Ideas: React.FC<IdeasProps> = () => {
     <Box>
       <List>
         {ideas.map((idea) => {
-          return <IdeaRow key={idea.id} idea={idea} />;
+          return <IdeaRow key={idea.id} idea={idea} isAuthor={isAuthor} />;
         })}
       </List>
     </Box>

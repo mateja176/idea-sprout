@@ -10,7 +10,7 @@ import {
 import { ChevronLeft, Menu } from '@material-ui/icons';
 import { Loading } from 'components';
 import React from 'react';
-import { Nav } from './Nav';
+import { Nav, navWidth } from './Nav';
 
 export interface LayoutProps {}
 
@@ -41,7 +41,14 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
           </Box>
         </Toolbar>
       </AppBar>
-      <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawerOpen}>
+      <Drawer
+        anchor="left"
+        open={drawerOpen}
+        onClose={toggleDrawerOpen}
+        style={{
+          minWidth: navWidth,
+        }}
+      >
         <Box className={classes.toolbar}>
           <Box
             className={classes.toolbar}

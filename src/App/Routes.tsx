@@ -1,7 +1,7 @@
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import { initialUser, User } from 'models';
-import { IdeaForm, IdeaPage, Ideas, Signin } from 'pages';
+import { CreateIdea, EditIdea, IdeaPage, IdeasPage, Signin } from 'pages';
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { useUser } from 'reactfire';
@@ -26,9 +26,17 @@ export const Routes: React.FC<RoutesProps> = () => {
           }}
         />
       )}
-      <Route exact path={absolutePrivateRoute.ideas.path} component={Ideas} />
-      <Route path={absolutePrivateRoute.create.path} component={IdeaForm} />
-      <Route path={absolutePrivateRoute.myIdeas.path} component={Ideas} />
+      <Route
+        exact
+        path={absolutePrivateRoute.ideas.path}
+        component={IdeasPage}
+      />
+      <Route path={absolutePrivateRoute.create.path} component={CreateIdea} />
+      <Route
+        path={urljoin(absolutePrivateRoute.edit.path, ':id')}
+        component={EditIdea}
+      />
+      <Route path={absolutePrivateRoute.myIdeas.path} component={IdeasPage} />
       <Route
         path={urljoin(absolutePrivateRoute.ideas.path, ':id')}
         component={IdeaPage}

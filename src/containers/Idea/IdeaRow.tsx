@@ -6,8 +6,9 @@ import {
   Tooltip,
   useTheme,
 } from '@material-ui/core';
-import { OpenInBrowser } from '@material-ui/icons';
+import { Edit, OpenInBrowser } from '@material-ui/icons';
 import { useBoolean } from 'ahooks';
+import { Link, ReviewButton } from 'components';
 import { IdeaOptions, ReviewDialog, ReviewsDialog } from 'containers';
 import { IdeaModel, Review } from 'models';
 import React from 'react';
@@ -25,9 +26,10 @@ import { Idea } from './Idea';
 
 export interface IdeaRowProps {
   idea: IdeaModel;
+  isAuthor: boolean;
 }
 
-export const IdeaRow: React.FC<IdeaRowProps> = ({ idea }) => {
+export const IdeaRow: React.FC<IdeaRowProps> = ({ idea, isAuthor }) => {
   const theme = useTheme();
 
   const history = useHistory();
@@ -64,7 +66,19 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ idea }) => {
           ideaUrl={ideaUrl}
           reviews={reviews}
           toggleReviewsOpen={toggleReviewsOpen}
-          toggleReviewOpen={toggleReviewAndExpanded}
+          ConfigButton={({ style }) =>
+            isAuthor ? (
+              <Tooltip placement="top" title="Edit Idea">
+                <Link to={urljoin(absolutePrivateRoute.edit.path, idea.id)}>
+                  <Button style={style} color="primary">
+                    <Edit />
+                  </Button>
+                </Link>
+              </Tooltip>
+            ) : (
+              <ReviewButton style={style} onClick={toggleReviewAndExpanded} />
+            )
+          }
           NavigationButton={({ style }) => (
             <Tooltip placement="top" title="Open in full">
               <Button

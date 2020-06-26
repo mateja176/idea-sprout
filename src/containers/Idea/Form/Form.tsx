@@ -15,8 +15,8 @@ import { Check, Drop } from 'containers';
 import { useFormik } from 'formik';
 import {
   checkNames,
-  CreationIdea,
   creationIdeaSchema,
+  FormIdea,
   GetCheckFieldProps,
   IdeaModel,
   ProblemSolutionLength,
@@ -33,21 +33,11 @@ import {
 import { inputStyle, textareaStyle } from 'styles';
 import { absolutePrivateRoute } from 'utils';
 
-export interface IdeaFormProps {}
+export interface IdeaFormProps {
+  initialValues: FormIdea;
+}
 
-const initialValues: CreationIdea = {
-  checks: {
-    niche: false,
-    expectations: false,
-  },
-  name: '',
-  story: { path: '', width: 0, height: 0 },
-  problemSolution: '',
-  images: [],
-  rationale: '',
-};
-
-export const IdeaForm: React.FC<IdeaFormProps> = () => {
+export const IdeaForm: React.FC<IdeaFormProps> = ({ initialValues }) => {
   const history = useHistory();
 
   const { queueSnackbar } = useActions({ queueSnackbar: createQueueSnackbar });
