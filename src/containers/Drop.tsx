@@ -69,8 +69,8 @@ export const Drop: React.FC<DropProps> = ({
               {heading}
             </Typography>
             <Tooltip title="Open dialog with more info" placement="top">
-              <IconButton onClick={toggleIsDialogOpen}>
-                <Info color="primary" />
+              <IconButton color="primary" onClick={toggleIsDialogOpen}>
+                <Info />
               </IconButton>
             </Tooltip>
             <Dialog open={isDialogOpen} onClose={toggleIsDialogOpen}>

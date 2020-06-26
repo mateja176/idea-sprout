@@ -59,8 +59,9 @@ export const Check: React.FC<CheckProps> = ({
                   e.stopPropagation();
                   toggleIsDialogOpen();
                 }}
+                color="primary"
               >
-                <Info color="primary" />
+                <Info />
               </IconButton>
             </Tooltip>
             <Dialog onClose={toggleIsDialogOpen} open={isDialogOpen}>
