@@ -1,8 +1,10 @@
-import { Box } from '@material-ui/core';
+import { Box, Button, Tooltip, useTheme } from '@material-ui/core';
+import { KeyboardArrowLeft } from '@material-ui/icons';
 import { Idea, ReviewDialog, ReviewsDialog } from 'containers';
 import 'firebase/firestore';
 import { IdeaModel, Review, User } from 'models';
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { useUser } from 'reactfire';
 import {
   useFirestoreCollection,
@@ -13,6 +15,7 @@ import {
   useReviewsRef,
 } from 'services';
 import { pageMargin } from 'styles';
+import { absolutePrivateRoute } from 'utils';
 import { IdeaOptions } from './Options';
 
 export interface IdeaContainerProps extends Pick<IdeaModel, 'id'> {
@@ -25,6 +28,10 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({
   initialIdea,
   initialReviews,
 }) => {
+  const theme = useTheme();
+
+  const history = useHistory();
+
   const user = useUser<User>();
 
   const ideasRef = useIdeasRef();
@@ -59,6 +66,18 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({
           ideaUrl={ideaUrl}
           reviews={reviews}
           {...reviewDialogs}
+          NavigationButton={({ style }) => (
+            <Tooltip placement="top" title="Open in full">
+              <Button
+                style={{ ...style, color: theme.palette.action.active }}
+                onClick={() => {
+                  history.push(absolutePrivateRoute.ideas.path);
+                }}
+              >
+                <KeyboardArrowLeft />
+              </Button>
+            </Tooltip>
+          )}
         />
       </Box>
       <Box pt={1} pb={3}>

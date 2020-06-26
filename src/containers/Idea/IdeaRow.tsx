@@ -1,15 +1,26 @@
-import { Box, Collapse, ListItem } from '@material-ui/core';
+import {
+  Box,
+  Button,
+  Collapse,
+  ListItem,
+  Tooltip,
+  useTheme,
+} from '@material-ui/core';
+import { OpenInBrowser } from '@material-ui/icons';
 import { useBoolean } from 'ahooks';
 import { IdeaOptions, ReviewDialog, ReviewsDialog } from 'containers';
 import { IdeaModel, Review, User } from 'models';
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { useUser } from 'reactfire';
 import {
   useFirestoreCollection,
   useIdeaUrl,
-  useReviewsRef,
   useReviewDialogs,
+  useReviewsRef,
 } from 'services';
+import urljoin from 'url-join';
+import { absolutePrivateRoute } from 'utils';
 import { Idea } from './Idea';
 
 export interface IdeaRowProps {
@@ -17,6 +28,10 @@ export interface IdeaRowProps {
 }
 
 export const IdeaRow: React.FC<IdeaRowProps> = ({ idea }) => {
+  const theme = useTheme();
+
+  const history = useHistory();
+
   const user = useUser<User>();
 
   const [expanded, setExpanded] = useBoolean(false);
@@ -48,10 +63,25 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ idea }) => {
           idea={idea}
           ideaUrl={ideaUrl}
           reviews={reviews}
-          expanded
-          toggleExpanded={toggleExpanded}
           toggleReviewsOpen={toggleReviewsOpen}
           toggleReviewOpen={toggleReviewAndExpanded}
+          NavigationButton={({ style }) => (
+            <Tooltip placement="top" title="Open in full">
+              <Button
+                style={{ ...style, color: theme.palette.action.active }}
+                onClick={() => {
+                  history.push(
+                    urljoin(absolutePrivateRoute.ideas.path, idea.id),
+                    idea,
+                  );
+                }}
+              >
+                <OpenInBrowser />
+              </Button>
+            </Tooltip>
+          )}
+          expanded
+          toggleExpanded={toggleExpanded}
         />
       </ListItem>
       <Collapse in={expanded} timeout="auto" mountOnEnter>

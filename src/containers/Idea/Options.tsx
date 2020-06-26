@@ -11,17 +11,14 @@ import {
 import {
   ExpandLess,
   ExpandMore,
-  OpenInBrowser,
   RateReview,
   StarRate,
 } from '@material-ui/icons';
 import { ButtonGroup, ShareMenu } from 'containers';
 import { IdeaModel, Review } from 'models';
 import React from 'react';
-import { useHistory } from 'react-router-dom';
 import { starColor } from 'styles';
-import urljoin from 'url-join';
-import { absolutePrivateRoute, getRatingHelperText } from 'utils';
+import { getRatingHelperText } from 'utils';
 
 export interface IdeaOptionsProps {
   idea: IdeaModel;
@@ -29,6 +26,7 @@ export interface IdeaOptionsProps {
   reviews: Review[];
   toggleReviewsOpen: () => void;
   toggleReviewOpen: () => void;
+  NavigationButton: React.ComponentType<{ style: React.CSSProperties }>;
   expanded?: boolean;
   toggleExpanded?: () => void;
 }
@@ -48,14 +46,13 @@ export const IdeaOptions: React.FC<IdeaOptionsProps> = ({
   reviews,
   toggleReviewsOpen,
   toggleReviewOpen,
+  NavigationButton,
   expanded,
   toggleExpanded = () => {},
 }) => {
   const theme = useTheme();
 
   const classes = useStyles();
-
-  const history = useHistory();
 
   const ratingsCount = reviews.length;
 
@@ -105,19 +102,7 @@ export const IdeaOptions: React.FC<IdeaOptionsProps> = ({
                 <RateReview color="primary" />
               </Button>
             </Tooltip>
-            <Tooltip placement="top" title="Open in full">
-              <Button
-                style={{ ...style, color: theme.palette.action.active }}
-                onClick={() => {
-                  history.push(
-                    urljoin(absolutePrivateRoute.ideas.path, idea.id),
-                    idea,
-                  );
-                }}
-              >
-                <OpenInBrowser />
-              </Button>
-            </Tooltip>
+            <NavigationButton style={style} />
             <Tooltip placement="top" title={idea.name}>
               <Button
                 style={{
