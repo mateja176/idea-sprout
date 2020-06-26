@@ -1,5 +1,5 @@
 import * as yup from 'yup';
-import { WithAuthor } from './models';
+import { WithAuthor, WithId } from './models';
 
 export const checkNames = ['niche', 'expectations'] as const;
 export type CheckNames = typeof checkNames;
@@ -31,8 +31,7 @@ export const StorageFileSchema = yup
     height: yup.number().required(),
   });
 
-export interface IdeaModel extends WithAuthor {
-  id: string;
+export interface IdeaModel extends WithId, WithAuthor {
   /**
    * the checks are a way of guiding creators towards publishing high quality ideas
    */
@@ -45,8 +44,6 @@ export interface IdeaModel extends WithAuthor {
   rationale: string;
   sharedBy: string[];
 }
-
-export type RawIdea = Omit<IdeaModel, 'id'>;
 
 export type CreationIdea = Omit<
   IdeaModel,

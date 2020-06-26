@@ -4,5 +4,6 @@ export * from './Idea';
 export * from './IdeaContainer';
 export * from './IdeaRow';
 export * from './Ideas';
+export * from './Options';
 export * from './ReviewDialog';
 export * from './ReviewsDialog';

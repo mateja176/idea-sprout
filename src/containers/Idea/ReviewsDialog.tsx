@@ -43,7 +43,7 @@ export const ReviewsDialog: React.FC<ReviewsProps> = ({
       actions={<Button onClick={onClose}>Close</Button>}
     >
       <Box>
-        {[...reviews, ...reviews, ...reviews, ...reviews].map(
+        {reviews.map(
           ({ id, rating, feedback, author }, i, a) => (
             <Box key={id} mb={4}>
               <Section>

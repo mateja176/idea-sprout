@@ -2,6 +2,10 @@ import { SnackbarProps } from '@material-ui/core';
 import { AlertProps } from '@material-ui/lab';
 import { FacebookIcon, FacebookShareButton } from 'react-share';
 
+export interface WithId {
+  id: string;
+}
+
 export interface WithAuthor {
   author: string;
 }
