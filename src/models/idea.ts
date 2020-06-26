@@ -1,4 +1,5 @@
 import * as yup from 'yup';
+import { WithAuthor } from './models';
 
 export const checkNames = ['niche', 'expectations'] as const;
 export type CheckNames = typeof checkNames;
@@ -30,12 +31,8 @@ export const StorageFileSchema = yup
     height: yup.number().required(),
   });
 
-export interface IdeaModel {
+export interface IdeaModel extends WithAuthor {
   id: string;
-  /**
-   * author email
-   */
-  author: string;
   /**
    * the checks are a way of guiding creators towards publishing high quality ideas
    */

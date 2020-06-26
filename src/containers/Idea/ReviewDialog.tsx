@@ -1,17 +1,14 @@
 import {
   Box,
   Button,
-  Dialog,
   DialogActions,
-  DialogContent,
-  DialogTitle,
   TextField,
   Tooltip,
   Typography,
 } from '@material-ui/core';
-import { DragIndicator, Info } from '@material-ui/icons';
+import { Info } from '@material-ui/icons';
 import { Rating } from '@material-ui/lab';
-import { DraggablePaper } from 'components';
+import { DraggableDialog } from 'components';
 import { Check, sharingOptions } from 'containers';
 import { User } from 'firebase';
 import { useFormik } from 'formik';
@@ -38,17 +35,15 @@ export interface ReviewDialogProps {
   ideaUrl: string;
   review: Review | null;
   open: boolean;
-  toggleOpen: () => void;
+  onClose: () => void;
 }
-
-const dragHandleId = 'drag-handle';
 
 export const ReviewDialog: React.FC<ReviewDialogProps> = ({
   idea,
   ideaUrl,
   review,
   open,
-  toggleOpen,
+  onClose,
 }) => {
   const { queueSnackbar } = useActions({ queueSnackbar: createQueueSnackbar });
 
@@ -88,7 +83,7 @@ export const ReviewDialog: React.FC<ReviewDialogProps> = ({
             message: 'Review submitted',
           });
 
-          toggleOpen();
+          onClose();
         })
         .catch(() => {
           queueSnackbar({
@@ -118,105 +113,94 @@ export const ReviewDialog: React.FC<ReviewDialogProps> = ({
         has shared <i>{idea.name}</i>.
       </span>
       &nbsp;
-      <Tooltip placement="top" title="The share count is unique person">
+      <Tooltip placement="top" title="The share count is unique per person">
         <Info color="action" />
       </Tooltip>
     </Box>
   );
 
   return (
-    <Dialog // TODO replace modal with custom implementation since elements outside of the dialog cannot be interacted with
+    <DraggableDialog // TODO replace modal with custom implementation since elements outside of the dialog cannot be interacted with
       open={open}
       onClose={() => {
-        toggleOpen();
+        onClose();
       }}
-      hideBackdrop
-      PaperComponent={DraggablePaper}
-    >
-      <DialogTitle style={{ cursor: 'grab' }}>
-        <Box display="flex" alignItems="center">
+      dialogTitle={
+        <>
           <i>{idea.name}</i>&nbsp;Review
-          <Box ml="auto" id={dragHandleId}>
-            <DragIndicator color="action" />
-          </Box>
+        </>
+      }
+    >
+      <form onSubmit={handleSubmit}>
+        <Box mb={2}>
+          <Typography color="textSecondary">Rating*</Typography>
+          <Rating {...getFieldProps('rating')} precision={0.5} />
         </Box>
-      </DialogTitle>
-      <DialogContent>
-        <form onSubmit={handleSubmit}>
-          <Box mb={2}>
-            <Typography color="textSecondary">Rating*</Typography>
-            <Rating {...getFieldProps('rating')} precision={0.5} />
-          </Box>
-          <TextField
-            {...getFieldProps('feedback')}
-            required
-            multiline
-            rows={5}
-            label="Feedback"
-            helperText={`What did you like or dislike about the idea? Your feedback directly shapes the course of the idea. ( ${FeedbackLength.min} - )`}
-          ></TextField>
-          <Box mt={4}>
-            <Typography>
-              {idea.sharedBy.length > 0 ? sharePrompt1 : sharePrompt0}
-            </Typography>
-            <Box mt={1} display="flex" flexWrap="wrap">
-              {sharingOptions.map((config) => (
-                <Tooltip
-                  key={config.label}
-                  placement="top"
-                  title={config.label}
-                >
-                  <Box mr={1}>
-                    <config.Button
-                      disabled={values.doNotShare}
-                      url={ideaUrl}
-                      onShareWindowClose={() => {
-                        setFieldValue('shared', true);
+        <TextField
+          {...getFieldProps('feedback')}
+          required
+          multiline
+          rows={5}
+          label="Feedback"
+          helperText={`What did you like or dislike about the idea? Your feedback directly shapes the course of the idea. ( ${FeedbackLength.min} - )`}
+        ></TextField>
+        <Box mt={4}>
+          <Typography>
+            {idea.sharedBy.length > 0 ? sharePrompt1 : sharePrompt0}
+          </Typography>
+          <Box mt={1} display="flex" flexWrap="wrap">
+            {sharingOptions.map((config) => (
+              <Tooltip key={config.label} placement="top" title={config.label}>
+                <Box mr={1}>
+                  <config.Button
+                    disabled={values.doNotShare}
+                    url={ideaUrl}
+                    onShareWindowClose={() => {
+                      setFieldValue('shared', true);
 
-                        const ideaShard: Pick<IdeaModel, 'sharedBy'> = {
-                          sharedBy: idea.sharedBy.concat(user.uid),
-                        };
+                      const ideaShard: Pick<IdeaModel, 'sharedBy'> = {
+                        sharedBy: idea.sharedBy.concat(user.uid),
+                      };
 
-                        ideaRef.update(ideaShard);
-                      }}
-                    >
-                      <config.Icon size={50} />
-                    </config.Button>
-                  </Box>
-                </Tooltip>
-              ))}
-            </Box>
-            <Check
-              name="doNotShare"
-              label="Do not share*"
-              description={
-                <Box>
-                  <Box>
-                    It's not required, however sharing the idea with a friend or
-                    friends who may be interested in it, helps the idea grow.
-                  </Box>
-                  <Box>
-                    Ideas which are not shared are like plants which are not
-                    watered, eventually they shrivel and die.
-                  </Box>
+                      ideaRef.update(ideaShard);
+                    }}
+                  >
+                    <config.Icon size={50} />
+                  </config.Button>
                 </Box>
-              }
-              getFieldProps={getFieldProps}
-              errorMessage={(touched.doNotShare || '') && errors.doNotShare}
-              disabled={values.shared}
-            />
+              </Tooltip>
+            ))}
           </Box>
-          <DialogActions>
-            <Button onClick={toggleOpen}>Cancel</Button>
-            <Button
-              type="submit"
-              disabled={isSubmitting || !isValid || areValuesEqualToInitial}
-            >
-              Submit
-            </Button>
-          </DialogActions>
-        </form>
-      </DialogContent>
-    </Dialog>
+          <Check
+            name="doNotShare"
+            label="Do not share*"
+            description={
+              <Box>
+                <Box>
+                  It's not required, however sharing the idea with a friend or
+                  friends who may be interested in it, helps the idea grow.
+                </Box>
+                <Box>
+                  Ideas which are not shared are like plants which are not
+                  watered, eventually they shrivel and die.
+                </Box>
+              </Box>
+            }
+            getFieldProps={getFieldProps}
+            errorMessage={(touched.doNotShare || '') && errors.doNotShare}
+            disabled={values.shared}
+          />
+        </Box>
+        <DialogActions>
+          <Button onClick={onClose}>Cancel</Button>
+          <Button
+            type="submit"
+            disabled={isSubmitting || !isValid || areValuesEqualToInitial}
+          >
+            Submit
+          </Button>
+        </DialogActions>
+      </form>
+    </DraggableDialog>
   );
 };

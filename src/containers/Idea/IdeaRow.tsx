@@ -18,7 +18,7 @@ import {
   StarRate,
 } from '@material-ui/icons';
 import { useBoolean } from 'ahooks';
-import { ButtonGroup, ReviewDialog } from 'containers';
+import { ButtonGroup, ReviewDialog, ReviewsDialog } from 'containers';
 import { IdeaModel, RawReview, User } from 'models';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
@@ -83,6 +83,13 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ idea }) => {
     setReviewOpen.toggle();
   };
 
+  const [reviewsOpen, setReviewsOpen] = useBoolean(false);
+  const toggleReviewsOpen = () => {
+    setExpanded.setTrue();
+
+    setReviewsOpen.toggle();
+  };
+
   return (
     <Box key={idea.id}>
       <ListItem key={idea.id}>
@@ -111,6 +118,9 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ idea }) => {
                       color: theme.palette.action.active,
                     }}
                     endIcon={<StarRate style={{ color: starColor }} />}
+                    onClick={() => {
+                      setReviewsOpen.toggle();
+                    }}
                   >
                     {averageRating}
                   </Button>
@@ -175,12 +185,18 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ idea }) => {
           <Idea {...idea} />
         </Box>
       </Collapse>
+      <ReviewsDialog
+        name={idea.name}
+        open={reviewsOpen}
+        onClose={toggleReviewsOpen}
+        reviews={reviews}
+      />
       <ReviewDialog
         idea={idea}
         ideaUrl={ideaUrl}
         review={reviews.find(({ id }) => id === user.uid) || null}
         open={reviewOpen}
-        toggleOpen={toggleReviewOpen}
+        onClose={toggleReviewOpen}
       />
     </Box>
   );

@@ -1,6 +1,7 @@
 import * as yup from 'yup';
+import { WithAuthor } from './models';
 
-export interface Review {
+export interface Review extends WithAuthor {
   id: string;
   rating: number;
   feedback: string;
@@ -8,7 +9,7 @@ export interface Review {
 
 export type RawReview = Omit<Review, 'id'>;
 
-export type CreationReview = Omit<Review, 'id'> & {
+export type CreationReview = Omit<Review, 'id' | 'author'> & {
   shared: boolean;
   doNotShare: boolean;
 };

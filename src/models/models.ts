@@ -2,6 +2,10 @@ import { SnackbarProps } from '@material-ui/core';
 import { AlertProps } from '@material-ui/lab';
 import { FacebookIcon, FacebookShareButton } from 'react-share';
 
+export interface WithAuthor {
+  author: string;
+}
+
 export type AsyncState<State> = 'initial' | 'loading' | Error | State;
 
 export interface ISnackbar
