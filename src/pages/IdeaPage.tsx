@@ -31,7 +31,7 @@ export const IdeaPage: React.FC<IdeaPageProps> = ({
             </IconButton>
           </Tooltip>
         </Link>
-        <Box ml={2}>{idea?.name ?? <Skeleton />}</Box>
+        <Box ml={2}>{idea?.name ?? <Skeleton width={80} height={'2em'} />}</Box>
       </Box>
       <Box pt={1} pb={3}>
         {idea ? (
