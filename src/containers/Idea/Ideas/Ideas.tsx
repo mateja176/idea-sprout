@@ -2,13 +2,24 @@ import { Box, List } from '@material-ui/core';
 import { IdeaRow } from 'containers';
 import { IdeaModel } from 'models';
 import React from 'react';
-import { useFirestoreCollection, useIdeasRef } from 'services';
+import { useFirestoreCollection, useIdeasRef, useSignedInUser } from 'services';
+import { useRouteMatch } from 'react-router-dom';
+import { absolutePrivateRoute } from 'utils';
 
 export interface IdeasProps {}
 export const Ideas: React.FC<IdeasProps> = () => {
   const ideasRef = useIdeasRef();
 
-  const ideas = useFirestoreCollection<IdeaModel>(ideasRef);
+  const user = useSignedInUser();
+
+  const { path } = useRouteMatch();
+
+  const filteredIdeasRef =
+    path === absolutePrivateRoute.myIdeas.path
+      ? ideasRef.where('author', '==', user.email)
+      : ideasRef;
+
+  const ideas = useFirestoreCollection<IdeaModel>(filteredIdeasRef);
 
   return (
     <Box>
