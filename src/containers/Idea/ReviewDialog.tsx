@@ -76,7 +76,7 @@ export const ReviewDialog: React.FC<ReviewDialogProps> = ({
     onSubmit: ({ rating, feedback }) => {
       return reviewsRef
         .doc(user.uid)
-        .set({ rating, feedback })
+        .set({ rating, feedback, author: user.email })
         .then(() => {
           queueSnackbar({
             severity: 'success',
