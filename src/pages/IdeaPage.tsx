@@ -1,47 +1,27 @@
-import { Box, IconButton, Tooltip } from '@material-ui/core';
-import { KeyboardArrowLeft } from '@material-ui/icons';
-import { Link, Loading } from 'components';
-import { Idea, IdeaContainer } from 'containers';
-import { IdeaModel } from 'models';
+import { Loading } from 'components';
+import { IdeaContainer } from 'containers';
+import { IdeaModel, Review } from 'models';
 import React, { Suspense } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import { absolutePrivateRoute } from 'utils';
-import { Skeleton } from '@material-ui/lab';
 
 export interface IdeaPageProps
   extends RouteComponentProps<
     { id: IdeaModel['id'] },
     {},
-    IdeaModel | undefined
+    { idea?: IdeaModel; reviews?: Review[] }
   > {}
 
 export const IdeaPage: React.FC<IdeaPageProps> = ({
   match: {
     params: { id },
   },
-  location: { state: idea },
+  location: {
+    state: { idea, reviews },
+  },
 }) => {
   return (
-    <Box mt={1} mb={10}>
-      <Box ml={1} display="flex" alignItems="center">
-        <Link to={absolutePrivateRoute.ideas.path}>
-          <Tooltip placement="top" title="Back to list">
-            <IconButton>
-              <KeyboardArrowLeft />
-            </IconButton>
-          </Tooltip>
-        </Link>
-        <Box ml={2}>{idea?.name ?? <Skeleton width={80} height={'2em'} />}</Box>
-      </Box>
-      <Box pt={1} pb={3}>
-        {idea ? (
-          <Idea {...idea} />
-        ) : (
-          <Suspense fallback={<Loading />}>
-            <IdeaContainer id={id} />
-          </Suspense>
-        )}
-      </Box>
-    </Box>
+    <Suspense fallback={<Loading />}>
+      <IdeaContainer id={id} initialIdea={idea} initialReviews={reviews} />
+    </Suspense>
   );
 };

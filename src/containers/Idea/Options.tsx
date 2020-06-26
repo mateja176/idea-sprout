@@ -27,10 +27,10 @@ export interface IdeaOptionsProps {
   idea: IdeaModel;
   ideaUrl: string;
   reviews: Review[];
-  expanded: boolean;
-  toggleExpanded: () => void;
   toggleReviewsOpen: () => void;
   toggleReviewOpen: () => void;
+  expanded?: boolean;
+  toggleExpanded?: () => void;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -46,10 +46,10 @@ export const IdeaOptions: React.FC<IdeaOptionsProps> = ({
   idea,
   ideaUrl,
   reviews,
-  expanded,
-  toggleExpanded,
   toggleReviewsOpen,
   toggleReviewOpen,
+  expanded,
+  toggleExpanded = () => {},
 }) => {
   const theme = useTheme();
 
@@ -140,11 +140,13 @@ export const IdeaOptions: React.FC<IdeaOptionsProps> = ({
                   >
                     {idea.name}
                   </Box>
-                  <Hidden xsDown>
-                    <Icon color={'action'} style={{ display: 'flex' }}>
-                      {expanded ? <ExpandLess /> : <ExpandMore />}
-                    </Icon>
-                  </Hidden>
+                  {expanded && (
+                    <Hidden xsDown>
+                      <Icon color={'action'} style={{ display: 'flex' }}>
+                        {expanded ? <ExpandLess /> : <ExpandMore />}
+                      </Icon>
+                    </Hidden>
+                  )}
                 </Box>
               </Button>
             </Tooltip>

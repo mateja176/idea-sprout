@@ -4,7 +4,12 @@ import { IdeaOptions, ReviewDialog, ReviewsDialog } from 'containers';
 import { IdeaModel, Review, User } from 'models';
 import React from 'react';
 import { useUser } from 'reactfire';
-import { useFirestoreCollection, useIdeaUrl, useReviewsRef } from 'services';
+import {
+  useFirestoreCollection,
+  useIdeaUrl,
+  useReviewsRef,
+  useReviewDialogs,
+} from 'services';
 import { Idea } from './Idea';
 
 export interface IdeaRowProps {
@@ -23,16 +28,17 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ idea }) => {
 
   const reviews = useFirestoreCollection<Review>(useReviewsRef(idea.id));
 
-  const [reviewOpen, setReviewOpen] = useBoolean(false);
-  const toggleReviewOpen = () => {
-    setExpanded.toggle();
+  const {
+    reviewOpen,
+    reviewsOpen,
+    toggleReviewOpen,
+    toggleReviewsOpen,
+  } = useReviewDialogs();
 
-    setReviewOpen.toggle();
-  };
+  const toggleReviewAndExpanded = () => {
+    toggleExpanded();
 
-  const [reviewsOpen, setReviewsOpen] = useBoolean(false);
-  const toggleReviewsOpen = () => {
-    setReviewsOpen.toggle();
+    toggleReviewOpen();
   };
 
   return (
@@ -45,7 +51,7 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ idea }) => {
           expanded
           toggleExpanded={toggleExpanded}
           toggleReviewsOpen={toggleReviewsOpen}
-          toggleReviewOpen={toggleReviewOpen}
+          toggleReviewOpen={toggleReviewAndExpanded}
         />
       </ListItem>
       <Collapse in={expanded} timeout="auto" mountOnEnter>
@@ -62,9 +68,9 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ idea }) => {
       <ReviewDialog
         idea={idea}
         ideaUrl={ideaUrl}
-        review={reviews.find(({ id }) => id === user.uid) || null}
+        review={reviews.find(({ id }) => id === user.uid)}
         open={reviewOpen}
-        onClose={toggleReviewOpen}
+        onClose={toggleReviewAndExpanded}
       />
     </Box>
   );

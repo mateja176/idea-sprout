@@ -33,7 +33,7 @@ import {
 export interface ReviewDialogProps {
   idea: IdeaModel;
   ideaUrl: string;
-  review: Review | null;
+  review?: Review;
   open: boolean;
   onClose: () => void;
 }
