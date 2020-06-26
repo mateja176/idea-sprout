@@ -10,7 +10,6 @@ import { Info } from '@material-ui/icons';
 import { Rating } from '@material-ui/lab';
 import { DraggableDialog } from 'components';
 import { Check, sharingOptions } from 'containers';
-import { User } from 'firebase';
 import { useFormik } from 'formik';
 import {
   createReviewSchema,
@@ -22,12 +21,12 @@ import {
 } from 'models';
 import { equals } from 'ramda';
 import React from 'react';
-import { useUser } from 'reactfire';
 import {
   createQueueSnackbar,
   useActions,
   useIdeasRef,
   useReviewsRef,
+  useSignedInUser,
 } from 'services';
 
 export interface ReviewDialogProps {
@@ -51,7 +50,7 @@ export const ReviewDialog: React.FC<ReviewDialogProps> = ({
 
   const reviewsRef = useReviewsRef(idea.id);
 
-  const user = useUser<User>();
+  const user = useSignedInUser();
 
   const hasShared = idea.sharedBy.includes(user.uid);
 

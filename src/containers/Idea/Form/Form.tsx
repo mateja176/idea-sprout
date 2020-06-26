@@ -21,12 +21,15 @@ import {
   IdeaModel,
   ProblemSolutionLength,
   RationaleLength,
-  User,
 } from 'models';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useUser } from 'reactfire';
-import { createQueueSnackbar, useActions, useIdeasRef } from 'services';
+import {
+  createQueueSnackbar,
+  useActions,
+  useIdeasRef,
+  useSignedInUser,
+} from 'services';
 import { inputStyle, textareaStyle } from 'styles';
 import { absolutePrivateRoute } from 'utils';
 
@@ -51,7 +54,7 @@ export const IdeaForm: React.FC<IdeaFormProps> = () => {
 
   const ideaRef = useIdeasRef().doc();
 
-  const user = useUser<User>();
+  const user = useSignedInUser();
 
   const [expanded, setExpanded] = React.useState(true);
   const toggleExpanded = () => {

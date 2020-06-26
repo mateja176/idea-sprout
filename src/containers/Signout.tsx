@@ -7,7 +7,7 @@ import {
 } from '@material-ui/core';
 import { ExitToApp } from '@material-ui/icons';
 import { FirebaseError } from 'firebase/app';
-import { AsyncState } from 'models';
+import { AsyncState, User } from 'models';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useAuth, useUser } from 'reactfire';
@@ -27,7 +27,7 @@ export const Signout: React.FC<SignoutProps> = ({ onClick }) => {
 
   const auth = useAuth();
 
-  const user = useUser<null>();
+  const user = useUser<User | null>();
 
   return user ? (
     <Tooltip title={`Sign out of ${user.email}`}>

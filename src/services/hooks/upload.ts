@@ -1,11 +1,12 @@
 import firebase from 'firebase/app';
 import 'firebase/storage';
-import { StorageFile, StoragePath, User } from 'models';
+import { StorageFile, StoragePath } from 'models';
 import { useState } from 'react';
-import { useStorage, useUser } from 'reactfire';
+import { useStorage } from 'reactfire';
 import { putString } from 'rxfire/storage';
 import { createQueueSnackbar } from 'services/store';
 import urljoin from 'url-join';
+import { useSignedInUser } from './firebase';
 import { useActions } from './hooks';
 
 export const useUpload = (path: StoragePath) => {
@@ -13,7 +14,7 @@ export const useUpload = (path: StoragePath) => {
     queueSnackbar: createQueueSnackbar,
   });
 
-  const user = useUser<User>();
+  const user = useSignedInUser();
 
   const [status, setStatus] = useState<
     'initial' | 'loading' | 'success' | 'failure'

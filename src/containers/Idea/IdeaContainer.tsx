@@ -2,10 +2,9 @@ import { Box, Button, Tooltip, useTheme } from '@material-ui/core';
 import { KeyboardArrowLeft } from '@material-ui/icons';
 import { Idea, ReviewDialog, ReviewsDialog } from 'containers';
 import 'firebase/firestore';
-import { IdeaModel, Review, User } from 'models';
+import { IdeaModel, Review } from 'models';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useUser } from 'reactfire';
 import {
   useFirestoreCollection,
   useFirestoreDoc,
@@ -13,6 +12,7 @@ import {
   useIdeaUrl,
   useReviewDialogs,
   useReviewsRef,
+  useSignedInUser,
 } from 'services';
 import { pageMargin } from 'styles';
 import { absolutePrivateRoute } from 'utils';
@@ -32,7 +32,7 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({
 
   const history = useHistory();
 
-  const user = useUser<User>();
+  const user = useSignedInUser();
 
   const ideasRef = useIdeasRef();
 

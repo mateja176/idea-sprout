@@ -1,11 +1,14 @@
 import { firestore } from 'firebase/app';
-import { IdeaModel, WithId } from 'models';
+import { IdeaModel, User, WithId } from 'models';
 import {
   ReactFireOptions,
   useFirestore,
   useFirestoreCollection as useFirebaseFirestoreCollection,
   useFirestoreDoc as useFirebaseFirestoreDoc,
+  useUser as useFirebaseUser,
 } from 'reactfire';
+
+export const useSignedInUser = () => useFirebaseUser<User>();
 
 export const useIdeasRef = () => {
   return useFirestore().collection('ideas');

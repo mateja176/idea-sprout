@@ -9,15 +9,15 @@ import {
 import { OpenInBrowser } from '@material-ui/icons';
 import { useBoolean } from 'ahooks';
 import { IdeaOptions, ReviewDialog, ReviewsDialog } from 'containers';
-import { IdeaModel, Review, User } from 'models';
+import { IdeaModel, Review } from 'models';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useUser } from 'reactfire';
 import {
   useFirestoreCollection,
   useIdeaUrl,
   useReviewDialogs,
   useReviewsRef,
+  useSignedInUser,
 } from 'services';
 import urljoin from 'url-join';
 import { absolutePrivateRoute } from 'utils';
@@ -32,7 +32,7 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ idea }) => {
 
   const history = useHistory();
 
-  const user = useUser<User>();
+  const user = useSignedInUser();
 
   const [expanded, setExpanded] = useBoolean(false);
   const toggleExpanded = () => {
