@@ -16,6 +16,7 @@ import {
 } from '@material-ui/icons';
 import { ButtonGroup, ShareMenu } from 'containers';
 import { IdeaModel, Review } from 'models';
+import { isNil } from 'ramda';
 import React from 'react';
 import { starColor } from 'styles';
 import { getRatingHelperText } from 'utils';
@@ -125,7 +126,7 @@ export const IdeaOptions: React.FC<IdeaOptionsProps> = ({
                   >
                     {idea.name}
                   </Box>
-                  {expanded && (
+                  {!isNil(expanded) && (
                     <Hidden xsDown>
                       <Icon color={'action'} style={{ display: 'flex' }}>
                         {expanded ? <ExpandLess /> : <ExpandMore />}

@@ -80,7 +80,7 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ idea }) => {
               </Button>
             </Tooltip>
           )}
-          expanded
+          expanded={expanded}
           toggleExpanded={toggleExpanded}
         />
       </ListItem>
