@@ -74,10 +74,16 @@ export const useUpload = (path: StoragePath) => {
                   width: width.toString(),
                   height: height.toString(),
                 },
-              }).toPromise(),
+              })
+                .toPromise()
+                .then(() => ({
+                  path: ref.fullPath,
+                  width,
+                  height,
+                })),
             );
           })
-          .then(({ ref }) => {
+          .then(({ path, width, height }) => {
             setStatus('success');
 
             queueSnackbar({
@@ -85,7 +91,7 @@ export const useUpload = (path: StoragePath) => {
               message: `"${file.name}" uploaded`,
             });
 
-            return { path: ref.fullPath, width: 0, height: 0 };
+            return { path, width, height };
           });
       }),
     ).catch((error: Error) => {
