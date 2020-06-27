@@ -1,13 +1,13 @@
 import {
-  CircularProgress,
   ListItem,
   ListItemIcon,
   ListItemText,
   Tooltip,
 } from '@material-ui/core';
 import { ExitToApp } from '@material-ui/icons';
+import { useBoolean } from 'ahooks';
 import { FirebaseError } from 'firebase/app';
-import { AsyncState, User } from 'models';
+import { User } from 'models';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useAuth, useUser } from 'reactfire';
@@ -23,7 +23,7 @@ export const Signout: React.FC<SignoutProps> = ({ onClick }) => {
 
   const history = useHistory();
 
-  const [status, setStatus] = React.useState<AsyncState<null>>('initial');
+  const [loading, setLoading] = useBoolean();
 
   const auth = useAuth();
 
@@ -32,9 +32,10 @@ export const Signout: React.FC<SignoutProps> = ({ onClick }) => {
   return user ? (
     <Tooltip title={`Sign out of ${user.email}`}>
       <ListItem
+        disabled={loading}
         button
         onClick={(e) => {
-          setStatus('loading');
+          setLoading.setTrue();
 
           auth
             .signOut()
@@ -44,25 +45,22 @@ export const Signout: React.FC<SignoutProps> = ({ onClick }) => {
                 severity: 'success',
               });
 
-              setStatus(null);
-
               onClick(e);
 
               history.push(absolutePublicRoute.signin.path);
             })
-            .catch((error: FirebaseError) => {
+            .catch((error: FirebaseError) => { // * the operation doesn't fail even if the user is offline
               queueSnackbar({ message: error.message, severity: 'success' });
-
-              setStatus(error);
+            })
+            .finally(() => {
+              setLoading.setFalse();
             });
         }}
       >
         <ListItemIcon>
           <ExitToApp />
         </ListItemIcon>
-        <ListItemText>
-          Sign out {status === 'loading' && <CircularProgress size="1em" />}
-        </ListItemText>
+        <ListItemText>Sign out</ListItemText>
       </ListItem>
     </Tooltip>
   ) : null;
