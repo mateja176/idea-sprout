@@ -1,69 +1,106 @@
-import { Create, Edit, Person, Search } from '@material-ui/icons';
+import { Create, Dashboard, Edit, Person, Search } from '@material-ui/icons';
 import { LightBulb } from 'components/icons/LightBulb';
-import { Routes } from 'models';
+import { NestedRoutes, Route, Routes, ToAbsoluteRec } from 'models';
 import React from 'react';
 import urljoin from 'url-join';
 
-const toAbsolute = <R extends Routes>(routes: R) => {
-  const entries = Object.entries(routes).map(([key, { path, ...route }]) => [
-    key,
-    {
-      ...route,
-      path: urljoin('/', path),
+const flatten = <R extends NestedRoutes>(nestedRoutes: R): any => {
+  return Object.entries(nestedRoutes).reduce(
+    (routes, [key, { children, ...route }]) => {
+      return {
+        ...routes,
+        [key]: route,
+        ...flatten(children),
+      };
     },
-  ]);
-  return Object.fromEntries(entries) as {
-    [key in keyof R]: Omit<R[key], 'path'> & { path: string };
-  };
+    {} as Routes,
+  );
 };
 
-export const publicNavigationRoute = {
+const toAbsoluteRec = (parentPath: string) => <R extends NestedRoutes>(
+  routes: R,
+): ToAbsoluteRec<R> => {
+  return Object.fromEntries(
+    Object.entries(routes).map(([key, { children, ...route }]) => {
+      const path = urljoin(parentPath, route.path);
+
+      return [
+        key,
+        {
+          ...route,
+          path,
+          children: toAbsoluteRec(path)(children),
+        },
+      ];
+    }),
+  ) as ToAbsoluteRec<R>;
+};
+
+export const publicNestedNavigationRoute = {
   signin: {
     path: 'signin',
     label: 'Sign in',
     icon: <Person />,
+    children: {},
+  },
+};
+export const absolutePublicNavigationRoutes: Route[] = Object.values(
+  flatten(toAbsoluteRec('/')(publicNestedNavigationRoute)),
+);
+
+export const nestedPublicRoute = {
+  ...publicNestedNavigationRoute,
+};
+export const absolutePublicRoute = toAbsoluteRec('/')(nestedPublicRoute);
+
+// * Private section
+
+const ideas = {
+  path: 'ideas',
+  label: 'Discover',
+  icon: <Search />,
+  children: {
+    create: {
+      path: 'create',
+      label: 'Create',
+      icon: <Create />,
+      children: {},
+    },
+    my: {
+      path: 'my',
+      label: 'My Ideas',
+      icon: <LightBulb />,
+      children: {},
+    },
   },
 };
 
-export const publicRoute = {
-  ...publicNavigationRoute,
+export const privateNestedNavigationRoute = {
+  ideas,
 };
 
-export const absolutePublicNavigationRoutes = Object.values(
-  publicNavigationRoute,
+export const absolutePrivateNavigationRoutes: Route[] = Object.values(
+  flatten(toAbsoluteRec('/')(privateNestedNavigationRoute)),
 );
 
-export const absolutePublicRoute = toAbsolute(publicRoute);
-
-export const privateNavigationRoute = {
+export const privateNestedRoute = {
   ideas: {
+    ...ideas,
+    children: {
+      ...ideas.children,
+      edit: {
+        path: 'edit',
+        label: 'Edit',
+        icon: <Edit />,
+        children: {},
+      },
+    },
+  },
+  root: {
     path: '/',
-    label: 'Discover',
-    icon: <Search />,
-  },
-  create: {
-    path: 'create',
-    label: 'Create',
-    icon: <Create />,
-  },
-  myIdeas: {
-    path: 'my-ideas',
-    label: 'My Ideas',
-    icon: <LightBulb />,
+    label: 'Root',
+    icon: <Dashboard />,
+    children: {},
   },
 };
-
-export const privateRoute = {
-  ...privateNavigationRoute,
-  edit: {
-    path: 'edit',
-    label: 'Edit',
-    icon: <Edit />,
-  },
-};
-
-export const absolutePrivateNavigationRoutes = Object.values(
-  privateNavigationRoute,
-);
-
-export const absolutePrivateRoute = toAbsolute(privateRoute);
+export const absolutePrivateRoute = toAbsoluteRec('/')(privateNestedRoute);

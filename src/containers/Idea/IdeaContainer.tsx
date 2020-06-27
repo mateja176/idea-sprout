@@ -5,7 +5,7 @@ import { Idea, ReviewDialog, ReviewsDialog } from 'containers';
 import 'firebase/firestore';
 import { IdeaModel, Review } from 'models';
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Redirect } from 'react-router-dom';
 import {
   useFirestoreCollection,
   useFirestoreDoc,
@@ -58,7 +58,7 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({
     toggleReviewsOpen,
   } = useReviewDialogs();
 
-  return (
+  return idea.name ? (
     <Box mt={pageMargin + 3} mb={10}>
       <Box mx={2}>
         <IdeaOptions
@@ -100,5 +100,7 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({
         onClose={toggleReviewOpen}
       />
     </Box>
+  ) : (
+    <Redirect to={absolutePrivateRoute.ideas.path} />
   );
 };

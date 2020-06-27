@@ -14,7 +14,7 @@ export const Ideas: React.FC<IdeasProps> = () => {
 
   const { path } = useRouteMatch();
 
-  const isAuthor = path === absolutePrivateRoute.myIdeas.path;
+  const isAuthor = path === absolutePrivateRoute.ideas.children.my.path;
 
   const filteredIdeasRef = isAuthor
     ? ideasRef.where('author', '==', user.email)

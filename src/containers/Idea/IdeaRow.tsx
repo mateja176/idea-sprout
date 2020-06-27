@@ -69,7 +69,12 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ idea, isAuthor }) => {
           ConfigButton={({ style }) =>
             isAuthor ? (
               <Tooltip placement="top" title="Edit Idea">
-                <Link to={urljoin(absolutePrivateRoute.edit.path, idea.id)}>
+                <Link
+                  to={urljoin(
+                    absolutePrivateRoute.ideas.children.edit.path,
+                    idea.id,
+                  )}
+                >
                   <Button style={style} color="primary">
                     <Edit />
                   </Button>
