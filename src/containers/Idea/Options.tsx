@@ -1,5 +1,4 @@
 import {
-  Badge,
   Box,
   Button,
   Hidden,
@@ -9,7 +8,7 @@ import {
   useTheme,
 } from '@material-ui/core';
 import { ExpandLess, ExpandMore, StarRate } from '@material-ui/icons';
-import { ButtonGroup, ShareMenu } from 'containers';
+import { ShareMenu } from 'containers';
 import { IdeaModel, Review, WithStyle } from 'models';
 import { isNil } from 'ramda';
 import React from 'react';
