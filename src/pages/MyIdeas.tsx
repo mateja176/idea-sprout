@@ -13,7 +13,7 @@ export const MyIdeas: React.FC<MyIdeasProps> = () => (
         filter={(user) => ({
           fieldPath: 'author',
           opStr: '==',
-          value: user.email,
+          value: user.email || '',
         })}
       />
     </React.Suspense>

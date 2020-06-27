@@ -9,7 +9,11 @@ import { getIsAuthor } from 'utils';
 export interface IdeasProps<Key extends keyof RawIdea> {
   filter: (
     user: User,
-  ) => { fieldPath: Key; opStr: firebase.firestore.WhereFilterOp; value: any };
+  ) => {
+    fieldPath: Key;
+    opStr: firebase.firestore.WhereFilterOp;
+    value: RawIdea[Key];
+  };
 }
 
 export const Ideas = <Key extends keyof RawIdea>({
