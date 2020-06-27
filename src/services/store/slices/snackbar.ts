@@ -1,4 +1,5 @@
 import { ISnackbar } from 'models';
+import { createSelector } from 'reselect';
 import { createAction, getType } from 'typesafe-actions';
 
 export interface SnackbarState {
@@ -45,3 +46,14 @@ export const snackbar = (
       return state;
   }
 };
+
+export interface WithSnackbar {
+  snackbar: SnackbarState;
+}
+
+export const selectSnackbarState = ({ snackbar }: WithSnackbar) => snackbar;
+
+export const selectSnackbarQueue = createSelector(
+  selectSnackbarState,
+  ({ queue }) => queue,
+);
