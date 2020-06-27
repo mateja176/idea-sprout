@@ -2,8 +2,9 @@ import { RawIdea, WithId } from 'models';
 import React from 'react';
 import { useFirestoreDocDataOnce } from 'reactfire';
 import { useIdeasRef } from 'services';
-import { getFormIdea } from 'utils';
+import { getFormIdea, absolutePrivateRoute } from 'utils';
 import { IdeaForm } from './Form';
+import { Redirect } from 'react-router-dom';
 
 export interface EditFormProps extends WithId {}
 
@@ -12,5 +13,9 @@ export const EditForm: React.FC<EditFormProps> = ({ id }) => {
 
   const idea = useFirestoreDocDataOnce<RawIdea>(ideaRef);
 
-  return <IdeaForm initialValues={getFormIdea(idea)} />;
+  return idea.name ? (
+    <IdeaForm initialValues={getFormIdea(idea)} />
+  ) : (
+    <Redirect to={absolutePrivateRoute.ideas.path} />
+  );
 };
