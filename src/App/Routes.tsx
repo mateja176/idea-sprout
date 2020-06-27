@@ -1,7 +1,7 @@
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import { initialUser, User } from 'models';
-import { IdeasPage, Signin } from 'pages';
+import { IdeasSwitch, Signin } from 'pages';
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { useUser } from 'reactfire';
@@ -30,7 +30,7 @@ export const Routes: React.FC<RoutesProps> = () => {
         path={absolutePrivateRoute.root.path}
         render={() => <Redirect to={absolutePrivateRoute.ideas.path} />}
       />
-      <Route path={absolutePrivateRoute.ideas.path} component={IdeasPage} />
+      <Route path={absolutePrivateRoute.ideas.path} component={IdeasSwitch} />
     </Switch>
   );
 };

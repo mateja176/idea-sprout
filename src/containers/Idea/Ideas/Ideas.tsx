@@ -1,24 +1,27 @@
 import { Box, List } from '@material-ui/core';
 import { IdeaRow } from 'containers';
-import { IdeaModel } from 'models';
+import firebase from 'firebase/app';
+import { IdeaModel, RawIdea, User } from 'models';
 import React from 'react';
 import { useFirestoreCollection, useIdeasRef, useSignedInUser } from 'services';
-import { useRouteMatch } from 'react-router-dom';
-import { absolutePrivateRoute } from 'utils';
+import { getIsAuthor } from 'utils';
 
-export interface IdeasProps {}
-export const Ideas: React.FC<IdeasProps> = () => {
+export interface IdeasProps<Key extends keyof RawIdea> {
+  filter: (
+    user: User,
+  ) => { fieldPath: Key; opStr: firebase.firestore.WhereFilterOp; value: any };
+}
+
+export const Ideas = <Key extends keyof RawIdea>({
+  filter,
+}: IdeasProps<Key>) => {
   const ideasRef = useIdeasRef();
 
   const user = useSignedInUser();
 
-  const { path } = useRouteMatch();
+  const { fieldPath, opStr, value } = filter(user);
 
-  const isAuthor = path === absolutePrivateRoute.ideas.children.my.path;
-
-  const filteredIdeasRef = isAuthor
-    ? ideasRef.where('author', '==', user.email)
-    : ideasRef;
+  const filteredIdeasRef = ideasRef.where(fieldPath, opStr, value);
 
   const ideas = useFirestoreCollection<IdeaModel>(filteredIdeasRef);
 
@@ -26,7 +29,13 @@ export const Ideas: React.FC<IdeasProps> = () => {
     <Box>
       <List>
         {ideas.map((idea) => {
-          return <IdeaRow key={idea.id} idea={idea} isAuthor={isAuthor} />;
+          return (
+            <IdeaRow
+              key={idea.id}
+              idea={idea}
+              isAuthor={getIsAuthor(user)(idea)}
+            />
+          );
         })}
       </List>
     </Box>

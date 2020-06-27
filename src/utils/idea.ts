@@ -1,4 +1,11 @@
-import { FormIdea, RatingConfig, RawIdea, StorageFile } from 'models';
+import {
+  FormIdea,
+  IdeaModel,
+  RatingConfig,
+  RawIdea,
+  StorageFile,
+  User,
+} from 'models';
 
 export const getRatingHelperText = (rating: RatingConfig) =>
   `Average rating ${rating.average} out of total ${rating.count}`;
@@ -27,3 +34,6 @@ export const getFileName = (file: StorageFile) =>
 
 export const getFileNames = (files: StorageFile[]) =>
   files.flatMap(getFileName);
+
+export const getIsAuthor = (user: User) => (idea: IdeaModel) =>
+  user.email === idea.author;
