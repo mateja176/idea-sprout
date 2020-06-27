@@ -1,7 +1,7 @@
+import { useBoolean } from 'ahooks';
 import { IdeaModel } from 'models';
 import { useEffect, useState } from 'react';
 import urljoin from 'url-join';
-import { useBoolean } from 'ahooks';
 
 export const useIdeaUrl = (id: IdeaModel['id']) => {
   const [origin, setOrigin] = useState('');
@@ -15,12 +15,12 @@ export const useIdeaUrl = (id: IdeaModel['id']) => {
 };
 
 export const useReviewDialogs = () => {
-  const [reviewOpen, setReviewOpen] = useBoolean(false);
+  const [reviewOpen, setReviewOpen] = useBoolean();
   const toggleReviewOpen = () => {
     setReviewOpen.toggle();
   };
 
-  const [reviewsOpen, setReviewsOpen] = useBoolean(false);
+  const [reviewsOpen, setReviewsOpen] = useBoolean();
   const toggleReviewsOpen = () => {
     setReviewsOpen.toggle();
   };

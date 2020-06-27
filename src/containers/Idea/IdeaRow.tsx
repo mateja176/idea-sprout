@@ -39,7 +39,7 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ idea, isAuthor }) => {
 
   const ideaRef = useIdeasRef().doc(idea.id);
 
-  const [expanded, setExpanded] = useBoolean(false);
+  const [expanded, setExpanded] = useBoolean();
   const toggleExpanded = () => {
     setExpanded.toggle();
   };

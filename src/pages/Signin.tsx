@@ -26,7 +26,7 @@ const useButtonStyles = makeStyles(() => ({
 export const Signin: React.FC<SigninProps> = () => {
   const { queueSnackbar } = useActions({ queueSnackbar: createQueueSnackbar });
 
-  const [loading, setLoading] = useBoolean(false);
+  const [loading, setLoading] = useBoolean();
 
   const buttonClasses = useButtonStyles();
 
