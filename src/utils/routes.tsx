@@ -4,6 +4,10 @@ import { NestedRoutes, Route, Routes, ToAbsoluteRec } from 'models';
 import React from 'react';
 import urljoin from 'url-join';
 
+/**
+ * uses any to circumvent `Type instantiation is excessively deep and possibly infinite.`
+ * https://github.com/microsoft/TypeScript/issues/34933
+ */
 const flatten = <R extends NestedRoutes>(nestedRoutes: R): any => {
   return Object.entries(nestedRoutes).reduce(
     (routes, [key, { children, ...route }]) => {
