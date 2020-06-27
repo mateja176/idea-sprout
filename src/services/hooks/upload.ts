@@ -1,7 +1,7 @@
+import { useBoolean } from 'ahooks';
 import firebase from 'firebase/app';
 import 'firebase/storage';
 import { StorageFile, StoragePath } from 'models';
-import { useState } from 'react';
 import { useStorage } from 'reactfire';
 import { putString } from 'rxfire/storage';
 import { createQueueSnackbar } from 'services/store';
@@ -16,14 +16,12 @@ export const useUpload = (path: StoragePath) => {
 
   const user = useSignedInUser();
 
-  const [status, setStatus] = useState<
-    'initial' | 'loading' | 'success' | 'failure'
-  >('initial');
+  const [loading, setLoading] = useBoolean();
 
   const storage = useStorage();
 
   const upload = (files: File[]): Promise<StorageFile[]> => {
-    setStatus('loading');
+    setLoading.setTrue();
 
     return Promise.all(
       files.map((file) => {
@@ -84,8 +82,6 @@ export const useUpload = (path: StoragePath) => {
             );
           })
           .then(({ path, width, height }) => {
-            setStatus('success');
-
             queueSnackbar({
               severity: 'success',
               message: `"${file.name}" uploaded`,
@@ -94,14 +90,16 @@ export const useUpload = (path: StoragePath) => {
             return { path, width, height };
           });
       }),
-    ).catch((error: Error) => {
-      setStatus('failure');
+    )
+      .catch((error: Error) => {
+        queueSnackbar({ severity: 'error', message: error.message });
 
-      queueSnackbar({ severity: 'error', message: error.message });
-
-      return [] as StorageFile[];
-    });
+        return [] as StorageFile[];
+      })
+      .finally(() => {
+        setLoading.setFalse();
+      });
   };
 
-  return { upload, status };
+  return { upload, loading };
 };

@@ -48,9 +48,7 @@ export const Drop: React.FC<DropProps> = ({
   preloadedFileNames,
   ...props
 }) => {
-  const { upload, status } = useUpload(path);
-
-  const isLoading = status === 'loading';
+  const { upload, loading } = useUpload(path);
 
   const [files, setFiles] = React.useState<File[]>([]);
 
@@ -62,7 +60,7 @@ export const Drop: React.FC<DropProps> = ({
         onUploadSuccess(files);
       });
     },
-    disabled: isLoading,
+    disabled: loading,
     ...props,
   });
 
@@ -114,7 +112,7 @@ export const Drop: React.FC<DropProps> = ({
             variant="contained"
             color="primary"
             startIcon={<ArrowDownward />}
-            disabled={isLoading}
+            disabled={loading}
           >
             {isDragActive
               ? 'Drop your files here'
