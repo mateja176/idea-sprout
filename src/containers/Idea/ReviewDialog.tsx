@@ -159,11 +159,11 @@ export const ReviewDialog: React.FC<ReviewDialogProps> = ({
                     onShareWindowClose={() => {
                       setFieldValue('shared', true);
 
-                      const ideaShard: Pick<IdeaModel, 'sharedBy'> = {
+                      const withSharedBy: Pick<IdeaModel, 'sharedBy'> = {
                         sharedBy: idea.sharedBy.concat(user.uid),
                       };
 
-                      ideaRef.update(ideaShard);
+                      ideaRef.update(withSharedBy);
                     }}
                   >
                     <config.Icon size={50} />

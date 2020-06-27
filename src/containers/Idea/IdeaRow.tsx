@@ -6,7 +6,7 @@ import {
   Tooltip,
   useTheme,
 } from '@material-ui/core';
-import { Edit, OpenInBrowser } from '@material-ui/icons';
+import { CloudOff, CloudUpload, Edit, OpenInBrowser } from '@material-ui/icons';
 import { useBoolean } from 'ahooks';
 import { Link, ReviewButton } from 'components';
 import { IdeaOptions, ReviewDialog, ReviewsDialog } from 'containers';
@@ -15,6 +15,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import {
   useFirestoreCollection,
+  useIdeasRef,
   useIdeaUrl,
   useReviewDialogs,
   useReviewsRef,
@@ -35,6 +36,8 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ idea, isAuthor }) => {
   const history = useHistory();
 
   const user = useSignedInUser();
+
+  const ideaRef = useIdeasRef().doc(idea.id);
 
   const [expanded, setExpanded] = useBoolean(false);
   const toggleExpanded = () => {
@@ -84,21 +87,58 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ idea, isAuthor }) => {
               <ReviewButton style={style} onClick={toggleReviewAndExpanded} />
             )
           }
-          NavigationButton={({ style }) => (
-            <Tooltip placement="top" title="Open in full">
-              <Button
-                style={{ ...style, color: theme.palette.action.active }}
-                onClick={() => {
-                  history.push(
-                    urljoin(absolutePrivateRoute.ideas.path, idea.id),
-                    idea,
-                  );
-                }}
-              >
-                <OpenInBrowser />
-              </Button>
-            </Tooltip>
-          )}
+          NavigationButton={({ style }) => {
+            const buttonStyle = {
+              ...style,
+              color: theme.palette.action.active,
+            };
+
+            return isAuthor ? (
+              idea.status === 'sprout' ? (
+                <Tooltip placement={'top'} title={'Unpublish'}>
+                  <Button
+                    style={buttonStyle}
+                    onClick={() => {
+                      const withStatus: Pick<IdeaModel, 'status'> = {
+                        status: 'seed',
+                      };
+                      ideaRef.update(withStatus);
+                    }}
+                  >
+                    <CloudOff />
+                  </Button>
+                </Tooltip>
+              ) : (
+                <Tooltip placement={'top'} title={'Publish'}>
+                  <Button
+                    style={buttonStyle}
+                    onClick={() => {
+                      const withStatus: Pick<IdeaModel, 'status'> = {
+                        status: 'sprout',
+                      };
+                      ideaRef.update(withStatus);
+                    }}
+                  >
+                    <CloudUpload />
+                  </Button>
+                </Tooltip>
+              )
+            ) : (
+              <Tooltip placement={'top'} title={'Open in full'}>
+                <Button
+                  style={buttonStyle}
+                  onClick={() => {
+                    history.push(
+                      urljoin(absolutePrivateRoute.ideas.path, idea.id),
+                      idea,
+                    );
+                  }}
+                >
+                  <OpenInBrowser />
+                </Button>
+              </Tooltip>
+            );
+          }}
           expanded={expanded}
           toggleExpanded={toggleExpanded}
         />
