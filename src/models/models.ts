@@ -10,8 +10,6 @@ export interface WithAuthor {
   author: string;
 }
 
-export type AsyncState<State> = 'initial' | 'loading' | Error | State;
-
 export interface ISnackbar
   extends Pick<SnackbarProps, 'message' | 'autoHideDuration'>,
     Required<Pick<AlertProps, 'severity'>> {
