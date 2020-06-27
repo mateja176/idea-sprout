@@ -118,7 +118,7 @@ export const ReviewDialog: React.FC<ReviewDialogProps> = ({
   );
 
   return (
-    <DraggableDialog // TODO replace modal with custom implementation since elements outside of the dialog cannot be interacted with
+    <DraggableDialog
       open={open}
       onClose={() => {
         onClose();
