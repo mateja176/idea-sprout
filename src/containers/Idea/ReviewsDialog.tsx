@@ -46,7 +46,6 @@ export const ReviewsDialog: React.FC<ReviewsProps> = ({
         </>
       }
       actions={<Button onClick={onClose}>Close</Button>}
-      minWidth={600}
     >
       {reviews.length ? '' : <Typography>No reviews yet.</Typography>}
       <Box visibility={reviews.length ? 'visible' : 'hidden'}>
@@ -58,7 +57,9 @@ export const ReviewsDialog: React.FC<ReviewsProps> = ({
             </Section>
             <Section>
               <Typography variant="h5">Feedback</Typography>
-              <Typography>{feedback}</Typography>
+              <Typography style={{ wordBreak: 'break-all' }}>
+                {feedback}
+              </Typography>
             </Section>
             <Section>
               <Typography variant="h5">Author</Typography>

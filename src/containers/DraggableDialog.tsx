@@ -5,13 +5,12 @@ import {
   DialogContent,
   DialogProps,
   DialogTitle,
-  makeStyles,
 } from '@material-ui/core';
 import { DragIndicator } from '@material-ui/icons';
 import { DraggablePaper } from 'components';
 import React from 'react';
 
-type WithMinWidth = Pick<React.CSSProperties, 'minWidth'>;
+interface WithMinWidth {}
 
 export interface DraggableDialogProps extends DialogProps, WithMinWidth {
   dialogTitle: React.ReactNode;
@@ -20,19 +19,12 @@ export interface DraggableDialogProps extends DialogProps, WithMinWidth {
 
 const dragHandleId = 'drag-handle';
 
-const useStyles = makeStyles(() => ({
-  paper: ({ minWidth }: WithMinWidth) => ({ minWidth }),
-}));
-
 export const DraggableDialog: React.FC<DraggableDialogProps> = ({
   dialogTitle,
   children,
   actions,
-  minWidth,
   ...props
 }) => {
-  const classes = useStyles({ minWidth });
-
   const { scroll } = props;
 
   return (
@@ -40,9 +32,6 @@ export const DraggableDialog: React.FC<DraggableDialogProps> = ({
       {...props}
       hideBackdrop
       PaperComponent={DraggablePaper}
-      classes={{
-        paper: classes.paper,
-      }}
     >
       <DialogTitle style={{ cursor: 'grab' }}>
         <Box display="flex" alignItems="center">

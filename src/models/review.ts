@@ -7,21 +7,21 @@ export interface Review extends WithId, WithAuthor {
   feedback: string;
 }
 
+export enum FeedbackLength {
+  min = 40,
+}
+
 export const initialReview: Review = {
   id: '',
   author: '',
   rating: 0,
-  feedback: '',
+  feedback: 'W'.repeat(FeedbackLength.min),
 };
 
 export type CreationReview = Omit<Review, 'id' | 'author'> & {
   shared: boolean;
   doNotShare: boolean;
 };
-
-export enum FeedbackLength {
-  min = 40,
-}
 export const createReviewSchema = yup
   .object()
   .required()
