@@ -14,6 +14,13 @@ export const starColor = '#FFB400';
 
 export const shareIconSize = 40;
 
+export const withEllipsis: React.CSSProperties = {
+  display: 'inline-block',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
+  overflowX: 'hidden',
+};
+
 export const inputStyle: React.CSSProperties = {
   display: 'block',
   height: 70,

@@ -27,6 +27,7 @@ import {
   useReviewsRef,
   useSignedInUser,
 } from 'services';
+import { withEllipsis } from 'styles';
 
 export interface ReviewDialogProps {
   idea: IdeaModel;
@@ -125,7 +126,7 @@ export const ReviewDialog: React.FC<ReviewDialogProps> = ({
       }}
       dialogTitle={
         <>
-          <i>{idea.name}</i>&nbsp;Review
+          Review:&nbsp;<i style={withEllipsis}>{idea.name}</i>
         </>
       }
     >

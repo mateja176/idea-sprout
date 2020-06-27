@@ -10,6 +10,7 @@ import { Rating } from '@material-ui/lab';
 import { DraggableDialog } from 'containers';
 import { IdeaModel, initialReview, Review } from 'models';
 import React from 'react';
+import { withEllipsis } from 'styles';
 
 export interface ReviewsProps {
   name: IdeaModel['name'];
@@ -41,7 +42,7 @@ export const ReviewsDialog: React.FC<ReviewsProps> = ({
       scroll="paper"
       dialogTitle={
         <>
-          <i>{name}</i>&nbsp;Reviews
+          Reviews:&nbsp;<i style={withEllipsis}>{name}</i>
         </>
       }
       actions={<Button onClick={onClose}>Close</Button>}
