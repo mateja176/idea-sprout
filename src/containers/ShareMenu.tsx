@@ -14,6 +14,7 @@ import { useBoolean } from 'ahooks';
 import React from 'react';
 import { FacebookShareButton } from 'react-share';
 import { shareIconSize } from 'styles';
+import { getShareCountHelperText } from 'utils';
 import { sharingOptions } from './share';
 
 export interface ShareMenuProps
@@ -36,7 +37,7 @@ export const ShareMenu: React.FC<ShareMenuProps> = ({
 
   return (
     <>
-      <Tooltip placement="top" title={`Unique share count is ${shareCount}`}>
+      <Tooltip placement="top" title={getShareCountHelperText(shareCount)}>
         <Button
           {...props}
           ref={buttonRef}

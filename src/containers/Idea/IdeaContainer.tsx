@@ -70,7 +70,7 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({
             <ReviewButton style={style} onClick={toggleReviewOpen} />
           )}
           NavigationButton={({ style }) => (
-            <Tooltip placement="top" title="Open in full">
+            <Tooltip placement="top" title="Back to ideas">
               <Button
                 style={{ ...style, color: theme.palette.action.active }}
                 onClick={() => {

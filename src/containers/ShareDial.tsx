@@ -4,6 +4,7 @@ import { SpeedDial, SpeedDialAction } from '@material-ui/lab';
 import React from 'react';
 import { FacebookShareButton } from 'react-share';
 import { shareIconSize, speedDialZIndex } from 'styles';
+import { getShareCountHelperText } from 'utils';
 import { sharingOptions } from './share';
 
 interface StyleProps {
@@ -50,7 +51,7 @@ export const Share: React.FC<ShareProps> = ({ url, shareCount, i = 1 }) => {
   const [shareOptionsOpen, setShareOptionsOpen] = React.useState(false);
 
   return (
-    <Tooltip placement="top" title={`Unique share count is ${shareCount}`}>
+    <Tooltip placement="top" title={getShareCountHelperText(shareCount)}>
       <Badge
         badgeContent={shareCount}
         classes={{
