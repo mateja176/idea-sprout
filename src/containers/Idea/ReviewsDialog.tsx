@@ -45,6 +45,7 @@ export const ReviewsDialog: React.FC<ReviewsProps> = ({
         </>
       }
       actions={<Button onClick={onClose}>Close</Button>}
+      minWidth={600}
     >
       {reviews.length ? '' : <Typography>No reviews yet.</Typography>}
       <Box visibility={reviews.length ? 'visible' : 'hidden'}>
