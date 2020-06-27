@@ -1,5 +1,6 @@
 export * from './ButtonGroup';
 export * from './Check';
+export * from './DraggableDialog';
 export * from './Drop';
 export * from './Idea';
 export * from './share';

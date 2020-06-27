@@ -8,8 +8,7 @@ import {
 } from '@material-ui/core';
 import { Info } from '@material-ui/icons';
 import { Rating } from '@material-ui/lab';
-import { DraggableDialog } from 'components';
-import { Check, sharingOptions } from 'containers';
+import { Check, DraggableDialog, sharingOptions } from 'containers';
 import { useFormik } from 'formik';
 import {
   createReviewSchema,

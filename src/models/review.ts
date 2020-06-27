@@ -6,6 +6,13 @@ export interface Review extends WithId, WithAuthor {
   feedback: string;
 }
 
+export const initialReview: Review = {
+  id: '',
+  author: '',
+  rating: 0,
+  feedback: '',
+};
+
 export type CreationReview = Omit<Review, 'id' | 'author'> & {
   shared: boolean;
   doNotShare: boolean;

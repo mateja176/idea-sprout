@@ -7,8 +7,8 @@ import {
   useTheme,
 } from '@material-ui/core';
 import { Rating } from '@material-ui/lab';
-import { DraggableDialog } from 'components';
-import { IdeaModel, Review } from 'models';
+import { DraggableDialog } from 'containers';
+import { IdeaModel, initialReview, Review } from 'models';
 import React from 'react';
 
 export interface ReviewsProps {
@@ -30,6 +30,10 @@ export const ReviewsDialog: React.FC<ReviewsProps> = ({
 }) => {
   const theme = useTheme();
 
+  const reviewsWithFallback: Review[] = reviews.length
+    ? reviews
+    : [initialReview];
+
   return (
     <DraggableDialog
       open={open}
@@ -42,28 +46,27 @@ export const ReviewsDialog: React.FC<ReviewsProps> = ({
       }
       actions={<Button onClick={onClose}>Close</Button>}
     >
-      <Box>
-        {reviews.map(
-          ({ id, rating, feedback, author }, i, a) => (
-            <Box key={id} mb={4}>
-              <Section>
-                <Typography variant="h5">Rating</Typography>
-                <Rating readOnly value={rating} />
-              </Section>
-              <Section>
-                <Typography variant="h5">Feedback</Typography>
-                <Typography>{feedback}</Typography>
-              </Section>
-              <Section>
-                <Typography variant="h5">Author</Typography>
-                <Typography>{author}</Typography>
-              </Section>
-              {i < a.length - 1 && (
-                <Divider style={{ backgroundColor: theme.palette.grey['500'] }} />
-              )}
-            </Box>
-          ),
-        )}
+      {reviews.length ? '' : <Typography>No reviews yet.</Typography>}
+      <Box visibility={reviews.length ? 'visible' : 'hidden'}>
+        {reviewsWithFallback.map(({ id, rating, feedback, author }, i, a) => (
+          <Box key={id} mb={4}>
+            <Section>
+              <Typography variant="h5">Rating</Typography>
+              <Rating readOnly value={rating} />
+            </Section>
+            <Section>
+              <Typography variant="h5">Feedback</Typography>
+              <Typography>{feedback}</Typography>
+            </Section>
+            <Section>
+              <Typography variant="h5">Author</Typography>
+              <Typography>{author}</Typography>
+            </Section>
+            {i < a.length - 1 && (
+              <Divider style={{ backgroundColor: theme.palette.grey['500'] }} />
+            )}
+          </Box>
+        ))}
       </Box>
     </DraggableDialog>
   );

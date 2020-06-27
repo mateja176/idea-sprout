@@ -53,7 +53,7 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ idea, isAuthor }) => {
   } = useReviewDialogs();
 
   const toggleReviewAndExpanded = () => {
-    toggleExpanded();
+    setExpanded.setTrue();
 
     toggleReviewOpen();
   };
