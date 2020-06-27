@@ -6,14 +6,16 @@ import {
   Typography,
 } from '@material-ui/core';
 import { useBoolean } from 'ahooks';
-import { Facebook, Google, PageWrapper, Twitter } from 'components';
+import { Google, PageWrapper } from 'components';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import { random } from 'lodash';
 import { quotes } from 'models';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
+import { FacebookIcon, TwitterIcon } from 'react-share';
 import { createQueueSnackbar, useActions } from 'services';
+import { logoWidth } from 'styles';
 
 export interface SigninProps extends RouteComponentProps {}
 
@@ -47,6 +49,8 @@ export const Signin: React.FC<SigninProps> = () => {
       });
   };
 
+  const opacity = loading ? 0.5 : 1;
+
   return (
     <PageWrapper>
       <Box display="flex" flexDirection="column" alignItems="center">
@@ -60,7 +64,7 @@ export const Signin: React.FC<SigninProps> = () => {
                   signIn(new firebase.auth.GoogleAuthProvider());
                 }}
                 classes={buttonClasses}
-                startIcon={<Google />}
+                startIcon={<Google opacity={opacity} />}
               >
                 Google
               </Button>
@@ -69,7 +73,9 @@ export const Signin: React.FC<SigninProps> = () => {
                   signIn(new firebase.auth.FacebookAuthProvider());
                 }}
                 classes={buttonClasses}
-                startIcon={<Facebook />}
+                startIcon={
+                  <FacebookIcon round size={logoWidth} opacity={opacity} />
+                }
               >
                 Facebook
               </Button>
@@ -78,7 +84,9 @@ export const Signin: React.FC<SigninProps> = () => {
                   signIn(new firebase.auth.TwitterAuthProvider());
                 }}
                 classes={buttonClasses}
-                startIcon={<Twitter />}
+                startIcon={
+                  <TwitterIcon round size={logoWidth} opacity={opacity} />
+                }
               >
                 Twitter
               </Button>
