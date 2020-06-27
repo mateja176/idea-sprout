@@ -10,7 +10,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import { Error as ErrorIcon, ExpandMore, Info } from '@material-ui/icons';
-import { Link, PageWrapper } from 'components';
+import { Link, MultilineTextField, PageWrapper } from 'components';
 import { Check, Drop } from 'containers';
 import { useFormik } from 'formik';
 import {
@@ -276,18 +276,14 @@ export const IdeaForm: React.FC<IdeaFormProps> = ({ initialValues }) => {
           // 50MB
           maxSize={52428800}
           preloadedFileNames={
-            initialValues.story.path
-              ? getFileName(initialValues.story)
-              : []
+            initialValues.story.path ? getFileName(initialValues.story) : []
           }
         />
-        <TextField
-          variant="outlined"
+        <MultilineTextField
           required
           style={textareaStyle}
           {...getFieldProps('problemSolution')}
           label={`Problem-Solution: ${values.problemSolution.length} (${ProblemSolutionLength.min}-${ProblemSolutionLength.max})`}
-          multiline
           rows={4}
           fullWidth
           error={touched.problemSolution && !!errors.problemSolution}
@@ -337,13 +333,11 @@ export const IdeaForm: React.FC<IdeaFormProps> = ({ initialValues }) => {
             preloadedFileNames={getFileNames(initialValues.images)}
           />
         </Box>
-        <TextField
-          variant="outlined"
+        <MultilineTextField
           required
           style={textareaStyle}
           {...getFieldProps('rationale')}
           label={`Rationale: ${values.rationale.length} (${RationaleLength.min}-${RationaleLength.max})`}
-          multiline
           rows={6}
           fullWidth
           error={touched.rationale && !!errors.rationale}

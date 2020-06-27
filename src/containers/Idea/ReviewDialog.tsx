@@ -2,12 +2,12 @@ import {
   Box,
   Button,
   DialogActions,
-  TextField,
   Tooltip,
   Typography,
 } from '@material-ui/core';
 import { Info } from '@material-ui/icons';
 import { Rating } from '@material-ui/lab';
+import { MultilineTextField } from 'components';
 import { Check, DraggableDialog, sharingOptions } from 'containers';
 import { useFormik } from 'formik';
 import {
@@ -134,14 +134,13 @@ export const ReviewDialog: React.FC<ReviewDialogProps> = ({
           <Typography color="textSecondary">Rating*</Typography>
           <Rating {...getFieldProps('rating')} precision={0.5} />
         </Box>
-        <TextField
+        <MultilineTextField
           {...getFieldProps('feedback')}
           required
-          multiline
           rows={5}
           label="Feedback"
           helperText={`What did you like or dislike about the idea? Your feedback directly shapes the course of the idea. ( ${FeedbackLength.min} - )`}
-        ></TextField>
+        />
         <Box mt={4}>
           <Typography>
             {idea.sharedBy.length > 0 ? sharePrompt1 : sharePrompt0}
