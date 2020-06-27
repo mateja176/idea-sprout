@@ -4,6 +4,7 @@ import firebase from 'firebase/app';
 import { IdeaModel, RawIdea, User } from 'models';
 import React from 'react';
 import { useFirestoreCollection, useIdeasRef, useSignedInUser } from 'services';
+import { pageMargin } from 'styles';
 import { getIsAuthor } from 'utils';
 
 export interface IdeasProps<Key extends keyof RawIdea> {
@@ -30,8 +31,8 @@ export const Ideas = <Key extends keyof RawIdea>({
   const ideas = useFirestoreCollection<IdeaModel>(filteredIdeasRef);
 
   return (
-    <Box>
-      <List>
+    <Box mt={pageMargin}>
+      <List style={{ paddingTop: 0 }}>
         {ideas.map((idea) => {
           return (
             <IdeaRow

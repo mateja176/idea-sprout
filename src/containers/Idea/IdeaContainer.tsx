@@ -5,7 +5,7 @@ import { Idea, ReviewDialog, ReviewsDialog } from 'containers';
 import 'firebase/firestore';
 import { IdeaModel, Review } from 'models';
 import React from 'react';
-import { useHistory, Redirect } from 'react-router-dom';
+import { Redirect, useHistory } from 'react-router-dom';
 import {
   useFirestoreCollection,
   useFirestoreDoc,
@@ -15,7 +15,7 @@ import {
   useReviewsRef,
   useSignedInUser,
 } from 'services';
-import { pageMargin } from 'styles';
+import { ideaMarginBottom, pageMargin } from 'styles';
 import { absolutePrivateRoute } from 'utils';
 import { IdeaOptions } from './Options';
 
@@ -59,7 +59,7 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({
   } = useReviewDialogs();
 
   return idea.name ? (
-    <Box mt={pageMargin + 3} mb={10}>
+    <Box mt={pageMargin} mb={ideaMarginBottom}>
       <Box mx={2}>
         <IdeaOptions
           idea={idea}
@@ -83,9 +83,7 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({
           )}
         />
       </Box>
-      <Box pt={1} pb={3}>
-        <Idea {...idea} />
-      </Box>
+      <Idea {...idea} />
       <ReviewsDialog
         name={idea.name}
         open={reviewsOpen}

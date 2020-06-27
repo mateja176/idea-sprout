@@ -64,74 +64,65 @@ export const IdeaOptions: React.FC<IdeaOptionsProps> = ({
 
   const ratingTooltip = getRatingHelperText(ratingConfig);
 
+  const buttonPadding = theme.spacing(2);
+  const buttonStyle: React.CSSProperties = {
+    paddingTop: buttonPadding,
+    paddingBottom: buttonPadding,
+  };
+
   return (
-    <Box display="flex" alignItems="center" my={1} width="100%">
-      <ButtonGroup>
-        {({ firstStyle, style, lastStyle }) => (
-          <>
-            <Badge
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-              color="primary"
-              badgeContent={idea.sharedBy.length}
+    <Box display="flex" alignItems="center" width="100%">
+      <ShareMenu
+        style={buttonStyle}
+        shareCount={idea.sharedBy.length}
+        url={ideaUrl}
+      />
+      <Tooltip placement="top" title={ratingTooltip}>
+        <Button
+          style={{
+            ...buttonStyle,
+            color: theme.palette.action.active,
+          }}
+          endIcon={<StarRate style={{ color: starColor }} />}
+          onClick={toggleReviewsOpen}
+        >
+          {averageRating}
+        </Button>
+      </Tooltip>
+      <ConfigButton style={buttonStyle} />
+      <NavigationButton style={buttonStyle} />
+      <Tooltip placement="top" title={idea.name}>
+        <Button
+          style={{
+            ...buttonStyle,
+            textTransform: 'capitalize',
+            fontWeight: 400,
+            flexGrow: 1,
+          }}
+          classes={{
+            label: classes.label,
+          }}
+          onClick={toggleExpanded}
+        >
+          <Box display="flex" alignItems="center">
+            <Box
+              flex={1}
+              textOverflow={'ellipsis'}
+              whiteSpace={'nowrap'}
+              overflow={'hidden'}
             >
-              <ShareMenu
-                style={firstStyle}
-                shareCount={idea.sharedBy.length}
-                url={ideaUrl}
-              />
-            </Badge>
-            <Tooltip placement="top" title={ratingTooltip}>
-              <Button
-                style={{
-                  ...style,
-                  color: theme.palette.action.active,
-                }}
-                endIcon={<StarRate style={{ color: starColor }} />}
-                onClick={toggleReviewsOpen}
-              >
-                {averageRating}
-              </Button>
-            </Tooltip>
-            <ConfigButton style={style} />
-            <NavigationButton style={style} />
-            <Tooltip placement="top" title={idea.name}>
-              <Button
-                style={{
-                  ...lastStyle,
-                  textTransform: 'capitalize',
-                  fontWeight: 400,
-                  flexGrow: 1,
-                }}
-                classes={{
-                  label: classes.label,
-                }}
-                onClick={toggleExpanded}
-              >
-                <Box display="flex" alignItems="center">
-                  <Box
-                    flex={1}
-                    textOverflow={'ellipsis'}
-                    whiteSpace={'nowrap'}
-                    overflow={'hidden'}
-                  >
-                    {idea.name}
-                  </Box>
-                  {!isNil(expanded) && (
-                    <Hidden xsDown>
-                      <Icon color={'action'} style={{ display: 'flex' }}>
-                        {expanded ? <ExpandLess /> : <ExpandMore />}
-                      </Icon>
-                    </Hidden>
-                  )}
-                </Box>
-              </Button>
-            </Tooltip>
-          </>
-        )}
-      </ButtonGroup>
+              {idea.name}
+            </Box>
+            {!isNil(expanded) && (
+              <Hidden xsDown>
+                <Icon color={'action'} style={{ display: 'flex' }}>
+                  {expanded ? <ExpandLess /> : <ExpandMore />}
+                </Icon>
+              </Hidden>
+            )}
+          </Box>
+        </Button>
+      </Tooltip>
     </Box>
   );
 };

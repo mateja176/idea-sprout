@@ -21,6 +21,7 @@ import {
   useReviewsRef,
   useSignedInUser,
 } from 'services';
+import { ideaMarginBottom } from 'styles';
 import urljoin from 'url-join';
 import { absolutePrivateRoute } from 'utils';
 import { Idea } from './Idea';
@@ -63,7 +64,7 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ idea, isAuthor }) => {
 
   return (
     <Box key={idea.id}>
-      <ListItem key={idea.id}>
+      <ListItem key={idea.id} style={{ paddingTop: 0, paddingBottom: 0 }}>
         <IdeaOptions
           idea={idea}
           ideaUrl={ideaUrl}
@@ -144,7 +145,7 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ idea, isAuthor }) => {
         />
       </ListItem>
       <Collapse in={expanded} timeout="auto" mountOnEnter>
-        <Box mb={3}>
+        <Box mb={ideaMarginBottom}>
           <Idea {...idea} />
         </Box>
       </Collapse>

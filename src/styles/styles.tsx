@@ -1,3 +1,5 @@
+export const ideaMarginBottom = 15;
+
 export const logoWidth = 30;
 
 export const navIconWidth = 24;

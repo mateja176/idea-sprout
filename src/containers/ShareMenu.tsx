@@ -48,8 +48,9 @@ export const ShareMenu: React.FC<ShareMenuProps> = ({
           onClick={() => {
             toggle();
           }}
+          endIcon={<Share />}
         >
-          <Share />
+          {shareCount}
         </Button>
       </Tooltip>
       <Menu
