@@ -1,4 +1,8 @@
-import { Badge, Snackbar as MaterialSnackbar } from '@material-ui/core';
+import {
+  Badge,
+  Snackbar as MaterialSnackbar,
+  makeStyles,
+} from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import { head } from 'ramda';
 import React from 'react';
@@ -12,7 +16,18 @@ import {
 
 export interface SnackbarProps {}
 
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    maxWidth: '50vw',
+    [theme.breakpoints.down('sm')]: {
+      maxWidth: '90vw',
+    },
+  },
+}));
+
 export const Snackbar: React.FC<SnackbarProps> = () => {
+  const classes = useStyles();
+
   const { closeSnackbar } = useActions({ closeSnackbar: createCloseSnackbar });
 
   const queue = useSelector(selectSnackbarQueue);
@@ -31,7 +46,11 @@ export const Snackbar: React.FC<SnackbarProps> = () => {
 
   return (
     <MaterialSnackbar open={!!first}>
-      <Badge badgeContent={queue.length} color="primary">
+      <Badge
+        badgeContent={queue.length}
+        color="primary"
+        classes={{ root: classes.paper }}
+      >
         <Alert severity={firstWithFallback?.severity} onClose={closeSnackbar}>
           {firstWithFallback?.message}
         </Alert>
