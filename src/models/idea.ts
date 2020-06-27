@@ -1,11 +1,10 @@
 import * as yup from 'yup';
 import { WithAuthor, WithId } from './models';
+import { checkSchema } from './validation';
 
 export const checkNames = ['niche', 'expectations'] as const;
 export type CheckNames = typeof checkNames;
 export type CheckName = CheckNames[number];
-
-export const checkSchema = yup.bool().required();
 
 export const ideaStatuses = ['seed', 'sprout', 'bloom', 'shrivel'] as const;
 export type IdeaStatuses = typeof ideaStatuses;
@@ -22,14 +21,11 @@ export interface WithPath {
 
 export interface StorageFile extends FileDimensions, WithPath {}
 
-export const StorageFileSchema = yup
-  .object()
-  .required()
-  .shape<StorageFile>({
-    path: yup.string().min(1).required(),
-    width: yup.number().required(),
-    height: yup.number().required(),
-  });
+export const StorageFileSchema = yup.object().required().shape<StorageFile>({
+  path: yup.string().required(),
+  width: yup.number().required(),
+  height: yup.number().required(),
+});
 
 export interface IdeaModel extends WithId, WithAuthor {
   /**
@@ -81,7 +77,11 @@ export const creationIdeaSchema = yup
       .shape({ niche: checkSchema, expectations: checkSchema }),
     name: yup.string().required().min(1).max(30),
     story: StorageFileSchema,
-    problemSolution: yup.string().required().min(80).max(200),
+    problemSolution: yup
+      .string()
+      .required('Problem-solution field is required')
+      .min(80)
+      .max(200),
     images: yup.array().required().of(StorageFileSchema).max(2),
     rationale: yup.string().required().min(80).max(400),
   });
