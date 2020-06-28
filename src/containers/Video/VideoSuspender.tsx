@@ -1,4 +1,4 @@
-import { makeStyles, useTheme } from '@material-ui/core';
+import { useTheme } from '@material-ui/core';
 import { Skeleton } from '@material-ui/lab';
 import { StorageFile } from 'models';
 import React from 'react';
@@ -7,20 +7,12 @@ import { Video } from './Video';
 
 export interface VideoSuspenderProps extends StorageFile {}
 
-const useStyles = makeStyles(() => ({
-  text: {
-    transform: 'none',
-  },
-}));
-
 export const VideoSuspender: React.FC<VideoSuspenderProps> = ({
   path,
   width,
   height,
 }) => {
   const theme = useTheme();
-
-  const classes = useStyles();
 
   const { computedHeight, ref } = useComputedHeight({ width, height });
 
@@ -37,9 +29,10 @@ export const VideoSuspender: React.FC<VideoSuspenderProps> = ({
       <React.Suspense
         fallback={
           <Skeleton
+            variant={'rect'}
+            height={'100%'}
             width={'100%'}
             style={{ maxWidth: width }}
-            classes={{ text: classes.text }}
           />
         }
       >

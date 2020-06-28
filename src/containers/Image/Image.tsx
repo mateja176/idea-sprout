@@ -35,7 +35,14 @@ export const Image: React.FC<ImageProps> = ({
       }}
     >
       <React.Suspense
-        fallback={<Skeleton width={'100%'} style={{ maxWidth: width }} />}
+        fallback={
+          <Skeleton
+            variant={'rect'}
+            height={'100%'}
+            width={'100%'}
+            style={{ maxWidth: width }}
+          />
+        }
       >
         <StorageImage
           storagePath={path}
