@@ -1,6 +1,6 @@
 import { Loading } from 'components';
-import { EditForm, IdeaForm } from 'containers';
-import { WithId, IdeaModel } from 'models';
+import { EditIdeaForm, IdeaForm } from 'containers';
+import { IdeaModel, WithId } from 'models';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { getFormIdea } from 'utils';
@@ -19,7 +19,7 @@ export const EditIdea: React.FC<EditIdeaProps> = ({
       {state?.idea ? (
         <IdeaForm initialValues={getFormIdea(state.idea)} />
       ) : (
-        <EditForm id={id} />
+        <EditIdeaForm id={id} />
       )}
     </React.Suspense>
   );

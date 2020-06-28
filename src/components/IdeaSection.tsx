@@ -1,9 +1,9 @@
 import { Box, BoxProps } from '@material-ui/core';
 import React from 'react';
 
-export interface SectionProps extends BoxProps {}
+export interface IdeaSectionProps extends BoxProps {}
 
-export const Section: React.FC<SectionProps> = ({
+export const IdeaSection: React.FC<IdeaSectionProps> = ({
   children,
   mx = 3,
   my = 4,

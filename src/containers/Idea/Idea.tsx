@@ -1,5 +1,5 @@
 import { Box, Typography } from '@material-ui/core';
-import { Section } from 'components';
+import { IdeaSection } from 'components';
 import { IdeaModel } from 'models';
 import React from 'react';
 import { breakWordStyle } from 'styles';
@@ -12,15 +12,15 @@ export const Idea: React.FC<IdeaProps> = (idea) => {
   return (
     <Box>
       <VideoSuspender {...idea.story} />
-      <Section>
+      <IdeaSection>
         <Typography variant="h5">Problem-Solution</Typography>
         <Typography style={breakWordStyle}>{idea.problemSolution}</Typography>
-      </Section>
+      </IdeaSection>
       <Images images={idea.images} />
-      <Section>
+      <IdeaSection>
         <Typography variant="h5">Rationale</Typography>
         <Typography style={breakWordStyle}>{idea.rationale}</Typography>
-      </Section>
+      </IdeaSection>
     </Box>
   );
 };

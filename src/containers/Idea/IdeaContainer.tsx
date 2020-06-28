@@ -17,7 +17,7 @@ import {
 } from 'services';
 import { ideaMarginBottom, pageMargin } from 'styles';
 import { absolutePrivateRoute } from 'utils';
-import { IdeaOptions } from './Options';
+import { IdeaOptions } from './IdeaOptions';
 
 export interface IdeaContainerProps extends Pick<IdeaModel, 'id'> {
   initialIdea?: IdeaModel;

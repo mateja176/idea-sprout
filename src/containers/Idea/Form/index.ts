@@ -1,2 +1,2 @@
-export * from './EditForm';
-export * from './Form';
+export * from './EditIdeaForm';
+export * from './IdeaForm';
