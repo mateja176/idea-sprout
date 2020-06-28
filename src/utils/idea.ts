@@ -21,7 +21,6 @@ export const getFormIdea = ({
   images,
   rationale,
 }: RawIdea): FormIdea => ({
-  checks,
   name,
   story,
   problemSolution,

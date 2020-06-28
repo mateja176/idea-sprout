@@ -3,10 +3,18 @@ import {
   Button,
   Collapse,
   ListItem,
+  Menu,
+  MenuItem,
   Tooltip,
   useTheme,
 } from '@material-ui/core';
-import { CloudOff, CloudUpload, Edit, OpenInBrowser } from '@material-ui/icons';
+import {
+  CheckBoxOutlineBlank,
+  CloudOff,
+  CloudUpload,
+  Edit,
+  OpenInBrowser,
+} from '@material-ui/icons';
 import { useBoolean } from 'ahooks';
 import { Link, ReviewButton } from 'components';
 import { IdeaOptions, ReviewDialog, ReviewsDialog } from 'containers';
@@ -38,7 +46,11 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ idea, isAuthor }) => {
 
   const user = useSignedInUser();
 
-  const ideaRef = useIdeasRef().doc(idea.id);
+  const ideasRef = useIdeasRef();
+  const ideaRef = React.useMemo(() => ideasRef.doc(idea.id), [
+    ideasRef,
+    idea.id,
+  ]);
 
   const [expanded, setExpanded] = useBoolean();
   const toggleExpanded = () => {
@@ -61,6 +73,80 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ idea, isAuthor }) => {
 
     toggleReviewOpen();
   };
+
+  const [checkMenu, setCheckMenu] = useBoolean();
+
+  const checkRef = React.useRef<HTMLButtonElement | null>(null);
+
+  const NavigationButton = React.useCallback(
+    ({ style }) => {
+      const buttonStyle = {
+        ...style,
+        color: theme.palette.action.active,
+      };
+
+      const passedPreflightChecks = Object.values(idea.checks).every(Boolean);
+
+      const publish = () => {
+        const withStatus: Pick<IdeaModel, 'status'> = {
+          status: 'sprout',
+        };
+        ideaRef.update(withStatus);
+      };
+
+      const unpublish = () => {
+        const withStatus: Pick<IdeaModel, 'status'> = {
+          status: 'seed',
+        };
+        ideaRef.update(withStatus);
+      };
+
+      return isAuthor ? (
+        idea.status === 'sprout' ? (
+          <Tooltip placement={'top'} title={'Unpublish'}>
+            <Button style={buttonStyle} onClick={unpublish}>
+              <CloudOff />
+            </Button>
+          </Tooltip>
+        ) : passedPreflightChecks ? (
+          <Tooltip placement={'top'} title={'Publish'}>
+            <Button style={buttonStyle} onClick={publish}>
+              <CloudUpload />
+            </Button>
+          </Tooltip>
+        ) : (
+          <Box>
+            <Tooltip placement={'top'} title={'Preflight check'}>
+              <Button
+                ref={checkRef}
+                style={buttonStyle}
+                onClick={() => {
+                  setCheckMenu.toggle();
+                }}
+              >
+                <CheckBoxOutlineBlank />
+              </Button>
+            </Tooltip>
+          </Box>
+        )
+      ) : (
+        <Tooltip placement={'top'} title={'Open in full'}>
+          <Button
+            style={buttonStyle}
+            onClick={() => {
+              history.push(
+                urljoin(absolutePrivateRoute.ideas.path, idea.id),
+                idea,
+              );
+            }}
+          >
+            <OpenInBrowser />
+          </Button>
+        </Tooltip>
+      );
+    },
+    [theme, history, idea, ideaRef, setCheckMenu, isAuthor],
+  );
 
   return (
     <Box key={idea.id}>
@@ -88,58 +174,7 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ idea, isAuthor }) => {
               <ReviewButton style={style} onClick={toggleReviewAndExpanded} />
             )
           }
-          NavigationButton={({ style }) => {
-            const buttonStyle = {
-              ...style,
-              color: theme.palette.action.active,
-            };
-
-            return isAuthor ? (
-              idea.status === 'sprout' ? (
-                <Tooltip placement={'top'} title={'Unpublish'}>
-                  <Button
-                    style={buttonStyle}
-                    onClick={() => {
-                      const withStatus: Pick<IdeaModel, 'status'> = {
-                        status: 'seed',
-                      };
-                      ideaRef.update(withStatus);
-                    }}
-                  >
-                    <CloudOff />
-                  </Button>
-                </Tooltip>
-              ) : (
-                <Tooltip placement={'top'} title={'Publish'}>
-                  <Button
-                    style={buttonStyle}
-                    onClick={() => {
-                      const withStatus: Pick<IdeaModel, 'status'> = {
-                        status: 'sprout',
-                      };
-                      ideaRef.update(withStatus);
-                    }}
-                  >
-                    <CloudUpload />
-                  </Button>
-                </Tooltip>
-              )
-            ) : (
-              <Tooltip placement={'top'} title={'Open in full'}>
-                <Button
-                  style={buttonStyle}
-                  onClick={() => {
-                    history.push(
-                      urljoin(absolutePrivateRoute.ideas.path, idea.id),
-                      idea,
-                    );
-                  }}
-                >
-                  <OpenInBrowser />
-                </Button>
-              </Tooltip>
-            );
-          }}
+          NavigationButton={NavigationButton}
           expanded={expanded}
           toggleExpanded={toggleExpanded}
         />
@@ -162,6 +197,14 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ idea, isAuthor }) => {
         open={reviewOpen}
         onClose={toggleReviewAndExpanded}
       />
+      <Menu
+        anchorEl={checkRef.current}
+        open={checkMenu}
+        onClose={setCheckMenu.setFalse}
+      >
+        <MenuItem>Niche</MenuItem>
+        <MenuItem>Expectations</MenuItem>
+      </Menu>
     </Box>
   );
 };

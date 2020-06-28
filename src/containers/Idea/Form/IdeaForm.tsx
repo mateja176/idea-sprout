@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  CheckboxProps,
   ExpansionPanel,
   ExpansionPanelDetails,
   ExpansionPanelSummary,
@@ -9,15 +8,12 @@ import {
   Tooltip,
   Typography,
 } from '@material-ui/core';
-import { Error as ErrorIcon, ExpandMore, Info } from '@material-ui/icons';
+import { ExpandMore, Info } from '@material-ui/icons';
 import { Link, MultilineTextField, PageWrapper } from 'components';
 import { Check, Drop } from 'containers';
 import { useFormik } from 'formik';
 import {
-  checkNames,
   creationIdeaSchema,
-  FormIdea,
-  GetCheckFieldProps,
   IdeaModel,
   ProblemSolutionLength,
   RationaleLength,
@@ -31,23 +27,30 @@ import {
   useSignedInUser,
 } from 'services';
 import { inputStyle, textareaStyle } from 'styles';
-import { absolutePrivateRoute, getFileName, getFileNames } from 'utils';
+import {
+  absolutePrivateRoute,
+  getFileName,
+  getFileNames,
+  getFormIdea,
+} from 'utils';
 
 export interface IdeaFormProps {
-  initialValues: FormIdea;
+  idea: IdeaModel;
 }
 
-export const IdeaForm: React.FC<IdeaFormProps> = ({ initialValues }) => {
+export const IdeaForm: React.FC<IdeaFormProps> = ({ idea }) => {
+  const initialValues = getFormIdea(idea);
+
   const history = useHistory();
 
   const { queueSnackbar } = useActions({ queueSnackbar: createQueueSnackbar });
 
-  const ideaRef = useIdeasRef().doc();
+  const ideaRef = useIdeasRef().doc(idea.id);
 
   const user = useSignedInUser();
 
   const [expanded, setExpanded] = React.useState(
-    Object.values(initialValues.checks).some((check) => !check),
+    Object.values(idea.checks).some((check) => !check),
   );
   const toggleExpanded = () => {
     setExpanded(!expanded);
@@ -60,22 +63,14 @@ export const IdeaForm: React.FC<IdeaFormProps> = ({ initialValues }) => {
     errors,
     getFieldProps,
     handleSubmit,
-    handleChange,
     values,
     setFieldValue,
   } = useFormik({
     validationSchema: creationIdeaSchema,
     initialValues,
     onSubmit: (formValues) => {
-      const idea: Omit<IdeaModel, 'id'> = {
-        ...formValues,
-        author: user.email || '',
-        status: 'seed',
-        sharedBy: [],
-      };
-
       return ideaRef
-        .set(idea)
+        .set({ ...idea, author: user.email, formValues })
         .then(() => {
           history.push(absolutePrivateRoute.ideas.path);
 
@@ -95,32 +90,26 @@ export const IdeaForm: React.FC<IdeaFormProps> = ({ initialValues }) => {
     validateOnMount: true,
   });
 
-  const hasNicheError = !!touched.checks?.niche && !!errors.checks?.niche;
+  const [checks, setChecks] = React.useState(idea.checks);
 
-  const hasExpectationsError =
-    !!touched.checks?.expectations && !!errors.checks?.expectations;
+  React.useEffect(() => {
+    setChecks(idea.checks);
+  }, [idea.checks]);
 
-  const hasFailedChecks = hasNicheError || hasExpectationsError;
-
-  const handleCheckChange = (name: string): CheckboxProps['onChange'] => (
-    e,
-    value,
+  const setCheck = (name: keyof IdeaModel['checks']) => (
+    _: React.ChangeEvent,
+    value: boolean,
   ) => {
-    if (
-      checkNames.every((checkName) =>
-        checkName === name ? value : values.checks[checkName],
-      )
-    ) {
-      toggleExpanded();
+    const newChecks: IdeaModel['checks'] = { ...checks, [name]: value };
+
+    setChecks(newChecks);
+
+    if (Object.values(newChecks).every(Boolean)) {
+      setExpanded(false);
     }
 
-    handleChange(e);
+    ideaRef.update({ checks: { ...idea.checks, [name]: value } });
   };
-
-  const getCheckFieldProps: GetCheckFieldProps = (name) => ({
-    ...getFieldProps(`checks.${name}`),
-    onChange: handleCheckChange(name),
-  });
 
   return (
     <PageWrapper>
@@ -130,18 +119,8 @@ export const IdeaForm: React.FC<IdeaFormProps> = ({ initialValues }) => {
             <Box display="flex" alignItems="center">
               <Typography variant="h5">Preflight Checklist</Typography>
               <Box ml={1}>
-                <Tooltip
-                  title={
-                    expanded && hasFailedChecks
-                      ? 'Expand to see errors'
-                      : 'You can leave this for later'
-                  }
-                >
-                  {hasFailedChecks ? (
-                    <ErrorIcon color="secondary" />
-                  ) : (
-                    <Info color="action" />
-                  )}
+                <Tooltip title={'You can leave this for later'}>
+                  <Info color="action" />
                 </Tooltip>
               </Box>
             </Box>
@@ -176,8 +155,12 @@ export const IdeaForm: React.FC<IdeaFormProps> = ({ initialValues }) => {
                   </Box>
                 </Box>
               }
-              getFieldProps={getCheckFieldProps}
-              errorMessage={errors.checks?.niche}
+              getFieldProps={(name) => ({
+                name,
+                value: checks.niche,
+                onChange: setCheck('niche'),
+                onBlur: () => {},
+              })}
             />
             <Check
               name="expectations"
@@ -203,8 +186,12 @@ export const IdeaForm: React.FC<IdeaFormProps> = ({ initialValues }) => {
                   </Box>
                 </Box>
               }
-              getFieldProps={getCheckFieldProps}
-              errorMessage={errors.checks?.niche}
+              getFieldProps={(name) => ({
+                name,
+                value: checks.expectations,
+                onChange: setCheck('expectations'),
+                onBlur: () => {},
+              })}
             />
           </ExpansionPanelDetails>
         </ExpansionPanel>

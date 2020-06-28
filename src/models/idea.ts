@@ -1,6 +1,5 @@
 import * as yup from 'yup';
 import { WithAuthor, WithId } from './models';
-import { checkSchema } from './validation';
 
 export const checkNames = ['niche', 'expectations'] as const;
 export type CheckNames = typeof checkNames;
@@ -41,21 +40,29 @@ export interface IdeaModel extends WithId, WithAuthor {
   sharedBy: string[];
 }
 
-export type RawIdea = Omit<IdeaModel, 'id'>;
-
-export type FormIdea = Omit<IdeaModel, 'id' | 'author' | 'status' | 'sharedBy'>;
-
-export const initialFormIdea: FormIdea = {
+export const initialIdea: IdeaModel = {
+  id: '',
+  author: '',
+  sharedBy: [],
+  status: 'seed',
   checks: {
     niche: false,
     expectations: false,
   },
+
   name: '',
   story: { path: '', width: 0, height: 0 },
   problemSolution: '',
   images: [],
   rationale: '',
 };
+
+export type RawIdea = Omit<IdeaModel, 'id'>;
+
+export type FormIdea = Omit<
+  IdeaModel,
+  'id' | 'checks' | 'author' | 'status' | 'sharedBy'
+>;
 
 export enum ProblemSolutionLength {
   min = 80,
@@ -71,10 +78,6 @@ export const creationIdeaSchema = yup
   .object()
   .required()
   .shape<FormIdea>({
-    checks: yup
-      .object()
-      .required()
-      .shape({ niche: checkSchema, expectations: checkSchema }),
     name: yup.string().required().min(1).max(30),
     story: StorageFileSchema,
     problemSolution: yup

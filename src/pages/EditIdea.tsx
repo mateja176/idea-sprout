@@ -1,9 +1,8 @@
 import { Loading } from 'components';
-import { EditIdeaForm, IdeaForm } from 'containers';
+import { EditIdeaForm } from 'containers';
 import { IdeaModel, WithId } from 'models';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import { getFormIdea } from 'utils';
 
 export interface EditIdeaProps
   extends RouteComponentProps<WithId, {}, { idea: IdeaModel } | null> {}
@@ -16,11 +15,7 @@ export const EditIdea: React.FC<EditIdeaProps> = ({
 }) => {
   return (
     <React.Suspense fallback={<Loading />}>
-      {state?.idea ? (
-        <IdeaForm initialValues={getFormIdea(state.idea)} />
-      ) : (
-        <EditIdeaForm id={id} />
-      )}
+      <EditIdeaForm id={id} initialIdea={state?.idea} />
     </React.Suspense>
   );
 };

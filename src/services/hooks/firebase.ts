@@ -7,11 +7,13 @@ import {
   useFirestoreDoc as useFirebaseFirestoreDoc,
   useUser as useFirebaseUser,
 } from 'reactfire';
+import { useMemo } from 'react';
 
 export const useSignedInUser = () => useFirebaseUser<User>();
 
 export const useIdeasRef = () => {
-  return useFirestore().collection('ideas');
+  const firestore = useFirestore();
+  return useMemo(() => firestore.collection('ideas'), [firestore]);
 };
 
 export const useReviewsRef = (id: IdeaModel['id']) => {
