@@ -202,8 +202,48 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ idea, isAuthor }) => {
         open={checkMenu}
         onClose={setCheckMenu.setFalse}
       >
-        <MenuItem>Niche</MenuItem>
-        <MenuItem>Expectations</MenuItem>
+        <MenuItem>
+          <FormControl>
+            <FormControlLabel
+              label="Niche"
+              control={
+                <Checkbox
+                  checked={idea.checks.niche}
+                  onChange={(_, value) => {
+                    const withChecks: Pick<IdeaModel, 'checks'> = {
+                      checks: {
+                        ...idea.checks,
+                        niche: value,
+                      },
+                    };
+                    ideaRef.update(withChecks);
+                  }}
+                />
+              }
+            />
+          </FormControl>
+        </MenuItem>
+        <MenuItem>
+          <FormControl>
+            <FormControlLabel
+              label="Expectations"
+              control={
+                <Checkbox
+                  checked={idea.checks.expectations}
+                  onChange={(_, value) => {
+                    const withChecks: Pick<IdeaModel, 'checks'> = {
+                      checks: {
+                        ...idea.checks,
+                        expectations: value,
+                      },
+                    };
+                    ideaRef.update(withChecks);
+                  }}
+                />
+              }
+            />
+          </FormControl>
+        </MenuItem>
       </Menu>
     </Box>
   );
