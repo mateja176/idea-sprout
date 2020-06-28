@@ -9,9 +9,10 @@ import {
 } from '@material-ui/core';
 import { ExpandLess, ExpandMore, StarRate } from '@material-ui/icons';
 import { ShareMenu } from 'containers';
-import { IdeaModel, Review, WithStyle } from 'models';
+import { IdeaModel, Review } from 'models';
 import { isNil } from 'ramda';
 import React from 'react';
+import { useIdeaOptionButtonStyle } from 'services';
 import { starColor } from 'styles';
 import { getRatingHelperText } from 'utils';
 
@@ -20,8 +21,8 @@ export interface IdeaOptionsProps {
   ideaUrl: string;
   reviews: Review[];
   toggleReviewsOpen: () => void;
-  ConfigButton: React.ComponentType<WithStyle>;
-  NavigationButton: React.ComponentType<WithStyle>;
+  configButton: React.ReactElement;
+  navigationButton: React.ReactElement;
   expanded?: boolean;
   toggleExpanded?: () => void;
 }
@@ -40,8 +41,8 @@ export const IdeaOptions: React.FC<IdeaOptionsProps> = ({
   ideaUrl,
   reviews,
   toggleReviewsOpen,
-  ConfigButton,
-  NavigationButton,
+  configButton,
+  navigationButton,
   expanded,
   toggleExpanded = () => {},
 }) => {
@@ -63,11 +64,7 @@ export const IdeaOptions: React.FC<IdeaOptionsProps> = ({
 
   const ratingTooltip = getRatingHelperText(ratingConfig);
 
-  const buttonPadding = theme.spacing(2);
-  const buttonStyle: React.CSSProperties = {
-    paddingTop: buttonPadding,
-    paddingBottom: buttonPadding,
-  };
+  const buttonStyle = useIdeaOptionButtonStyle();
 
   return (
     <Box display="flex" alignItems="center" width="100%">
@@ -88,8 +85,8 @@ export const IdeaOptions: React.FC<IdeaOptionsProps> = ({
           {averageRating}
         </Button>
       </Tooltip>
-      <ConfigButton style={buttonStyle} />
-      <NavigationButton style={buttonStyle} />
+      {configButton}
+      {navigationButton}
       <Tooltip placement="top" title={idea.name}>
         <Button
           style={{

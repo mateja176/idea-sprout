@@ -14,6 +14,7 @@ import {
   useReviewDialogs,
   useReviewsRef,
   useSignedInUser,
+  useIdeaOptionButtonStyle,
 } from 'services';
 import { ideaMarginBottom, pageMargin } from 'styles';
 import { absolutePrivateRoute } from 'utils';
@@ -58,6 +59,8 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({
     toggleReviewsOpen,
   } = useReviewDialogs();
 
+  const buttonStyle = useIdeaOptionButtonStyle();
+
   return idea.name ? (
     <Box mt={pageMargin} mb={ideaMarginBottom}>
       <Box mx={2}>
@@ -66,13 +69,13 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({
           ideaUrl={ideaUrl}
           reviews={reviews}
           toggleReviewsOpen={toggleReviewOpen}
-          ConfigButton={({ style }) => (
-            <ReviewButton style={style} onClick={toggleReviewOpen} />
-          )}
-          NavigationButton={({ style }) => (
+          configButton={
+            <ReviewButton style={buttonStyle} onClick={toggleReviewOpen} />
+          }
+          navigationButton={
             <Tooltip placement="top" title="Back to ideas">
               <Button
-                style={{ ...style, color: theme.palette.action.active }}
+                style={{ ...buttonStyle, color: theme.palette.action.active }}
                 onClick={() => {
                   history.push(absolutePrivateRoute.ideas.path);
                 }}
@@ -80,7 +83,7 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({
                 <KeyboardArrowLeft />
               </Button>
             </Tooltip>
-          )}
+          }
         />
       </Box>
       <Idea {...idea} />

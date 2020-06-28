@@ -1,7 +1,10 @@
 import {
   Box,
   Button,
+  Checkbox,
   Collapse,
+  FormControl,
+  FormControlLabel,
   ListItem,
   Menu,
   MenuItem,
@@ -23,6 +26,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import {
   useFirestoreCollection,
+  useIdeaOptionButtonStyle,
   useIdeasRef,
   useIdeaUrl,
   useReviewDialogs,
@@ -78,75 +82,28 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ idea, isAuthor }) => {
 
   const checkRef = React.useRef<HTMLButtonElement | null>(null);
 
-  const NavigationButton = React.useCallback(
-    ({ style }) => {
-      const buttonStyle = {
-        ...style,
-        color: theme.palette.action.active,
-      };
+  const passedPreflightChecks = Object.values(idea.checks).every(Boolean);
 
-      const passedPreflightChecks = Object.values(idea.checks).every(Boolean);
+  const publish = () => {
+    const withStatus: Pick<IdeaModel, 'status'> = {
+      status: 'sprout',
+    };
+    ideaRef.update(withStatus);
+  };
 
-      const publish = () => {
-        const withStatus: Pick<IdeaModel, 'status'> = {
-          status: 'sprout',
-        };
-        ideaRef.update(withStatus);
-      };
+  const unpublish = () => {
+    const withStatus: Pick<IdeaModel, 'status'> = {
+      status: 'seed',
+    };
+    ideaRef.update(withStatus);
+  };
 
-      const unpublish = () => {
-        const withStatus: Pick<IdeaModel, 'status'> = {
-          status: 'seed',
-        };
-        ideaRef.update(withStatus);
-      };
+  const buttonStyle = useIdeaOptionButtonStyle();
 
-      return isAuthor ? (
-        idea.status === 'sprout' ? (
-          <Tooltip placement={'top'} title={'Unpublish'}>
-            <Button style={buttonStyle} onClick={unpublish}>
-              <CloudOff />
-            </Button>
-          </Tooltip>
-        ) : passedPreflightChecks ? (
-          <Tooltip placement={'top'} title={'Publish'}>
-            <Button style={buttonStyle} onClick={publish}>
-              <CloudUpload />
-            </Button>
-          </Tooltip>
-        ) : (
-          <Box>
-            <Tooltip placement={'top'} title={'Preflight check'}>
-              <Button
-                ref={checkRef}
-                style={buttonStyle}
-                onClick={() => {
-                  setCheckMenu.toggle();
-                }}
-              >
-                <CheckBoxOutlineBlank />
-              </Button>
-            </Tooltip>
-          </Box>
-        )
-      ) : (
-        <Tooltip placement={'top'} title={'Open in full'}>
-          <Button
-            style={buttonStyle}
-            onClick={() => {
-              history.push(
-                urljoin(absolutePrivateRoute.ideas.path, idea.id),
-                idea,
-              );
-            }}
-          >
-            <OpenInBrowser />
-          </Button>
-        </Tooltip>
-      );
-    },
-    [theme, history, idea, ideaRef, setCheckMenu, isAuthor],
-  );
+  const navigationButtonStyle = {
+    ...buttonStyle,
+    color: theme.palette.action.active,
+  };
 
   return (
     <Box key={idea.id}>
@@ -156,7 +113,7 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ idea, isAuthor }) => {
           ideaUrl={ideaUrl}
           reviews={reviews}
           toggleReviewsOpen={toggleReviewsOpen}
-          ConfigButton={({ style }) =>
+          configButton={
             isAuthor ? (
               <Tooltip placement="top" title="Edit Idea">
                 <Link
@@ -165,16 +122,63 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ idea, isAuthor }) => {
                     idea.id,
                   )}
                 >
-                  <Button style={style} color="primary">
+                  <Button style={buttonStyle} color="primary">
                     <Edit />
                   </Button>
                 </Link>
               </Tooltip>
             ) : (
-              <ReviewButton style={style} onClick={toggleReviewAndExpanded} />
+              <ReviewButton
+                style={buttonStyle}
+                onClick={toggleReviewAndExpanded}
+              />
             )
           }
-          NavigationButton={NavigationButton}
+          navigationButton={
+            isAuthor ? (
+              idea.status === 'sprout' ? (
+                <Tooltip placement={'top'} title={'Unpublish'}>
+                  <Button style={navigationButtonStyle} onClick={unpublish}>
+                    <CloudOff />
+                  </Button>
+                </Tooltip>
+              ) : passedPreflightChecks ? (
+                <Tooltip placement={'top'} title={'Publish'}>
+                  <Button style={navigationButtonStyle} onClick={publish}>
+                    <CloudUpload />
+                  </Button>
+                </Tooltip>
+              ) : (
+                <Box>
+                  <Tooltip placement={'top'} title={'Preflight check'}>
+                    <Button
+                      ref={checkRef}
+                      style={navigationButtonStyle}
+                      onClick={() => {
+                        setCheckMenu.toggle();
+                      }}
+                    >
+                      <CheckBoxOutlineBlank />
+                    </Button>
+                  </Tooltip>
+                </Box>
+              )
+            ) : (
+              <Tooltip placement={'top'} title={'Open in full'}>
+                <Button
+                  style={navigationButtonStyle}
+                  onClick={() => {
+                    history.push(
+                      urljoin(absolutePrivateRoute.ideas.path, idea.id),
+                      idea,
+                    );
+                  }}
+                >
+                  <OpenInBrowser />
+                </Button>
+              </Tooltip>
+            )
+          }
           expanded={expanded}
           toggleExpanded={toggleExpanded}
         />
@@ -199,7 +203,7 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ idea, isAuthor }) => {
       />
       <Menu
         anchorEl={checkRef.current}
-        open={checkMenu}
+        open={checkMenu && !passedPreflightChecks}
         onClose={setCheckMenu.setFalse}
       >
         <MenuItem>
