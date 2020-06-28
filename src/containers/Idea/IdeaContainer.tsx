@@ -1,6 +1,6 @@
 import { Box, Button, Tooltip, useTheme } from '@material-ui/core';
 import { KeyboardArrowLeft } from '@material-ui/icons';
-import { ReviewButton } from 'components';
+import { IdeaOptionsWrapper, ReviewButton } from 'components';
 import { Idea, ReviewDialog, ReviewsDialog } from 'containers';
 import 'firebase/firestore';
 import { IdeaModel, Review } from 'models';
@@ -9,12 +9,12 @@ import { Redirect, useHistory } from 'react-router-dom';
 import {
   useFirestoreCollection,
   useFirestoreDoc,
+  useIdeaOptionButtonStyle,
   useIdeasRef,
   useIdeaUrl,
   useReviewDialogs,
   useReviewsRef,
   useSignedInUser,
-  useIdeaOptionButtonStyle,
 } from 'services';
 import { ideaMarginBottom, pageMargin } from 'styles';
 import { absolutePrivateRoute } from 'utils';
@@ -63,7 +63,7 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({
 
   return idea.name ? (
     <Box mt={pageMargin} mb={ideaMarginBottom}>
-      <Box mx={2}>
+      <IdeaOptionsWrapper>
         <IdeaOptions
           idea={idea}
           ideaUrl={ideaUrl}
@@ -85,7 +85,7 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({
             </Tooltip>
           }
         />
-      </Box>
+      </IdeaOptionsWrapper>
       <Idea {...idea} />
       <ReviewsDialog
         name={idea.name}
