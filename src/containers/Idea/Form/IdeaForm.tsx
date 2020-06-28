@@ -46,7 +46,9 @@ export const IdeaForm: React.FC<IdeaFormProps> = ({ initialValues }) => {
 
   const user = useSignedInUser();
 
-  const [expanded, setExpanded] = React.useState(true);
+  const [expanded, setExpanded] = React.useState(
+    Object.values(initialValues.checks).some((check) => !check),
+  );
   const toggleExpanded = () => {
     setExpanded(!expanded);
   };
