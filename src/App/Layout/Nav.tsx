@@ -8,6 +8,7 @@ import {
   absolutePrivateNavigationRoutes,
   absolutePublicNavigationRoutes,
 } from 'utils';
+import { User } from 'models';
 
 export interface NavProps {
   onClick: React.MouseEventHandler;
@@ -20,13 +21,11 @@ const listStyle: React.CSSProperties = {
 };
 
 export const Nav: React.FC<NavProps> = ({ onClick }) => {
-  const isSignedIn = !!useUser();
+  const isSignedIn = !!useUser<User | null>();
 
-  const routes = Object.values(
-    isSignedIn
-      ? absolutePrivateNavigationRoutes
-      : absolutePublicNavigationRoutes,
-  );
+  const routes = isSignedIn
+    ? absolutePrivateNavigationRoutes
+    : absolutePublicNavigationRoutes;
 
   return (
     <List style={listStyle}>
