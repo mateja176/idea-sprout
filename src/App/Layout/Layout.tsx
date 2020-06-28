@@ -8,14 +8,16 @@ import {
   Typography,
 } from '@material-ui/core';
 import { ChevronLeft, Menu } from '@material-ui/icons';
-import { Loading } from 'components';
 import React from 'react';
-import { Nav, navWidth } from './Nav';
+import { minNavWidth, Nav, NavSkeleton } from './Nav';
 
 export interface LayoutProps {}
 
 const useStyles = makeStyles((theme) => ({
   toolbar: theme.mixins.toolbar,
+  paper: {
+    minWidth: minNavWidth,
+  },
 }));
 
 export const Layout: React.FC<LayoutProps> = ({ children }) => {
@@ -45,8 +47,8 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
         anchor="left"
         open={drawerOpen}
         onClose={toggleDrawerOpen}
-        style={{
-          minWidth: navWidth,
+        classes={{
+          paper: classes.paper,
         }}
       >
         <Box className={classes.toolbar}>
@@ -62,7 +64,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
               <ChevronLeft />
             </IconButton>
           </Box>
-          <React.Suspense fallback={<Loading />}>
+          <React.Suspense fallback={<NavSkeleton />}>
             <Nav onClick={toggleDrawerOpen} />
           </React.Suspense>
         </Box>
