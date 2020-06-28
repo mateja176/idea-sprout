@@ -45,7 +45,8 @@ export const IdeaForm: React.FC<IdeaFormProps> = ({ idea }) => {
 
   const { queueSnackbar } = useActions({ queueSnackbar: createQueueSnackbar });
 
-  const ideaRef = useIdeasRef().doc(idea.id);
+  const ideasRef = useIdeasRef();
+  const getIdeaRef = () => (idea.id ? ideasRef.doc(idea.id) : ideasRef.doc());
 
   const user = useSignedInUser();
 
@@ -69,7 +70,7 @@ export const IdeaForm: React.FC<IdeaFormProps> = ({ idea }) => {
     validationSchema: creationIdeaSchema,
     initialValues,
     onSubmit: (formValues) => {
-      return ideaRef
+      return getIdeaRef()
         .set({ ...idea, author: user.email, formValues })
         .then(() => {
           history.push(absolutePrivateRoute.ideas.path);
@@ -108,7 +109,7 @@ export const IdeaForm: React.FC<IdeaFormProps> = ({ idea }) => {
       setExpanded(false);
     }
 
-    ideaRef.update({ checks: { ...idea.checks, [name]: value } });
+    getIdeaRef().update({ checks: { ...idea.checks, [name]: value } });
   };
 
   return (
