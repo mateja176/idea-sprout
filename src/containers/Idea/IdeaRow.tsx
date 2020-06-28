@@ -33,7 +33,7 @@ import {
   useReviewsRef,
   useSignedInUser,
 } from 'services';
-import { ideaMarginBottom } from 'styles';
+import { ideaListItemStyle, ideaMarginBottom } from 'styles';
 import urljoin from 'url-join';
 import { absolutePrivateRoute } from 'utils';
 import { Idea } from './Idea';
@@ -107,7 +107,7 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ idea, isAuthor }) => {
 
   return (
     <Box key={idea.id}>
-      <ListItem key={idea.id} style={{ paddingTop: 0, paddingBottom: 0 }}>
+      <ListItem key={idea.id} style={ideaListItemStyle}>
         <IdeaOptions
           idea={idea}
           ideaUrl={ideaUrl}

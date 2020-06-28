@@ -14,8 +14,8 @@ export interface NavSkeletonProps {}
 
 export const NavSkeleton: React.FC<NavSkeletonProps> = () => (
   <List>
-    {range(0, absolutePrivateNavigationRoutes.length + 1).map(() => (
-      <ListItem>
+    {range(0, absolutePrivateNavigationRoutes.length + 1).map((i) => (
+      <ListItem key={i}>
         <ListItemIcon>
           <Icon>
             <Skeleton variant={'circle'} width={'100%'} height={'100%'} />

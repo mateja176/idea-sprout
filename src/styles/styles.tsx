@@ -34,3 +34,10 @@ export const textareaStyle: React.CSSProperties = {
 export const breakWordStyle: React.CSSProperties = {
   wordBreak: 'break-word',
 };
+
+export const ideaListStyle: React.CSSProperties = { paddingTop: 0 };
+
+export const ideaListItemStyle: React.CSSProperties = {
+  paddingTop: 0,
+  paddingBottom: 0,
+};
