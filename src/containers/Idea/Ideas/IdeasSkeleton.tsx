@@ -10,7 +10,7 @@ export interface IdeasSkeletonProps {}
 export const IdeasSkeleton: React.FC<IdeasSkeletonProps> = () => {
   const buttonStyle = useIdeaOptionButtonStyle();
 
-  const row = (
+  const Row = () => (
     <ListItem style={ideaListItemStyle}>
       {range(0, 2).map((i) => (
         <Button key={i} style={buttonStyle}>
@@ -44,5 +44,11 @@ export const IdeasSkeleton: React.FC<IdeasSkeletonProps> = () => {
     </ListItem>
   );
 
-  return <List style={ideaListStyle}>{range(0, 10).map(() => row)}</List>;
+  return (
+    <List style={ideaListStyle}>
+      {range(0, 10).map((i) => (
+        <Row key={i} />
+      ))}
+    </List>
+  );
 };
