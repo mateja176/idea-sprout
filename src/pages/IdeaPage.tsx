@@ -1,5 +1,5 @@
-import { Loading } from 'components';
 import { IdeaContainer } from 'containers';
+import { IdeaContainerSkeleton } from 'containers/Idea/IdeaContainerSkeleton';
 import { IdeaModel, Review } from 'models';
 import React, { Suspense } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
@@ -18,7 +18,7 @@ export const IdeaPage: React.FC<IdeaPageProps> = ({
   location: { state },
 }) => {
   return (
-    <Suspense fallback={<Loading />}>
+    <Suspense fallback={<IdeaContainerSkeleton />}>
       <IdeaContainer
         id={id}
         initialIdea={state?.idea}
