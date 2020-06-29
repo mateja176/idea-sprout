@@ -7,6 +7,8 @@ import {
   User,
 } from 'models';
 
+export const ideasFetchLimit = 15;
+
 export const getRatingHelperText = (rating: RatingConfig) =>
   `Average rating ${rating.average} out of total ${rating.count}`;
 
