@@ -2,7 +2,8 @@ import { FileDimensions, WithTimeout } from 'models';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { ActionCreatorsMapObject, bindActionCreators } from 'redux';
-import { Action } from 'services';
+import { Action, AnyThunk } from 'services';
+import { GetBoundThunk } from 'services/store';
 
 export const useActions = <
   ActionCreators extends ActionCreatorsMapObject<Action>
@@ -31,6 +32,18 @@ export const useDeferredValue = <Value>(
   }, [timeoutMs, value]);
 
   return deferredValue;
+};
+
+export const useThunkActions = <
+  ThunkActionCreators extends Record<string, AnyThunk>
+>(
+  thunkActionCreators: ThunkActionCreators,
+) => {
+  const dispatch = useDispatch();
+
+  return bindActionCreators(thunkActionCreators as any, dispatch) as {
+    [key in keyof ThunkActionCreators]: GetBoundThunk<ThunkActionCreators[key]>;
+  };
 };
 
 export const useValueWithFallback: typeof useDeferredValue = (

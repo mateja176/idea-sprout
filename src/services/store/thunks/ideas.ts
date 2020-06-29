@@ -7,13 +7,27 @@ import { ideasFetchLimit } from 'utils';
 import { Action, State } from '../reducer';
 import { ConcatIdeasAction, createConcatIdeas, selectIdeas } from '../slices';
 
+export type AnyThunk = (
+  ...params: any[]
+) => ThunkAction<Promise<any>, State, void, Action>;
+
+export type GetBoundThunk<T extends AnyThunk> = (
+  ...params: Parameters<T>
+) => ReturnType<ReturnType<T>>;
+
+export type GetActionCreator<T extends AnyThunk> = GetBoundThunk<T> extends (
+  ...params: any[]
+) => Promise<infer A>
+  ? (...params: Parameters<T>) => A
+  : never;
+
 export interface FetchIdeasOptions<Key extends keyof IdeaModel>
   extends IdeaFilter<Key> {
-  orderByField: Key;
-  directionStr: firebase.firestore.OrderByDirection;
+  orderByField?: Key;
+  directionStr?: firebase.firestore.OrderByDirection;
 }
 
-export const fetchIdeas = <Key extends keyof IdeaModel>({
+export const createFetchIdeas = <Key extends keyof IdeaModel>({
   fieldPath,
   opStr,
   value,
@@ -49,7 +63,7 @@ export interface FetchMoreIdeasOptions<Key extends keyof IdeaModel>
   limit: number;
 }
 
-export const fetchMoreIdeas = <Key extends keyof IdeaModel>({
+export const createFetchMoreIdeas = <Key extends keyof IdeaModel>({
   fieldPath,
   opStr,
   value,
