@@ -1,11 +1,16 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
-import { OrderedMap } from 'immutable';
 import { IdeaFilter, IdeaModel, RawIdea } from 'models';
+import { last, range } from 'ramda';
+import { IndexRange } from 'react-virtualized';
 import { ThunkAction } from 'redux-thunk';
-import { ideasFetchLimit } from 'utils';
 import { Action, State } from '../reducer';
-import { ConcatIdeasAction, createConcatIdeas, selectIdeas } from '../slices';
+import {
+  createConcatIdeas,
+  createUpdateIdeas,
+  selectIdeas,
+  UpdateIdeasAction,
+} from '../slices';
 
 export type AnyThunk = (
   ...params: any[]
@@ -22,7 +27,8 @@ export type GetActionCreator<T extends AnyThunk> = GetBoundThunk<T> extends (
   : never;
 
 export interface FetchIdeasOptions<Key extends keyof IdeaModel>
-  extends IdeaFilter<Key> {
+  extends IdeaFilter<Key>,
+    IndexRange {
   orderByField?: Key;
   directionStr?: firebase.firestore.OrderByDirection;
 }
@@ -31,52 +37,63 @@ export const createFetchIdeas = <Key extends keyof IdeaModel>({
   fieldPath,
   opStr,
   value,
+  startIndex,
+  stopIndex,
   orderByField = 'createdAt' as Key,
   directionStr = 'desc',
 }: FetchIdeasOptions<Key>): ThunkAction<
-  Promise<ConcatIdeasAction>,
+  Promise<UpdateIdeasAction>,
   State,
   void,
   Action
 > => (dispatch) => {
+  const limit = stopIndex - startIndex;
+
+  dispatch(
+    createConcatIdeas({
+      ideas: range(0, limit).map(() => 'loading'),
+    }),
+  );
+
   return firebase
     .firestore()
     .collection('ideas')
     .where(fieldPath, opStr, value)
     .orderBy(orderByField, directionStr)
     .get()
-    .then(({ docs }) =>
-      dispatch(
-        createConcatIdeas(
-          OrderedMap(
-            Object.fromEntries(
-              docs.map((doc) => [doc.id, doc.data()]),
-            ) as Record<IdeaModel['id'], RawIdea>,
-          ),
-        ),
-      ),
-    );
-};
+    .then(({ docs }) => {
+      const ideas = docs.map((doc) => ({
+        ...(doc.data() as RawIdea),
+        id: doc.id,
+      }));
 
-export interface FetchMoreIdeasOptions<Key extends keyof IdeaModel>
-  extends FetchIdeasOptions<Key> {
-  limit: number;
-}
+      return dispatch(createUpdateIdeas({ startIndex, stopIndex, ideas }));
+    });
+};
 
 export const createFetchMoreIdeas = <Key extends keyof IdeaModel>({
   fieldPath,
   opStr,
   value,
+  startIndex,
+  stopIndex,
   orderByField = 'createdAt' as Key,
   directionStr = 'desc',
-  limit = ideasFetchLimit,
-}: FetchMoreIdeasOptions<Key>): ThunkAction<
-  Promise<ConcatIdeasAction>,
+}: FetchIdeasOptions<Key>): ThunkAction<
+  Promise<UpdateIdeasAction>,
   State,
   void,
   Action
 > => (dispatch, getState) => {
-  const lastCreatedAt = selectIdeas(getState()).last<RawIdea>().createdAt;
+  const limit = stopIndex - startIndex;
+
+  dispatch(
+    createConcatIdeas({
+      ideas: range(0, limit).map(() => 'loading'),
+    }),
+  );
+
+  const lastCreatedAt = last(selectIdeas(getState()));
 
   return firebase
     .firestore()
@@ -86,15 +103,12 @@ export const createFetchMoreIdeas = <Key extends keyof IdeaModel>({
     .startAt(lastCreatedAt)
     .limit(limit)
     .get()
-    .then(({ docs }) =>
-      dispatch(
-        createConcatIdeas(
-          OrderedMap(
-            Object.fromEntries(
-              docs.map((doc) => [doc.id, doc.data()]),
-            ) as Record<IdeaModel['id'], RawIdea>,
-          ),
-        ),
-      ),
-    );
+    .then(({ docs }) => {
+      const ideas = docs.map((doc) => ({
+        ...(doc.data() as RawIdea),
+        id: doc.id,
+      }));
+
+      return dispatch(createUpdateIdeas({ startIndex, stopIndex, ideas }));
+    });
 };

@@ -1,5 +1,5 @@
-import { Hidden, Icon, List } from '@material-ui/core';
-import { Skeleton } from '@material-ui/lab';
+import { List } from '@material-ui/core';
+import { CollapseIconSkeleton } from 'components';
 import { range } from 'ramda';
 import React from 'react';
 import { ideaListStyle } from 'styles';
@@ -14,13 +14,7 @@ export const IdeasSkeleton: React.FC<IdeasSkeletonProps> = () => {
       {range(0, ideasFetchLimit).map((i) => (
         <IdeaOptionsSkeleton
           key={i}
-          secondaryActionIcon={
-            <Hidden xsDown>
-              <Icon>
-                <Skeleton variant={'rect'} width={'100%'} height={'100%'} />
-              </Icon>
-            </Hidden>
-          }
+          secondaryActionIcon={<CollapseIconSkeleton />}
         />
       ))}
     </List>

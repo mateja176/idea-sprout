@@ -1,41 +1,60 @@
-import { OrderedMap } from 'immutable';
-import { IdeaModel, RawIdea } from 'models';
+import { IdeaModel } from 'models';
 import { createSelector } from 'reselect';
 import { createAction, getType } from 'typesafe-actions';
+import { IndexRange } from 'react-virtualized';
 
 export interface IdeasState {
-  ideas: OrderedMap<IdeaModel['id'], RawIdea>;
+  ideas: Array<'loading' | IdeaModel | Error | undefined>;
 }
 
 export const initialIdeasState: IdeasState = {
-  ideas: OrderedMap(),
+  ideas: [],
 };
 
 export const createSetIdeas = createAction(
   'ideas/set',
-  (payload: IdeasState['ideas']) => payload,
+  (payload: Pick<IdeasState, 'ideas'>) => payload,
 )();
 export type CreateSetIdeas = typeof createSetIdeas;
 export type SetIdeasAction = ReturnType<CreateSetIdeas>;
 
 export const createConcatIdeas = createAction(
   'ideas/concat',
-  (payload: IdeasState['ideas']) => payload,
+  (payload: Pick<IdeasState, 'ideas'>) => payload,
 )();
 export type CreateConcatIdeas = typeof createConcatIdeas;
 export type ConcatIdeasAction = ReturnType<CreateConcatIdeas>;
 
-export type IdeasAction = SetIdeasAction | ConcatIdeasAction;
+export const createUpdateIdeas = createAction(
+  'ideas/update',
+  (payload: Pick<IdeasState, 'ideas'> & IndexRange) => payload,
+)();
+export type CreateUpdateIdeas = typeof createUpdateIdeas;
+export type UpdateIdeasAction = ReturnType<CreateUpdateIdeas>;
+
+export type IdeasAction =
+  | UpdateIdeasAction
+  | SetIdeasAction
+  | ConcatIdeasAction;
 
 export const ideasSlice = (
   state = initialIdeasState,
   action: IdeasAction,
 ): IdeasState => {
   switch (action.type) {
-    case getType(createConcatIdeas):
-      return { ...state, ideas: state.ideas.merge(action.payload) };
     case getType(createSetIdeas):
-      return { ...state, ideas: action.payload };
+      return { ...state, ideas: action.payload.ideas };
+    case getType(createConcatIdeas):
+      return { ...state, ideas: state.ideas.concat(action.payload.ideas) };
+    case getType(createUpdateIdeas):
+      return {
+        ...state,
+        ideas: state.ideas.map((idea, i) =>
+          i >= action.payload.startIndex && i < action.payload.stopIndex
+            ? action.payload.ideas[action.payload.startIndex + i]
+            : idea,
+        ),
+      };
     default:
       return state;
   }
