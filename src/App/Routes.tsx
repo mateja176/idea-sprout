@@ -32,10 +32,7 @@ export const Routes: React.FC<RoutesProps> = () => {
         path={absolutePrivateRoute.root.path}
         render={() => <Redirect to={absolutePrivateRoute.ideas.path} />}
       />
-      <Route
-        path={urljoin(absolutePrivateRoute.ideas.path, '*')}
-        component={IdeasSwitch}
-      />
+      <Route path={absolutePrivateRoute.ideas.path} component={IdeasSwitch} />
       <Route
         render={() => (
           <Box mt={4} display="flex" justifyContent="center">

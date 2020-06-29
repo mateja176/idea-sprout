@@ -1,8 +1,8 @@
 import React from 'react';
 import { Provider as ReduxProvider } from 'react-redux';
-import { Router } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import { FirebaseAppProvider } from 'reactfire';
-import { env, history, store } from 'services';
+import { env, store } from 'services';
 
 const firebaseConfig = {
   apiKey: env.firebaseApiKey,
@@ -19,10 +19,10 @@ export interface ProviderProps {}
 
 export const Provider: React.FC<ProviderProps> = ({ children }) => (
   <ReduxProvider store={store}>
-    <Router history={history}>
+    <BrowserRouter>
       <FirebaseAppProvider firebaseConfig={firebaseConfig}>
         {children}
       </FirebaseAppProvider>
-    </Router>
+    </BrowserRouter>
   </ReduxProvider>
 );
