@@ -11,14 +11,21 @@ export const initialIdeasState: IdeasState = {
   ideas: OrderedMap(),
 };
 
+export const createSetIdeas = createAction(
+  'ideas/set',
+  (payload: IdeasState['ideas']) => payload,
+)();
+export type CreateSetIdeas = typeof createSetIdeas;
+export type SetIdeasAction = ReturnType<CreateSetIdeas>;
+
 export const createConcatIdeas = createAction(
   'ideas/concat',
   (payload: IdeasState['ideas']) => payload,
 )();
-export type CreateAddIdeas = typeof createConcatIdeas;
-export type ConcatIdeasAction = ReturnType<CreateAddIdeas>;
+export type CreateConcatIdeas = typeof createConcatIdeas;
+export type ConcatIdeasAction = ReturnType<CreateConcatIdeas>;
 
-export type IdeasAction = ConcatIdeasAction;
+export type IdeasAction = SetIdeasAction | ConcatIdeasAction;
 
 export const ideasSlice = (
   state = initialIdeasState,
@@ -27,6 +34,8 @@ export const ideasSlice = (
   switch (action.type) {
     case getType(createConcatIdeas):
       return { ...state, ideas: state.ideas.merge(action.payload) };
+    case getType(createSetIdeas):
+      return { ...state, ideas: action.payload };
     default:
       return state;
   }
