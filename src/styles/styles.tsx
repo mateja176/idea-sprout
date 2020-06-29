@@ -1,3 +1,5 @@
+export const ideaListItemHeight = 56;
+
 export const ideaMarginBottom = 15;
 
 export const logoWidth = 30;
@@ -35,7 +37,10 @@ export const breakWordStyle: React.CSSProperties = {
   wordBreak: 'break-word',
 };
 
-export const ideaListStyle: React.CSSProperties = { paddingTop: 0 };
+export const ideaListStyle: React.CSSProperties = {
+  paddingTop: 0,
+  paddingBottom: 0,
+};
 
 export const ideaListItemStyle: React.CSSProperties = {
   paddingTop: 0,

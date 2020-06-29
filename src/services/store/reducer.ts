@@ -1,8 +1,9 @@
 import { combineReducers } from 'redux';
-import { snackbar } from './slices';
+import { ideasSlice, snackbar } from './slices';
 
 const reducers = {
   snackbar,
+  ideasSlice,
 };
 
 export const reducer = combineReducers(reducers);

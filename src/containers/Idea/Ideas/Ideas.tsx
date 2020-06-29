@@ -1,23 +1,16 @@
 import { Box, List } from '@material-ui/core';
 import { IdeaRow } from 'containers';
-import firebase from 'firebase/app';
-import { IdeaModel, RawIdea, User } from 'models';
+import { IdeaFilter, IdeaModel, User } from 'models';
 import React from 'react';
 import { useFirestoreCollection, useIdeasRef, useSignedInUser } from 'services';
 import { ideaListStyle, pageMargin } from 'styles';
 import { getIsAuthor } from 'utils';
 
-export interface IdeasProps<Key extends keyof RawIdea> {
-  filter: (
-    user: User,
-  ) => {
-    fieldPath: Key;
-    opStr: firebase.firestore.WhereFilterOp;
-    value: RawIdea[Key];
-  };
+export interface IdeasProps<Key extends keyof IdeaModel> {
+  filter: (user: User) => IdeaFilter<Key>;
 }
 
-export const Ideas = <Key extends keyof RawIdea>({
+export const Ideas = <Key extends keyof IdeaModel>({
   filter,
 }: IdeasProps<Key>) => {
   const ideasRef = useIdeasRef();
