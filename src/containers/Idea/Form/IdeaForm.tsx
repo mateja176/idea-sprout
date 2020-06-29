@@ -11,12 +11,14 @@ import {
 import { ExpandMore, Info } from '@material-ui/icons';
 import { Link, MultilineTextField, PageWrapper } from 'components';
 import { Check, Drop } from 'containers';
+import firebase from 'firebase/app';
 import { useFormik } from 'formik';
 import {
   creationIdeaSchema,
   IdeaModel,
   ProblemSolutionLength,
   RationaleLength,
+  RawIdea,
 } from 'models';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
@@ -70,10 +72,18 @@ export const IdeaForm: React.FC<IdeaFormProps> = ({ idea }) => {
     validationSchema: creationIdeaSchema,
     initialValues,
     onSubmit: (formValues) => {
+      const { id, ...rawIdea } = idea;
+      const newIdea: RawIdea = {
+        ...rawIdea,
+        author: user.email || '',
+        ...formValues,
+        createdAt: firebase.firestore.Timestamp.now(),
+      };
+
       return getIdeaRef()
-        .set({ ...idea, author: user.email, formValues })
+        .set(newIdea)
         .then(() => {
-          history.push(absolutePrivateRoute.ideas.path);
+          history.push(absolutePrivateRoute.ideas.children.my.path);
 
           queueSnackbar({
             severity: 'success',

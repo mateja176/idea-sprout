@@ -26,7 +26,9 @@ export const Ideas = <Key extends keyof RawIdea>({
 
   const { fieldPath, opStr, value } = filter(user);
 
-  const filteredIdeasRef = ideasRef.where(fieldPath, opStr, value);
+  const filteredIdeasRef = ideasRef
+    .where(fieldPath, opStr, value)
+    .orderBy('createdAt', 'desc');
 
   const ideas = useFirestoreCollection<IdeaModel>(filteredIdeasRef);
 

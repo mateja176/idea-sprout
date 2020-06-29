@@ -1,3 +1,5 @@
+import firebase from 'firebase/app';
+import 'firebase/firestore';
 import * as yup from 'yup';
 import { WithAuthor, WithId } from './models';
 
@@ -27,22 +29,24 @@ export const StorageFileSchema = yup.object().required().shape<StorageFile>({
 });
 
 export interface IdeaModel extends WithId, WithAuthor {
+  createdAt: firebase.firestore.Timestamp;
   /**
    * the checks are a way of guiding creators towards publishing high quality ideas
    */
   checks: { [key in CheckName]: boolean };
   status: IdeaStatus;
+  sharedBy: string[];
   name: string;
   story: StorageFile;
   problemSolution: string;
   images: StorageFile[];
   rationale: string;
-  sharedBy: string[];
 }
 
 export const initialIdea: IdeaModel = {
   id: '',
   author: '',
+  createdAt: firebase.firestore.Timestamp.now(),
   sharedBy: [],
   status: 'seed',
   checks: {
@@ -61,7 +65,7 @@ export type RawIdea = Omit<IdeaModel, 'id'>;
 
 export type FormIdea = Omit<
   IdeaModel,
-  'id' | 'checks' | 'author' | 'status' | 'sharedBy'
+  'id' | 'author' | 'createdAt' | 'checks' | 'status' | 'sharedBy'
 >;
 
 export enum ProblemSolutionLength {
