@@ -2,7 +2,10 @@ import { Box, Button, makeStyles, Tooltip } from '@material-ui/core';
 import { ShareMenu } from 'containers';
 import { IdeaModel } from 'models';
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { useIdeaOptionButtonStyle } from 'services';
+import urljoin from 'url-join';
+import { absolutePrivateRoute } from 'utils';
 import { IdeaDoubleOptionSkeleton } from './IdeaOptionsSkeleton';
 import { IdeaRatingOption } from './IdeaRatingOption';
 
@@ -34,6 +37,8 @@ export const IdeaOptions: React.FC<IdeaOptionsProps> = ({
 
   const buttonStyle = useIdeaOptionButtonStyle();
 
+  const history = useHistory();
+
   return (
     <Box display="flex" alignItems="center" width="100%">
       <ShareMenu
@@ -52,10 +57,12 @@ export const IdeaOptions: React.FC<IdeaOptionsProps> = ({
             ...buttonStyle,
             textTransform: 'capitalize',
             fontWeight: 400,
-            flexGrow: 1,
           }}
           classes={{
             label: classes.label,
+          }}
+          onClick={() => {
+            history.push(urljoin(absolutePrivateRoute.ideas.path, idea.id));
           }}
         >
           <Box display="flex" alignItems="center">
