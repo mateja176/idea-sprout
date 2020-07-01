@@ -9,7 +9,6 @@ import { Info } from '@material-ui/icons';
 import { Rating } from '@material-ui/lab';
 import { MultilineTextField } from 'components';
 import { Check, DraggableDialog, sharingOptions } from 'containers';
-import firebase from 'firebase/app';
 import 'firebase/firestore';
 import { useFormik } from 'formik';
 import {
@@ -27,9 +26,9 @@ import {
   useFirestoreCollection,
   useReviewSubmit,
   useShareIdea,
+  useReviewsRef,
 } from 'services';
 import { withEllipsis } from 'styles';
-import { firestoreCollections } from 'utils';
 
 export interface ReviewDialogProps {
   user: User;
@@ -52,12 +51,7 @@ export const ReviewDialog: React.FC<ReviewDialogProps> = ({
 
   const hasShared = idea.sharedBy.includes(user.uid);
 
-  const reviewsRef = firebase
-    .firestore()
-    .collection(firestoreCollections.ideas.path)
-    .doc(idea.id)
-    .collection(firestoreCollections.ideas.collections.reviews.path)
-    .where('author', '==', user.email);
+  const reviewsRef = useReviewsRef(idea.id).where('author', '==', user.email);
 
   const [review] = useFirestoreCollection<Review>(reviewsRef);
 

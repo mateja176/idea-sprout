@@ -1,10 +1,9 @@
-import firebase from 'firebase/app';
 import 'firebase/firestore';
 import { IdeaModel, WithId } from 'models';
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { useFirestoreDoc } from 'services';
-import { absolutePrivateRoute, firestoreCollections } from 'utils';
+import { useFirestoreDoc, useIdeasRef } from 'services';
+import { absolutePrivateRoute } from 'utils';
 import { IdeaForm } from './IdeaForm';
 
 export interface EditIdeaFormProps extends WithId {
@@ -15,12 +14,9 @@ export const EditIdeaForm: React.FC<EditIdeaFormProps> = ({
   id,
   initialIdea,
 }) => {
-  const idea = useFirestoreDoc<IdeaModel>(
-    firebase.firestore().collection(firestoreCollections.ideas.path).doc(id),
-    {
-      startWithValue: initialIdea,
-    },
-  );
+  const idea = useFirestoreDoc<IdeaModel>(useIdeasRef().doc(id), {
+    startWithValue: initialIdea,
+  });
 
   return idea ? (
     <IdeaForm idea={idea} />

@@ -4,6 +4,7 @@ import { IdeaFilter, IdeaModel } from 'models';
 import { last, range } from 'ramda';
 import { IndexRange } from 'react-virtualized';
 import { ThunkAction } from 'redux-thunk';
+import { getIdeasRef } from 'services/hooks';
 import { convertFirestoreCollection } from 'utils';
 import { Action, State } from '../reducer';
 import {
@@ -56,9 +57,7 @@ export const createFetchIdeas = <Key extends keyof IdeaModel>({
     }),
   );
 
-  return firebase
-    .firestore()
-    .collection('ideas')
+  return getIdeasRef()
     .where(fieldPath, opStr, value)
     .orderBy(orderByField, directionStr)
     .get()
@@ -92,9 +91,7 @@ export const createFetchMoreIdeas = <Key extends keyof IdeaModel>({
 
   const lastCreatedAt = last(selectIdeas(getState()));
 
-  return firebase
-    .firestore()
-    .collection('ideas')
+  return getIdeasRef()
     .where(fieldPath, opStr, value)
     .orderBy(orderByField, directionStr)
     .startAt(lastCreatedAt)

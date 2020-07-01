@@ -2,7 +2,6 @@ import { Box, Button, Tooltip, useTheme } from '@material-ui/core';
 import { KeyboardArrowLeft } from '@material-ui/icons';
 import { IdeaOptionsWrapper, ReviewButton } from 'components';
 import { Idea, ReviewDialog, ReviewsDialog } from 'containers';
-import firebase from 'firebase/app';
 import 'firebase/firestore';
 import { IdeaModel } from 'models';
 import React from 'react';
@@ -10,12 +9,13 @@ import { Redirect, useHistory } from 'react-router-dom';
 import {
   useFirestoreDoc,
   useIdeaOptionButtonStyle,
+  useIdeasRef,
   useIdeaUrl,
   useReviewDialogs,
   useSignedInUser,
 } from 'services';
 import { ideaMarginBottom, pageMargin } from 'styles';
-import { absolutePrivateRoute, firestoreCollections } from 'utils';
+import { absolutePrivateRoute } from 'utils';
 import { IdeaOptions } from './IdeaOptions';
 
 export interface IdeaContainerProps extends Pick<IdeaModel, 'id'> {
@@ -32,12 +32,9 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({
 
   const user = useSignedInUser();
 
-  const idea = useFirestoreDoc<IdeaModel>(
-    firebase.firestore().collection(firestoreCollections.ideas.path).doc(id),
-    {
-      startWithValue: initialIdea,
-    },
-  );
+  const idea = useFirestoreDoc<IdeaModel>(useIdeasRef().doc(id), {
+    startWithValue: initialIdea,
+  });
 
   const ideaUrl = useIdeaUrl(id);
 

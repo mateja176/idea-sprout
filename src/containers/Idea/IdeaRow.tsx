@@ -20,19 +20,19 @@ import {
 import { useBoolean } from 'ahooks';
 import { ReviewButton } from 'components';
 import { IdeaOptions, ReviewDialog, ReviewsDialog } from 'containers';
-import firebase from 'firebase/app';
 import 'firebase/firestore';
 import { IdeaModel, User } from 'models';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import {
   useIdeaOptionButtonStyle,
+  useIdeasRef,
   useIdeaUrl,
   useReviewDialogs,
 } from 'services';
 import { ideaListItemStyle } from 'styles';
 import urljoin from 'url-join';
-import { absolutePrivateRoute, firestoreCollections } from 'utils';
+import { absolutePrivateRoute } from 'utils';
 
 export interface IdeaRowProps {
   idea: IdeaModel;
@@ -46,10 +46,7 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ idea, user }) => {
 
   const history = useHistory();
 
-  const ideaRef = firebase
-    .firestore()
-    .collection(firestoreCollections.ideas.path)
-    .doc(idea.id);
+  const ideaRef = useIdeasRef().doc(idea.id);
 
   const ideaUrl = useIdeaUrl(idea.id);
 

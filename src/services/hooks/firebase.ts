@@ -1,10 +1,8 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import { IdeaModel, Review, User, WithId } from 'models';
-import { useMemo } from 'react';
 import {
   ReactFireOptions,
-  useFirestore,
   useFirestoreCollection as useFirebaseFirestoreCollection,
   useFirestoreDoc as useFirebaseFirestoreDoc,
   useUser as useFirebaseUser,
@@ -21,15 +19,18 @@ import { useActions } from './hooks';
 export const useSignedInUser = (options?: ReactFireOptions<User>) =>
   useFirebaseUser<User>(firebase.auth(), options);
 
-export const useIdeasRef = (app?: firebase.app.App) => {
-  const firestore = useFirestore(app);
-  return useMemo(() => firestore.collection('ideas'), [firestore]);
+export const getIdeasRef = () =>
+  firebase.firestore().collection(firestoreCollections.ideas.path);
+export const useIdeasRef = () => {
+  return getIdeasRef();
 };
 
-export const useReviewsRef = (id: IdeaModel['id'], app?: firebase.app.App) => {
-  const ideasRef = useIdeasRef(app);
+export const useReviewsRef = (id: IdeaModel['id']) => {
+  const ideasRef = useIdeasRef();
 
-  return ideasRef.doc(id).collection('reviews');
+  return ideasRef
+    .doc(id)
+    .collection(firestoreCollections.ideas.collections.reviews.path);
 };
 
 export const useFirestoreDoc = <T extends WithId>(
@@ -62,14 +63,7 @@ export const useReviewSubmit = (id: IdeaModel['id']) => {
 
   const user = useSignedInUser();
 
-  const ideaRef = firebase
-    .firestore()
-    .collection(firestoreCollections.ideas.path)
-    .doc(id);
-
-  const reviewsRef = ideaRef.collection(
-    firestoreCollections.ideas.collections.reviews.path,
-  );
+  const reviewsRef = useReviewsRef(id);
 
   return ({ rating, feedback }: Pick<Review, 'rating' | 'feedback'>) => {
     return reviewsRef
@@ -93,10 +87,7 @@ export const useReviewSubmit = (id: IdeaModel['id']) => {
 export const useShareIdea = (idea: IdeaModel) => {
   const user = useSignedInUser();
 
-  const ideaRef = firebase
-    .firestore()
-    .collection(firestoreCollections.ideas.path)
-    .doc(idea.id);
+  const ideaRef = useIdeasRef().doc(idea.id);
 
   const withSharedBy: Pick<IdeaModel, 'sharedBy'> = {
     sharedBy: idea.sharedBy.concat(user.uid),
