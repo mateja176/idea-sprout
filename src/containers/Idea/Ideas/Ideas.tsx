@@ -1,4 +1,4 @@
-import { Box, Tab, Tabs } from '@material-ui/core';
+import { Box, Tab, Tabs, Typography } from '@material-ui/core';
 import { IdeaRow } from 'containers';
 import { IdeaFilter } from 'models';
 import qs from 'qs';
@@ -118,7 +118,7 @@ export const IdeasComponent: React.FC<IdeasProps> = ({ ideas }) => {
           loadMoreRows={(indexRange) => {
             const fetchOptions = { ...filter, ...indexRange };
 
-            return ideas.length === 0
+            return indexRange.startIndex === 0
               ? fetchIdeas(fetchOptions)
               : fetchMoreIdeas(fetchOptions);
           }}
@@ -145,7 +145,34 @@ export const IdeasComponent: React.FC<IdeasProps> = ({ ideas }) => {
                         {!idea ? null : idea === 'loading' ? (
                           <IdeaOptionsSkeleton />
                         ) : idea instanceof Error ? (
-                          <Box>Failed to load idea</Box>
+                          <Box
+                            display="flex"
+                            alignItems="center"
+                            height="100%"
+                            mx={2}
+                          >
+                            <Typography
+                              style={{ textDecoration: 'underline' }}
+                              onClick={() => {
+                                const fetchOptions = {
+                                  startIndex: idea.startIndex,
+                                  stopIndex: idea.stopIndex,
+                                  fieldPath: idea.fieldPath,
+                                  opStr: idea.opStr,
+                                  value: idea.value,
+                                };
+                                if (idea.startIndex === 0) {
+                                  fetchIdeas(fetchOptions);
+                                } else {
+                                  fetchMoreIdeas(fetchOptions);
+                                }
+                              }}
+                            >
+                              Refetch ideas
+                            </Typography>
+                            &nbsp; from {idea.startIndex + 1} to{' '}
+                            {idea.stopIndex + 1}
+                          </Box>
                         ) : (
                           <IdeaRow key={idea.id} idea={idea} user={user} />
                         )}

@@ -1,10 +1,26 @@
-import { IdeaModel } from 'models';
+import firebase from 'firebase/app';
+import { IdeaFilter, IdeaModel } from 'models';
+import { IndexRange } from 'react-virtualized';
 import { createSelector } from 'reselect';
 import { createAction, getType } from 'typesafe-actions';
-import { IndexRange } from 'react-virtualized';
+
+export class IdeaBatchError extends Error
+  implements IndexRange, IdeaFilter<keyof IdeaModel> {
+  name = 'IdeaBatchError';
+  constructor(
+    public message: string,
+    public startIndex: number,
+    public stopIndex: number,
+    public fieldPath: keyof IdeaModel,
+    public opStr: firebase.firestore.WhereFilterOp,
+    public value: IdeaModel[keyof IdeaModel],
+  ) {
+    super(message);
+  }
+}
 
 export interface IdeasState {
-  ideas: Array<'loading' | IdeaModel | Error | undefined>;
+  ideas: Array<'loading' | IdeaModel | IdeaBatchError | undefined>;
 }
 
 export const initialIdeasState: IdeasState = {

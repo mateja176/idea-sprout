@@ -10,6 +10,7 @@ import { Action, State } from '../reducer';
 import {
   createConcatIdeas,
   createUpdateIdeas,
+  IdeaBatchError,
   selectIdeas,
   UpdateIdeasAction,
 } from '../slices';
@@ -51,9 +52,11 @@ export const createFetchIdeas = <Key extends keyof IdeaModel>({
 > => (dispatch) => {
   const limit = stopIndex - startIndex;
 
+  const ideasRange = range(0, limit);
+
   dispatch(
     createConcatIdeas({
-      ideas: range(0, limit).map(() => 'loading'),
+      ideas: ideasRange.map(() => 'loading'),
     }),
   );
 
@@ -64,6 +67,25 @@ export const createFetchIdeas = <Key extends keyof IdeaModel>({
     .then((snapshot) => convertFirestoreCollection<IdeaModel>(snapshot))
     .then((ideas) => {
       return dispatch(createUpdateIdeas({ startIndex, stopIndex, ideas }));
+    })
+    .catch((error: Error) => {
+      return dispatch(
+        createUpdateIdeas({
+          startIndex,
+          stopIndex,
+          ideas: ideasRange.map(
+            () =>
+              new IdeaBatchError(
+                error.message,
+                startIndex,
+                stopIndex,
+                fieldPath,
+                opStr,
+                value,
+              ),
+          ),
+        }),
+      );
     });
 };
 
