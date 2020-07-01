@@ -1,14 +1,13 @@
 import { List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
-import { Skeleton } from '@material-ui/lab';
 import { Link } from 'components';
 import { Signout } from 'containers';
-import { User } from 'models';
 import React from 'react';
-import { useUser } from 'reactfire';
+import { useUser } from 'services';
 import {
   absolutePrivateNavigationRoutes,
   absolutePublicNavigationRoutes,
 } from 'utils';
+import { NavItemSkeleton } from './NavSkeleton';
 
 export interface NavProps {
   onClick: React.MouseEventHandler;
@@ -21,7 +20,7 @@ export const withNavWidth: React.CSSProperties = {
 };
 
 export const Nav: React.FC<NavProps> = ({ onClick }) => {
-  const isSignedIn = !!useUser<User | null>();
+  const isSignedIn = !!useUser();
 
   const routes = isSignedIn
     ? absolutePrivateNavigationRoutes
@@ -37,7 +36,7 @@ export const Nav: React.FC<NavProps> = ({ onClick }) => {
           </ListItem>
         </Link>
       ))}
-      <React.Suspense fallback={<Skeleton />}>
+      <React.Suspense fallback={<NavItemSkeleton />}>
         <Signout onClick={onClick} />
       </React.Suspense>
     </List>

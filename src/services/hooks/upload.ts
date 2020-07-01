@@ -1,12 +1,9 @@
 import { useBoolean } from 'ahooks';
 import firebase from 'firebase/app';
-import 'firebase/storage';
 import { StorageFile, StoragePath } from 'models';
-import { useStorage } from 'reactfire';
-import { putString } from 'rxfire/storage';
 import { createQueueSnackbar } from 'services/store';
 import urljoin from 'url-join';
-import { useSignedInUser } from './firebase';
+import { useSignedInUser, useStorage } from './firebase';
 import { useActions } from './hooks';
 
 export const useUpload = (path: StoragePath) => {
@@ -67,13 +64,13 @@ export const useUpload = (path: StoragePath) => {
                   }));
 
             return size.then(({ width, height }) =>
-              putString(ref, data, firebase.storage.StringFormat.DATA_URL, {
-                customMetadata: {
-                  width: width.toString(),
-                  height: height.toString(),
-                },
-              })
-                .toPromise()
+              ref
+                .putString(data, firebase.storage.StringFormat.DATA_URL, {
+                  customMetadata: {
+                    width: width.toString(),
+                    height: height.toString(),
+                  },
+                })
                 .then(() => ({
                   path: ref.fullPath,
                   width,

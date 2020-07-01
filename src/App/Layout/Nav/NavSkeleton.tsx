@@ -10,21 +10,25 @@ import { range } from 'ramda';
 import React from 'react';
 import { absolutePrivateNavigationRoutes } from 'utils';
 
+export const NavItemSkeleton: React.FC = () => (
+  <ListItem>
+    <ListItemIcon>
+      <Icon>
+        <Skeleton variant={'circle'} width={'100%'} height={'100%'} />
+      </Icon>
+    </ListItemIcon>
+    <ListItemText>
+      <Skeleton variant={'text'} />
+    </ListItemText>
+  </ListItem>
+);
+
 export interface NavSkeletonProps {}
 
 export const NavSkeleton: React.FC<NavSkeletonProps> = () => (
   <List>
     {range(0, absolutePrivateNavigationRoutes.length + 1).map((i) => (
-      <ListItem key={i}>
-        <ListItemIcon>
-          <Icon>
-            <Skeleton variant={'circle'} width={'100%'} height={'100%'} />
-          </Icon>
-        </ListItemIcon>
-        <ListItemText>
-          <Skeleton variant={'text'} />
-        </ListItemText>
-      </ListItem>
+      <NavItemSkeleton key={i} />
     ))}
   </List>
 );

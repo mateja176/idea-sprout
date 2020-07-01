@@ -61,6 +61,7 @@ export const Signin: React.FC<SigninProps> = () => {
             <ButtonGroup color="primary" disabled={loading}>
               <Button
                 onClick={() => {
+                  // auth provider constructors do not yet exist on the auth object returned form useAuth
                   signIn(new firebase.auth.GoogleAuthProvider());
                 }}
                 classes={buttonClasses}

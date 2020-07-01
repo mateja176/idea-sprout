@@ -1,14 +1,11 @@
 import { Box, Tab, Tabs } from '@material-ui/core';
 import { IdeaRow } from 'containers';
-import firebase from 'firebase/app';
-import 'firebase/auth';
-import { IdeaFilter, User } from 'models';
+import { IdeaFilter } from 'models';
 import qs from 'qs';
 import React from 'react';
 import { connect } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import { AutoSizer, InfiniteLoader, List } from 'react-virtualized';
-import { useUser } from 'reactfire';
 import {
   createFetchIdeas,
   createFetchMoreIdeas,
@@ -17,6 +14,7 @@ import {
   selectIdeas,
   State,
   useActions,
+  useSignedInUser,
   useThunkActions,
 } from 'services';
 import { ideaListItemHeight } from 'styles';
@@ -52,7 +50,7 @@ export const IdeasComponent: React.FC<IdeasProps> = ({ ideas }) => {
 
   const history = useHistory();
 
-  const user = useUser<User>(firebase.auth());
+  const user = useSignedInUser();
 
   const query = qs.parse(useLocation().search, { ignoreQueryPrefix: true });
 

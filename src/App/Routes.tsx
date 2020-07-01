@@ -1,17 +1,15 @@
 import { Box } from '@material-ui/core';
-import firebase from 'firebase/app';
-import 'firebase/auth';
-import { initialUser, User } from 'models';
 import { IdeasSwitch, Signin } from 'pages';
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import { useUser } from 'reactfire';
+import { useUser } from 'services';
 import { absolutePrivateRoute, absolutePublicRoute } from 'utils';
+import { initialUser } from 'models';
 
 export interface RoutesProps {}
 
 export const Routes: React.FC<RoutesProps> = () => {
-  const isSignedIn = !!useUser<User | null>(firebase.auth(), {
+  const isSignedIn = !!useUser({
     startWithValue: initialUser,
   })?.uid;
 

@@ -1,8 +1,11 @@
 import firebase from 'firebase/app';
+import 'firebase/auth';
 import 'firebase/firestore';
+import 'firebase/storage';
 import { IdeaModel, Review, User, WithId } from 'models';
 import {
   ReactFireOptions,
+  useAuth as useFirebaseAuth,
   useFirestoreCollection as useFirebaseFirestoreCollection,
   useFirestoreDoc as useFirebaseFirestoreDoc,
   useUser as useFirebaseUser,
@@ -15,6 +18,13 @@ import {
   hasOnlyId,
 } from 'utils';
 import { useActions } from './hooks';
+
+export const useAuth = () => {
+  return useFirebaseAuth();
+};
+
+export const useUser = (options?: ReactFireOptions<User | null>) =>
+  useFirebaseUser<User | null>(firebase.auth(), options);
 
 export const useSignedInUser = (options?: ReactFireOptions<User>) =>
   useFirebaseUser<User>(firebase.auth(), options);
@@ -56,6 +66,10 @@ export const useFirestoreCollection = <T extends WithId>(
   ) as unknown) as firebase.firestore.QuerySnapshot<Omit<T, 'id'>> | T[];
 
   return convertFirestoreCollection<T>(snapshot);
+};
+
+export const useStorage = () => {
+  return firebase.storage();
 };
 
 export const useReviewSubmit = (id: IdeaModel['id']) => {

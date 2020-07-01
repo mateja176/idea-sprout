@@ -7,11 +7,9 @@ import {
 import { ExitToApp } from '@material-ui/icons';
 import { useBoolean } from 'ahooks';
 import { FirebaseError } from 'firebase/app';
-import { User } from 'models';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useAuth, useUser } from 'reactfire';
-import { createQueueSnackbar, useActions } from 'services';
+import { createQueueSnackbar, useActions, useAuth, useUser } from 'services';
 import { absolutePublicRoute } from 'utils';
 
 export interface SignoutProps {
@@ -27,7 +25,7 @@ export const Signout: React.FC<SignoutProps> = ({ onClick }) => {
 
   const auth = useAuth();
 
-  const user = useUser<User | null>();
+  const user = useUser();
 
   return user ? (
     <Tooltip title={`Sign out of ${user.email}`}>
@@ -51,7 +49,7 @@ export const Signout: React.FC<SignoutProps> = ({ onClick }) => {
             })
             .catch((error: FirebaseError) => {
               // * the operation doesn't fail even if the user is offline
-              queueSnackbar({ message: error.message, severity: 'success' });
+              queueSnackbar({ message: error.message, severity: 'error' });
             })
             .finally(() => {
               setLoading.setFalse();
