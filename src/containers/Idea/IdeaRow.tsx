@@ -29,8 +29,6 @@ import {
   useIdeaOptionButtonStyle,
   useIdeaUrl,
   useReviewDialogs,
-  useReviewSubmit,
-  useShareIdea,
 } from 'services';
 import { ideaListItemStyle } from 'styles';
 import urljoin from 'url-join';
@@ -42,10 +40,6 @@ export interface IdeaRowProps {
 }
 
 export const IdeaRow: React.FC<IdeaRowProps> = ({ idea, user }) => {
-  const submitReview = useReviewSubmit(idea.id);
-
-  const shareIdea = useShareIdea(idea);
-
   const isAuthor = user.email === idea.author;
 
   const theme = useTheme();
@@ -185,10 +179,6 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ idea, user }) => {
           ideaUrl={ideaUrl}
           open={reviewOpen}
           onClose={toggleReviewOpen}
-          onSubmit={(...params) =>
-            submitReview(...params).then(toggleReviewOpen)
-          }
-          onShareWindowClose={shareIdea}
         />
       </React.Suspense>
       <Menu

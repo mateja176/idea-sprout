@@ -12,8 +12,6 @@ import {
   useIdeaOptionButtonStyle,
   useIdeaUrl,
   useReviewDialogs,
-  useReviewSubmit,
-  useShareIdea,
   useSignedInUser,
 } from 'services';
 import { ideaMarginBottom, pageMargin } from 'styles';
@@ -41,11 +39,7 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({
     },
   );
 
-  const submitReview = useReviewSubmit(idea.id);
-
-  const shareIdea = useShareIdea(idea);
-
-  const ideaUrl = useIdeaUrl(idea.id);
+  const ideaUrl = useIdeaUrl(id);
 
   const {
     reviewOpen,
@@ -56,7 +50,7 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({
 
   const buttonStyle = useIdeaOptionButtonStyle();
 
-  return idea.name ? (
+  return idea ? (
     <Box mt={pageMargin} mb={ideaMarginBottom}>
       <IdeaOptionsWrapper>
         <IdeaOptions
@@ -96,8 +90,6 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({
           ideaUrl={ideaUrl}
           open={reviewOpen}
           onClose={toggleReviewOpen}
-          onSubmit={submitReview}
-          onShareWindowClose={shareIdea}
         />
       </React.Suspense>
     </Box>

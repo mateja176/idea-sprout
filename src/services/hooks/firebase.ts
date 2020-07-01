@@ -14,6 +14,7 @@ import {
   convertFirestoreCollection,
   convertFirestoreDocument,
   firestoreCollections,
+  hasOnlyId,
 } from 'utils';
 import { useActions } from './hooks';
 
@@ -34,14 +35,14 @@ export const useReviewsRef = (id: IdeaModel['id'], app?: firebase.app.App) => {
 export const useFirestoreDoc = <T extends WithId>(
   ref: firebase.firestore.DocumentReference,
   options?: ReactFireOptions<T>,
-) => {
+): T | null => {
   const doc = (useFirebaseFirestoreDoc(ref, options) as unknown) as
     | firebase.firestore.DocumentSnapshot<Omit<T, 'id'>>
     | T;
 
-    const convertedDoc = convertFirestoreDocument<T>(doc);
+  const convertedDoc = convertFirestoreDocument<T>(doc);
 
-  return convertedDoc;
+  return hasOnlyId(convertedDoc) ? null : convertedDoc;
 };
 
 export const useFirestoreCollection = <T extends WithId>(

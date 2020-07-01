@@ -9,6 +9,7 @@ import { Info } from '@material-ui/icons';
 import { Rating } from '@material-ui/lab';
 import { MultilineTextField } from 'components';
 import { Check, DraggableDialog, sharingOptions } from 'containers';
+import firebase from 'firebase/app';
 import 'firebase/firestore';
 import { useFormik } from 'formik';
 import {
@@ -22,8 +23,13 @@ import {
 } from 'models';
 import { equals } from 'ramda';
 import React from 'react';
-import { useFirestoreCollection, useReviewsRef } from 'services';
+import {
+  useFirestoreCollection,
+  useReviewSubmit,
+  useShareIdea,
+} from 'services';
 import { withEllipsis } from 'styles';
+import { firestoreCollections } from 'utils';
 
 export interface ReviewDialogProps {
   user: User;
@@ -31,8 +37,6 @@ export interface ReviewDialogProps {
   ideaUrl: string;
   open: boolean;
   onClose: () => void;
-  onSubmit: (values: Pick<Review, 'rating' | 'feedback'>) => void;
-  onShareWindowClose: () => Promise<void>;
 }
 
 export const ReviewDialog: React.FC<ReviewDialogProps> = ({
@@ -41,12 +45,19 @@ export const ReviewDialog: React.FC<ReviewDialogProps> = ({
   ideaUrl,
   open,
   onClose,
-  onSubmit,
-  onShareWindowClose,
 }) => {
+  const onSubmit = useReviewSubmit(idea.id);
+
+  const shareIdea = useShareIdea(idea);
+
   const hasShared = idea.sharedBy.includes(user.uid);
 
-  const reviewsRef = useReviewsRef(idea.id).where('author', '==', user.email);
+  const reviewsRef = firebase
+    .firestore()
+    .collection(firestoreCollections.ideas.path)
+    .doc(idea.id)
+    .collection(firestoreCollections.ideas.collections.reviews.path)
+    .where('author', '==', user.email);
 
   const [review] = useFirestoreCollection<Review>(reviewsRef);
 
@@ -68,7 +79,9 @@ export const ReviewDialog: React.FC<ReviewDialogProps> = ({
   } = useFormik({
     validationSchema: createReviewSchema,
     initialValues,
-    onSubmit,
+    onSubmit: (formValues) => {
+      return onSubmit(formValues).then(onClose);
+    },
   });
 
   const areValuesEqualToInitial = equals(initialValues)(values);
@@ -136,7 +149,7 @@ export const ReviewDialog: React.FC<ReviewDialogProps> = ({
                     disabled={values.doNotShare}
                     url={ideaUrl}
                     onShareWindowClose={() => {
-                      onShareWindowClose().then(() => {
+                      shareIdea().then(() => {
                         setFieldValue('shared', true);
                       });
                     }}

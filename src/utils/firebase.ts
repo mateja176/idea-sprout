@@ -1,5 +1,6 @@
 import firebase from 'firebase/app';
 import { WithId } from 'models';
+import { equals } from 'ramda';
 
 export const firestoreCollections = {
   ideas: {
@@ -25,3 +26,7 @@ export const convertFirestoreCollection = <T extends WithId>(
     ? collection.docs.map((doc) => convertFirestoreDocument<T>(doc))
     : collection;
 };
+
+export function hasOnlyId(o: {}): o is WithId {
+  return equals(Object.keys(o), ['id']);
+}

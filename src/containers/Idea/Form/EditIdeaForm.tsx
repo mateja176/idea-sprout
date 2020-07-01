@@ -22,7 +22,7 @@ export const EditIdeaForm: React.FC<EditIdeaFormProps> = ({
     },
   );
 
-  return idea.name ? (
+  return idea ? (
     <IdeaForm idea={idea} />
   ) : (
     <Redirect to={absolutePrivateRoute.ideas.path} />
