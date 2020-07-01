@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   Checkbox,
-  Collapse,
   FormControl,
   FormControlLabel,
   ListItem,
@@ -33,10 +32,9 @@ import {
   useReviewSubmit,
   useShareIdea,
 } from 'services';
-import { ideaListItemStyle, ideaMarginBottom } from 'styles';
+import { ideaListItemStyle } from 'styles';
 import urljoin from 'url-join';
 import { absolutePrivateRoute, firestoreCollections } from 'utils';
-import { Idea } from './Idea';
 
 export interface IdeaRowProps {
   idea: IdeaModel;
@@ -59,11 +57,6 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ idea, user }) => {
     .collection(firestoreCollections.ideas.path)
     .doc(idea.id);
 
-  const [expanded, setExpanded] = useBoolean();
-  const toggleExpanded = () => {
-    setExpanded.toggle();
-  };
-
   const ideaUrl = useIdeaUrl(idea.id);
 
   const {
@@ -72,12 +65,6 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ idea, user }) => {
     toggleReviewOpen,
     toggleReviewsOpen,
   } = useReviewDialogs();
-
-  const toggleReviewAndExpanded = () => {
-    setExpanded.setTrue();
-
-    toggleReviewOpen();
-  };
 
   const [checkMenu, setCheckMenu] = useBoolean();
 
@@ -133,10 +120,7 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ idea, user }) => {
                 </Button>
               </Tooltip>
             ) : (
-              <ReviewButton
-                style={buttonStyle}
-                onClick={toggleReviewAndExpanded}
-              />
+              <ReviewButton style={buttonStyle} onClick={toggleReviewOpen} />
             )
           }
           navigationButton={
@@ -184,15 +168,8 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ idea, user }) => {
               </Tooltip>
             )
           }
-          expanded={expanded}
-          toggleExpanded={toggleExpanded}
         />
       </ListItem>
-      <Collapse in={expanded} timeout="auto" mountOnEnter>
-        <Box mb={ideaMarginBottom}>
-          <Idea {...idea} />
-        </Box>
-      </Collapse>
       <React.Suspense fallback={null}>
         <ReviewsDialog
           id={idea.id}
@@ -207,9 +184,9 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ idea, user }) => {
           idea={idea}
           ideaUrl={ideaUrl}
           open={reviewOpen}
-          onClose={toggleReviewAndExpanded}
+          onClose={toggleReviewOpen}
           onSubmit={(...params) =>
-            submitReview(...params).then(toggleReviewAndExpanded)
+            submitReview(...params).then(toggleReviewOpen)
           }
           onShareWindowClose={shareIdea}
         />

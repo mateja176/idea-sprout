@@ -32,9 +32,7 @@ export const IdeaDoubleOptionSkeleton = () => {
   );
 };
 
-export const IdeaOptionsSkeleton: React.FC<{
-  secondaryActionIcon: React.ReactNode;
-}> = ({ secondaryActionIcon }) => {
+export const IdeaOptionsSkeleton: React.FC = () => {
   const buttonStyle = useIdeaOptionButtonStyle();
 
   return (
@@ -50,7 +48,6 @@ export const IdeaOptionsSkeleton: React.FC<{
           <Box flex={1}>
             <Skeleton width={120} />
           </Box>
-          {secondaryActionIcon}
         </Box>
       </Button>
     </ListItem>

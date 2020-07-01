@@ -10,7 +10,7 @@ export interface IdeaContainerSkeletonProps {}
 export const IdeaContainerSkeleton: React.FC<IdeaContainerSkeletonProps> = () => (
   <Box mt={pageMargin} mb={ideaMarginBottom}>
     <IdeaOptionsWrapper>
-      <IdeaOptionsSkeleton secondaryActionIcon={null} />
+      <IdeaOptionsSkeleton />
     </IdeaOptionsWrapper>
     <IdeaSkeleton />
   </Box>

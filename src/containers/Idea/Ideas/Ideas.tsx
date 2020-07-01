@@ -1,5 +1,4 @@
 import { Box, Tab, Tabs } from '@material-ui/core';
-import { CollapseIconSkeleton } from 'components';
 import { IdeaRow } from 'containers';
 import firebase from 'firebase/app';
 import 'firebase/auth';
@@ -146,9 +145,7 @@ export const IdeasComponent: React.FC<IdeasProps> = ({ ideas }) => {
                     return (
                       <Box key={key} style={style}>
                         {!idea ? null : idea === 'loading' ? (
-                          <IdeaOptionsSkeleton
-                            secondaryActionIcon={<CollapseIconSkeleton />}
-                          />
+                          <IdeaOptionsSkeleton />
                         ) : idea instanceof Error ? (
                           <Box>Failed to load idea</Box>
                         ) : (
