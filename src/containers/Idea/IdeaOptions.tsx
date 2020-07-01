@@ -59,7 +59,7 @@ export const IdeaOptions: React.FC<IdeaOptionsProps> = ({
       </React.Suspense>
       {configButton}
       {navigationButton}
-      <Tooltip placement="top" title={idea.name}>
+      <Tooltip placement="top-start" title={idea.name}>
         <Button
           style={{
             ...buttonStyle,
