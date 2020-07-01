@@ -6,17 +6,12 @@ import { CreateIdea } from './CreateForm';
 import { EditIdea } from './EditIdea';
 import { IdeaPage } from './IdeaPage';
 import { IdeasPage } from './IdeasPage';
-import { MyIdeas } from './MyIdeas';
 
 export interface IdeasSwitchProps extends RouteComponentProps {}
 
 export const IdeasSwitch: React.FC<IdeasSwitchProps> = () => (
   <Switch>
     <Route exact path={absolutePrivateRoute.ideas.path} component={IdeasPage} />
-    <Route
-      path={absolutePrivateRoute.ideas.children.my.path}
-      component={MyIdeas}
-    />
     <Route
       path={absolutePrivateRoute.ideas.children.create.path}
       component={CreateIdea}

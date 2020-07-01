@@ -20,6 +20,7 @@ import {
   RationaleLength,
   RawIdea,
 } from 'models';
+import qs from 'qs';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import {
@@ -83,7 +84,9 @@ export const IdeaForm: React.FC<IdeaFormProps> = ({ idea }) => {
       return getIdeaRef()
         .set(newIdea)
         .then(() => {
-          history.push(absolutePrivateRoute.ideas.children.my.path);
+          history.push(absolutePrivateRoute.ideas.path, {
+            search: qs.stringify({ author: user.email }),
+          });
 
           queueSnackbar({
             severity: 'success',

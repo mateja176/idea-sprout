@@ -47,9 +47,10 @@ export const Signout: React.FC<SignoutProps> = ({ onClick }) => {
 
               onClick(e);
 
-              history.push(absolutePublicRoute.signin.path);
+              history.replace(absolutePublicRoute.signin.path);
             })
-            .catch((error: FirebaseError) => { // * the operation doesn't fail even if the user is offline
+            .catch((error: FirebaseError) => {
+              // * the operation doesn't fail even if the user is offline
               queueSnackbar({ message: error.message, severity: 'success' });
             })
             .finally(() => {

@@ -1,9 +1,10 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
-import { IdeaFilter, IdeaModel, RawIdea } from 'models';
+import { IdeaFilter, IdeaModel } from 'models';
 import { last, range } from 'ramda';
 import { IndexRange } from 'react-virtualized';
 import { ThunkAction } from 'redux-thunk';
+import { convertFirestoreCollection } from 'utils';
 import { Action, State } from '../reducer';
 import {
   createConcatIdeas,
@@ -61,12 +62,8 @@ export const createFetchIdeas = <Key extends keyof IdeaModel>({
     .where(fieldPath, opStr, value)
     .orderBy(orderByField, directionStr)
     .get()
-    .then(({ docs }) => {
-      const ideas = docs.map((doc) => ({
-        ...(doc.data() as RawIdea),
-        id: doc.id,
-      }));
-
+    .then((snapshot) => convertFirestoreCollection<IdeaModel>(snapshot))
+    .then((ideas) => {
       return dispatch(createUpdateIdeas({ startIndex, stopIndex, ideas }));
     });
 };
@@ -103,12 +100,8 @@ export const createFetchMoreIdeas = <Key extends keyof IdeaModel>({
     .startAt(lastCreatedAt)
     .limit(limit)
     .get()
-    .then(({ docs }) => {
-      const ideas = docs.map((doc) => ({
-        ...(doc.data() as RawIdea),
-        id: doc.id,
-      }));
-
+    .then((snapshot) => convertFirestoreCollection<IdeaModel>(snapshot))
+    .then((ideas) => {
       return dispatch(createUpdateIdeas({ startIndex, stopIndex, ideas }));
     });
 };

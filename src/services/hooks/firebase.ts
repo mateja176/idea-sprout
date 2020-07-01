@@ -1,5 +1,7 @@
-import { firestore } from 'firebase/app';
-import { IdeaModel, User, WithId } from 'models';
+import firebase from 'firebase/app';
+import 'firebase/firestore';
+import { IdeaModel, Review, User, WithId } from 'models';
+import { useMemo } from 'react';
 import {
   ReactFireOptions,
   useFirestore,
@@ -7,50 +9,99 @@ import {
   useFirestoreDoc as useFirebaseFirestoreDoc,
   useUser as useFirebaseUser,
 } from 'reactfire';
-import { useMemo } from 'react';
+import { createQueueSnackbar } from 'services';
+import {
+  convertFirestoreCollection,
+  convertFirestoreDocument,
+  firestoreCollections,
+} from 'utils';
+import { useActions } from './hooks';
 
-export const useSignedInUser = () => useFirebaseUser<User>();
+export const useSignedInUser = (options?: ReactFireOptions<User>) =>
+  useFirebaseUser<User>(firebase.auth(), options);
 
-export const useIdeasRef = () => {
-  const firestore = useFirestore();
+export const useIdeasRef = (app?: firebase.app.App) => {
+  const firestore = useFirestore(app);
   return useMemo(() => firestore.collection('ideas'), [firestore]);
 };
 
-export const useReviewsRef = (id: IdeaModel['id']) => {
-  const ideasRef = useIdeasRef();
+export const useReviewsRef = (id: IdeaModel['id'], app?: firebase.app.App) => {
+  const ideasRef = useIdeasRef(app);
 
   return ideasRef.doc(id).collection('reviews');
 };
 
 export const useFirestoreDoc = <T extends WithId>(
-  ref: firestore.DocumentReference,
-  options?: ReactFireOptions<Omit<T, 'id'>>,
+  ref: firebase.firestore.DocumentReference,
+  options?: ReactFireOptions<T>,
 ) => {
-  const doc = (useFirebaseFirestoreDoc<Omit<T, 'id'>>(
-    ref,
-    options,
-  ) as unknown) as firebase.firestore.QueryDocumentSnapshot<Omit<T, 'id'>>;
+  const doc = (useFirebaseFirestoreDoc(ref, options) as unknown) as
+    | firebase.firestore.DocumentSnapshot<Omit<T, 'id'>>
+    | T;
 
-  return {
-    ...doc.data(),
-    id: doc.id,
-  } as T;
+    const convertedDoc = convertFirestoreDocument<T>(doc);
+
+  return convertedDoc;
 };
 
 export const useFirestoreCollection = <T extends WithId>(
-  query: firestore.Query,
-  options?: ReactFireOptions<Omit<T, 'id'>[]>,
+  query: firebase.firestore.Query,
+  options?: ReactFireOptions<T[]>,
 ) => {
   const snapshot = (useFirebaseFirestoreCollection<Omit<T, 'id'>>(
     query,
     options,
-  ) as unknown) as firebase.firestore.QuerySnapshot<Omit<T, 'id'>>;
+  ) as unknown) as firebase.firestore.QuerySnapshot<Omit<T, 'id'>> | T[];
 
-  return snapshot.docs.map(
-    (doc) =>
-      ({
-        ...doc.data(),
-        id: doc.id,
-      } as T),
+  return convertFirestoreCollection<T>(snapshot);
+};
+
+export const useReviewSubmit = (id: IdeaModel['id']) => {
+  const { queueSnackbar } = useActions({ queueSnackbar: createQueueSnackbar });
+
+  const user = useSignedInUser();
+
+  const ideaRef = firebase
+    .firestore()
+    .collection(firestoreCollections.ideas.path)
+    .doc(id);
+
+  const reviewsRef = ideaRef.collection(
+    firestoreCollections.ideas.collections.reviews.path,
   );
+
+  return ({ rating, feedback }: Pick<Review, 'rating' | 'feedback'>) => {
+    return reviewsRef
+      .doc(user.uid)
+      .set({ rating, feedback, author: user.email })
+      .then(() => {
+        queueSnackbar({
+          severity: 'success',
+          message: 'Review submitted',
+        });
+      })
+      .catch(() => {
+        queueSnackbar({
+          severity: 'error',
+          message: 'Failed to submit, please retry',
+        });
+      });
+  };
+};
+
+export const useShareIdea = (idea: IdeaModel) => {
+  const user = useSignedInUser();
+
+  const ideaRef = firebase
+    .firestore()
+    .collection(firestoreCollections.ideas.path)
+    .doc(idea.id);
+
+  const withSharedBy: Pick<IdeaModel, 'sharedBy'> = {
+    sharedBy: idea.sharedBy.concat(user.uid),
+  };
+
+  return () => {
+    return ideaRef.update(withSharedBy);
+  };
 };

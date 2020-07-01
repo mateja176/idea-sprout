@@ -1,5 +1,4 @@
 import { Create, Dashboard, Edit, Person, Search } from '@material-ui/icons';
-import { LightBulb } from 'components/icons/LightBulb';
 import { NestedRoutes, Route, Routes, ToAbsoluteRec } from 'models';
 import React from 'react';
 import urljoin from 'url-join';
@@ -68,12 +67,6 @@ const ideas = {
       path: 'create',
       label: 'Create',
       icon: <Create />,
-      children: {},
-    },
-    my: {
-      path: 'my',
-      label: 'My Ideas',
-      icon: <LightBulb />,
       children: {},
     },
   },

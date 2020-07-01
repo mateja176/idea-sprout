@@ -5,6 +5,33 @@ import React from 'react';
 import { useIdeaOptionButtonStyle } from 'services';
 import { ideaListItemStyle } from 'styles';
 
+export const IdeaOptionSkeleton = () => {
+  const buttonStyle = useIdeaOptionButtonStyle();
+
+  return (
+    <Button style={buttonStyle}>
+      <Icon>
+        <Skeleton variant={'rect'} width={'100%'} height={'100%'} />
+      </Icon>
+    </Button>
+  );
+};
+
+export const IdeaDoubleOptionSkeleton = () => {
+  const buttonStyle = useIdeaOptionButtonStyle();
+
+  return (
+    <Button style={buttonStyle}>
+      <Icon>
+        <Skeleton variant={'rect'} width={'100%'} height={'100%'} />
+      </Icon>
+      <Icon>
+        <Skeleton variant={'rect'} width={'100%'} height={'100%'} />
+      </Icon>
+    </Button>
+  );
+};
+
 export const IdeaOptionsSkeleton: React.FC<{
   secondaryActionIcon: React.ReactNode;
 }> = ({ secondaryActionIcon }) => {
@@ -13,21 +40,10 @@ export const IdeaOptionsSkeleton: React.FC<{
   return (
     <ListItem style={ideaListItemStyle}>
       {range(0, 2).map((i) => (
-        <Button key={i} style={buttonStyle}>
-          <Icon>
-            <Skeleton variant={'rect'} width={'100%'} height={'100%'} />
-          </Icon>
-          <Icon>
-            <Skeleton variant={'rect'} width={'100%'} height={'100%'} />
-          </Icon>
-        </Button>
+        <IdeaDoubleOptionSkeleton key={i} />
       ))}
       {range(0, 2).map((i) => (
-        <Button key={i} style={buttonStyle}>
-          <Icon>
-            <Skeleton variant={'rect'} width={'100%'} height={'100%'} />
-          </Icon>
-        </Button>
+        <IdeaOptionSkeleton key={i} />
       ))}
       <Button style={{ ...buttonStyle, flex: 1 }}>
         <Box display="flex" width={'100%'}>

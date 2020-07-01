@@ -19,42 +19,45 @@ import {
   OpenInBrowser,
 } from '@material-ui/icons';
 import { useBoolean } from 'ahooks';
-import { Link, ReviewButton } from 'components';
+import { ReviewButton } from 'components';
 import { IdeaOptions, ReviewDialog, ReviewsDialog } from 'containers';
-import { IdeaModel, Review } from 'models';
+import firebase from 'firebase/app';
+import 'firebase/firestore';
+import { IdeaModel, User } from 'models';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import {
-  useFirestoreCollection,
   useIdeaOptionButtonStyle,
-  useIdeasRef,
   useIdeaUrl,
   useReviewDialogs,
-  useReviewsRef,
-  useSignedInUser,
+  useReviewSubmit,
+  useShareIdea,
 } from 'services';
 import { ideaListItemStyle, ideaMarginBottom } from 'styles';
 import urljoin from 'url-join';
-import { absolutePrivateRoute } from 'utils';
+import { absolutePrivateRoute, firestoreCollections } from 'utils';
 import { Idea } from './Idea';
 
 export interface IdeaRowProps {
   idea: IdeaModel;
-  isAuthor: boolean;
+  user: User;
 }
 
-export const IdeaRow: React.FC<IdeaRowProps> = ({ idea, isAuthor }) => {
+export const IdeaRow: React.FC<IdeaRowProps> = ({ idea, user }) => {
+  const submitReview = useReviewSubmit(idea.id);
+
+  const shareIdea = useShareIdea(idea);
+
+  const isAuthor = user.email === idea.author;
+
   const theme = useTheme();
 
   const history = useHistory();
 
-  const user = useSignedInUser();
-
-  const ideasRef = useIdeasRef();
-  const ideaRef = React.useMemo(() => ideasRef.doc(idea.id), [
-    ideasRef,
-    idea.id,
-  ]);
+  const ideaRef = firebase
+    .firestore()
+    .collection(firestoreCollections.ideas.path)
+    .doc(idea.id);
 
   const [expanded, setExpanded] = useBoolean();
   const toggleExpanded = () => {
@@ -62,8 +65,6 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ idea, isAuthor }) => {
   };
 
   const ideaUrl = useIdeaUrl(idea.id);
-
-  const reviews = useFirestoreCollection<Review>(useReviewsRef(idea.id));
 
   const {
     reviewOpen,
@@ -111,21 +112,25 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ idea, isAuthor }) => {
         <IdeaOptions
           idea={idea}
           ideaUrl={ideaUrl}
-          reviews={reviews}
           toggleReviewsOpen={toggleReviewsOpen}
           configButton={
             isAuthor ? (
               <Tooltip placement="top" title="Edit Idea">
-                <Link
-                  to={urljoin(
-                    absolutePrivateRoute.ideas.children.edit.path,
-                    idea.id,
-                  )}
+                <Button
+                  style={buttonStyle}
+                  color="primary"
+                  onClick={() => {
+                    history.push(
+                      urljoin(
+                        absolutePrivateRoute.ideas.children.edit.path,
+                        idea.id,
+                      ),
+                      { idea },
+                    );
+                  }}
                 >
-                  <Button style={buttonStyle} color="primary">
-                    <Edit />
-                  </Button>
-                </Link>
+                  <Edit />
+                </Button>
               </Tooltip>
             ) : (
               <ReviewButton
@@ -170,7 +175,7 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ idea, isAuthor }) => {
                   onClick={() => {
                     history.push(
                       urljoin(absolutePrivateRoute.ideas.path, idea.id),
-                      idea,
+                      { idea },
                     );
                   }}
                 >
@@ -188,19 +193,27 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ idea, isAuthor }) => {
           <Idea {...idea} />
         </Box>
       </Collapse>
-      <ReviewsDialog
-        name={idea.name}
-        open={reviewsOpen}
-        onClose={toggleReviewsOpen}
-        reviews={reviews}
-      />
-      <ReviewDialog
-        idea={idea}
-        ideaUrl={ideaUrl}
-        review={reviews.find(({ id }) => id === user.uid)}
-        open={reviewOpen}
-        onClose={toggleReviewAndExpanded}
-      />
+      <React.Suspense fallback={null}>
+        <ReviewsDialog
+          id={idea.id}
+          name={idea.name}
+          open={reviewsOpen}
+          onClose={toggleReviewsOpen}
+        />
+      </React.Suspense>
+      <React.Suspense fallback={null}>
+        <ReviewDialog
+          user={user}
+          idea={idea}
+          ideaUrl={ideaUrl}
+          open={reviewOpen}
+          onClose={toggleReviewAndExpanded}
+          onSubmit={(...params) =>
+            submitReview(...params).then(toggleReviewAndExpanded)
+          }
+          onShareWindowClose={shareIdea}
+        />
+      </React.Suspense>
       <Menu
         anchorEl={checkRef.current}
         open={checkMenu && !passedPreflightChecks}

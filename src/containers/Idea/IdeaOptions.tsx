@@ -5,21 +5,19 @@ import {
   Icon,
   makeStyles,
   Tooltip,
-  useTheme,
 } from '@material-ui/core';
-import { ExpandLess, ExpandMore, StarRate } from '@material-ui/icons';
+import { ExpandLess, ExpandMore } from '@material-ui/icons';
 import { ShareMenu } from 'containers';
-import { IdeaModel, Review } from 'models';
+import { IdeaModel } from 'models';
 import { isNil } from 'ramda';
 import React from 'react';
 import { useIdeaOptionButtonStyle } from 'services';
-import { starColor } from 'styles';
-import { getRatingHelperText } from 'utils';
+import { IdeaDoubleOptionSkeleton } from './IdeaOptionsSkeleton';
+import { IdeaRatingOption } from './IdeaRatingOption';
 
 export interface IdeaOptionsProps {
   idea: IdeaModel;
   ideaUrl: string;
-  reviews: Review[];
   toggleReviewsOpen: () => void;
   configButton: React.ReactElement;
   navigationButton: React.ReactElement;
@@ -39,30 +37,13 @@ const useStyles = makeStyles((theme) => ({
 export const IdeaOptions: React.FC<IdeaOptionsProps> = ({
   idea,
   ideaUrl,
-  reviews,
   toggleReviewsOpen,
   configButton,
   navigationButton,
   expanded,
   toggleExpanded = () => {},
 }) => {
-  const theme = useTheme();
-
   const classes = useStyles();
-
-  const ratingsCount = reviews.length;
-
-  const totalRating =
-    reviews.reduce((total, { rating }) => total + rating, 0) / ratingsCount;
-
-  const averageRating = totalRating ? totalRating / ratingsCount : 0;
-
-  const ratingConfig = {
-    count: ratingsCount,
-    average: averageRating,
-  };
-
-  const ratingTooltip = getRatingHelperText(ratingConfig);
 
   const buttonStyle = useIdeaOptionButtonStyle();
 
@@ -73,18 +54,9 @@ export const IdeaOptions: React.FC<IdeaOptionsProps> = ({
         shareCount={idea.sharedBy.length}
         url={ideaUrl}
       />
-      <Tooltip placement="top" title={ratingTooltip}>
-        <Button
-          style={{
-            ...buttonStyle,
-            color: theme.palette.action.active,
-          }}
-          endIcon={<StarRate style={{ color: starColor }} />}
-          onClick={toggleReviewsOpen}
-        >
-          {averageRating}
-        </Button>
-      </Tooltip>
+      <React.Suspense fallback={<IdeaDoubleOptionSkeleton />}>
+        <IdeaRatingOption id={idea.id} onClick={toggleReviewsOpen} />
+      </React.Suspense>
       {configButton}
       {navigationButton}
       <Tooltip placement="top" title={idea.name}>

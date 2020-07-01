@@ -9,6 +9,7 @@ import { Info } from '@material-ui/icons';
 import { Rating } from '@material-ui/lab';
 import { MultilineTextField } from 'components';
 import { Check, DraggableDialog, sharingOptions } from 'containers';
+import 'firebase/firestore';
 import { useFormik } from 'formik';
 import {
   createReviewSchema,
@@ -17,42 +18,37 @@ import {
   IdeaModel,
   initialCreationReview,
   Review,
+  User,
 } from 'models';
 import { equals } from 'ramda';
 import React from 'react';
-import {
-  createQueueSnackbar,
-  useActions,
-  useIdeasRef,
-  useReviewsRef,
-  useSignedInUser,
-} from 'services';
+import { useFirestoreCollection, useReviewsRef } from 'services';
 import { withEllipsis } from 'styles';
 
 export interface ReviewDialogProps {
+  user: User;
   idea: IdeaModel;
   ideaUrl: string;
-  review?: Review;
   open: boolean;
   onClose: () => void;
+  onSubmit: (values: Pick<Review, 'rating' | 'feedback'>) => void;
+  onShareWindowClose: () => Promise<void>;
 }
 
 export const ReviewDialog: React.FC<ReviewDialogProps> = ({
+  user,
   idea,
   ideaUrl,
-  review,
   open,
   onClose,
+  onSubmit,
+  onShareWindowClose,
 }) => {
-  const { queueSnackbar } = useActions({ queueSnackbar: createQueueSnackbar });
-
-  const ideaRef = useIdeasRef().doc(idea.id);
-
-  const reviewsRef = useReviewsRef(idea.id);
-
-  const user = useSignedInUser();
-
   const hasShared = idea.sharedBy.includes(user.uid);
+
+  const reviewsRef = useReviewsRef(idea.id).where('author', '==', user.email);
+
+  const [review] = useFirestoreCollection<Review>(reviewsRef);
 
   const initialValues: CreationReview = {
     ...initialCreationReview,
@@ -72,25 +68,7 @@ export const ReviewDialog: React.FC<ReviewDialogProps> = ({
   } = useFormik({
     validationSchema: createReviewSchema,
     initialValues,
-    onSubmit: ({ rating, feedback }) => {
-      return reviewsRef
-        .doc(user.uid)
-        .set({ rating, feedback, author: user.email })
-        .then(() => {
-          queueSnackbar({
-            severity: 'success',
-            message: 'Review submitted',
-          });
-
-          onClose();
-        })
-        .catch(() => {
-          queueSnackbar({
-            severity: 'error',
-            message: 'Failed to submit, please retry',
-          });
-        });
-    },
+    onSubmit,
   });
 
   const areValuesEqualToInitial = equals(initialValues)(values);
@@ -158,13 +136,9 @@ export const ReviewDialog: React.FC<ReviewDialogProps> = ({
                     disabled={values.doNotShare}
                     url={ideaUrl}
                     onShareWindowClose={() => {
-                      setFieldValue('shared', true);
-
-                      const withSharedBy: Pick<IdeaModel, 'sharedBy'> = {
-                        sharedBy: idea.sharedBy.concat(user.uid),
-                      };
-
-                      ideaRef.update(withSharedBy);
+                      onShareWindowClose().then(() => {
+                        setFieldValue('shared', true);
+                      });
                     }}
                   >
                     <config.Icon size={50} />

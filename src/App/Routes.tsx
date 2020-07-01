@@ -1,3 +1,4 @@
+import { Box } from '@material-ui/core';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import { initialUser, User } from 'models';
@@ -6,8 +7,6 @@ import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { useUser } from 'reactfire';
 import { absolutePrivateRoute, absolutePublicRoute } from 'utils';
-import { Box } from '@material-ui/core';
-import urljoin from 'url-join';
 
 export interface RoutesProps {}
 

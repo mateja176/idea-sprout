@@ -10,13 +10,12 @@ import { Rating } from '@material-ui/lab';
 import { DraggableDialog } from 'containers';
 import { IdeaModel, initialReview, Review } from 'models';
 import React from 'react';
+import { useFirestoreCollection, useReviewsRef } from 'services';
 import { withEllipsis } from 'styles';
 
-export interface ReviewsProps {
-  name: IdeaModel['name'];
+export interface ReviewsProps extends Pick<IdeaModel, 'id' | 'name'> {
   open: boolean;
   onClose: () => void;
-  reviews: Review[];
 }
 
 export const Section: React.FC<BoxProps> = (props) => (
@@ -24,12 +23,16 @@ export const Section: React.FC<BoxProps> = (props) => (
 );
 
 export const ReviewsDialog: React.FC<ReviewsProps> = ({
+  id,
   name,
   open,
-  reviews,
   onClose,
 }) => {
   const theme = useTheme();
+
+  const reviewsRef = useReviewsRef(id);
+
+  const reviews = useFirestoreCollection<Review>(reviewsRef);
 
   const reviewsWithFallback: Review[] = reviews.length
     ? reviews
