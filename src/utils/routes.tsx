@@ -1,4 +1,4 @@
-import { Create, Dashboard, Edit, Person, Search } from '@material-ui/icons';
+import { Dashboard, Person, Search } from '@material-ui/icons';
 import { NestedRoutes, Route, Routes, ToAbsoluteRec } from 'models';
 import React from 'react';
 import urljoin from 'url-join';
@@ -62,14 +62,7 @@ const ideas = {
   path: 'ideas',
   label: 'Discover',
   icon: <Search />,
-  children: {
-    create: {
-      path: 'create',
-      label: 'Create',
-      icon: <Create />,
-      children: {},
-    },
-  },
+  children: {},
 };
 
 export const privateNestedNavigationRoute = {
@@ -81,18 +74,7 @@ export const absolutePrivateNavigationRoutes: Route[] = Object.values(
 );
 
 export const privateNestedRoute = {
-  ideas: {
-    ...ideas,
-    children: {
-      ...ideas.children,
-      edit: {
-        path: 'edit',
-        label: 'Edit',
-        icon: <Edit />,
-        children: {},
-      },
-    },
-  },
+  ideas,
   root: {
     path: '/',
     label: 'Root',
