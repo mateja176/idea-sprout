@@ -38,7 +38,7 @@ import { IdeaRatingOption } from './IdeaRatingOption';
 export interface IdeaOptionsProps {
   idea: IdeaModel;
   ideaUrl: string;
-  navigationButton: (props: {
+  NavigationButton: (props: {
     style: React.CSSProperties;
   }) => React.ReactElement;
 }
@@ -46,7 +46,7 @@ export interface IdeaOptionsProps {
 export const IdeaOptions: React.FC<IdeaOptionsProps> = ({
   idea,
   ideaUrl,
-  navigationButton,
+  NavigationButton,
 }) => {
   const user = useSignedInUser();
 
@@ -205,7 +205,7 @@ export const IdeaOptions: React.FC<IdeaOptionsProps> = ({
                 )}
               </Box>
               <Box width={'50%'} height={'100%'}>
-                {navigationButton({ style: buttonStyle })}
+                <NavigationButton style={buttonStyle} />
               </Box>
             </Box>
           </Box>

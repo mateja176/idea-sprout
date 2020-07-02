@@ -33,7 +33,7 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({
         <IdeaOptions
           idea={idea}
           ideaUrl={ideaUrl}
-          navigationButton={({ style }) => (
+          NavigationButton={({ style }) => (
             <Tooltip placement="top" title="Back to ideas">
               <Button
                 style={style}

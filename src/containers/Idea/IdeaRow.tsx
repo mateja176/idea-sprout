@@ -26,7 +26,7 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ idea, user }) => {
         <IdeaOptions
           idea={idea}
           ideaUrl={ideaUrl}
-          navigationButton={({ style }) => (
+          NavigationButton={({ style }) => (
             <Tooltip placement={'top'} title={'Open in full'}>
               <Button
                 style={style}
