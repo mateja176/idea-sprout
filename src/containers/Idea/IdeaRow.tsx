@@ -18,7 +18,7 @@ import {
   OpenInBrowser,
 } from '@material-ui/icons';
 import { useBoolean } from 'ahooks';
-import { ReviewButton } from 'components';
+import { ReviewButton, IdeaOptionsWrapper } from 'components';
 import { IdeaOptions, ReviewDialog, ReviewsDialog } from 'containers';
 import 'firebase/firestore';
 import { IdeaModel, User } from 'models';
@@ -86,7 +86,7 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ idea, user }) => {
 
   return (
     <Box key={idea.id}>
-      <ListItem key={idea.id} style={ideaListItemStyle}>
+      <IdeaOptionsWrapper key={idea.id}>
         <IdeaOptions
           idea={idea}
           ideaUrl={ideaUrl}
@@ -158,7 +158,7 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ idea, user }) => {
             )
           }
         />
-      </ListItem>
+      </IdeaOptionsWrapper>
       <React.Suspense fallback={null}>
         <ReviewsDialog
           id={idea.id}

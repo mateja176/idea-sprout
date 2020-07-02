@@ -1,8 +1,10 @@
+import { BoxProps, ListItem } from '@material-ui/core';
 import React from 'react';
-import { BoxProps, Box } from '@material-ui/core';
+import { ideaListItemStyle } from 'styles';
 
 export interface IdeaOptionsWrapperProps extends BoxProps {}
 
-export const IdeaOptionsWrapper: React.FC<IdeaOptionsWrapperProps> = (
-  props,
-) => <Box mx={2} {...props} />;
+export const IdeaOptionsWrapper: React.FC<IdeaOptionsWrapperProps> = ({
+  style,
+  ...props
+}) => <ListItem {...props} style={{ ...ideaListItemStyle, ...style }} />;
