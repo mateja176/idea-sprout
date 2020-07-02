@@ -8,6 +8,7 @@ import {
   useAuth as useFirebaseAuth,
   useFirestoreCollection as useFirebaseFirestoreCollection,
   useFirestoreDoc as useFirebaseFirestoreDoc,
+  useStorageDownloadURL as useFirebaseStorageDownloadUrl,
   useUser as useFirebaseUser,
 } from 'reactfire';
 import { createQueueSnackbar } from 'services';
@@ -110,4 +111,11 @@ export const useShareIdea = (idea: IdeaModel) => {
   return () => {
     return ideaRef.update(withSharedBy);
   };
+};
+
+export const useStorageDownloadUrl: typeof useFirebaseStorageDownloadUrl = (
+  path,
+  options,
+) => {
+  return useFirebaseStorageDownloadUrl(path, options);
 };

@@ -2,6 +2,7 @@ export * from './CopyUrl';
 export * from './Form';
 export * from './Idea';
 export * from './IdeaContainer';
+export * from './IdeaImagePreview';
 export * from './IdeaOptions';
 export * from './IdeaRow';
 export * from './Ideas';

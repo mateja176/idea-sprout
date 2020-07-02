@@ -1,4 +1,7 @@
-export const ideaListItemHeight = 56;
+export const ideaListItemHeight = 100;
+export const ideaListItemPadding = 10;
+export const ideaListItemFullHeight =
+  ideaListItemHeight + 2 * ideaListItemPadding;
 
 export const ideaMarginBottom = 15;
 
@@ -43,6 +46,7 @@ export const ideaListStyle: React.CSSProperties = {
 };
 
 export const ideaListItemStyle: React.CSSProperties = {
-  paddingTop: 0,
-  paddingBottom: 0,
+  paddingTop: ideaListItemPadding,
+  paddingBottom: ideaListItemPadding,
+  height: ideaListItemFullHeight,
 };

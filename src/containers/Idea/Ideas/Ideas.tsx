@@ -20,7 +20,7 @@ import {
   useSignedInUser,
   useThunkActions,
 } from 'services';
-import { ideaListItemHeight } from 'styles';
+import { ideaListItemFullHeight } from 'styles';
 import { IdeaOptionsSkeleton } from '../IdeaOptionsSkeleton';
 
 export interface IdeasProps extends Pick<IdeasState, 'ideas' | 'total'> {}
@@ -85,8 +85,6 @@ export const IdeasComponent: React.FC<IdeasProps> = ({ ideas, total }) => {
 
   const [activeTab, setActiveTab] = React.useState(Number(showMyIdeas));
 
-  console.log(ideas);
-
   return (
     <Box>
       <Tabs
@@ -143,7 +141,7 @@ export const IdeasComponent: React.FC<IdeasProps> = ({ ideas, total }) => {
                   onRowsRendered={onRowsRendered}
                   width={width}
                   height={height}
-                  rowHeight={ideaListItemHeight}
+                  rowHeight={ideaListItemFullHeight}
                   rowRenderer={({ key, index, style }) => {
                     const idea = ideas[index];
 

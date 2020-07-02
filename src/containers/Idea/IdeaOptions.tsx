@@ -1,5 +1,6 @@
 import { Box, Button, makeStyles, Tooltip } from '@material-ui/core';
-import { ShareMenu } from 'containers';
+import { IdeaImagePreview } from 'components';
+import { IdeaImagePreviewContainer, ShareMenu } from 'containers';
 import { IdeaModel } from 'models';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
@@ -41,6 +42,9 @@ export const IdeaOptions: React.FC<IdeaOptionsProps> = ({
 
   return (
     <Box display="flex" alignItems="center" width="100%">
+      <React.Suspense fallback={<IdeaImagePreview />}>
+        <IdeaImagePreviewContainer path={idea.images[0].path} />
+      </React.Suspense>
       <ShareMenu
         style={buttonStyle}
         shareCount={idea.sharedBy.length}

@@ -3,6 +3,7 @@ export * from './Check';
 export * from './DraggableDialog';
 export * from './Drop';
 export * from './Idea';
+export * from './Image';
 export * from './share';
 export * from './ShareDial';
 export * from './ShareMenu';

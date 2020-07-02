@@ -8,15 +8,15 @@ import { useComputedHeight } from 'services';
 export interface ImageProps
   extends StorageFile,
     Pick<React.ComponentProps<typeof StorageImage>, 'onClick'> {
-  isLast: boolean;
+  isLast?: boolean;
 }
 
 export const Image: React.FC<ImageProps> = ({
-  isLast,
   onClick,
   path,
   width,
   height,
+  isLast = false,
 }) => {
   const theme = useTheme();
 
