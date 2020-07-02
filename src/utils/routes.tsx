@@ -1,4 +1,4 @@
-import { Dashboard, Person, Search } from '@material-ui/icons';
+import { CollectionsBookmark, Dashboard, Person } from '@material-ui/icons';
 import { NestedRoutes, Route, Routes, ToAbsoluteRec } from 'models';
 import React from 'react';
 import urljoin from 'url-join';
@@ -60,8 +60,8 @@ export const absolutePublicRoute = toAbsoluteRec('/')(nestedPublicRoute);
 
 const ideas = {
   path: 'ideas',
-  label: 'Discover',
-  icon: <Search />,
+  label: 'Ideas',
+  icon: <CollectionsBookmark />,
   children: {},
 };
 
