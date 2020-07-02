@@ -1,11 +1,8 @@
-import { useTheme } from '@material-ui/core';
-
 export const useIdeaOptionButtonStyle = () => {
-  const theme = useTheme();
-
-  const buttonPadding = theme.spacing(2);
   return {
-    paddingTop: buttonPadding,
-    paddingBottom: buttonPadding,
+    padding: 0,
+    height: '100%',
+    width: '100%',
+    minWidth: 'auto',
   };
 };

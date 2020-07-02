@@ -129,19 +129,17 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ idea, user }) => {
                   </Button>
                 </Tooltip>
               ) : (
-                <Box>
-                  <Tooltip placement={'top'} title={'Preflight check'}>
-                    <Button
-                      ref={checkRef}
-                      style={navigationButtonStyle}
-                      onClick={() => {
-                        setCheckMenu.toggle();
-                      }}
-                    >
-                      <CheckBoxOutlineBlank />
-                    </Button>
-                  </Tooltip>
-                </Box>
+                <Tooltip placement={'top'} title={'Preflight check'}>
+                  <Button
+                    ref={checkRef}
+                    style={navigationButtonStyle}
+                    onClick={() => {
+                      setCheckMenu.toggle();
+                    }}
+                  >
+                    <CheckBoxOutlineBlank />
+                  </Button>
+                </Tooltip>
               )
             ) : (
               <Tooltip placement={'top'} title={'Open in full'}>

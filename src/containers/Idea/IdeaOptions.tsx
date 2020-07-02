@@ -1,11 +1,10 @@
-import { Box, Button, makeStyles, Tooltip } from '@material-ui/core';
-import { IdeaImagePreview } from 'components';
-import { IdeaImagePreviewContainer, ShareMenu } from 'containers';
+import { Box, Tooltip, useTheme } from '@material-ui/core';
+import { IdeaPreviewWrapper } from 'components';
+import { IdeaImagePreview, ShareMenu } from 'containers';
 import { IdeaModel } from 'models';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useIdeaOptionButtonStyle } from 'services';
-import { withEllipsis } from 'styles';
 import urljoin from 'url-join';
 import { absolutePrivateRoute } from 'utils';
 import { IdeaDoubleOptionSkeleton } from './IdeaOptionsSkeleton';
@@ -19,14 +18,6 @@ export interface IdeaOptionsProps {
   navigationButton: React.ReactElement;
 }
 
-const useStyles = makeStyles((theme) => ({
-  label: {
-    marginLeft: theme.spacing(1),
-    textAlign: 'initial',
-    display: 'inline-block',
-  },
-}));
-
 export const IdeaOptions: React.FC<IdeaOptionsProps> = ({
   idea,
   ideaUrl,
@@ -34,46 +25,100 @@ export const IdeaOptions: React.FC<IdeaOptionsProps> = ({
   configButton,
   navigationButton,
 }) => {
-  const classes = useStyles();
-
-  const buttonStyle = useIdeaOptionButtonStyle();
+  const theme = useTheme();
 
   const history = useHistory();
 
+  const borderColor = theme.palette.grey[600];
+
+  const buttonStyle = useIdeaOptionButtonStyle();
+
   return (
-    <Box display="flex" alignItems="center" width="100%">
-      <React.Suspense fallback={<IdeaImagePreview />}>
-        <IdeaImagePreviewContainer path={idea.images[0].path} />
-      </React.Suspense>
-      <ShareMenu
-        style={buttonStyle}
-        shareCount={idea.sharedBy.length}
-        url={ideaUrl}
-      />
-      <React.Suspense fallback={<IdeaDoubleOptionSkeleton />}>
-        <IdeaRatingOption id={idea.id} onClick={toggleReviewsOpen} />
-      </React.Suspense>
-      {configButton}
-      {navigationButton}
-      <Tooltip placement="top-start" title={idea.name}>
-        <Button
-          style={{
-            ...buttonStyle,
-            ...withEllipsis,
-            textTransform: 'capitalize',
-            fontWeight: 400,
-            flexGrow: 1,
-          }}
-          classes={{
-            label: classes.label,
-          }}
-          onClick={() => {
-            history.push(urljoin(absolutePrivateRoute.ideas.path, idea.id));
+    <Box
+      display="flex"
+      alignItems="center"
+      width="100%"
+      style={{
+        cursor: 'pointer',
+      }}
+      onClick={() => {
+        history.push(urljoin(absolutePrivateRoute.ideas.path, idea.id));
+      }}
+    >
+      <Box mr={1}>
+        <React.Suspense fallback={<IdeaPreviewWrapper />}>
+          <IdeaImagePreview path={idea.images[0].path} />
+        </React.Suspense>
+      </Box>
+      <Box
+        mr={1}
+        style={{
+          flexGrow: 1,
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          wordBreak: 'break-all',
+          display: '-webkit-box',
+          WebkitLineClamp: 4,
+          WebkitBoxOrient: 'vertical',
+        }}
+      >
+        <Tooltip placement="top" title={idea.name}>
+          <span style={{ fontSize: '1.2em' }}>{idea.name}</span>
+        </Tooltip>
+        <br />
+        <Tooltip placement="top" title={idea.problemSolution}>
+          <span style={{ color: theme.palette.text.secondary }}>
+            {idea.problemSolution}
+          </span>
+        </Tooltip>
+      </Box>
+      <IdeaPreviewWrapper>
+        <Box
+          width={'100%'}
+          height={'100%'}
+          border={`1px solid ${borderColor}`}
+          borderRadius={5}
+          onClick={(e) => {
+            e.stopPropagation();
           }}
         >
-          {idea.name}
-        </Button>
-      </Tooltip>
+          <Box
+            display="flex"
+            width={'100%'}
+            height={'50%'}
+            borderBottom={`1px solid ${borderColor}`}
+          >
+            <Box
+              width={'50%'}
+              height={'100%'}
+              borderRight={`1px solid ${borderColor}`}
+            >
+              <ShareMenu
+                style={buttonStyle}
+                shareCount={idea.sharedBy.length}
+                url={ideaUrl}
+              />
+            </Box>
+            <Box width={'50%'} height={'100%'}>
+              <React.Suspense fallback={<IdeaDoubleOptionSkeleton />}>
+                <IdeaRatingOption id={idea.id} onClick={toggleReviewsOpen} />
+              </React.Suspense>
+            </Box>
+          </Box>
+          <Box display="flex" width={'100%'} height={'50%'}>
+            <Box
+              width={'50%'}
+              height={'100%'}
+              borderRight={`1px solid ${borderColor}`}
+            >
+              {configButton}
+            </Box>
+            <Box width={'50%'} height={'100%'}>
+              {navigationButton}
+            </Box>
+          </Box>
+        </Box>
+      </IdeaPreviewWrapper>
     </Box>
   );
 };

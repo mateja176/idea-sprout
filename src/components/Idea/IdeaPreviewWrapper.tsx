@@ -1,22 +1,24 @@
 import { Box } from '@material-ui/core';
-import { Skeleton } from '@material-ui/lab';
 import React from 'react';
 import { ideaListItemHeight } from 'styles';
 
-export const IdeaImagePreview: React.FC<{ url?: string }> = ({ url }) => {
+export const IdeaPreviewWrapper: React.FC<{ url?: string }> = ({
+  url,
+  children,
+}) => {
   return (
     <Box
       borderRadius={5}
-      width={ideaListItemHeight}
       height={ideaListItemHeight}
       style={{
         backgroundImage: url ? `url(${url})` : 'none',
         backgroundPosition: 'center center',
         backgroundSize: 'cover',
         overflow: 'hidden',
+        minWidth: ideaListItemHeight,
       }}
     >
-      {!url && <Skeleton variant={'rect'} width={'100%'} height={'100%'} />}
+      {!url && children}
     </Box>
   );
 };

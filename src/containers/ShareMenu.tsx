@@ -7,7 +7,6 @@ import {
   Menu,
   MenuItem,
   Tooltip,
-  useTheme,
 } from '@material-ui/core';
 import { Share } from '@material-ui/icons';
 import { useBoolean } from 'ahooks';
@@ -26,11 +25,8 @@ export interface ShareMenuProps
 export const ShareMenu: React.FC<ShareMenuProps> = ({
   shareCount,
   url,
-  style,
   ...props
 }) => {
-  const theme = useTheme();
-
   const [menuOpen, { toggle }] = useBoolean();
 
   const buttonRef = React.useRef<HTMLButtonElement | null>(null);
@@ -41,14 +37,10 @@ export const ShareMenu: React.FC<ShareMenuProps> = ({
         <Button
           {...props}
           ref={buttonRef}
-          style={{
-            ...style,
-            color: theme.palette.primary.main,
-          }}
           onClick={() => {
             toggle();
           }}
-          endIcon={<Share />}
+          endIcon={<Share fontSize="small" color="primary" />}
         >
           {shareCount}
         </Button>
