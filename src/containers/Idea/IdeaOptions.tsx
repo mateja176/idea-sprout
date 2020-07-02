@@ -5,6 +5,7 @@ import { IdeaModel } from 'models';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useIdeaOptionButtonStyle } from 'services';
+import { withEllipsis } from 'styles';
 import urljoin from 'url-join';
 import { absolutePrivateRoute } from 'utils';
 import { IdeaDoubleOptionSkeleton } from './IdeaOptionsSkeleton';
@@ -23,7 +24,6 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(1),
     textAlign: 'initial',
     display: 'inline-block',
-    overflowX: 'hidden',
   },
 }));
 
@@ -59,8 +59,10 @@ export const IdeaOptions: React.FC<IdeaOptionsProps> = ({
         <Button
           style={{
             ...buttonStyle,
+            ...withEllipsis,
             textTransform: 'capitalize',
             fontWeight: 400,
+            flexGrow: 1,
           }}
           classes={{
             label: classes.label,
@@ -69,16 +71,7 @@ export const IdeaOptions: React.FC<IdeaOptionsProps> = ({
             history.push(urljoin(absolutePrivateRoute.ideas.path, idea.id));
           }}
         >
-          <Box display="flex" alignItems="center">
-            <Box
-              flex={1}
-              textOverflow={'ellipsis'}
-              whiteSpace={'nowrap'}
-              overflow={'hidden'}
-            >
-              {idea.name}
-            </Box>
-          </Box>
+          {idea.name}
         </Button>
       </Tooltip>
     </Box>
