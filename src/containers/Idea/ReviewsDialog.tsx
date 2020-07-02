@@ -60,7 +60,7 @@ export const ReviewsDialog: React.FC<ReviewsProps> = ({
             </Section>
             <Section>
               <Typography variant="h5">Feedback</Typography>
-              <Typography style={{ wordBreak: 'break-all' }}>
+              <Typography style={{ wordBreak: 'break-word' }}>
                 {feedback}
               </Typography>
             </Section>

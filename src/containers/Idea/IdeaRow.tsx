@@ -4,7 +4,6 @@ import {
   Checkbox,
   FormControl,
   FormControlLabel,
-  ListItem,
   Menu,
   MenuItem,
   Tooltip,
@@ -18,7 +17,7 @@ import {
   OpenInBrowser,
 } from '@material-ui/icons';
 import { useBoolean } from 'ahooks';
-import { ReviewButton, IdeaOptionsWrapper } from 'components';
+import { IdeaOptionsWrapper, ReviewButton } from 'components';
 import { IdeaOptions, ReviewDialog, ReviewsDialog } from 'containers';
 import 'firebase/firestore';
 import { IdeaModel, User } from 'models';
@@ -30,7 +29,6 @@ import {
   useIdeaUrl,
   useReviewDialogs,
 } from 'services';
-import { ideaListItemStyle } from 'styles';
 import urljoin from 'url-join';
 import { absolutePrivateRoute } from 'utils';
 

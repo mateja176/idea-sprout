@@ -56,7 +56,7 @@ export const IdeaOptions: React.FC<IdeaOptionsProps> = ({
           flexGrow: 1,
           overflow: 'hidden',
           textOverflow: 'ellipsis',
-          wordBreak: 'break-all',
+          wordBreak: 'break-word',
           display: '-webkit-box',
           WebkitLineClamp: 4,
           WebkitBoxOrient: 'vertical',
