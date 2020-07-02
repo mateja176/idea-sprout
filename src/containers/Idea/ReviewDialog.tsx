@@ -24,11 +24,11 @@ import { equals } from 'ramda';
 import React from 'react';
 import {
   useFirestoreCollection,
+  useReviewsRef,
   useReviewSubmit,
   useShareIdea,
-  useReviewsRef,
 } from 'services';
-import { withEllipsis } from 'styles';
+import { checkWithMessageHeight, withEllipsis } from 'styles';
 
 export interface ReviewDialogProps {
   user: User;
@@ -79,6 +79,8 @@ export const ReviewDialog: React.FC<ReviewDialogProps> = ({
   });
 
   const areValuesEqualToInitial = equals(initialValues)(values);
+
+  const doNotShareProps = getFieldProps('doNotShare');
 
   const sharePrompt0 = (
     <span>
@@ -155,7 +157,6 @@ export const ReviewDialog: React.FC<ReviewDialogProps> = ({
             ))}
           </Box>
           <Check
-            name="doNotShare"
             label="Do not share*"
             description={
               <Box>
@@ -169,9 +170,13 @@ export const ReviewDialog: React.FC<ReviewDialogProps> = ({
                 </Box>
               </Box>
             }
-            getFieldProps={getFieldProps}
+            checked={doNotShareProps.value}
+            onChange={doNotShareProps.onChange}
+            name="doNotShare"
+            onBlur={doNotShareProps.onBlur}
             errorMessage={(touched.doNotShare || '') && errors.doNotShare}
             disabled={values.shared}
+            height={checkWithMessageHeight}
           />
         </Box>
         <DialogActions>

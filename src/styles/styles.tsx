@@ -19,6 +19,8 @@ export const starColor = '#FFB400';
 
 export const shareIconSize = 40;
 
+export const checkWithMessageHeight = 64;
+
 export const withEllipsis: React.CSSProperties = {
   display: 'inline-block',
   textOverflow: 'ellipsis',

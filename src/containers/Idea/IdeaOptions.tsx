@@ -1,9 +1,6 @@
 import {
   Box,
   Button,
-  Checkbox,
-  FormControl,
-  FormControlLabel,
   Menu,
   MenuItem,
   Tooltip,
@@ -17,6 +14,7 @@ import {
 import { useBoolean } from 'ahooks';
 import { IdeaPreviewWrapper, ReviewButton } from 'components';
 import {
+  CheckProps,
   IdeaImagePreview,
   ReviewDialog,
   ReviewsDialog,
@@ -32,8 +30,10 @@ import {
 } from 'services';
 import urljoin from 'url-join';
 import { absolutePrivateRoute } from 'utils';
+import { ExpectationsCheck } from './ExpectationsCheck';
 import { IdeaDoubleOptionSkeleton } from './IdeaOptionsSkeleton';
 import { IdeaRatingOption } from './IdeaRatingOption';
+import { NicheCheck } from './NicheCheck';
 
 export interface IdeaOptionsProps {
   idea: IdeaModel;
@@ -70,7 +70,7 @@ export const IdeaOptions: React.FC<IdeaOptionsProps> = ({
     setReviewsOpen.toggle();
   };
 
-  const [checkMenu, setCheckMenu] = useBoolean();
+  const [checkMenu, setCheckMenu] = useBoolean(false);
 
   const checkRef = React.useRef<HTMLButtonElement | null>(null);
 
@@ -90,6 +90,18 @@ export const IdeaOptions: React.FC<IdeaOptionsProps> = ({
       status: 'seed',
     };
     ideaRef.update(withStatus);
+  };
+
+  const setCheck = (
+    name: keyof IdeaModel['checks'],
+  ): CheckProps['onChange'] => (_, value) => {
+    const withChecks: Pick<IdeaModel, 'checks'> = {
+      checks: {
+        ...idea.checks,
+        [name]: value,
+      },
+    };
+    ideaRef.update(withChecks);
   };
 
   return (
@@ -234,46 +246,16 @@ export const IdeaOptions: React.FC<IdeaOptionsProps> = ({
         onClose={setCheckMenu.setFalse}
       >
         <MenuItem>
-          <FormControl>
-            <FormControlLabel
-              label="Niche"
-              control={
-                <Checkbox
-                  checked={idea.checks.niche}
-                  onChange={(_, value) => {
-                    const withChecks: Pick<IdeaModel, 'checks'> = {
-                      checks: {
-                        ...idea.checks,
-                        niche: value,
-                      },
-                    };
-                    ideaRef.update(withChecks);
-                  }}
-                />
-              }
-            />
-          </FormControl>
+          <NicheCheck
+            checked={idea.checks.niche}
+            onChange={setCheck('niche')}
+          />
         </MenuItem>
         <MenuItem>
-          <FormControl>
-            <FormControlLabel
-              label="Expectations"
-              control={
-                <Checkbox
-                  checked={idea.checks.expectations}
-                  onChange={(_, value) => {
-                    const withChecks: Pick<IdeaModel, 'checks'> = {
-                      checks: {
-                        ...idea.checks,
-                        expectations: value,
-                      },
-                    };
-                    ideaRef.update(withChecks);
-                  }}
-                />
-              }
-            />
-          </FormControl>
+          <ExpectationsCheck
+            checked={idea.checks.expectations}
+            onChange={setCheck('expectations')}
+          />
         </MenuItem>
       </Menu>
     </>

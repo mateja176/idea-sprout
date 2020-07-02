@@ -10,7 +10,7 @@ import {
 } from '@material-ui/core';
 import { ExpandMore, Info } from '@material-ui/icons';
 import { Link, MultilineTextField, PageWrapper } from 'components';
-import { Check, Drop } from 'containers';
+import { Drop } from 'containers';
 import firebase from 'firebase/app';
 import { useFormik } from 'formik';
 import {
@@ -36,6 +36,8 @@ import {
   getFileNames,
   getFormIdea,
 } from 'utils';
+import { ExpectationsCheck } from '../ExpectationsCheck';
+import { NicheCheck } from '../NicheCheck';
 
 export interface IdeaFormProps {
   idea: IdeaModel;
@@ -140,72 +142,10 @@ export const IdeaForm: React.FC<IdeaFormProps> = ({ idea }) => {
             </Box>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails style={{ flexDirection: 'column' }}>
-            <Check
-              name="niche"
-              label="Choose a niche"
-              description={
-                <Box>
-                  <Box>
-                    Almost every product has a potential to reach the mass
-                    market and become a household name. However, almost no
-                    product reached mass market adoption out of the box, since
-                    there are only so many Aspirins to be in the world.
-                  </Box>
-                  <Box>
-                    Take the example of Tesla Motors, everybody can and perhaps
-                    should drive an electric car, but around 2008, there was
-                    almost no interest in electric vehicles among the public.
-                    Tesla had a vision, however they also had a gap to bridge.
-                    Hence they decided to launch the Tesla Roadster, an
-                    attractive all electric sports car. This attracted
-                    celebrities and sport car enthusiasts alike, which had the
-                    added benefit of putting the company in the public limelight
-                    which ultimately enabled them to sway peoples opinion on how
-                    cool electric cars can be.
-                  </Box>
-                  <Box>
-                    And nowadays with the Model 3, they are on the brink on
-                    producing an electric car for the masses.
-                  </Box>
-                </Box>
-              }
-              getFieldProps={(name) => ({
-                name,
-                value: checks.niche,
-                onChange: setCheck('niche'),
-                onBlur: () => {},
-              })}
-            />
-            <Check
-              name="expectations"
-              label="Set expectations"
-              description={
-                <Box>
-                  <Box>
-                    Setting up high expectations can sometimes increase
-                    motivation and interest for a product, however setting the
-                    bar up too high can have the opposite effect.
-                  </Box>
-                  <Box>
-                    It's possible for your to get manufacturing costs down
-                    significantly after having scaled your company, however, it
-                    takes time to get up to scale and process is gradual with
-                    ups and downs.
-                  </Box>
-                  <Box>
-                    Establishing trust with your early adopters by cherishing
-                    transparency and honesty can bring you a long way. Hence, be
-                    realistic of what you can offer to users in this period of
-                    time.
-                  </Box>
-                </Box>
-              }
-              getFieldProps={(name) => ({
-                name,
-                value: checks.expectations,
-                onChange: setCheck('expectations'),
-                onBlur: () => {},
-              })}
+            <NicheCheck checked={checks.niche} onChange={setCheck('niche')} />
+            <ExpectationsCheck
+              checked={checks.expectations}
+              onChange={setCheck('expectations')}
             />
           </ExpansionPanelDetails>
         </ExpansionPanel>

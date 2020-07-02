@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Checkbox,
+  CheckboxProps,
   Dialog,
   DialogActions,
   DialogContent,
@@ -9,42 +10,43 @@ import {
   DialogTitle,
   FormControl,
   FormControlLabel,
+  FormControlProps,
   FormHelperText,
   IconButton,
   Tooltip,
   Typography,
 } from '@material-ui/core';
 import { Info } from '@material-ui/icons';
-import { GetCheckFieldProps } from 'models';
 import React from 'react';
 
-export interface CheckProps {
-  name: string;
+export interface CheckProps
+  extends Pick<FormControlProps, 'disabled'>,
+    Pick<CheckboxProps, 'checked' | 'onChange' | 'name' | 'onBlur'>,
+    Pick<React.CSSProperties, 'height'> {
   label: string;
   description: React.ReactNode;
-  getFieldProps: GetCheckFieldProps;
   errorMessage?: string;
-  disabled?: boolean;
 }
 
-const formControlStyle: React.CSSProperties = { height: 64, display: 'block' };
-
 export const Check: React.FC<CheckProps> = ({
-  name,
   label,
   description,
-  getFieldProps,
+  checked,
+  onChange,
+  name,
+  onBlur,
   errorMessage,
-  disabled = false,
+  disabled,
+  height = 'auto',
 }) => {
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
   const toggleIsDialogOpen = () => {
     setIsDialogOpen(!isDialogOpen);
   };
 
-  const fieldProps = getFieldProps(name);
-
   const hasError = !!errorMessage;
+
+  const formControlStyle: React.CSSProperties = { height, display: 'block' };
 
   return (
     <FormControl disabled={disabled} error={hasError} style={formControlStyle}>
@@ -75,7 +77,14 @@ export const Check: React.FC<CheckProps> = ({
             </Dialog>
           </Box>
         }
-        control={<Checkbox {...fieldProps} checked={fieldProps.value} />}
+        control={
+          <Checkbox
+            name={name}
+            checked={checked}
+            onChange={onChange}
+            onBlur={onBlur}
+          />
+        }
       />
       {errorMessage && <FormHelperText>{errorMessage}</FormHelperText>}
     </FormControl>
