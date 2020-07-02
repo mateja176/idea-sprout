@@ -1,2 +1,2 @@
-export * from './IdeasSwitch';
+export * from './Idea';
 export * from './Signin';
