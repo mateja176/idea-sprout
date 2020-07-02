@@ -64,10 +64,6 @@ export const ReviewsDialog: React.FC<ReviewsProps> = ({
                 {feedback}
               </Typography>
             </Section>
-            <Section>
-              <Typography variant="h5">Author</Typography>
-              <Typography>{author}</Typography>
-            </Section>
             {i < a.length - 1 && (
               <Divider style={{ backgroundColor: theme.palette.grey['500'] }} />
             )}
