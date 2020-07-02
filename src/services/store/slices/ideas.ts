@@ -20,12 +20,21 @@ export class IdeaBatchError extends Error
 }
 
 export interface IdeasState {
+  total: number;
   ideas: Array<'loading' | IdeaModel | IdeaBatchError | undefined>;
 }
 
 export const initialIdeasState: IdeasState = {
+  total: 1000,
   ideas: [],
 };
+
+export const createSetTotal = createAction(
+  'ideas/total/set',
+  (payload: Pick<IdeasState, 'total'>) => payload,
+)();
+export type CreateSetTotal = typeof createSetTotal;
+export type SetTotalAction = ReturnType<CreateSetTotal>;
 
 export const createSetIdeas = createAction(
   'ideas/set',
@@ -49,6 +58,7 @@ export type CreateUpdateIdeas = typeof createUpdateIdeas;
 export type UpdateIdeasAction = ReturnType<CreateUpdateIdeas>;
 
 export type IdeasAction =
+  | SetTotalAction
   | UpdateIdeasAction
   | SetIdeasAction
   | ConcatIdeasAction;
@@ -58,6 +68,8 @@ export const ideasSlice = (
   action: IdeasAction,
 ): IdeasState => {
   switch (action.type) {
+    case getType(createSetTotal):
+      return { ...state, total: action.payload.total };
     case getType(createSetIdeas):
       return { ...state, ideas: action.payload.ideas };
     case getType(createConcatIdeas):
@@ -65,11 +77,13 @@ export const ideasSlice = (
     case getType(createUpdateIdeas):
       return {
         ...state,
-        ideas: state.ideas.map((idea, i) =>
-          i >= action.payload.startIndex && i < action.payload.stopIndex
-            ? action.payload.ideas[action.payload.startIndex + i]
-            : idea,
-        ),
+        ideas: state.ideas
+          .map((idea, i) =>
+            i >= action.payload.startIndex && i < action.payload.stopIndex
+              ? action.payload.ideas[action.payload.startIndex + i]
+              : idea,
+          )
+          .filter(Boolean),
       };
     default:
       return state;
@@ -82,4 +96,9 @@ export const selectIdeasSlice = ({ ideasSlice }: { ideasSlice: IdeasState }) =>
 export const selectIdeas = createSelector(
   selectIdeasSlice,
   ({ ideas }) => ideas,
+);
+
+export const selectTotal = createSelector(
+  selectIdeasSlice,
+  ({ total }) => total,
 );

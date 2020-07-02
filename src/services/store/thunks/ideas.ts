@@ -3,15 +3,19 @@ import 'firebase/firestore';
 import { IdeaFilter, IdeaModel } from 'models';
 import { last, range } from 'ramda';
 import { IndexRange } from 'react-virtualized';
+import { Dispatch } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 import { getIdeasRef } from 'services/hooks';
 import { convertFirestoreCollection } from 'utils';
 import { Action, State } from '../reducer';
 import {
   createConcatIdeas,
+  createSetTotal,
   createUpdateIdeas,
   IdeaBatchError,
+  initialIdeasState,
   selectIdeas,
+  selectTotal,
   UpdateIdeasAction,
 } from '../slices';
 
@@ -36,6 +40,76 @@ export interface FetchIdeasOptions<Key extends keyof IdeaModel>
   directionStr?: firebase.firestore.OrderByDirection;
 }
 
+interface WithDispatch {
+  dispatch: Dispatch<Action>;
+}
+
+interface WithGetState {
+  getState: () => State;
+}
+
+const getRange = (limit: number) => range(0, limit);
+
+const getLimit = ({ startIndex, stopIndex }: IndexRange) =>
+  stopIndex - startIndex;
+
+const handleGetIdeasSuccess = ({
+  dispatch,
+  getState,
+  startIndex,
+  stopIndex,
+}: IndexRange & WithDispatch & WithGetState) => (ideas: IdeaModel[]) => {
+  if (ideas.length < getLimit({ startIndex, stopIndex })) {
+    const total = selectTotal(getState());
+    dispatch(
+      createSetTotal({
+        total:
+          total === initialIdeasState.total
+            ? ideas.length
+            : total + ideas.length,
+      }),
+    );
+  }
+
+  return dispatch(createUpdateIdeas({ startIndex, stopIndex, ideas }));
+};
+
+const handleGetIdeasFailure = ({
+  dispatch,
+  startIndex,
+  stopIndex,
+  fieldPath,
+  opStr,
+  value,
+}: IndexRange & WithDispatch & IdeaFilter<keyof IdeaModel>) => (
+  error: Error,
+) => {
+  return dispatch(
+    createUpdateIdeas({
+      startIndex,
+      stopIndex,
+      ideas: getRange(getLimit({ startIndex, stopIndex })).map(
+        () =>
+          new IdeaBatchError(
+            error.message,
+            startIndex,
+            stopIndex,
+            fieldPath,
+            opStr,
+            value,
+          ),
+      ),
+    }),
+  );
+};
+
+const interceptGetIdeasError = (snapshot: firebase.firestore.QuerySnapshot) => {
+  if (snapshot.empty && snapshot.metadata.fromCache) {
+    throw new Error('Failed to fetch ideas');
+  }
+  return snapshot;
+};
+
 export const createFetchIdeas = <Key extends keyof IdeaModel>({
   fieldPath,
   opStr,
@@ -49,10 +123,10 @@ export const createFetchIdeas = <Key extends keyof IdeaModel>({
   State,
   void,
   Action
-> => (dispatch) => {
-  const limit = stopIndex - startIndex;
+> => (dispatch, getState) => {
+  const limit = getLimit({ startIndex, stopIndex });
 
-  const ideasRange = range(0, limit);
+  const ideasRange = getRange(limit);
 
   dispatch(
     createConcatIdeas({
@@ -64,29 +138,19 @@ export const createFetchIdeas = <Key extends keyof IdeaModel>({
     .where(fieldPath, opStr, value)
     .orderBy(orderByField, directionStr)
     .get()
+    .then(interceptGetIdeasError)
     .then((snapshot) => convertFirestoreCollection<IdeaModel>(snapshot))
-    .then((ideas) => {
-      return dispatch(createUpdateIdeas({ startIndex, stopIndex, ideas }));
-    })
-    .catch((error: Error) => {
-      return dispatch(
-        createUpdateIdeas({
-          startIndex,
-          stopIndex,
-          ideas: ideasRange.map(
-            () =>
-              new IdeaBatchError(
-                error.message,
-                startIndex,
-                stopIndex,
-                fieldPath,
-                opStr,
-                value,
-              ),
-          ),
-        }),
-      );
-    });
+    .then(handleGetIdeasSuccess({ dispatch, getState, startIndex, stopIndex }))
+    .catch(
+      handleGetIdeasFailure({
+        dispatch,
+        startIndex,
+        stopIndex,
+        fieldPath,
+        opStr,
+        value,
+      }),
+    );
 };
 
 export const createFetchMoreIdeas = <Key extends keyof IdeaModel>({
@@ -103,11 +167,11 @@ export const createFetchMoreIdeas = <Key extends keyof IdeaModel>({
   void,
   Action
 > => (dispatch, getState) => {
-  const limit = stopIndex - startIndex;
+  const limit = getLimit({ startIndex, stopIndex });
 
   dispatch(
     createConcatIdeas({
-      ideas: range(0, limit).map(() => 'loading'),
+      ideas: getRange(limit).map(() => 'loading'),
     }),
   );
 
@@ -119,8 +183,17 @@ export const createFetchMoreIdeas = <Key extends keyof IdeaModel>({
     .startAt(lastCreatedAt)
     .limit(limit)
     .get()
+    .then(interceptGetIdeasError)
     .then((snapshot) => convertFirestoreCollection<IdeaModel>(snapshot))
-    .then((ideas) => {
-      return dispatch(createUpdateIdeas({ startIndex, stopIndex, ideas }));
-    });
+    .then(handleGetIdeasSuccess({ dispatch, getState, startIndex, stopIndex }))
+    .catch(
+      handleGetIdeasFailure({
+        dispatch,
+        startIndex,
+        stopIndex,
+        fieldPath,
+        opStr,
+        value,
+      }),
+    );
 };

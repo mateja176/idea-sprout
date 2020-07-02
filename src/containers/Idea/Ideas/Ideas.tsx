@@ -10,8 +10,11 @@ import {
   createFetchIdeas,
   createFetchMoreIdeas,
   createSetIdeas,
+  createSetTotal,
   IdeasState,
+  initialIdeasState,
   selectIdeas,
+  selectTotal,
   State,
   useActions,
   useSignedInUser,
@@ -20,19 +23,20 @@ import {
 import { ideaListItemHeight } from 'styles';
 import { IdeaOptionsSkeleton } from '../IdeaOptionsSkeleton';
 
-export interface IdeasProps extends Pick<IdeasState, 'ideas'> {}
+export interface IdeasProps extends Pick<IdeasState, 'ideas' | 'total'> {}
 
-export const IdeasComponent: React.FC<IdeasProps> = ({ ideas }) => {
-  const { setIdeas } = useActions({ setIdeas: createSetIdeas });
+export const IdeasComponent: React.FC<IdeasProps> = ({ ideas, total }) => {
+  const { setIdeas, setTotal } = useActions({
+    setIdeas: createSetIdeas,
+    setTotal: createSetTotal,
+  });
 
   const { fetchIdeas, fetchMoreIdeas } = useThunkActions({
     fetchIdeas: createFetchIdeas,
     fetchMoreIdeas: createFetchMoreIdeas,
   });
 
-  const rowCount = ideas.includes(undefined)
-    ? ideas.filter(Boolean).length
-    : 1000;
+  const rowCount = total;
 
   const listWrapperRef = React.useRef<HTMLDivElement | null>(null);
 
@@ -74,11 +78,14 @@ export const IdeasComponent: React.FC<IdeasProps> = ({ ideas }) => {
 
   const reset = () => {
     setIdeas({ ideas: [] });
+    setTotal({ total: initialIdeasState.total });
 
     infiniteLoaderRef.current?.resetLoadMoreRowsCache();
   };
 
   const [activeTab, setActiveTab] = React.useState(Number(showMyIdeas));
+
+  console.log(ideas);
 
   return (
     <Box>
@@ -152,7 +159,10 @@ export const IdeasComponent: React.FC<IdeasProps> = ({ ideas }) => {
                             mx={2}
                           >
                             <Typography
-                              style={{ textDecoration: 'underline' }}
+                              style={{
+                                textDecoration: 'underline',
+                                cursor: 'pointer',
+                              }}
                               onClick={() => {
                                 const fetchOptions = {
                                   startIndex: idea.startIndex,
@@ -192,5 +202,5 @@ export const IdeasComponent: React.FC<IdeasProps> = ({ ideas }) => {
 export const Ideas = connect((state: State) => {
   // * useSelector was returning "[]" instead of "['loading', 'loading', 'loading'...]"
   // * hence the loading state was not being rendered between filter updates
-  return { ideas: selectIdeas(state) };
+  return { ideas: selectIdeas(state), total: selectTotal(state) };
 })(IdeasComponent);
