@@ -92,3 +92,5 @@ export const creationIdeaSchema = yup
     images: yup.array().required().of(StorageFileSchema).max(2),
     rationale: yup.string().required().min(80).max(400),
   });
+
+export type UpdateIdea = (idea: Partial<RawIdea>) => Promise<void>;

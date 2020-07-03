@@ -1,16 +1,11 @@
 import { useBoolean } from 'ahooks';
 import firebase from 'firebase/app';
 import { StorageFile, StoragePath } from 'models';
-import { createQueueSnackbar } from 'services/store';
+import { getFileData, getImageDimensions, getVideoDimensions } from 'services';
 import urljoin from 'url-join';
 import { useSignedInUser, useStorage } from './firebase';
-import { useActions } from './hooks';
 
 export const useUpload = (path: StoragePath) => {
-  const { queueSnackbar } = useActions({
-    queueSnackbar: createQueueSnackbar,
-  });
-
   const user = useSignedInUser();
 
   const [loading, setLoading] = useBoolean();
@@ -26,76 +21,31 @@ export const useUpload = (path: StoragePath) => {
 
         const ref = storage.ref(urljoin(path, user.uid, name));
 
-        const reader = new FileReader();
+        return getFileData(file).then((data) => {
+          const size =
+            path === 'images'
+              ? getImageDimensions(data)
+              : getVideoDimensions(data);
 
-        reader.readAsDataURL(file);
-
-        return new Promise<string>((resolve) => {
-          reader.onload = () => {
-            resolve(String(reader.result));
-          };
-        })
-          .then((data) => {
-            const size =
-              path === 'images'
-                ? new Promise<HTMLImageElement>((resolve) => {
-                    const instance = new Image();
-
-                    instance.src = data;
-
-                    instance.addEventListener('load', () => {
-                      resolve(instance);
-                    });
-                  }).then((instance) => ({
-                    width: instance.width,
-                    height: instance.height,
-                  }))
-                : new Promise<HTMLVideoElement>((resolve) => {
-                    const instance = document.createElement('video');
-
-                    instance.src = data;
-
-                    instance.addEventListener('loadedmetadata', () => {
-                      resolve(instance);
-                    });
-                  }).then((instance) => ({
-                    width: instance.videoWidth,
-                    height: instance.videoHeight,
-                  }));
-
-            return size.then(({ width, height }) =>
-              ref
-                .putString(data, firebase.storage.StringFormat.DATA_URL, {
-                  customMetadata: {
-                    width: width.toString(),
-                    height: height.toString(),
-                  },
-                })
-                .then(() => ({
-                  path: ref.fullPath,
-                  width,
-                  height,
-                })),
-            );
-          })
-          .then(({ path, width, height }) => {
-            queueSnackbar({
-              severity: 'success',
-              message: `"${file.name}" uploaded`,
-            });
-
-            return { path, width, height };
-          });
+          return size.then(({ width, height }) =>
+            ref
+              .putString(data, firebase.storage.StringFormat.DATA_URL, {
+                customMetadata: {
+                  width: width.toString(),
+                  height: height.toString(),
+                },
+              })
+              .then(() => ({
+                path: ref.fullPath,
+                width,
+                height,
+              })),
+          );
+        });
       }),
-    )
-      .catch((error: Error) => {
-        queueSnackbar({ severity: 'error', message: error.message });
-
-        return [] as StorageFile[];
-      })
-      .finally(() => {
-        setLoading.setFalse();
-      });
+    ).finally(() => {
+      setLoading.setFalse();
+    });
   };
 
   return { upload, loading };

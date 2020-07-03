@@ -1,7 +1,7 @@
 import { Box } from '@material-ui/core';
 import { TitleEditor } from 'containers';
 import { problemSolutionTitle, rationaleTitle } from 'elements';
-import { IdeaModel, RawIdea, User } from 'models';
+import { IdeaModel, UpdateIdea, User } from 'models';
 import React from 'react';
 import { contentToText, getIsAuthor } from 'utils';
 import { Images } from '../Image';
@@ -10,7 +10,7 @@ import { VideoSuspender } from '../Video';
 export interface IdeaProps {
   user: User;
   idea: IdeaModel;
-  update: (idea: Partial<RawIdea>) => Promise<void>;
+  update: UpdateIdea;
 }
 
 export const Idea: React.FC<IdeaProps> = ({ user, idea, update }) => {
@@ -18,7 +18,7 @@ export const Idea: React.FC<IdeaProps> = ({ user, idea, update }) => {
 
   return (
     <Box>
-      <VideoSuspender {...idea.story} />
+      <VideoSuspender story={idea.story} isAuthor={isAuthor} update={update} />
       <TitleEditor
         isAuthor={isAuthor}
         title={problemSolutionTitle}
@@ -32,7 +32,7 @@ export const Idea: React.FC<IdeaProps> = ({ user, idea, update }) => {
           }
         }}
       />
-      <Images images={idea.images} />
+      <Images images={idea.images} isAuthor={isAuthor} update={update} />
       <TitleEditor
         isAuthor={isAuthor}
         title={rationaleTitle}

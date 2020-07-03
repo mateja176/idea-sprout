@@ -15,7 +15,7 @@ import { ArrowDownward, Info } from '@material-ui/icons';
 import { StorageFile, StoragePath } from 'models';
 import React from 'react';
 import { DropzoneOptions, useDropzone } from 'react-dropzone';
-import { useUpload } from 'services';
+import { createQueueSnackbar, useActions, useUpload } from 'services';
 
 export interface DropProps extends DropzoneOptions {
   heading: string;
@@ -48,6 +48,10 @@ export const Drop: React.FC<DropProps> = ({
   preloadedFileNames,
   ...props
 }) => {
+  const { queueSnackbar } = useActions({
+    queueSnackbar: createQueueSnackbar,
+  });
+
   const { upload, loading } = useUpload(path);
 
   const [files, setFiles] = React.useState<File[]>([]);
@@ -57,6 +61,11 @@ export const Drop: React.FC<DropProps> = ({
       setFiles(acceptedFiles);
 
       upload(acceptedFiles.slice(0, fileLimit)).then((files) => {
+        queueSnackbar({
+          severity: 'success',
+          message: `Files uploaded`,
+        });
+
         onUploadSuccess(files);
       });
     },

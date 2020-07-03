@@ -9,4 +9,5 @@ export * from './ShareDial';
 export * from './ShareMenu';
 export * from './Signout';
 export * from './TitleEditor';
+export * from './FileOptions';
 export * from './Video';
