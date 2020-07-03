@@ -2,6 +2,7 @@ import { BoxProps, Button, Tooltip, useTheme } from '@material-ui/core';
 import { StarRate } from '@material-ui/icons';
 import { IdeaModel, Review } from 'models';
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 import {
   useFirestoreCollection,
   useIdeaOptionButtonStyle,
@@ -18,13 +19,17 @@ export const IdeaRatingOption: React.FC<IdeaRatingOptionProps> = ({
   id,
   onClick,
 }) => {
+  const { state } = useLocation<{ reviews: Review[] }>();
+
   const buttonStyle = useIdeaOptionButtonStyle();
 
   const theme = useTheme();
 
   const reviewsRef = useReviewsRef(id);
 
-  const reviews = useFirestoreCollection<Review>(reviewsRef);
+  const reviews = useFirestoreCollection<Review>(reviewsRef, {
+    startWithValue: state?.reviews,
+  });
 
   const ratingsCount = reviews.length;
 
