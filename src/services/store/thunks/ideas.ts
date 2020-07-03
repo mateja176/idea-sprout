@@ -5,7 +5,7 @@ import { last, range } from 'ramda';
 import { IndexRange } from 'react-virtualized';
 import { Dispatch } from 'redux';
 import { ThunkAction } from 'redux-thunk';
-import { getIdeasRef } from 'services/hooks';
+import { getIdeasRef } from 'services';
 import { convertFirestoreCollection } from 'utils';
 import { Action, State } from '../reducer';
 import {

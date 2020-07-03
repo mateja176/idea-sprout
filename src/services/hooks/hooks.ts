@@ -2,8 +2,7 @@ import { FileDimensions, WithTimeout } from 'models';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { ActionCreatorsMapObject, bindActionCreators } from 'redux';
-import { Action, AnyThunk } from 'services';
-import { GetBoundThunk } from 'services/store';
+import { Action, AnyThunk, GetBoundThunk } from 'services';
 
 export const useActions = <
   ActionCreators extends ActionCreatorsMapObject<Action>
