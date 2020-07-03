@@ -12,6 +12,7 @@ import {
   useFirestoreDoc,
   useIdeasRef,
   useIdeaUrl,
+  useSignedInUser,
 } from 'services';
 import { ideaMarginBottom, pageMargin } from 'styles';
 import { absolutePrivateRoute } from 'utils';
@@ -29,6 +30,8 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({
   const { queueSnackbar } = useActions({ queueSnackbar: createQueueSnackbar });
 
   const history = useHistory();
+
+  const user = useSignedInUser();
 
   const idea = useFirestoreDoc<IdeaModel>(useIdeasRef().doc(id), {
     startWithValue: initialIdea,
@@ -52,6 +55,7 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({
     <Box mt={pageMargin} mb={ideaMarginBottom}>
       <IdeaOptionsWrapper>
         <IdeaOptions
+          user={user}
           idea={idea}
           ideaUrl={ideaUrl}
           NavigationButton={({ style }) => (
@@ -68,7 +72,7 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({
           )}
         />
       </IdeaOptionsWrapper>
-      <Idea idea={idea} update={updateIdea} />
+      <Idea user={user} idea={idea} update={updateIdea} />
     </Box>
   ) : (
     <Redirect to={absolutePrivateRoute.ideas.path} />

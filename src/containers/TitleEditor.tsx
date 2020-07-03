@@ -29,12 +29,20 @@ const moveSelectionToEnd = (editorState: EditorState) => {
 
 export const TitleEditor: React.FC<
   Omit<EditorProps, 'editorState' | 'onChange' | 'onFocus' | 'onBlur'> & {
+    isAuthor: boolean;
     title: React.ReactNode;
     text: string;
     onFocus?: EditorProps['onChange'];
     onBlur?: EditorProps['onChange'];
   }
-> = ({ title, text, onFocus = () => {}, onBlur = () => {}, ...props }) => {
+> = ({
+  isAuthor,
+  title,
+  text,
+  onFocus = () => {},
+  onBlur = () => {},
+  ...props
+}) => {
   const [editorState, setEditorState] = React.useState(
     EditorState.createWithContent(ContentState.createFromText(text)),
   );
@@ -59,34 +67,36 @@ export const TitleEditor: React.FC<
     <IdeaSection>
       <Box display={'flex'} alignItems={'center'}>
         {title}&nbsp;
-        {editing ? (
-          <IconButton
-            size={'small'}
-            onClick={() => {
-              setEditing.setFalse();
-            }}
-          >
-            <Cancel />
-          </IconButton>
-        ) : (
-          <IconButton
-            size="small"
-            color="primary"
-            onClick={() => {
-              setEditing.setTrue();
+        {isAuthor &&
+          (editing ? (
+            <IconButton
+              size={'small'}
+              onClick={() => {
+                setEditing.setFalse();
+              }}
+            >
+              <Cancel />
+            </IconButton>
+          ) : (
+            <IconButton
+              size="small"
+              color="primary"
+              onClick={() => {
+                setEditing.setTrue();
 
-              setEditorState(moveSelectionToEnd(editorState));
-            }}
-          >
-            <Edit />
-          </IconButton>
-        )}
+                setEditorState(moveSelectionToEnd(editorState));
+              }}
+            >
+              <Edit />
+            </IconButton>
+          ))}
       </Box>
       <Box onClick={focus}>
         <DraftEditor
           ref={editorRef}
           editorState={editorState}
           onChange={setEditorState}
+          readOnly={!isAuthor}
           {...props}
           onFocus={() => {
             onFocus(editorState);

@@ -24,6 +24,7 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ idea, user }) => {
     <Box key={idea.id}>
       <IdeaOptionsWrapper key={idea.id}>
         <IdeaOptions
+          user={user}
           idea={idea}
           ideaUrl={ideaUrl}
           NavigationButton={({ style }) => (

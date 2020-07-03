@@ -20,22 +20,19 @@ import {
   ReviewsDialog,
   ShareMenu,
 } from 'containers';
-import { IdeaModel } from 'models';
+import { IdeaModel, User } from 'models';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import {
-  useIdeaOptionButtonStyle,
-  useIdeasRef,
-  useSignedInUser,
-} from 'services';
+import { useIdeaOptionButtonStyle, useIdeasRef } from 'services';
 import urljoin from 'url-join';
-import { absolutePrivateRoute } from 'utils';
+import { absolutePrivateRoute, getIsAuthor } from 'utils';
 import { ExpectationsCheck } from './ExpectationsCheck';
 import { IdeaDoubleOptionSkeleton } from './IdeaOptionsSkeleton';
 import { IdeaRatingOption } from './IdeaRatingOption';
 import { NicheCheck } from './NicheCheck';
 
 export interface IdeaOptionsProps {
+  user: User;
   idea: IdeaModel;
   ideaUrl: string;
   NavigationButton: (props: {
@@ -44,13 +41,12 @@ export interface IdeaOptionsProps {
 }
 
 export const IdeaOptions: React.FC<IdeaOptionsProps> = ({
+  user,
   idea,
   ideaUrl,
   NavigationButton,
 }) => {
-  const user = useSignedInUser();
-
-  const isAuthor = user.email === idea.author;
+  const isAuthor = getIsAuthor(user)(idea);
 
   const theme = useTheme();
 
