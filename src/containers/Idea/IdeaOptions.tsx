@@ -108,7 +108,6 @@ export const IdeaOptions: React.FC<IdeaOptionsProps> = ({
     <>
       <Box
         display="flex"
-        alignItems="center"
         width="100%"
         style={{
           cursor: 'pointer',
@@ -130,7 +129,7 @@ export const IdeaOptions: React.FC<IdeaOptionsProps> = ({
             textOverflow: 'ellipsis',
             wordBreak: 'break-word',
             display: '-webkit-box',
-            WebkitLineClamp: 4,
+            WebkitLineClamp: 5,
             WebkitBoxOrient: 'vertical',
           }}
         >
