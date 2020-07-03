@@ -1,7 +1,7 @@
 import { ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import { Create } from '@material-ui/icons';
 import { useBoolean } from 'ahooks';
-import firebase, { FirebaseError } from 'firebase';
+import firebase, { FirebaseError } from 'firebase/app';
 import { RawIdea, User } from 'models';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
