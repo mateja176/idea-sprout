@@ -1,9 +1,9 @@
-import { Box, Button, Icon, ListItem } from '@material-ui/core';
+import { Box, Button, Icon } from '@material-ui/core';
 import { Skeleton } from '@material-ui/lab';
+import { IdeaOptionsWrapper } from 'components';
 import { range } from 'ramda';
 import React from 'react';
 import { useIdeaOptionButtonStyle } from 'services';
-import { ideaListItemStyle } from 'styles';
 
 export const IdeaOptionSkeleton = () => {
   const buttonStyle = useIdeaOptionButtonStyle();
@@ -36,7 +36,7 @@ export const IdeaOptionsSkeleton: React.FC = () => {
   const buttonStyle = useIdeaOptionButtonStyle();
 
   return (
-    <ListItem style={ideaListItemStyle}>
+    <IdeaOptionsWrapper>
       {range(0, 2).map((i) => (
         <IdeaDoubleOptionSkeleton key={i} />
       ))}
@@ -50,6 +50,6 @@ export const IdeaOptionsSkeleton: React.FC = () => {
           </Box>
         </Box>
       </Button>
-    </ListItem>
+    </IdeaOptionsWrapper>
   );
 };
