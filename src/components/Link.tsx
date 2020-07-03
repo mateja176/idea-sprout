@@ -2,7 +2,8 @@ import { Link as MaterialLink } from '@material-ui/core';
 import React from 'react';
 import { NavLink, NavLinkProps } from 'react-router-dom';
 
-export interface LinkProps extends Omit<NavLinkProps, 'color'> {
+export interface LinkProps
+  extends Pick<NavLinkProps, 'style' | 'onClick' | 'children' | 'target'> {
   to: string;
 }
 
