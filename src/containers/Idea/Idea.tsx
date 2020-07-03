@@ -1,27 +1,46 @@
-import { Box, Typography } from '@material-ui/core';
-import { IdeaSection } from 'components';
+import { Box } from '@material-ui/core';
+import { TitleEditor } from 'containers';
 import { problemSolutionTitle, rationaleTitle } from 'elements';
-import { IdeaModel } from 'models';
+import { IdeaModel, RawIdea } from 'models';
 import React from 'react';
-import { breakWordStyle } from 'styles';
+import { contentToText } from 'utils';
 import { Images } from '../Image';
 import { VideoSuspender } from '../Video';
 
-export interface IdeaProps extends IdeaModel {}
+export interface IdeaProps {
+  idea: IdeaModel;
+  update: (idea: Partial<RawIdea>) => Promise<void>;
+}
 
-export const Idea: React.FC<IdeaProps> = (idea) => {
+export const Idea: React.FC<IdeaProps> = ({ idea, update }) => {
   return (
     <Box>
       <VideoSuspender {...idea.story} />
-      <IdeaSection>
-        {problemSolutionTitle}
-        <Typography style={breakWordStyle}>{idea.problemSolution}</Typography>
-      </IdeaSection>
+      <TitleEditor
+        title={problemSolutionTitle}
+        text={idea.problemSolution}
+        onBlur={(editorState) => {
+          const text = contentToText(editorState);
+          if (text !== idea.problemSolution) {
+            update({
+              problemSolution: text,
+            });
+          }
+        }}
+      />
       <Images images={idea.images} />
-      <IdeaSection>
-        {rationaleTitle}
-        <Typography style={breakWordStyle}>{idea.rationale}</Typography>
-      </IdeaSection>
+      <TitleEditor
+        title={rationaleTitle}
+        text={idea.rationale}
+        onBlur={(editorState) => {
+          const text = contentToText(editorState);
+          if (text !== idea.rationale) {
+            update({
+              rationale: text,
+            });
+          }
+        }}
+      />
     </Box>
   );
 };

@@ -1,3 +1,4 @@
+import { convertToRaw, EditorState } from 'draft-js';
 import {
   FormIdea,
   IdeaModel,
@@ -38,3 +39,10 @@ export const getFileNames = (files: StorageFile[]) =>
 
 export const getIsAuthor = (user: User) => (idea: IdeaModel) =>
   user.email === idea.author;
+
+export const contentToText = (editorState: EditorState): string => {
+  const text = convertToRaw(editorState.getCurrentContent())
+    .blocks.reduce((text, block) => text.concat('\n', block.text), '')
+    .trim();
+  return text;
+};

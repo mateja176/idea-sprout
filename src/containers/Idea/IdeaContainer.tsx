@@ -6,9 +6,16 @@ import 'firebase/firestore';
 import { IdeaModel } from 'models';
 import React from 'react';
 import { Redirect, useHistory } from 'react-router-dom';
-import { useFirestoreDoc, useIdeasRef, useIdeaUrl } from 'services';
+import {
+  createQueueSnackbar,
+  useActions,
+  useFirestoreDoc,
+  useIdeasRef,
+  useIdeaUrl,
+} from 'services';
 import { ideaMarginBottom, pageMargin } from 'styles';
 import { absolutePrivateRoute } from 'utils';
+import { IdeaProps } from './Idea';
 import { IdeaOptions } from './IdeaOptions';
 
 export interface IdeaContainerProps extends Pick<IdeaModel, 'id'> {
@@ -19,6 +26,8 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({
   id,
   initialIdea,
 }) => {
+  const { queueSnackbar } = useActions({ queueSnackbar: createQueueSnackbar });
+
   const history = useHistory();
 
   const idea = useFirestoreDoc<IdeaModel>(useIdeasRef().doc(id), {
@@ -26,6 +35,18 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({
   });
 
   const ideaUrl = useIdeaUrl(id);
+
+  const ideaRef = useIdeasRef().doc(id);
+
+  const updateIdea: IdeaProps['update'] = (partialIdea) => {
+    return ideaRef.update(partialIdea).then(() => {
+      queueSnackbar({
+        severity: 'success',
+        message: 'Update successful',
+        autoHideDuration: 2000,
+      });
+    });
+  };
 
   return idea ? (
     <Box mt={pageMargin} mb={ideaMarginBottom}>
@@ -47,7 +68,7 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({
           )}
         />
       </IdeaOptionsWrapper>
-      <Idea {...idea} />
+      <Idea idea={idea} update={updateIdea} />
     </Box>
   ) : (
     <Redirect to={absolutePrivateRoute.ideas.path} />
