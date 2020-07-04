@@ -175,12 +175,12 @@ export const createFetchMoreIdeas = <Key extends keyof IdeaModel>({
     }),
   );
 
-  const lastCreatedAt = last(selectIdeas(getState()));
+  const lastIdea = last(selectIdeas(getState()));
 
   return getIdeasRef()
     .where(fieldPath, opStr, value)
     .orderBy(orderByField, directionStr)
-    .startAt(lastCreatedAt)
+    .startAt((lastIdea as IdeaModel).createdAt)
     .limit(limit)
     .get()
     .then(interceptGetIdeasError)
