@@ -1,7 +1,7 @@
 import { ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import { Create } from '@material-ui/icons';
 import { useBoolean } from 'ahooks';
-import firebase, { FirebaseError } from 'firebase/app';
+import firebase from 'firebase/app';
 import { RawIdea, User } from 'models';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
@@ -55,6 +55,8 @@ export const CreateIdea: React.FC<CreateIdeaProps> = ({ user }) => {
 
     ideasRef
       .add(newIdea)
+      // * the promise is not rejected even if the client is offline
+      // * the promise is pending until it resolves or the tab is closed
       .then(({ id }) => {
         queueSnackbar({
           severity: 'success',
@@ -65,12 +67,6 @@ export const CreateIdea: React.FC<CreateIdeaProps> = ({ user }) => {
         history.push(urljoin(absolutePrivateRoute.ideas.path, id), {
           idea: { ...newIdea, id },
           reviews: [],
-        });
-      })
-      .catch((error: FirebaseError) => {
-        queueSnackbar({
-          severity: 'error',
-          message: error.message,
         });
       })
       .finally(() => {

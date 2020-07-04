@@ -81,21 +81,19 @@ export const useReviewSubmit = (id: IdeaModel['id']) => {
   const reviewsRef = useReviewsRef(id);
 
   return ({ rating, feedback }: Pick<Review, 'rating' | 'feedback'>) => {
-    return reviewsRef
-      .doc(user.uid)
-      .set({ rating, feedback, author: user.email })
-      .then(() => {
-        queueSnackbar({
-          severity: 'success',
-          message: 'Review submitted',
-        });
-      })
-      .catch(() => {
-        queueSnackbar({
-          severity: 'error',
-          message: 'Failed to submit, please retry',
-        });
-      });
+    return (
+      reviewsRef
+        .doc(user.uid)
+        .set({ rating, feedback, author: user.email })
+        // * the promise is not rejected even if the client is offline
+        // * the promise is pending until it resolves or the tab is closed
+        .then(() => {
+          queueSnackbar({
+            severity: 'success',
+            message: 'Review submitted',
+          });
+        })
+    );
   };
 };
 

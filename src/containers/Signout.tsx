@@ -6,7 +6,6 @@ import {
 } from '@material-ui/core';
 import { ExitToApp } from '@material-ui/icons';
 import { useBoolean } from 'ahooks';
-import { FirebaseError } from 'firebase/app';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { createQueueSnackbar, useActions, useAuth, useUser } from 'services';
@@ -37,6 +36,7 @@ export const Signout: React.FC<SignoutProps> = ({ onClick }) => {
 
           auth
             .signOut()
+            // * the operation resolves even if the client is offline
             .then(() => {
               queueSnackbar({
                 message: 'Successfully signed out',
@@ -46,10 +46,6 @@ export const Signout: React.FC<SignoutProps> = ({ onClick }) => {
               onClick(e);
 
               history.replace(absolutePublicRoute.signin.path);
-            })
-            .catch((error: FirebaseError) => {
-              // * the operation doesn't fail even if the user is offline
-              queueSnackbar({ message: error.message, severity: 'error' });
             })
             .finally(() => {
               setLoading.setFalse();

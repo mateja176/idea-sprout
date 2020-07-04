@@ -83,25 +83,23 @@ export const IdeaForm: React.FC<IdeaFormProps> = ({ idea }) => {
         createdAt: firebase.firestore.Timestamp.now(),
       };
 
-      return getIdeaRef()
-        .set(newIdea)
-        .then(() => {
-          history.push(absolutePrivateRoute.ideas.path, {
-            search: qs.stringify({ author: user.email }),
-          });
+      return (
+        getIdeaRef()
+          .set(newIdea)
+          // * the promise is not rejected even if the client is offline
+          // * the promise is pending until it resolves or the tab is closed
+          .then(() => {
+            history.push(absolutePrivateRoute.ideas.path, {
+              search: qs.stringify({ author: user.email }),
+            });
 
-          queueSnackbar({
-            severity: 'success',
-            message: `Success! Sharing your idea increase the likelihood of success drastically`,
-            autoHideDuration: 60000,
-          });
-        })
-        .catch((error: Error) => {
-          queueSnackbar({
-            severity: 'error',
-            message: error.message,
-          });
-        });
+            queueSnackbar({
+              severity: 'success',
+              message: `Success! Sharing your idea increase the likelihood of success drastically`,
+              autoHideDuration: 60000,
+            });
+          })
+      );
     },
     validateOnMount: true,
   });
