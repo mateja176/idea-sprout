@@ -8,7 +8,6 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { AutoSizer, InfiniteLoader, List } from 'react-virtualized';
 import {
   createFetchIdeas,
-  createFetchMoreIdeas,
   createSetIdeas,
   createSetTotal,
   IdeasState,
@@ -31,9 +30,8 @@ export const IdeasComponent: React.FC<IdeasProps> = ({ ideas, total }) => {
     setTotal: createSetTotal,
   });
 
-  const { fetchIdeas, fetchMoreIdeas } = useThunkActions({
+  const { fetchIdeas } = useThunkActions({
     fetchIdeas: createFetchIdeas,
-    fetchMoreIdeas: createFetchMoreIdeas,
   });
 
   const rowCount = total;
@@ -123,9 +121,7 @@ export const IdeasComponent: React.FC<IdeasProps> = ({ ideas, total }) => {
           loadMoreRows={(indexRange) => {
             const fetchOptions = { ...filter, ...indexRange };
 
-            return indexRange.startIndex === 0
-              ? fetchIdeas(fetchOptions)
-              : fetchMoreIdeas(fetchOptions);
+            return fetchIdeas(fetchOptions);
           }}
           isRowLoaded={({ index }) => {
             return !!ideas[index];
@@ -169,11 +165,7 @@ export const IdeasComponent: React.FC<IdeasProps> = ({ ideas, total }) => {
                                   opStr: idea.opStr,
                                   value: idea.value,
                                 };
-                                if (idea.startIndex === 0) {
-                                  fetchIdeas(fetchOptions);
-                                } else {
-                                  fetchMoreIdeas(fetchOptions);
-                                }
+                                fetchIdeas(fetchOptions);
                               }}
                             >
                               Refetch ideas

@@ -109,7 +109,6 @@ const interceptGetIdeasError = (snapshot: firebase.firestore.QuerySnapshot) => {
   }
   return snapshot;
 };
-
 export const createFetchIdeas = <Key extends keyof IdeaModel>({
   fieldPath,
   opStr,
@@ -126,48 +125,7 @@ export const createFetchIdeas = <Key extends keyof IdeaModel>({
 > => (dispatch, getState) => {
   const limit = getLimit({ startIndex, stopIndex });
 
-  const ideasRange = getRange(limit);
-
-  dispatch(
-    createConcatIdeas({
-      ideas: ideasRange.map(() => 'loading'),
-    }),
-  );
-
-  return getIdeasRef()
-    .where(fieldPath, opStr, value)
-    .orderBy(orderByField, directionStr)
-    .get()
-    .then(interceptGetIdeasError)
-    .then((snapshot) => convertFirestoreCollection<IdeaModel>(snapshot))
-    .then(handleGetIdeasSuccess({ dispatch, getState, startIndex, stopIndex }))
-    .catch(
-      handleGetIdeasFailure({
-        dispatch,
-        startIndex,
-        stopIndex,
-        fieldPath,
-        opStr,
-        value,
-      }),
-    );
-};
-
-export const createFetchMoreIdeas = <Key extends keyof IdeaModel>({
-  fieldPath,
-  opStr,
-  value,
-  startIndex,
-  stopIndex,
-  orderByField = 'createdAt' as Key,
-  directionStr = 'desc',
-}: FetchIdeasOptions<Key>): ThunkAction<
-  Promise<UpdateIdeasAction>,
-  State,
-  void,
-  Action
-> => (dispatch, getState) => {
-  const limit = getLimit({ startIndex, stopIndex });
+  const lastIdea = last(selectIdeas(getState()));
 
   dispatch(
     createConcatIdeas({
@@ -175,12 +133,10 @@ export const createFetchMoreIdeas = <Key extends keyof IdeaModel>({
     }),
   );
 
-  const lastIdea = last(selectIdeas(getState()));
-
   return getIdeasRef()
     .where(fieldPath, opStr, value)
     .orderBy(orderByField, directionStr)
-    .startAt((lastIdea as IdeaModel).createdAt)
+    .startAt(lastIdea ? (lastIdea as IdeaModel).createdAt : '')
     .limit(limit)
     .get()
     .then(interceptGetIdeasError)
