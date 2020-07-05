@@ -1,3 +1,8 @@
 import { combineEpics } from 'redux-observable';
+import { ideas } from './ideas';
 
-export const epic = combineEpics();
+export const epic = combineEpics(...Object.values(ideas));
+
+export const epics = {
+  ideas,
+};

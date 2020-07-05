@@ -3,13 +3,14 @@ import { IdeaRow } from 'containers';
 import { IdeaFilter } from 'models';
 import qs from 'qs';
 import React from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import { AutoSizer, InfiniteLoader, List } from 'react-virtualized';
 import {
-  createFetchIdeas,
+  createPromisedAction,
   createSetIdeas,
   createSetTotal,
+  fetchIdeasAsync,
   IdeasState,
   initialIdeasState,
   selectIdeas,
@@ -17,21 +18,20 @@ import {
   State,
   useActions,
   useSignedInUser,
-  useThunkActions,
 } from 'services';
 import { ideaListItemFullHeight } from 'styles';
+import { getType } from 'typesafe-actions';
 import { IdeaOptionsSkeleton } from '../IdeaOptionsSkeleton';
 
 export interface IdeasProps extends Pick<IdeasState, 'ideas' | 'total'> {}
 
 export const IdeasComponent: React.FC<IdeasProps> = ({ ideas, total }) => {
-  const { setIdeas, setTotal } = useActions({
+  const dispatch = useDispatch();
+
+  const { fetchIdeas, setIdeas, setTotal } = useActions({
+    fetchIdeas: fetchIdeasAsync.request,
     setIdeas: createSetIdeas,
     setTotal: createSetTotal,
-  });
-
-  const { fetchIdeas } = useThunkActions({
-    fetchIdeas: createFetchIdeas,
   });
 
   const rowCount = total;
@@ -121,7 +121,16 @@ export const IdeasComponent: React.FC<IdeasProps> = ({ ideas, total }) => {
           loadMoreRows={(indexRange) => {
             const fetchOptions = { ...filter, ...indexRange };
 
-            return fetchIdeas(fetchOptions);
+            fetchIdeas(fetchOptions);
+
+            return new Promise((resolve) => {
+              dispatch(
+                createPromisedAction({
+                  type: getType(fetchIdeasAsync.success),
+                  callback: resolve,
+                }),
+              );
+            });
           }}
           isRowLoaded={({ index }) => {
             return !!ideas[index];

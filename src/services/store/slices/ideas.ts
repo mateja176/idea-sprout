@@ -1,8 +1,15 @@
-import firebase from 'firebase/app';
+import firebase, { FirebaseError } from 'firebase/app';
 import { IdeaFilter, IdeaModel } from 'models';
+import { range } from 'ramda';
 import { IndexRange } from 'react-virtualized';
 import { createSelector } from 'reselect';
-import { createAction, getType } from 'typesafe-actions';
+import {
+  ActionType,
+  createAction,
+  createAsyncAction,
+  getType,
+} from 'typesafe-actions';
+import { FetchIdeasOptions } from '../thunks';
 
 export class IdeaBatchError extends Error
   implements IndexRange, IdeaFilter<keyof IdeaModel> {
@@ -57,11 +64,27 @@ export const createUpdateIdeas = createAction(
 export type CreateUpdateIdeas = typeof createUpdateIdeas;
 export type UpdateIdeasAction = ReturnType<CreateUpdateIdeas>;
 
+export const fetchIdeasAsync = createAsyncAction(
+  'ideas/fetch/request',
+  'ideas/fetch/success',
+  'ideas/fetch/failure',
+)<
+  FetchIdeasOptions<keyof IdeaModel>,
+  UpdateIdeasAction['payload'],
+  FirebaseError
+>();
+export type FetchIdeasAsync = typeof fetchIdeasAsync;
+export type FetchIdeasRequest = ReturnType<FetchIdeasAsync['request']>;
+export type FetchIdeasSuccess = ReturnType<FetchIdeasAsync['success']>;
+export type FetchIdeasFailure = ReturnType<FetchIdeasAsync['failure']>;
+export type FetchIdeasAction = ActionType<FetchIdeasAsync>;
+
 export type IdeasAction =
   | SetTotalAction
   | UpdateIdeasAction
   | SetIdeasAction
-  | ConcatIdeasAction;
+  | ConcatIdeasAction
+  | FetchIdeasAction;
 
 export const ideasSlice = (
   state = initialIdeasState,
@@ -72,8 +95,18 @@ export const ideasSlice = (
       return { ...state, total: action.payload.total };
     case getType(createSetIdeas):
       return { ...state, ideas: action.payload.ideas };
+    case getType(fetchIdeasAsync.request):
+      return {
+        ...state,
+        ideas: state.ideas.concat(
+          range(action.payload.startIndex, action.payload.stopIndex).map(
+            () => 'loading',
+          ),
+        ),
+      };
     case getType(createConcatIdeas):
       return { ...state, ideas: state.ideas.concat(action.payload.ideas) };
+    case getType(fetchIdeasAsync.success):
     case getType(createUpdateIdeas):
       return {
         ...state,

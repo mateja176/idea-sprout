@@ -3,13 +3,16 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import { createEpicMiddleware } from 'redux-observable';
 import thunkMiddleware from 'redux-thunk';
 import { epic } from './epic';
-import { reducer } from './reducer';
+import { promiseMiddleware } from './middleware';
+import { Action, reducer, State } from './reducer';
 
-const epicMiddleware = createEpicMiddleware();
+const epicMiddleware = createEpicMiddleware<Action, Action, State>();
 
 export const store = createStore(
   reducer,
-  composeWithDevTools(applyMiddleware(epicMiddleware, thunkMiddleware)),
+  composeWithDevTools(
+    applyMiddleware(promiseMiddleware, epicMiddleware, thunkMiddleware),
+  ),
 );
 
 epicMiddleware.run(epic);
