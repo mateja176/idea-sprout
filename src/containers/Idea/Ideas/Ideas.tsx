@@ -1,5 +1,5 @@
 import { Box, Tab, Tabs, Typography } from '@material-ui/core';
-import { IdeaRow } from 'containers';
+import { CreateIdea, IdeaRow } from 'containers';
 import { IdeaFilter } from 'models';
 import qs from 'qs';
 import React from 'react';
@@ -147,6 +147,22 @@ export const IdeasComponent: React.FC<IdeasProps> = ({ ideas, total }) => {
                   width={width}
                   height={height}
                   rowHeight={ideaListItemFullHeight}
+                  noRowsRenderer={() => (
+                    <Box m={3}>
+                      <Typography variant="h6">
+                        I have no idea{' '}
+                        <span role="img" aria-label="thinking">
+                          🤔
+                        </span>
+                      </Typography>
+                      <Box
+                        mt={2}
+                        visibility={showMyIdeas ? 'visible' : 'hidden'}
+                      >
+                        <CreateIdea user={user} />
+                      </Box>
+                    </Box>
+                  )}
                   rowRenderer={({ key, index, style }) => {
                     const idea = ideas[index];
 
