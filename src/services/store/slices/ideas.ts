@@ -27,21 +27,21 @@ export class IdeaBatchError extends Error
 }
 
 export interface IdeasState {
-  total: number;
+  count: number;
   ideas: Array<'loading' | IdeaModel | IdeaBatchError | undefined>;
 }
 
 export const initialIdeasState: IdeasState = {
-  total: 1000,
+  count: 1000,
   ideas: [],
 };
 
-export const createSetTotal = createAction(
-  'ideas/total/set',
-  (payload: Pick<IdeasState, 'total'>) => payload,
+export const createSetCount = createAction(
+  'ideas/count/set',
+  (payload: Pick<IdeasState, 'count'>) => payload,
 )();
-export type CreateSetTotal = typeof createSetTotal;
-export type SetTotalAction = ReturnType<CreateSetTotal>;
+export type CreateSetCount = typeof createSetCount;
+export type SetCountAction = ReturnType<CreateSetCount>;
 
 export const createSetIdeas = createAction(
   'ideas/set',
@@ -80,7 +80,7 @@ export type FetchIdeasFailure = ReturnType<FetchIdeasAsync['failure']>;
 export type FetchIdeasAction = ActionType<FetchIdeasAsync>;
 
 export type IdeasAction =
-  | SetTotalAction
+  | SetCountAction
   | UpdateIdeasAction
   | SetIdeasAction
   | ConcatIdeasAction
@@ -91,8 +91,8 @@ export const ideasSlice = (
   action: IdeasAction,
 ): IdeasState => {
   switch (action.type) {
-    case getType(createSetTotal):
-      return { ...state, total: action.payload.total };
+    case getType(createSetCount):
+      return { ...state, count: action.payload.count };
     case getType(createSetIdeas):
       return { ...state, ideas: action.payload.ideas };
     case getType(fetchIdeasAsync.request):
@@ -128,7 +128,7 @@ export const selectIdeas = createSelector(
   ({ ideas }) => ideas,
 );
 
-export const selectTotal = createSelector(
+export const selectCount = createSelector(
   selectIdeasSlice,
-  ({ total }) => total,
+  ({ count }) => count,
 );

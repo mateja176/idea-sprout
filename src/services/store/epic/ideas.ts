@@ -10,16 +10,16 @@ import { Action, State } from 'services';
 import { getType } from 'typesafe-actions';
 import { convertFirestoreDocument, firestoreCollections } from 'utils';
 import {
-  createSetTotal,
+  createSetCount,
   fetchIdeasAsync,
   FetchIdeasFailure,
   FetchIdeasRequest,
   FetchIdeasSuccess,
   IdeasState,
   initialIdeasState,
+  selectCount,
   selectIdeas,
-  selectTotal,
-  SetTotalAction,
+  SetCountAction,
 } from '../slices';
 
 export function isIdea(idea: IdeasState['ideas'][number]): idea is IdeaModel {
@@ -28,7 +28,7 @@ export function isIdea(idea: IdeasState['ideas'][number]): idea is IdeaModel {
 
 export const fetch: Epic<
   Action,
-  FetchIdeasSuccess | FetchIdeasFailure | SetTotalAction,
+  FetchIdeasSuccess | FetchIdeasFailure | SetCountAction,
   State
 > = (action$, state$) =>
   action$.pipe(
@@ -73,16 +73,16 @@ export const fetch: Epic<
             mergeMap((payload) => {
               const { ideas } = payload;
 
-              const total = selectTotal(state);
-              const newTotal =
-                total === initialIdeasState.total
+              const count = selectCount(state);
+              const newCount =
+                count === initialIdeasState.count
                   ? ideas.length
-                  : total + ideas.length;
-              if (newTotal !== total && ideas.length < limit) {
+                  : count + ideas.length;
+              if (newCount !== count && ideas.length < limit) {
                 return [
                   fetchIdeasAsync.success(payload),
-                  createSetTotal({
-                    total: newTotal,
+                  createSetCount({
+                    count: newCount,
                   }),
                 ];
               } else {

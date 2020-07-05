@@ -8,13 +8,13 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { AutoSizer, InfiniteLoader, List } from 'react-virtualized';
 import {
   createPromisedAction,
+  createSetCount,
   createSetIdeas,
-  createSetTotal,
   fetchIdeasAsync,
   IdeasState,
   initialIdeasState,
+  selectCount,
   selectIdeas,
-  selectTotal,
   State,
   useActions,
   useSignedInUser,
@@ -23,18 +23,18 @@ import { ideaListItemFullHeight } from 'styles';
 import { getType } from 'typesafe-actions';
 import { IdeaOptionsSkeleton } from '../IdeaOptionsSkeleton';
 
-export interface IdeasProps extends Pick<IdeasState, 'ideas' | 'total'> {}
+export interface IdeasProps extends Pick<IdeasState, 'ideas' | 'count'> {}
 
-export const IdeasComponent: React.FC<IdeasProps> = ({ ideas, total }) => {
+export const IdeasComponent: React.FC<IdeasProps> = ({ ideas, count }) => {
   const dispatch = useDispatch();
 
-  const { fetchIdeas, setIdeas, setTotal } = useActions({
+  const { fetchIdeas, setIdeas, setCount } = useActions({
     fetchIdeas: fetchIdeasAsync.request,
     setIdeas: createSetIdeas,
-    setTotal: createSetTotal,
+    setCount: createSetCount,
   });
 
-  const rowCount = total;
+  const rowCount = count;
 
   const listWrapperRef = React.useRef<HTMLDivElement | null>(null);
 
@@ -76,7 +76,7 @@ export const IdeasComponent: React.FC<IdeasProps> = ({ ideas, total }) => {
 
   const reset = () => {
     setIdeas({ ideas: [] });
-    setTotal({ total: initialIdeasState.total });
+    setCount({ count: initialIdeasState.count });
 
     infiniteLoaderRef.current?.resetLoadMoreRowsCache();
   };
@@ -219,5 +219,5 @@ export const IdeasComponent: React.FC<IdeasProps> = ({ ideas, total }) => {
 export const Ideas = connect((state: State) => {
   // * useSelector was returning "[]" instead of "['loading', 'loading', 'loading'...]"
   // * hence the loading state was not being rendered between filter updates
-  return { ideas: selectIdeas(state), total: selectTotal(state) };
+  return { ideas: selectIdeas(state), count: selectCount(state) };
 })(IdeasComponent);
