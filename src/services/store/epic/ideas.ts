@@ -4,14 +4,8 @@ import { IdeaModel } from 'models';
 import { last } from 'ramda';
 import { Epic, ofType } from 'redux-observable';
 import { collection } from 'rxfire/firestore';
-import { of } from 'rxjs';
-import {
-  catchError,
-  map,
-  mergeMap,
-  switchMap,
-  withLatestFrom,
-} from 'rxjs/operators';
+import { from, of } from 'rxjs';
+import { catchError, map, mergeMap, withLatestFrom } from 'rxjs/operators';
 import { Action, State } from 'services';
 import { getType } from 'typesafe-actions';
 import { convertFirestoreDocument, firestoreCollections } from 'utils';
@@ -40,7 +34,7 @@ export const fetch: Epic<
   action$.pipe(
     ofType<Action, FetchIdeasRequest>(getType(fetchIdeasAsync.request)),
     withLatestFrom(state$),
-    switchMap(
+    mergeMap(
       ([
         {
           payload: {
@@ -59,43 +53,45 @@ export const fetch: Epic<
 
         const limit = stopIndex - startIndex;
 
-        return collection(
-          firebase
-            .firestore()
-            .collection(firestoreCollections.ideas.path)
-            .where(fieldPath, opStr, value)
-            .orderBy(orderByField, directionStr)
-            .startAt(isIdea(lastIdea) ? lastIdea.createdAt : '')
-            .limit(limit),
-        ).pipe(
-          map((snapshots) => ({
-            startIndex,
-            stopIndex,
-            ideas: snapshots.map((snapshot) =>
-              convertFirestoreDocument<IdeaModel>(snapshot),
-            ),
-          })),
-          mergeMap((payload) => {
-            const { ideas } = payload;
+        return from(
+          collection(
+            firebase
+              .firestore()
+              .collection(firestoreCollections.ideas.path)
+              .where(fieldPath, opStr, value)
+              .orderBy(orderByField, directionStr)
+              .startAt(isIdea(lastIdea) ? lastIdea.createdAt : '')
+              .limit(limit),
+          ).pipe(
+            map((snapshots) => ({
+              startIndex,
+              stopIndex,
+              ideas: snapshots.map((snapshot) =>
+                convertFirestoreDocument<IdeaModel>(snapshot),
+              ),
+            })),
+            mergeMap((payload) => {
+              const { ideas } = payload;
 
-            const total = selectTotal(state);
-            const newTotal =
-              total === initialIdeasState.total
-                ? ideas.length
-                : total + ideas.length;
-            if (newTotal !== total && ideas.length < limit) {
-              return [
-                fetchIdeasAsync.success(payload),
-                createSetTotal({
-                  total: newTotal,
-                }),
-              ];
-            } else {
-              return [fetchIdeasAsync.success(payload)];
-            }
-          }),
-          catchError((error: FirebaseError) =>
-            of(fetchIdeasAsync.failure(error)),
+              const total = selectTotal(state);
+              const newTotal =
+                total === initialIdeasState.total
+                  ? ideas.length
+                  : total + ideas.length;
+              if (newTotal !== total && ideas.length < limit) {
+                return [
+                  fetchIdeasAsync.success(payload),
+                  createSetTotal({
+                    total: newTotal,
+                  }),
+                ];
+              } else {
+                return [fetchIdeasAsync.success(payload)];
+              }
+            }),
+            catchError((error: FirebaseError) =>
+              of(fetchIdeasAsync.failure(error)),
+            ),
           ),
         );
       },
