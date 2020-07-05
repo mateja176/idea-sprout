@@ -1,7 +1,8 @@
 import { Box, Tab, Tabs, Typography } from '@material-ui/core';
-import { CreateIdea, IdeaRow, IdeasSkeleton } from 'containers';
+import { CreateIdea, IdeaRow, IdeaSkeleton } from 'containers';
 import { IdeaFilter } from 'models';
 import qs from 'qs';
+import { range } from 'ramda';
 import React from 'react';
 import { connect, useDispatch } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -162,7 +163,11 @@ export const IdeasComponent: React.FC<IdeasProps> = ({ ideas, count }) => {
                         </Box>
                       </Box>
                     ) : (
-                      <IdeasSkeleton />
+                      <Box>
+                        {range(0, count).map(() => (
+                          <IdeaSkeleton />
+                        ))}
+                      </Box>
                     )
                   }
                   rowRenderer={({ key, index, style }) => {
