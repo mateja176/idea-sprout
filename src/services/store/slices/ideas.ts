@@ -111,12 +111,9 @@ export const ideasSlice = (
       return {
         ...state,
         ideas: state.ideas
-          .map((idea, i) =>
-            i >= action.payload.startIndex && i < action.payload.stopIndex
-              ? action.payload.ideas[action.payload.startIndex + i]
-              : idea,
-          )
-          .filter(Boolean),
+          .slice(0, action.payload.startIndex)
+          .concat(action.payload.ideas)
+          .concat(state.ideas.slice(action.payload.stopIndex)),
       };
     default:
       return state;
