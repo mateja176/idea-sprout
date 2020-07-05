@@ -5,7 +5,12 @@ import firebase from 'firebase/app';
 import { RawIdea, User } from 'models';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { createQueueSnackbar, useActions, useIdeasRef } from 'services';
+import {
+  createQueueSnackbar,
+  useActions,
+  useIdeasCountRef,
+  useIdeasRef,
+} from 'services';
 import urljoin from 'url-join';
 import { absolutePrivateRoute } from 'utils';
 
@@ -19,6 +24,8 @@ export const CreateIdea: React.FC<CreateIdeaProps> = ({ user }) => {
   const history = useHistory();
 
   const ideasRef = useIdeasRef();
+
+  const ideasCountRef = useIdeasCountRef();
 
   const [loading, setLoading] = useBoolean();
 
@@ -53,11 +60,13 @@ export const CreateIdea: React.FC<CreateIdeaProps> = ({ user }) => {
         'Computers enable us to write messages, talk to friends and family, watch videos, share images, learn and teach others, manage finances, buy online, manage calendars, look up addresses, translate text, play games and many more things',
     };
 
-    ideasRef
-      .add(newIdea)
-      // * the promise is not rejected even if the client is offline
-      // * the promise is pending until it resolves or the tab is closed
-      .then(({ id }) => {
+    Promise.all([
+      ideasRef.add(newIdea),
+      ideasCountRef.update({ count: firebase.firestore.FieldValue.increment(1) }),
+    ])
+      .then(([{ id }]) => {
+        // * the promise is not rejected even if the client is offline
+        // * the promise is pending until it resolves or the tab is closed
         queueSnackbar({
           severity: 'success',
           message: 'Update it and publish. Good luck!',

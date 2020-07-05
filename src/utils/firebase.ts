@@ -7,6 +7,10 @@ export const firestoreCollections = {
     path: 'ideas',
     collections: { reviews: { path: 'reviews' } },
   },
+  counts: {
+    path: 'counts',
+    collections: {},
+  },
 };
 
 export const convertFirestoreDocument = <T extends WithId>(
