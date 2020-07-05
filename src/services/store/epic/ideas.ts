@@ -78,15 +78,16 @@ export const fetch: Epic<
           mergeMap((payload) => {
             const { ideas } = payload;
 
-            if (ideas.length < limit) {
-              const total = selectTotal(state);
+            const total = selectTotal(state);
+            const newTotal =
+              total === initialIdeasState.total
+                ? ideas.length
+                : total + ideas.length;
+            if (newTotal !== total && ideas.length < limit) {
               return [
                 fetchIdeasAsync.success(payload),
                 createSetTotal({
-                  total:
-                    total === initialIdeasState.total
-                      ? ideas.length
-                      : total + ideas.length,
+                  total: newTotal,
                 }),
               ];
             } else {
