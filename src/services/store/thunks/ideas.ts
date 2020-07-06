@@ -10,12 +10,9 @@ import { convertFirestoreCollection } from 'utils';
 import { Action, State } from '../reducer';
 import {
   createConcatIdeas,
-  createSetCount,
   createUpdateIdeas,
   IdeaBatchError,
-  initialIdeasState,
   selectIdeas,
-  selectCount,
   UpdateIdeasAction,
 } from '../slices';
 
@@ -55,22 +52,9 @@ const getLimit = ({ startIndex, stopIndex }: IndexRange) =>
 
 const handleGetIdeasSuccess = ({
   dispatch,
-  getState,
   startIndex,
   stopIndex,
 }: IndexRange & WithDispatch & WithGetState) => (ideas: IdeaModel[]) => {
-  if (ideas.length < getLimit({ startIndex, stopIndex })) {
-    const count = selectCount(getState());
-    dispatch(
-      createSetCount({
-        count:
-          count === initialIdeasState.count
-            ? ideas.length
-            : count + ideas.length,
-      }),
-    );
-  }
-
   return dispatch(createUpdateIdeas({ startIndex, stopIndex, ideas }));
 };
 

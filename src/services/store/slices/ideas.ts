@@ -27,21 +27,12 @@ export class IdeaBatchError extends Error
 }
 
 export interface IdeasState {
-  count: number;
   ideas: Array<'loading' | IdeaModel | IdeaBatchError | undefined>;
 }
 
 export const initialIdeasState: IdeasState = {
-  count: 1000,
   ideas: [],
 };
-
-export const createSetCount = createAction(
-  'ideas/count/set',
-  (payload: Pick<IdeasState, 'count'>) => payload,
-)();
-export type CreateSetCount = typeof createSetCount;
-export type SetCountAction = ReturnType<CreateSetCount>;
 
 export const createSetIdeas = createAction(
   'ideas/set',
@@ -80,7 +71,6 @@ export type FetchIdeasFailure = ReturnType<FetchIdeasAsync['failure']>;
 export type FetchIdeasAction = ActionType<FetchIdeasAsync>;
 
 export type IdeasAction =
-  | SetCountAction
   | UpdateIdeasAction
   | SetIdeasAction
   | ConcatIdeasAction
@@ -91,8 +81,6 @@ export const ideasSlice = (
   action: IdeasAction,
 ): IdeasState => {
   switch (action.type) {
-    case getType(createSetCount):
-      return { ...state, count: action.payload.count };
     case getType(createSetIdeas):
       return { ...state, ideas: action.payload.ideas };
     case getType(fetchIdeasAsync.request):
@@ -110,10 +98,11 @@ export const ideasSlice = (
     case getType(createUpdateIdeas):
       return {
         ...state,
-        ideas: state.ideas
-          .slice(0, action.payload.startIndex)
-          .concat(action.payload.ideas)
-          .concat(state.ideas.slice(action.payload.stopIndex)),
+        ideas: state.ideas.map((idea, i) =>
+          i >= action.payload.startIndex && i < action.payload.stopIndex
+            ? action.payload.ideas[i - action.payload.startIndex]
+            : idea,
+        ),
       };
     default:
       return state;
@@ -126,14 +115,4 @@ export const selectIdeasSlice = ({ ideasSlice }: { ideasSlice: IdeasState }) =>
 export const selectIdeas = createSelector(
   selectIdeasSlice,
   ({ ideas }) => ideas,
-);
-
-export const selectCount = createSelector(
-  selectIdeasSlice,
-  ({ count }) => count,
-);
-
-export const selectHasLoadedAll = createSelector(
-  selectIdeasSlice,
-  ({ count, ideas }) => ideas.length >= count,
 );
