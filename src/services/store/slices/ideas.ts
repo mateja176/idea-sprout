@@ -100,7 +100,7 @@ export const ideasSlice = (
         ...state,
         ideas: state.ideas.map((idea, i) =>
           i >= action.payload.startIndex && i < action.payload.stopIndex
-            ? action.payload.ideas[i - action.payload.startIndex]
+            ? action.payload.ideas[i - action.payload.startIndex] ?? 'loading'
             : idea,
         ),
       };
