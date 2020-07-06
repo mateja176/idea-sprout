@@ -58,14 +58,15 @@ export const fetch: Epic<
             .startAt(isIdea(lastIdea) ? lastIdea.createdAt : '')
             .limit(limit),
         ).pipe(
-          map((snapshots) => ({
-            startIndex,
-            stopIndex,
-            ideas: snapshots.map((snapshot) =>
-              convertFirestoreDocument<IdeaModel>(snapshot),
-            ),
-          })),
-          map(fetchIdeasAsync.success),
+          map((snapshots) =>
+            fetchIdeasAsync.success({
+              startIndex,
+              stopIndex,
+              ideas: snapshots.map((snapshot) =>
+                convertFirestoreDocument<IdeaModel>(snapshot),
+              ),
+            }),
+          ),
           catchError((error: FirebaseError) =>
             of(fetchIdeasAsync.failure(error)),
           ),
