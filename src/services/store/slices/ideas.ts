@@ -132,3 +132,8 @@ export const selectCount = createSelector(
   selectIdeasSlice,
   ({ count }) => count,
 );
+
+export const selectHasLoadedAll = createSelector(
+  selectIdeasSlice,
+  ({ count, ideas }) => ideas.length >= count,
+);
