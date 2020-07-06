@@ -23,7 +23,11 @@ import {
 import { IdeaModel, User } from 'models';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useIdeaOptionButtonStyle, useIdeasRef } from 'services';
+import {
+  useIdeaOptionButtonStyle,
+  useIdeasRef,
+  useUpdateWithCount,
+} from 'services';
 import urljoin from 'url-join';
 import { absolutePrivateRoute, getIsAuthor } from 'utils';
 import { ExpectationsCheck } from './ExpectationsCheck';
@@ -74,20 +78,6 @@ export const IdeaOptions: React.FC<IdeaOptionsProps> = ({
 
   const ideaRef = useIdeasRef().doc(idea.id);
 
-  const publish = () => {
-    const withStatus: Pick<IdeaModel, 'status'> = {
-      status: 'sprout',
-    };
-    ideaRef.update(withStatus);
-  };
-
-  const unpublish = () => {
-    const withStatus: Pick<IdeaModel, 'status'> = {
-      status: 'seed',
-    };
-    ideaRef.update(withStatus);
-  };
-
   const setCheck = (
     name: keyof IdeaModel['checks'],
   ): CheckProps['onChange'] => (_, value) => {
@@ -98,6 +88,16 @@ export const IdeaOptions: React.FC<IdeaOptionsProps> = ({
       },
     };
     ideaRef.update(withChecks);
+  };
+
+  const updateWithCount = useUpdateWithCount(idea.id);
+
+  const publish = () => {
+    updateWithCount({ count: 1, status: 'sprout' });
+  };
+
+  const unpublish = () => {
+    updateWithCount({ count: -1, status: 'seed' });
   };
 
   return (

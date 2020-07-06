@@ -2,7 +2,7 @@ import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/storage';
-import { IdeaModel, Review, User, WithId } from 'models';
+import { IdeaModel, RawIdea, Review, User, WithCount, WithId } from 'models';
 import {
   ReactFireOptions,
   useAuth as useFirebaseAuth,
@@ -124,4 +124,20 @@ export const useStorageDownloadUrl: typeof useFirebaseStorageDownloadUrl = (
   options,
 ) => {
   return useFirebaseStorageDownloadUrl(path, options);
+};
+
+export const useUpdateWithCount = (id: IdeaModel['id']) => {
+  const ideaRef = useIdeasRef().doc(id);
+
+  const ideasCountRef = useIdeasCountRef();
+
+  const batch = firebase.firestore().batch();
+
+  return ({ count, ...partialIdea }: WithCount & Partial<RawIdea>) =>
+    batch
+      .update(ideaRef, partialIdea)
+      .update(ideasCountRef, {
+        count: firebase.firestore.FieldValue.increment(count),
+      })
+      .commit();
 };
