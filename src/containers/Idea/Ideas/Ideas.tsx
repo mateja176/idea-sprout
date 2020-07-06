@@ -116,7 +116,10 @@ export const IdeasComponent: React.FC<IdeasProps> = ({ ideas, count }) => {
           }}
         />
       </Tabs>
-      <div ref={listWrapperRef} style={{ height: listWrapperHeight }}>
+      <div
+        ref={listWrapperRef}
+        style={{ height: listWrapperHeight, overflow: 'auto' }}
+      >
         <InfiniteLoader
           ref={infiniteLoaderRef}
           loadMoreRows={(indexRange) => {
