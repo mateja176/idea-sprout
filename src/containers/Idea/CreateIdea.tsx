@@ -5,12 +5,7 @@ import firebase from 'firebase/app';
 import { RawIdea, User } from 'models';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import {
-  createQueueSnackbar,
-  useActions,
-  useIdeasCountRef,
-  useIdeasRef,
-} from 'services';
+import { createQueueSnackbar, useActions, useIdeasRef } from 'services';
 import urljoin from 'url-join';
 import { absolutePrivateRoute } from 'utils';
 
