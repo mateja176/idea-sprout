@@ -10,6 +10,10 @@ export interface WithAuthor {
   author: string;
 }
 
+export interface WithCount {
+  count: number;
+}
+
 export interface ISnackbar
   extends Pick<SnackbarProps, 'message' | 'autoHideDuration'>,
     Required<Pick<AlertProps, 'severity'>> {

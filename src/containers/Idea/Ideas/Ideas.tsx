@@ -1,23 +1,24 @@
 import { Box, Typography } from '@material-ui/core';
 import { IdeaRow, IdeasSkeleton } from 'containers';
-import { IdeaFilter, User } from 'models';
+import { IdeaFilter, User, WithCount } from 'models';
 import React from 'react';
 import { connect, useDispatch } from 'react-redux';
 import { AutoSizer, InfiniteLoader, List } from 'react-virtualized';
+import { useFirestoreDocData } from 'reactfire';
 import {
   createPromisedAction,
   fetchIdeasAsync,
   IdeasState,
-  selectCount,
   selectIdeas,
   State,
   useActions,
+  useIdeasCountRef,
 } from 'services';
 import { ideaListItemFullHeight } from 'styles';
 import { getType } from 'typesafe-actions';
 import { IdeaOptionsSkeleton } from '../IdeaOptionsSkeleton';
 
-export interface IdeasProps extends Pick<IdeasState, 'ideas' | 'count'> {
+export interface IdeasProps extends Pick<IdeasState, 'ideas'> {
   user: User;
 }
 
@@ -28,8 +29,10 @@ const publishedFilter: IdeaFilter<'status'> = {
 };
 
 export const IdeasComponent = React.forwardRef<InfiniteLoader, IdeasProps>(
-  ({ user, ideas, count }, infiniteLoaderRef) => {
-    const rowCount = count;
+  ({ user, ideas }, infiniteLoaderRef) => {
+    const ideasCountRef = useIdeasCountRef();
+
+    const { count: rowCount } = useFirestoreDocData<WithCount>(ideasCountRef);
 
     const dispatch = useDispatch();
 
@@ -40,8 +43,12 @@ export const IdeasComponent = React.forwardRef<InfiniteLoader, IdeasProps>(
     return (
       <InfiniteLoader
         ref={infiniteLoaderRef}
-        loadMoreRows={(indexRange) => {
-          const fetchOptions = { ...publishedFilter, ...indexRange };
+        loadMoreRows={({ startIndex, stopIndex }) => {
+          const fetchOptions = {
+            ...publishedFilter,
+            startIndex,
+            stopIndex: stopIndex + 1, // * since the index is inclusive
+          };
 
           fetchIdeas(fetchOptions);
 
@@ -128,7 +135,7 @@ export const Ideas = connect(
   (state: State) => {
     // * useSelector was returning "[]" instead of "['loading', 'loading', 'loading'...]"
     // * hence the loading state was not being rendered between filter updates
-    return { ideas: selectIdeas(state), count: selectCount(state) };
+    return { ideas: selectIdeas(state) };
   },
   null,
   null,

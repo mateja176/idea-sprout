@@ -89,7 +89,9 @@ export const IdeasPage: React.FC<IdeasPageProps> = () => {
             <MyIdeas user={user} />
           </React.Suspense>
         ) : (
-          <Ideas ref={infiniteLoaderRef} user={user} />
+          <React.Suspense fallback={<IdeasSkeleton />}>
+            <Ideas ref={infiniteLoaderRef} user={user} />
+          </React.Suspense>
         )}
       </div>
     </Box>
