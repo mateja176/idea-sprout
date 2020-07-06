@@ -16,20 +16,6 @@ export const IdeasPage: React.FC<IdeasPageProps> = () => {
 
   const showMyIdeas = (query.author && query.author) === user?.email;
 
-  const listWrapperRef = React.useRef<HTMLDivElement | null>(null);
-
-  const [listWrapperHeight, setListWrapperHeight] = React.useState<
-    React.CSSProperties['height']
-  >('auto');
-
-  React.useEffect(() => {
-    if (listWrapperRef.current) {
-      const { top } = listWrapperRef.current.getBoundingClientRect();
-
-      setListWrapperHeight(window.innerHeight - top);
-    }
-  }, []);
-
   return (
     <Box>
       <Tabs
@@ -55,10 +41,7 @@ export const IdeasPage: React.FC<IdeasPageProps> = () => {
           }}
         />
       </Tabs>
-      <div
-        ref={listWrapperRef}
-        style={{ height: listWrapperHeight, overflow: 'auto' }}
-      >
+      <Box>
         {showMyIdeas ? (
           <React.Suspense fallback={<IdeasSkeleton />}>
             <MyIdeas user={user} />
@@ -68,7 +51,7 @@ export const IdeasPage: React.FC<IdeasPageProps> = () => {
             <Ideas user={user} />
           </React.Suspense>
         )}
-      </div>
+      </Box>
     </Box>
   );
 };

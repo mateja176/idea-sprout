@@ -66,13 +66,13 @@ export const IdeasComponent = ({ user, ideas }: IdeasProps) => {
     >
       {({ onRowsRendered, registerChild }) => (
         <AutoSizer>
-          {({ width, height }) => (
+          {({ width }) => (
             <List
               rowCount={rowCount}
               ref={registerChild}
               onRowsRendered={onRowsRendered}
               width={width}
-              height={height}
+              height={ideaListItemFullHeight * rowCount}
               rowHeight={ideaListItemFullHeight}
               noRowsRenderer={() => (
                 <Box>
