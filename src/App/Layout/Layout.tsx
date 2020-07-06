@@ -30,7 +30,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
   };
 
   return (
-    <Box>
+    <Box height={'100%'} display={'flex'} flexDirection={'column'}>
       <AppBar position="static">
         <Toolbar>
           <Box mr={2}>
@@ -69,7 +69,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
           </React.Suspense>
         </Box>
       </Drawer>
-      <Box>{children}</Box>
+      <Box flex={1}>{children}</Box>
     </Box>
   );
 };
