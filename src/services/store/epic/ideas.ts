@@ -5,7 +5,7 @@ import { findLast } from 'ramda';
 import { Epic, ofType } from 'redux-observable';
 import { collection } from 'rxfire/firestore';
 import { of } from 'rxjs';
-import { catchError, map, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
+import { catchError, map, mergeMap, withLatestFrom } from 'rxjs/operators';
 import { Action, State } from 'services';
 import { getType } from 'typesafe-actions';
 import { convertFirestoreDocument, firestoreCollections } from 'utils';
@@ -30,7 +30,6 @@ export const fetch: Epic<
   action$.pipe(
     ofType<Action, FetchIdeasRequest>(getType(fetchIdeasAsync.request)),
     withLatestFrom(state$),
-    tap((a) => console.log('enter', a)),
     mergeMap(
       ([
         {
