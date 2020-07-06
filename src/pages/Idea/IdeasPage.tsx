@@ -1,16 +1,16 @@
 import { Box, Tab, Tabs } from '@material-ui/core';
-import { Ideas } from 'containers';
+import { Ideas, IdeasSkeleton, MyIdeas } from 'containers';
 import qs from 'qs';
 import React from 'react';
 import { RouteComponentProps, useHistory, useLocation } from 'react-router-dom';
-import {
-  useSignedInUser,
-  useActions,
-  createSetIdeas,
-  createSetCount,
-  initialIdeasState,
-} from 'services';
 import { InfiniteLoader } from 'react-virtualized';
+import {
+  createSetCount,
+  createSetIdeas,
+  initialIdeasState,
+  useActions,
+  useSignedInUser,
+} from 'services';
 
 export interface IdeasPageProps extends RouteComponentProps {}
 
@@ -36,6 +36,20 @@ export const IdeasPage: React.FC<IdeasPageProps> = () => {
 
     infiniteLoaderRef.current?.resetLoadMoreRowsCache();
   };
+
+  const listWrapperRef = React.useRef<HTMLDivElement | null>(null);
+
+  const [listWrapperHeight, setListWrapperHeight] = React.useState<
+    React.CSSProperties['height']
+  >('auto');
+
+  React.useEffect(() => {
+    if (listWrapperRef.current) {
+      const { top } = listWrapperRef.current.getBoundingClientRect();
+
+      setListWrapperHeight(window.innerHeight - top);
+    }
+  }, []);
 
   return (
     <Box>
@@ -66,7 +80,18 @@ export const IdeasPage: React.FC<IdeasPageProps> = () => {
           }}
         />
       </Tabs>
-      <Ideas ref={infiniteLoaderRef} showMyIdeas={showMyIdeas} user={user} />
+      <div
+        ref={listWrapperRef}
+        style={{ height: listWrapperHeight, overflow: 'auto' }}
+      >
+        {showMyIdeas ? (
+          <React.Suspense fallback={<IdeasSkeleton />}>
+            <MyIdeas user={user} />
+          </React.Suspense>
+        ) : (
+          <Ideas ref={infiniteLoaderRef} user={user} />
+        )}
+      </div>
     </Box>
   );
 };
