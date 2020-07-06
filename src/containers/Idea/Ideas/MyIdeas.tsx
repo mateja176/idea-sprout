@@ -7,7 +7,9 @@ import { IdeaRow } from '../IdeaRow';
 
 export const MyIdeas: React.FC<{ user: User }> = ({ user }) => {
   const ideas = useFirestoreCollection<IdeaModel>(
-    useIdeasRef().where('author', '==', user.email),
+    useIdeasRef()
+      .where('author', '==', user.email)
+      .orderBy('createdAt', 'desc'),
   );
 
   return (
