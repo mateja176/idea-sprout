@@ -3,7 +3,12 @@ import { IdeaRow, IdeasSkeleton } from 'containers';
 import { IdeaFilter, User, WithCount } from 'models';
 import React from 'react';
 import { connect, useDispatch } from 'react-redux';
-import { AutoSizer, InfiniteLoader, List } from 'react-virtualized';
+import {
+  AutoSizer,
+  InfiniteLoader,
+  List,
+  WindowScroller,
+} from 'react-virtualized';
 import { useFirestoreDocData } from 'reactfire';
 import {
   createPromisedAction,
@@ -65,64 +70,72 @@ export const IdeasComponent = ({ user, ideas }: IdeasProps) => {
       rowCount={rowCount}
     >
       {({ onRowsRendered, registerChild }) => (
-        <AutoSizer>
-          {({ width }) => (
-            <List
-              rowCount={rowCount}
-              ref={registerChild}
-              onRowsRendered={onRowsRendered}
-              width={width}
-              height={ideaListItemFullHeight * rowCount}
-              rowHeight={ideaListItemFullHeight}
-              noRowsRenderer={() => (
-                <Box>
-                  <IdeasSkeleton />
-                </Box>
-              )}
-              rowRenderer={({ key, index, style }) => {
-                const idea = ideas[index];
+        <WindowScroller>
+          {({ height, isScrolling, scrollTop, onChildScroll }) => (
+            <AutoSizer disableHeight>
+              {({ width }) => (
+                <List
+                  isScrolling={isScrolling}
+                  scrollTop={scrollTop}
+                  onScroll={onChildScroll}
+                  rowCount={rowCount}
+                  ref={registerChild}
+                  onRowsRendered={onRowsRendered}
+                  width={width}
+                  autoHeight
+                  height={height}
+                  rowHeight={ideaListItemFullHeight}
+                  noRowsRenderer={() => (
+                    <Box>
+                      <IdeasSkeleton />
+                    </Box>
+                  )}
+                  rowRenderer={({ key, index, style }) => {
+                    const idea = ideas[index];
 
-                return (
-                  <Box key={key} style={style}>
-                    {!idea ? null : idea === 'loading' ? (
-                      <IdeaOptionsSkeleton />
-                    ) : idea instanceof Error ? (
-                      <Box
-                        display="flex"
-                        alignItems="center"
-                        height="100%"
-                        mx={2}
-                      >
-                        <Typography
-                          style={{
-                            textDecoration: 'underline',
-                            cursor: 'pointer',
-                          }}
-                          onClick={() => {
-                            const fetchOptions = {
-                              startIndex: idea.startIndex,
-                              stopIndex: idea.stopIndex,
-                              fieldPath: idea.fieldPath,
-                              opStr: idea.opStr,
-                              value: idea.value,
-                            };
-                            fetchIdeas(fetchOptions);
-                          }}
-                        >
-                          Refetch ideas
-                        </Typography>
-                        &nbsp; from {idea.startIndex + 1} to{' '}
-                        {idea.stopIndex + 1}
+                    return (
+                      <Box key={key} style={style}>
+                        {!idea ? null : idea === 'loading' ? (
+                          <IdeaOptionsSkeleton />
+                        ) : idea instanceof Error ? (
+                          <Box
+                            display="flex"
+                            alignItems="center"
+                            height="100%"
+                            mx={2}
+                          >
+                            <Typography
+                              style={{
+                                textDecoration: 'underline',
+                                cursor: 'pointer',
+                              }}
+                              onClick={() => {
+                                const fetchOptions = {
+                                  startIndex: idea.startIndex,
+                                  stopIndex: idea.stopIndex,
+                                  fieldPath: idea.fieldPath,
+                                  opStr: idea.opStr,
+                                  value: idea.value,
+                                };
+                                fetchIdeas(fetchOptions);
+                              }}
+                            >
+                              Refetch ideas
+                            </Typography>
+                            &nbsp; from {idea.startIndex + 1} to{' '}
+                            {idea.stopIndex + 1}
+                          </Box>
+                        ) : (
+                          <IdeaRow key={idea.id} idea={idea} user={user} />
+                        )}
                       </Box>
-                    ) : (
-                      <IdeaRow key={idea.id} idea={idea} user={user} />
-                    )}
-                  </Box>
-                );
-              }}
-            />
+                    );
+                  }}
+                />
+              )}
+            </AutoSizer>
           )}
-        </AutoSizer>
+        </WindowScroller>
       )}
     </InfiniteLoader>
   );
