@@ -53,16 +53,6 @@ export const fetch: Epic<
 
         const limit = stopIndex - startIndex;
 
-        console.log({
-          startIndex,
-          stopIndex,
-          limit,
-          lastIdea,
-          orderByField,
-          fieldPath,
-          value,
-        });
-
         return from(
           collection(
             firebase
