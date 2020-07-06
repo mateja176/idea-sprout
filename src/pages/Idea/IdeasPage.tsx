@@ -3,14 +3,7 @@ import { Ideas, IdeasSkeleton, MyIdeas } from 'containers';
 import qs from 'qs';
 import React from 'react';
 import { RouteComponentProps, useHistory, useLocation } from 'react-router-dom';
-import { InfiniteLoader } from 'react-virtualized';
-import {
-  createSetCount,
-  createSetIdeas,
-  initialIdeasState,
-  useActions,
-  useSignedInUser,
-} from 'services';
+import { useSignedInUser } from 'services';
 
 export interface IdeasPageProps extends RouteComponentProps {}
 
@@ -22,20 +15,6 @@ export const IdeasPage: React.FC<IdeasPageProps> = () => {
   const query = qs.parse(useLocation().search, { ignoreQueryPrefix: true });
 
   const showMyIdeas = (query.author && query.author) === user?.email;
-
-  const infiniteLoaderRef = React.useRef<InfiniteLoader | null>(null);
-
-  const { setIdeas, setCount } = useActions({
-    setIdeas: createSetIdeas,
-    setCount: createSetCount,
-  });
-
-  const reset = () => {
-    setIdeas({ ideas: [] });
-    setCount({ count: initialIdeasState.count });
-
-    infiniteLoaderRef.current?.resetLoadMoreRowsCache();
-  };
 
   const listWrapperRef = React.useRef<HTMLDivElement | null>(null);
 
@@ -62,8 +41,6 @@ export const IdeasPage: React.FC<IdeasPageProps> = () => {
         <Tab
           label="Discover"
           onClick={() => {
-            reset();
-
             history.push({
               search: qs.stringify({}),
             });
@@ -72,8 +49,6 @@ export const IdeasPage: React.FC<IdeasPageProps> = () => {
         <Tab
           label="Your Ideas"
           onClick={() => {
-            reset();
-
             history.push({
               search: qs.stringify({ author: user?.email }),
             });
@@ -90,7 +65,7 @@ export const IdeasPage: React.FC<IdeasPageProps> = () => {
           </React.Suspense>
         ) : (
           <React.Suspense fallback={<IdeasSkeleton />}>
-            <Ideas ref={infiniteLoaderRef} user={user} />
+            <Ideas user={user} />
           </React.Suspense>
         )}
       </div>
