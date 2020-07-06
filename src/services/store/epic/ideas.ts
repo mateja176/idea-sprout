@@ -1,7 +1,7 @@
 import firebase, { FirebaseError } from 'firebase/app';
 import 'firebase/firestore';
 import { IdeaModel } from 'models';
-import { last } from 'ramda';
+import { findLast } from 'ramda';
 import { Epic, ofType } from 'redux-observable';
 import { collection } from 'rxfire/firestore';
 import { from, of } from 'rxjs';
@@ -49,9 +49,19 @@ export const fetch: Epic<
         },
         state,
       ]) => {
-        const lastIdea = last(selectIdeas(state));
+        const lastIdea = findLast(isIdea, selectIdeas(state));
 
         const limit = stopIndex - startIndex;
+
+        console.log({
+          startIndex,
+          stopIndex,
+          limit,
+          lastIdea,
+          orderByField,
+          fieldPath,
+          value,
+        });
 
         return from(
           collection(
