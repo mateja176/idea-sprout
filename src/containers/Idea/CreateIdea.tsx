@@ -60,11 +60,20 @@ export const CreateIdea: React.FC<CreateIdeaProps> = ({ user }) => {
         'Computers enable us to write messages, talk to friends and family, watch videos, share images, learn and teach others, manage finances, buy online, manage calendars, look up addresses, translate text, play games and many more things',
     };
 
-    Promise.all([
-      ideasRef.add(newIdea),
-      ideasCountRef.update({ count: firebase.firestore.FieldValue.increment(1) }),
-    ])
-      .then(([{ id }]) => {
+    const batch = firebase.firestore().batch();
+
+    const ideaDoc = ideasRef.doc();
+    const { id } = ideaDoc;
+
+    batch.set(ideaDoc, newIdea);
+
+    batch.update(ideasCountRef, {
+      count: firebase.firestore.FieldValue.increment(1),
+    });
+
+    batch
+      .commit()
+      .then(() => {
         // * the promise is not rejected even if the client is offline
         // * the promise is pending until it resolves or the tab is closed
         queueSnackbar({
