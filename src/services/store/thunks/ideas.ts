@@ -120,7 +120,7 @@ export const createFetchIdeas = <Key extends keyof IdeaModel>({
   return getIdeasRef()
     .where(fieldPath, opStr, value)
     .orderBy(orderByField, directionStr)
-    .startAt(lastIdea ? (lastIdea as IdeaModel).createdAt : '')
+    .startAfter(lastIdea ? (lastIdea as IdeaModel).createdAt : '')
     .limit(limit)
     .get()
     .then(interceptGetIdeasError)

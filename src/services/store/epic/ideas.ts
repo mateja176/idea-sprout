@@ -55,7 +55,7 @@ export const fetch: Epic<
             .collection(firestoreCollections.ideas.path)
             .where(fieldPath, opStr, value)
             .orderBy(orderByField, directionStr)
-            .startAt(isIdea(lastIdea) ? lastIdea.createdAt : '')
+            .startAfter(isIdea(lastIdea) ? lastIdea.createdAt : '')
             .limit(limit),
         ).pipe(
           map((snapshots) =>
