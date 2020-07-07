@@ -1,6 +1,6 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
-import { IdeaFilter, IdeaModel } from 'models';
+import { IdeaBatchError, IdeaFilter, IdeaModel } from 'models';
 import { last, range } from 'ramda';
 import { IndexRange } from 'react-virtualized';
 import { Dispatch } from 'redux';
@@ -11,7 +11,6 @@ import { Action, State } from '../reducer';
 import {
   createConcatIdeas,
   createUpdateIdeas,
-  IdeaBatchError,
   selectIdeas,
   UpdateIdeasAction,
 } from '../slices';

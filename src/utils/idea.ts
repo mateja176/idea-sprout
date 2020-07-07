@@ -2,6 +2,7 @@ import { convertToRaw, EditorState } from 'draft-js';
 import {
   FormIdea,
   IdeaModel,
+  IdeasState,
   RatingConfig,
   RawIdea,
   StorageFile,
@@ -47,3 +48,7 @@ export const contentToText = (editorState: EditorState): string => {
     .trim();
   return text;
 };
+
+export function isIdea(idea: IdeasState['ideas'][number]): idea is IdeaModel {
+  return !!idea && idea !== 'loading' && !(idea instanceof Error);
+}

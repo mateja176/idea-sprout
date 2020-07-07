@@ -15,19 +15,14 @@ import {
 } from 'rxjs/operators';
 import { Action, State } from 'services';
 import { getType } from 'typesafe-actions';
-import { convertFirestoreDocument, firestoreCollections } from 'utils';
+import { convertFirestoreDocument, firestoreCollections, isIdea } from 'utils';
 import {
   fetchIdeasAsync,
   FetchIdeasFailure,
   FetchIdeasRequest,
   FetchIdeasSuccess,
-  IdeasState,
   selectIdeas,
 } from '../slices';
-
-export function isIdea(idea: IdeasState['ideas'][number]): idea is IdeaModel {
-  return !!idea && idea !== 'loading' && !(idea instanceof Error);
-}
 
 export const fetch: Epic<
   Action,

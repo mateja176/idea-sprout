@@ -38,6 +38,9 @@ export interface ReviewDialogProps {
   onClose: () => void;
 }
 
+export const doNotShareWarning =
+  'Share the idea to help it grow or just tick the above checkbox';
+
 export const ReviewDialog: React.FC<ReviewDialogProps> = ({
   user,
   idea,
@@ -51,6 +54,12 @@ export const ReviewDialog: React.FC<ReviewDialogProps> = ({
 
   const hasShared = idea.sharedBy.includes(user.uid);
 
+  const [doNotShareOrWarn, setDoNotShareOrWarn] = React.useState<
+    null | true | string
+  >(null);
+
+  const hasSharedOrDeclined = hasShared || doNotShareOrWarn === true;
+
   const reviewsRef = useReviewsRef(idea.id).where('author', '==', user.email);
 
   const [review] = useFirestoreCollection<Review>(reviewsRef);
@@ -58,7 +67,6 @@ export const ReviewDialog: React.FC<ReviewDialogProps> = ({
   const initialValues: CreationReview = {
     ...initialCreationReview,
     ...review,
-    shared: hasShared,
   };
 
   const {
@@ -69,18 +77,19 @@ export const ReviewDialog: React.FC<ReviewDialogProps> = ({
     touched,
     values,
     isValid,
-    setFieldValue,
   } = useFormik({
     validationSchema: createReviewSchema,
     initialValues,
     onSubmit: (formValues) => {
-      return onSubmit(formValues).then(onClose);
+      if (hasSharedOrDeclined) {
+        return onSubmit(formValues).then(onClose);
+      } else {
+        setDoNotShareOrWarn(doNotShareWarning);
+      }
     },
   });
 
   const areValuesEqualToInitial = equals(initialValues)(values);
-
-  const doNotShareProps = getFieldProps('doNotShare');
 
   const sharePrompt0 = (
     <span>
@@ -96,7 +105,7 @@ export const ReviewDialog: React.FC<ReviewDialogProps> = ({
           {idea.sharedBy.length}{' '}
           {idea.sharedBy.length > 1 ? `people` : 'person'}
         </span>{' '}
-        has shared <i>{idea.name}</i>.
+        shared <i>{idea.name}</i>.
       </span>
       &nbsp;
       <Tooltip placement="top" title="The share count is unique per person">
@@ -142,13 +151,9 @@ export const ReviewDialog: React.FC<ReviewDialogProps> = ({
               <Tooltip key={config.label} placement="top" title={config.label}>
                 <Box mr={1}>
                   <config.Button
-                    disabled={values.doNotShare}
+                    disabled={doNotShareOrWarn === true}
                     url={ideaUrl}
-                    onShareWindowClose={() => {
-                      shareIdea().then(() => {
-                        setFieldValue('shared', true);
-                      });
-                    }}
+                    onShareWindowClose={shareIdea}
                   >
                     <config.Icon size={50} />
                   </config.Button>
@@ -170,12 +175,15 @@ export const ReviewDialog: React.FC<ReviewDialogProps> = ({
                 </Box>
               </Box>
             }
-            checked={doNotShareProps.value}
-            onChange={doNotShareProps.onChange}
+            checked={doNotShareOrWarn === true}
+            onChange={(e, value) => {
+              setDoNotShareOrWarn(value === true || doNotShareWarning);
+            }}
             name="doNotShare"
-            onBlur={doNotShareProps.onBlur}
-            errorMessage={(touched.doNotShare || '') && errors.doNotShare}
-            disabled={values.shared}
+            errorMessage={
+              typeof doNotShareOrWarn === 'string' ? doNotShareOrWarn : ''
+            }
+            disabled={hasShared}
             height={checkWithMessageHeight}
           />
         </Box>
@@ -183,7 +191,12 @@ export const ReviewDialog: React.FC<ReviewDialogProps> = ({
           <Button onClick={onClose}>Cancel</Button>
           <Button
             type="submit"
-            disabled={isSubmitting || !isValid || areValuesEqualToInitial}
+            disabled={
+              isSubmitting ||
+              !isValid ||
+              areValuesEqualToInitial ||
+              !hasSharedOrDeclined
+            }
           >
             Submit
           </Button>

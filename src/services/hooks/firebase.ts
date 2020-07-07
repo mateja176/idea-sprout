@@ -19,6 +19,7 @@ import {
   hasOnlyId,
 } from 'utils';
 import { useActions } from './hooks';
+import { createSetIdea } from 'services/store';
 
 export const useAuth = () => {
   return useFirebaseAuth();
@@ -106,17 +107,25 @@ export const useReviewSubmit = (id: IdeaModel['id']) => {
 };
 
 export const useShareIdea = (idea: IdeaModel) => {
+  const { setIdea } = useActions({ setIdea: createSetIdea });
+
   const user = useSignedInUser();
 
   const ideaRef = useIdeasRef().doc(idea.id);
 
-  const withSharedBy: Pick<IdeaModel, 'sharedBy'> = {
-    sharedBy: idea.sharedBy.concat(user.uid),
-  };
+  if (idea.sharedBy.includes(user.email || '')) {
+    return () => {};
+  } else {
+    const withSharedBy: Pick<IdeaModel, 'sharedBy'> = {
+      sharedBy: idea.sharedBy.concat(user.uid),
+    };
 
-  return () => {
-    return ideaRef.update(withSharedBy);
-  };
+    return () => {
+      return ideaRef.update(withSharedBy).then(() => {
+        setIdea({ id: idea.id, ...withSharedBy });
+      });
+    };
+  }
 };
 
 export const useStorageDownloadUrl: typeof useFirebaseStorageDownloadUrl = (

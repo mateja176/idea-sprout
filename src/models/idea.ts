@@ -1,6 +1,8 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
+import { IndexRange } from 'react-virtualized';
 import * as yup from 'yup';
+import { IdeaFilter } from './firebase';
 import { WithAuthor, WithId } from './models';
 
 export const checkNames = ['niche', 'expectations'] as const;
@@ -106,3 +108,22 @@ export const creationIdeaSchema = yup
   });
 
 export type UpdateIdea = (idea: Partial<RawIdea>) => Promise<void>;
+
+export class IdeaBatchError extends Error
+  implements IndexRange, IdeaFilter<keyof IdeaModel> {
+  name = 'IdeaBatchError';
+  constructor(
+    public message: string,
+    public startIndex: number,
+    public stopIndex: number,
+    public fieldPath: keyof IdeaModel,
+    public opStr: firebase.firestore.WhereFilterOp,
+    public value: IdeaModel[keyof IdeaModel],
+  ) {
+    super(message);
+  }
+}
+
+export interface IdeasState {
+  ideas: Array<'loading' | IdeaModel | IdeaBatchError | undefined>;
+}

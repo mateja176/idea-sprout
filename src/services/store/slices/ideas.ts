@@ -1,5 +1,5 @@
-import firebase, { FirebaseError } from 'firebase/app';
-import { IdeaFilter, IdeaModel } from 'models';
+import { FirebaseError } from 'firebase/app';
+import { IdeaModel, IdeasState, RawIdea, WithId } from 'models';
 import { range } from 'ramda';
 import { IndexRange } from 'react-virtualized';
 import { createSelector } from 'reselect';
@@ -10,25 +10,7 @@ import {
   getType,
 } from 'typesafe-actions';
 import { FetchIdeasOptions } from '../thunks';
-
-export class IdeaBatchError extends Error
-  implements IndexRange, IdeaFilter<keyof IdeaModel> {
-  name = 'IdeaBatchError';
-  constructor(
-    public message: string,
-    public startIndex: number,
-    public stopIndex: number,
-    public fieldPath: keyof IdeaModel,
-    public opStr: firebase.firestore.WhereFilterOp,
-    public value: IdeaModel[keyof IdeaModel],
-  ) {
-    super(message);
-  }
-}
-
-export interface IdeasState {
-  ideas: Array<'loading' | IdeaModel | IdeaBatchError | undefined>;
-}
+import { isIdea } from 'utils';
 
 export const initialIdeasState: IdeasState = {
   ideas: [],
@@ -40,6 +22,13 @@ export const createSetIdeas = createAction(
 )();
 export type CreateSetIdeas = typeof createSetIdeas;
 export type SetIdeasAction = ReturnType<CreateSetIdeas>;
+
+export const createSetIdea = createAction(
+  'ideas/setOne',
+  (payload: WithId & Partial<RawIdea>) => payload,
+)();
+export type CreateSetIdea = typeof createSetIdea;
+export type SetIdeaAction = ReturnType<CreateSetIdea>;
 
 export const createConcatIdeas = createAction(
   'ideas/concat',
@@ -74,6 +63,7 @@ export type FetchIdeasAction = ActionType<FetchIdeasAsync>;
 export type IdeasAction =
   | UpdateIdeasAction
   | SetIdeasAction
+  | SetIdeaAction
   | ConcatIdeasAction
   | FetchIdeasAction;
 
@@ -84,6 +74,15 @@ export const ideasSlice = (
   switch (action.type) {
     case getType(createSetIdeas):
       return { ...state, ideas: action.payload.ideas };
+    case getType(createSetIdea):
+      return {
+        ...state,
+        ideas: state.ideas.map((idea) =>
+          isIdea(idea) && idea.id === action.payload.id
+            ? { ...idea, ...action.payload }
+            : idea,
+        ),
+      };
     case getType(fetchIdeasAsync.request):
       return {
         ...state,
