@@ -2,7 +2,7 @@ import { ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import { Create } from '@material-ui/icons';
 import { useBoolean } from 'ahooks';
 import firebase from 'firebase/app';
-import { RawIdea, User } from 'models';
+import { initialIdea, RawIdea, User } from 'models';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { createQueueSnackbar, useActions, useIdeasRef } from 'services';
@@ -26,11 +26,8 @@ export const CreateIdea: React.FC<CreateIdeaProps> = ({ user }) => {
     setLoading.setTrue();
 
     const newIdea: RawIdea = {
+      ...initialIdea,
       author: user.email || '',
-      checks: {
-        niche: true,
-        expectations: true,
-      },
       createdAt: firebase.firestore.Timestamp.now(),
       sharedBy: [],
       status: 'seed',
@@ -69,7 +66,6 @@ export const CreateIdea: React.FC<CreateIdeaProps> = ({ user }) => {
 
         history.push(urljoin(absolutePrivateRoute.ideas.path, id), {
           idea: { ...newIdea, id },
-          reviews: [],
         });
       })
       .finally(() => {

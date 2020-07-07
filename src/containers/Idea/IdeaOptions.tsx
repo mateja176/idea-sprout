@@ -168,7 +168,10 @@ export const IdeaOptions: React.FC<IdeaOptionsProps> = ({
               </Box>
               <Box width={'50%'} height={'100%'}>
                 <React.Suspense fallback={<IdeaDoubleOptionSkeleton />}>
-                  <IdeaRatingOption id={idea.id} onClick={toggleReviewsOpen} />
+                  <IdeaRatingOption
+                    rating={idea.rating}
+                    onClick={toggleReviewsOpen}
+                  />
                 </React.Suspense>
               </Box>
             </Box>

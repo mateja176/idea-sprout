@@ -17,18 +17,19 @@ export const getShareCountHelperText = (count: number) =>
   `Shared by ${count} ${count === 1 ? 'person' : 'people'}`;
 
 export const getFormIdea = ({
-  checks,
   name,
   story,
   problemSolution,
   images,
   rationale,
+  rating,
 }: RawIdea): FormIdea => ({
   name,
   story,
   problemSolution,
   images,
   rationale,
+  rating,
 });
 
 export const getFileName = (file: StorageFile) =>

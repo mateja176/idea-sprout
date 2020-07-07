@@ -1,6 +1,6 @@
 import { IdeaContainer } from 'containers';
 import { IdeaContainerSkeleton } from 'containers/Idea/IdeaContainerSkeleton';
-import { IdeaModel, Review } from 'models';
+import { IdeaModel } from 'models';
 import React, { Suspense } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
@@ -8,7 +8,7 @@ export interface IdeaPageProps
   extends RouteComponentProps<
     { id: IdeaModel['id'] },
     {},
-    { idea: IdeaModel; reviews: Review[] } | null
+    { idea: IdeaModel } | null
   > {}
 
 export const IdeaPage: React.FC<IdeaPageProps> = ({
