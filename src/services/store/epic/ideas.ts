@@ -44,37 +44,35 @@ export const fetch: Epic<
       }) => {
         const limit = stopIndex - startIndex;
 
-        return state$
-          .pipe(
-            map(selectIdeas),
-            map(findLast(isIdea)),
-            first(), // * avoids multiple requests
-            mergeMap((lastIdea) =>
-              collection(
-                firebase
-                  .firestore()
-                  .collection(firestoreCollections.ideas.path)
-                  .where(fieldPath, opStr, value)
-                  .orderBy(orderByField, directionStr)
-                  .startAfter(isIdea(lastIdea) ? lastIdea.createdAt : '')
-                  .limit(limit),
+        return state$.pipe(
+          map(selectIdeas),
+          map(findLast(isIdea)),
+          first(), // * avoids multiple requests
+          mergeMap((lastIdea) =>
+            collection(
+              firebase
+                .firestore()
+                .collection(firestoreCollections.ideas.path)
+                .where(fieldPath, opStr, value)
+                .orderBy(orderByField, directionStr)
+                .startAfter(isIdea(lastIdea) ? lastIdea.createdAt : '')
+                .limit(limit),
+            ).pipe(
+              first(), // * necessary because of concatMap, without it the observable would never complete
+              map((snapshots) =>
+                fetchIdeasAsync.success({
+                  startIndex,
+                  ideas: snapshots.map((snapshot) =>
+                    convertFirestoreDocument<IdeaModel>(snapshot),
+                  ),
+                }),
+              ),
+              catchError((error: FirebaseError) =>
+                of(fetchIdeasAsync.failure(error)),
               ),
             ),
-          )
-          .pipe(
-            first(), // * necessary because of concatMap, without it the observable would never complete
-            map((snapshots) =>
-              fetchIdeasAsync.success({
-                startIndex,
-                ideas: snapshots.map((snapshot) =>
-                  convertFirestoreDocument<IdeaModel>(snapshot),
-                ),
-              }),
-            ),
-            catchError((error: FirebaseError) =>
-              of(fetchIdeasAsync.failure(error)),
-            ),
-          );
+          ),
+        );
       },
     ),
   );
