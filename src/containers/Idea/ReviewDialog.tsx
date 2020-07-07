@@ -48,6 +48,11 @@ export const ReviewDialog: React.FC<ReviewDialogProps> = ({
   open,
   onClose,
 }) => {
+  const reviewsRef = useReviewsRef(idea.id).where('author', '==', user.email);
+
+  const [review] = useFirestoreCollection<Review>(reviewsRef);
+  console.log(idea.name, review);
+
   const shareIdea = useShareIdea(idea);
 
   const hasShared = idea.sharedBy.includes(user.uid);
@@ -57,10 +62,6 @@ export const ReviewDialog: React.FC<ReviewDialogProps> = ({
   >(null);
 
   const hasSharedOrDeclined = hasShared || doNotShareOrWarn === true;
-
-  const reviewsRef = useReviewsRef(idea.id).where('author', '==', user.email);
-
-  const [review] = useFirestoreCollection<Review>(reviewsRef);
 
   const initialValues: CreationReview = {
     ...initialCreationReview,
