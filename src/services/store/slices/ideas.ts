@@ -98,11 +98,18 @@ export const ideasSlice = (
     case getType(createUpdateIdeas):
       return {
         ...state,
-        ideas: state.ideas.map((idea, i) =>
-          i >= action.payload.startIndex && i < action.payload.stopIndex
-            ? action.payload.ideas[i - action.payload.startIndex] ?? 'loading'
-            : idea,
-        ),
+        ideas: state.ideas
+          .slice(0, action.payload.startIndex)
+          .concat(action.payload.ideas)
+          .concat(
+            // * in case of an active subscription and a variable batch size
+            // * for example: state.ideas.map((_, i) => i) === range(0, 29)
+            // * batch: { startIndex: 10, ideas: ideas }; ideas.length === 10
+            // * state.slice(0, 10).concat(ideas).concat(state.ideas.slice(20))
+            state.ideas.slice(
+              action.payload.startIndex + action.payload.ideas.length,
+            ),
+          ),
       };
     default:
       return state;
