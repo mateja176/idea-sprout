@@ -5,7 +5,14 @@ import { findLast } from 'ramda';
 import { Epic, ofType } from 'redux-observable';
 import { collection } from 'rxfire/firestore';
 import { of } from 'rxjs';
-import { catchError, concatMap, first, map, mergeMap } from 'rxjs/operators';
+import {
+  catchError,
+  concatMap,
+  filter,
+  first,
+  map,
+  mergeMap,
+} from 'rxjs/operators';
 import { Action, State } from 'services';
 import { getType } from 'typesafe-actions';
 import { convertFirestoreDocument, firestoreCollections } from 'utils';
@@ -58,6 +65,11 @@ export const fetch: Epic<
                 .startAfter(isIdea(lastIdea) ? lastIdea.createdAt : '')
                 .limit(limit),
             ).pipe(
+              // * in production the db is never going to be empty
+              // * hence the only time the snapshots is going to be empty
+              // * is when the client requests the resource while offline
+              // * for the first time after bootstrapping the app
+              filter((snapshots) => !!snapshots.length),
               first(), // * necessary because of concatMap, without it the observable would never complete
               map((snapshots) =>
                 fetchIdeasAsync.success({
