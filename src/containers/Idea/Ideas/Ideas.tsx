@@ -2,15 +2,13 @@ import { Box, Typography } from '@material-ui/core';
 import { IdeaRow, IdeasSkeleton } from 'containers';
 import { IdeaFilter, User, WithCount } from 'models';
 import React from 'react';
-import { connect, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { AutoSizer, InfiniteLoader, List } from 'react-virtualized';
 import { useFirestoreDocData } from 'reactfire';
 import {
   createPromisedAction,
   fetchIdeasAsync,
-  IdeasState,
   selectIdeas,
-  State,
   useActions,
   useIdeasCountRef,
 } from 'services';
@@ -18,7 +16,7 @@ import { ideaListItemFullHeight } from 'styles';
 import { getType } from 'typesafe-actions';
 import { IdeaOptionsSkeleton } from '../IdeaOptionsSkeleton';
 
-export interface IdeasProps extends Pick<IdeasState, 'ideas'> {
+export interface IdeasProps {
   user: User;
 }
 
@@ -28,10 +26,14 @@ const publishedFilter: IdeaFilter<'status'> = {
   value: 'sprout',
 };
 
-export const IdeasComponent = ({ user, ideas }: IdeasProps) => {
+export const Ideas = ({ user }: IdeasProps) => {
+  const ideas = useSelector(selectIdeas);
+
   const ideasCountRef = useIdeasCountRef();
 
-  const { count: rowCount = 1000 } = useFirestoreDocData<WithCount>(ideasCountRef);
+  const { count: rowCount = 1000 } = useFirestoreDocData<WithCount>(
+    ideasCountRef,
+  );
 
   const dispatch = useDispatch();
 
@@ -127,8 +129,3 @@ export const IdeasComponent = ({ user, ideas }: IdeasProps) => {
     </InfiniteLoader>
   );
 };
-export const Ideas = connect((state: State) => {
-  // * useSelector was returning "[]" instead of "['loading', 'loading', 'loading'...]"
-  // * hence the loading state was not being rendered between filter updates
-  return { ideas: selectIdeas(state) };
-})(IdeasComponent);
