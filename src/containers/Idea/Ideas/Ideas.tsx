@@ -31,7 +31,7 @@ const publishedFilter: IdeaFilter<'status'> = {
 export const IdeasComponent = ({ user, ideas }: IdeasProps) => {
   const ideasCountRef = useIdeasCountRef();
 
-  const { count: rowCount } = useFirestoreDocData<WithCount>(ideasCountRef);
+  const { count: rowCount = 1000 } = useFirestoreDocData<WithCount>(ideasCountRef);
 
   const dispatch = useDispatch();
 
