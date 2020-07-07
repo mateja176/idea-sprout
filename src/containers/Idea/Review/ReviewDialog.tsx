@@ -4,6 +4,7 @@ import {
   DialogActions,
   Tooltip,
   Typography,
+  Badge,
 } from '@material-ui/core';
 import { Info } from '@material-ui/icons';
 import { Rating } from '@material-ui/lab';
@@ -131,14 +132,26 @@ export const ReviewDialog: React.FC<ReviewDialogProps> = ({
           <Typography color="textSecondary">Rating*</Typography>
           <Rating {...getFieldProps('rating')} precision={0.5} />
         </Box>
-        <MultilineTextField
-          {...getFieldProps('feedback')}
-          required
-          rows={5}
-          label={`Feedback: ${values.feedback.length} (${FeedbackLength.min}- )`}
-          error={touched.feedback && !!errors.feedback}
-          helperText={`What did you like or dislike about the idea? Your feedback directly shapes the course of the idea.`}
-        />
+        <Badge
+          color={'primary'}
+          badgeContent={
+            values.feedback.length < FeedbackLength.min
+              ? `${values.feedback.length} / ${FeedbackLength.min}`
+              : null
+          }
+          style={{
+            marginRight: 10,
+          }}
+        >
+          <MultilineTextField
+            {...getFieldProps('feedback')}
+            required
+            rows={5}
+            label={'Feedback'}
+            error={touched.feedback && !!errors.feedback}
+            helperText={`What did you like or dislike about the idea? Your feedback directly shapes the course of the idea.`}
+          />
+        </Badge>
         <Box mt={4}>
           <Typography>
             {idea.sharedBy.length > 0 ? sharePrompt1 : sharePrompt0}
