@@ -50,15 +50,17 @@ export const IdeaOptions: React.FC<IdeaOptionsProps> = ({
   ideaUrl,
   NavigationButton,
 }) => {
-  const isAuthor = getIsAuthor(user)(idea);
-
   const theme = useTheme();
 
   const history = useHistory();
 
-  const borderColor = theme.palette.grey[600];
+  const checkRef = React.useRef<HTMLButtonElement | null>(null);
+
+  const ideaRef = useIdeasRef().doc(idea.id);
 
   const buttonStyle = useIdeaOptionButtonStyle();
+
+  const updateWithCount = useUpdateWithCount(idea.id);
 
   const [reviewOpen, setReviewOpen] = useBoolean();
   const toggleReviewOpen = () => {
@@ -72,11 +74,13 @@ export const IdeaOptions: React.FC<IdeaOptionsProps> = ({
 
   const [checkMenu, setCheckMenu] = useBoolean(false);
 
-  const checkRef = React.useRef<HTMLButtonElement | null>(null);
+  const publish = () => {
+    updateWithCount({ count: 1, status: 'sprout' });
+  };
 
-  const passedPreflightChecks = Object.values(idea.checks).every(Boolean);
-
-  const ideaRef = useIdeasRef().doc(idea.id);
+  const unpublish = () => {
+    updateWithCount({ count: -1, status: 'seed' });
+  };
 
   const setCheck = (
     name: keyof IdeaModel['checks'],
@@ -90,15 +94,11 @@ export const IdeaOptions: React.FC<IdeaOptionsProps> = ({
     ideaRef.update(withChecks);
   };
 
-  const updateWithCount = useUpdateWithCount(idea.id);
+  const passedPreflightChecks = Object.values(idea.checks).every(Boolean);
 
-  const publish = () => {
-    updateWithCount({ count: 1, status: 'sprout' });
-  };
+  const isAuthor = getIsAuthor(user)(idea);
 
-  const unpublish = () => {
-    updateWithCount({ count: -1, status: 'seed' });
-  };
+  const borderColor = theme.palette.grey[600];
 
   return (
     <>
