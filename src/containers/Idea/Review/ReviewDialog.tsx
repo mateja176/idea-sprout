@@ -98,7 +98,7 @@ export const ReviewDialog: React.FC<ReviewDialogProps> = ({
   );
 
   const sharePrompt1 = (
-    <Box display="flex" alignItems="center">
+    <span style={{ display: 'flex', alignItems: 'center' }}>
       <span>
         Care to share?{' '}
         <span style={{ textDecoration: 'underline' }}>
@@ -111,7 +111,7 @@ export const ReviewDialog: React.FC<ReviewDialogProps> = ({
       <Tooltip placement="top" title="The share count is unique per person">
         <Info color="action" />
       </Tooltip>
-    </Box>
+    </span>
   );
 
   return (
