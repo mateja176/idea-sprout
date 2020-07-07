@@ -8,5 +8,4 @@ export * from './IdeaOptions';
 export * from './IdeaRow';
 export * from './Ideas';
 export * from './IdeaSkeleton';
-export * from './ReviewDialog';
-export * from './ReviewsDialog';
+export * from './Review';

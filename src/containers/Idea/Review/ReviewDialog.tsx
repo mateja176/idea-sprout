@@ -51,7 +51,6 @@ export const ReviewDialog: React.FC<ReviewDialogProps> = ({
   const reviewsRef = useReviewsRef(idea.id).where('author', '==', user.email);
 
   const [review] = useFirestoreCollection<Review>(reviewsRef);
-  console.log(idea.name, review);
 
   const shareIdea = useShareIdea(idea);
 

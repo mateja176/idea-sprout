@@ -13,13 +13,7 @@ import {
 } from '@material-ui/icons';
 import { useBoolean } from 'ahooks';
 import { IdeaPreviewWrapper, ReviewButton } from 'components';
-import {
-  CheckProps,
-  IdeaImagePreview,
-  ReviewDialog,
-  ReviewsDialog,
-  ShareMenu,
-} from 'containers';
+import { CheckProps, IdeaImagePreview, ShareMenu } from 'containers';
 import { IdeaModel, User } from 'models';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
@@ -34,6 +28,7 @@ import { ExpectationsCheck } from './ExpectationsCheck';
 import { IdeaDoubleOptionSkeleton } from './IdeaOptionsSkeleton';
 import { IdeaRatingOption } from './IdeaRatingOption';
 import { NicheCheck } from './NicheCheck';
+import { ReviewDialog, ReviewsDialog } from './Review';
 
 export interface IdeaOptionsProps {
   user: User;
