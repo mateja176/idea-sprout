@@ -55,7 +55,7 @@ const handleGetIdeasSuccess = ({
   startIndex,
   stopIndex,
 }: IndexRange & WithDispatch & WithGetState) => (ideas: IdeaModel[]) => {
-  return dispatch(createUpdateIdeas({ startIndex, stopIndex, ideas }));
+  return dispatch(createUpdateIdeas({ startIndex, ideas }));
 };
 
 const handleGetIdeasFailure = ({
@@ -71,7 +71,6 @@ const handleGetIdeasFailure = ({
   return dispatch(
     createUpdateIdeas({
       startIndex,
-      stopIndex,
       ideas: getRange(getLimit({ startIndex, stopIndex })).map(
         () =>
           new IdeaBatchError(

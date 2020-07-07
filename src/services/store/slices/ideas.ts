@@ -50,7 +50,8 @@ export type ConcatIdeasAction = ReturnType<CreateConcatIdeas>;
 
 export const createUpdateIdeas = createAction(
   'ideas/update',
-  (payload: Pick<IdeasState, 'ideas'> & IndexRange) => payload,
+  (payload: Pick<IdeasState, 'ideas'> & Pick<IndexRange, 'startIndex'>) =>
+    payload,
 )();
 export type CreateUpdateIdeas = typeof createUpdateIdeas;
 export type UpdateIdeasAction = ReturnType<CreateUpdateIdeas>;

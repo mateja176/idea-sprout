@@ -66,7 +66,6 @@ export const fetch: Epic<
             map((snapshots) =>
               fetchIdeasAsync.success({
                 startIndex,
-                stopIndex,
                 ideas: snapshots.map((snapshot) =>
                   convertFirestoreDocument<IdeaModel>(snapshot),
                 ),
