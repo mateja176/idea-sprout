@@ -12,6 +12,7 @@ import {
   useUser as useFirebaseUser,
 } from 'reactfire';
 import { createQueueSnackbar } from 'services';
+import { createSetIdea } from 'services/store';
 import {
   convertFirestoreCollection,
   convertFirestoreDocument,
@@ -19,7 +20,6 @@ import {
   hasOnlyId,
 } from 'utils';
 import { useActions } from './hooks';
-import { createSetIdea } from 'services/store';
 
 export const useAuth = () => {
   return useFirebaseAuth();
@@ -82,27 +82,69 @@ export const useStorage = () => {
   return firebase.storage();
 };
 
-export const useReviewSubmit = (id: IdeaModel['id']) => {
-  const { queueSnackbar } = useActions({ queueSnackbar: createQueueSnackbar });
+export const useReviewSubmit = ({
+  idea,
+  currentReview,
+}: {
+  idea: IdeaModel;
+  currentReview?: Review;
+}) => {
+  const { queueSnackbar, setIdea } = useActions({
+    queueSnackbar: createQueueSnackbar,
+    setIdea: createSetIdea,
+  });
 
   const user = useSignedInUser();
 
-  const reviewsRef = useReviewsRef(id);
+  const reviewsRef = useReviewsRef(idea.id);
+
+  const ideaRef = useIdeasRef().doc(idea.id);
 
   return ({ rating, feedback }: Pick<Review, 'rating' | 'feedback'>) => {
-    return (
-      reviewsRef
-        .doc(user.uid)
-        .set({ rating, feedback, author: user.email })
-        // * the promise is not rejected even if the client is offline
-        // * the promise is pending until it resolves or the tab is closed
-        .then(() => {
-          queueSnackbar({
-            severity: 'success',
-            message: 'Review submitted',
-          });
-        })
-    );
+    const count = currentReview ? idea.rating.count : idea.rating.count + 1;
+
+    const average = currentReview
+      ? (idea.rating.count * idea.rating.average -
+          currentReview.rating +
+          rating) /
+        idea.rating.count
+      : (idea.rating.average * idea.rating.count + rating) / count;
+
+    return firebase
+      .firestore()
+      .batch()
+      .set(reviewsRef.doc(user.uid), {
+        rating,
+        feedback,
+        author: user.email,
+      })
+      .update(ideaRef, {
+        rating: {
+          average: firebase.firestore.FieldValue.increment(
+            average - idea.rating.average,
+          ),
+          count: currentReview
+            ? count
+            : firebase.firestore.FieldValue.increment(1),
+        },
+      })
+      .commit()
+      .then(() => {
+        setIdea({
+          id: idea.id,
+          rating: {
+            count,
+            average,
+          },
+        });
+
+        queueSnackbar({
+          severity: 'success',
+          message: 'Review submitted',
+        });
+      });
+    // * the promise is not rejected even if the client is offline
+    // * the promise is pending until it resolves or the tab is closed
   };
 };
 

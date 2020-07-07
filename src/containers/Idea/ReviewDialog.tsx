@@ -48,8 +48,6 @@ export const ReviewDialog: React.FC<ReviewDialogProps> = ({
   open,
   onClose,
 }) => {
-  const onSubmit = useReviewSubmit(idea.id);
-
   const shareIdea = useShareIdea(idea);
 
   const hasShared = idea.sharedBy.includes(user.uid);
@@ -68,6 +66,8 @@ export const ReviewDialog: React.FC<ReviewDialogProps> = ({
     ...initialCreationReview,
     ...review,
   };
+
+  const onSubmit = useReviewSubmit({ idea, currentReview: review });
 
   const {
     handleSubmit,
