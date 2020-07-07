@@ -5,7 +5,13 @@ import { findLast } from 'ramda';
 import { Epic, ofType } from 'redux-observable';
 import { collection } from 'rxfire/firestore';
 import { of } from 'rxjs';
-import { catchError, map, mergeMap, withLatestFrom } from 'rxjs/operators';
+import {
+  catchError,
+  concatMap,
+  first,
+  map,
+  withLatestFrom,
+} from 'rxjs/operators';
 import { Action, State } from 'services';
 import { getType } from 'typesafe-actions';
 import { convertFirestoreDocument, firestoreCollections } from 'utils';
@@ -30,7 +36,8 @@ export const fetch: Epic<
   action$.pipe(
     ofType<Action, FetchIdeasRequest>(getType(fetchIdeasAsync.request)),
     withLatestFrom(state$),
-    mergeMap(
+    // * startAfter requires the last batch to be loaded before requesting a new one
+    concatMap(
       ([
         {
           payload: {
@@ -58,6 +65,7 @@ export const fetch: Epic<
             .startAfter(isIdea(lastIdea) ? lastIdea.createdAt : '')
             .limit(limit),
         ).pipe(
+          first(), // * necessary because of concatMap, without it the observable would never complete
           map((snapshots) =>
             fetchIdeasAsync.success({
               startIndex,
