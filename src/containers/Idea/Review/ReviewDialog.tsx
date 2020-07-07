@@ -135,12 +135,9 @@ export const ReviewDialog: React.FC<ReviewDialogProps> = ({
           {...getFieldProps('feedback')}
           required
           rows={5}
-          label="Feedback"
+          label={`Feedback: ${values.feedback.length} (${FeedbackLength.min}- )`}
           error={touched.feedback && !!errors.feedback}
-          helperText={
-            (touched.feedback && errors.feedback) ||
-            `What did you like or dislike about the idea? Your feedback directly shapes the course of the idea. ( ${FeedbackLength.min} - )`
-          }
+          helperText={`What did you like or dislike about the idea? Your feedback directly shapes the course of the idea.`}
         />
         <Box mt={4}>
           <Typography>
