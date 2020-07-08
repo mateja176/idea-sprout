@@ -6,7 +6,6 @@ import {
   Rating,
   RawIdea,
   StorageFile,
-  User,
 } from 'models';
 
 export const ideasFetchLimit = 15;

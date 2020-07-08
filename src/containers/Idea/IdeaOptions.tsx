@@ -10,6 +10,7 @@ import {
   CheckBoxOutlineBlank,
   CloudOff,
   CloudUpload,
+  StarRate,
 } from '@material-ui/icons';
 import { useBoolean } from 'ahooks';
 import { IdeaPreviewWrapper, ReviewButton } from 'components';
@@ -22,11 +23,10 @@ import {
   useIdeasRef,
   useUpdateWithCount,
 } from 'services';
-import { breakWordStyle } from 'styles';
+import { breakWordStyle, starColor } from 'styles';
 import urljoin from 'url-join';
-import { absolutePrivateRoute } from 'utils';
+import { absolutePrivateRoute, getRatingHelperText } from 'utils';
 import { ExpectationsCheck } from './ExpectationsCheck';
-import { IdeaRatingOption } from './IdeaRatingOption';
 import { NicheCheck } from './NicheCheck';
 import { ReviewDialog, ReviewsDialog } from './Review';
 
@@ -95,6 +95,10 @@ export const IdeaOptions: React.FC<IdeaOptionsProps> = ({
 
   const borderColor = theme.palette.grey[600];
 
+  const ratingTooltip = React.useMemo(() => getRatingHelperText(idea.rating), [
+    idea.rating,
+  ]);
+
   return (
     <>
       <Box
@@ -162,10 +166,15 @@ export const IdeaOptions: React.FC<IdeaOptionsProps> = ({
                 />
               </Box>
               <Box width={'50%'} height={'100%'}>
-                <IdeaRatingOption
-                  rating={idea.rating}
-                  onClick={toggleReviewsOpen}
-                />
+                <Tooltip placement="top" title={ratingTooltip}>
+                  <Button
+                    style={buttonStyle}
+                    endIcon={<StarRate style={{ color: starColor }} />}
+                    onClick={toggleReviewsOpen}
+                  >
+                    {idea.rating.average}
+                  </Button>
+                </Tooltip>
               </Box>
             </Box>
             <Box display="flex" width={'100%'} height={'50%'}>
