@@ -42,7 +42,7 @@ export const ReviewFormSkeleton: React.FC<ReviewFormSkeletonProps> = () => (
       </Load>
       <ShareOptionsWrapper>
         {shareOptions.map((option) => (
-          <Box mr={shareOptionMr}>
+          <Box key={option.label} mr={shareOptionMr}>
             <Load variant="circle">
               <option.Icon size={shareOptionSize} />
             </Load>
