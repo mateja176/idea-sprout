@@ -5,7 +5,7 @@ import { last, range } from 'ramda';
 import { IndexRange } from 'react-virtualized';
 import { Dispatch } from 'redux';
 import { ThunkAction } from 'redux-thunk';
-import { getIdeasRef } from 'services';
+import { getIdeasRef, interceptGetIdeasError } from 'services';
 import { convertFirestoreCollection } from 'utils';
 import { Action, State } from '../reducer';
 import {
@@ -85,12 +85,6 @@ const handleGetIdeasFailure = ({
   );
 };
 
-const interceptGetIdeasError = (snapshot: firebase.firestore.QuerySnapshot) => {
-  if (snapshot.empty && snapshot.metadata.fromCache) {
-    throw new Error('Failed to fetch ideas');
-  }
-  return snapshot;
-};
 export const createFetchIdeas = <Key extends keyof IdeaModel>({
   fieldPath,
   opStr,

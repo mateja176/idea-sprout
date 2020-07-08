@@ -1,5 +1,6 @@
 export * from './env';
 export * from './files';
+export * from './firebase';
 export * from './history';
 export * from './hooks';
 export * from './services';
