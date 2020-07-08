@@ -26,6 +26,16 @@ const publishedFilter: IdeaFilter<'status'> = {
   value: 'sprout',
 };
 
+const actionCreators = {
+  fetchIdeas: fetchIdeasAsync.request,
+};
+
+const NoRowsRenderer = () => (
+  <Box>
+    <IdeasSkeleton />
+  </Box>
+);
+
 export const Ideas = ({ user }: IdeasProps) => {
   const ideas = useSelector(selectIdeas);
 
@@ -37,33 +47,80 @@ export const Ideas = ({ user }: IdeasProps) => {
 
   const dispatch = useDispatch();
 
-  const { fetchIdeas } = useActions({
-    fetchIdeas: fetchIdeasAsync.request,
-  });
+  const { fetchIdeas } = useActions(actionCreators);
+
+  const loadMoreRows = React.useCallback(
+    ({ startIndex, stopIndex }) => {
+      const fetchOptions = {
+        ...publishedFilter,
+        startIndex,
+        stopIndex: stopIndex + 1, // * since the index is inclusive
+      };
+
+      fetchIdeas(fetchOptions);
+
+      return new Promise((resolve) => {
+        dispatch(
+          createPromisedAction({
+            type: getType(fetchIdeasAsync.success),
+            callback: resolve,
+          }),
+        );
+      });
+    },
+    [dispatch, fetchIdeas],
+  );
+
+  const isRowLoaded = React.useCallback(
+    ({ index }) => {
+      return !!ideas[index];
+    },
+    [ideas],
+  );
+
+  const RowRenderer = React.useCallback(
+    ({ key, index, style }) => {
+      const idea = ideas[index];
+
+      return (
+        <Box key={key} style={style}>
+          {!idea ? null : idea === 'loading' ? (
+            <IdeaOptionsSkeleton />
+          ) : idea instanceof Error ? (
+            <Box display="flex" alignItems="center" height="100%" mx={2}>
+              <Typography
+                style={{
+                  textDecoration: 'underline',
+                  cursor: 'pointer',
+                }}
+                onClick={() => {
+                  const fetchOptions = {
+                    startIndex: idea.startIndex,
+                    stopIndex: idea.stopIndex,
+                    fieldPath: idea.fieldPath,
+                    opStr: idea.opStr,
+                    value: idea.value,
+                  };
+                  fetchIdeas(fetchOptions);
+                }}
+              >
+                Refetch ideas
+              </Typography>
+              &nbsp; from {idea.startIndex + 1} to {idea.stopIndex + 1}
+            </Box>
+          ) : (
+            <IdeaRow key={idea.id} idea={idea} user={user} />
+          )}
+        </Box>
+      );
+    },
+    [fetchIdeas, ideas, user],
+  );
 
   return (
     <InfiniteLoader
-      loadMoreRows={({ startIndex, stopIndex }) => {
-        const fetchOptions = {
-          ...publishedFilter,
-          startIndex,
-          stopIndex: stopIndex + 1, // * since the index is inclusive
-        };
-
-        fetchIdeas(fetchOptions);
-
-        return new Promise((resolve) => {
-          dispatch(
-            createPromisedAction({
-              type: getType(fetchIdeasAsync.success),
-              callback: resolve,
-            }),
-          );
-        });
-      }}
-      isRowLoaded={({ index }) => {
-        return !!ideas[index];
-      }}
+      loadMoreRows={loadMoreRows}
+      isRowLoaded={isRowLoaded}
       rowCount={rowCount}
     >
       {({ onRowsRendered, registerChild }) => (
@@ -76,52 +133,8 @@ export const Ideas = ({ user }: IdeasProps) => {
               width={width}
               height={height}
               rowHeight={ideaListItemFullHeight}
-              noRowsRenderer={() => (
-                <Box>
-                  <IdeasSkeleton />
-                </Box>
-              )}
-              rowRenderer={({ key, index, style }) => {
-                const idea = ideas[index];
-
-                return (
-                  <Box key={key} style={style}>
-                    {!idea ? null : idea === 'loading' ? (
-                      <IdeaOptionsSkeleton />
-                    ) : idea instanceof Error ? (
-                      <Box
-                        display="flex"
-                        alignItems="center"
-                        height="100%"
-                        mx={2}
-                      >
-                        <Typography
-                          style={{
-                            textDecoration: 'underline',
-                            cursor: 'pointer',
-                          }}
-                          onClick={() => {
-                            const fetchOptions = {
-                              startIndex: idea.startIndex,
-                              stopIndex: idea.stopIndex,
-                              fieldPath: idea.fieldPath,
-                              opStr: idea.opStr,
-                              value: idea.value,
-                            };
-                            fetchIdeas(fetchOptions);
-                          }}
-                        >
-                          Refetch ideas
-                        </Typography>
-                        &nbsp; from {idea.startIndex + 1} to{' '}
-                        {idea.stopIndex + 1}
-                      </Box>
-                    ) : (
-                      <IdeaRow key={idea.id} idea={idea} user={user} />
-                    )}
-                  </Box>
-                );
-              }}
+              noRowsRenderer={NoRowsRenderer}
+              rowRenderer={RowRenderer}
             />
           )}
         </AutoSizer>

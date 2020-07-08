@@ -1,5 +1,5 @@
 import { FileDimensions, WithTimeout } from 'models';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import { ActionCreatorsMapObject, bindActionCreators } from 'redux';
 import { Action, AnyThunk, GetBoundThunk } from 'services';
@@ -11,7 +11,10 @@ export const useActions = <
 ) => {
   const dispatch = useDispatch();
 
-  return bindActionCreators<Action, ActionCreators>(actionCreators, dispatch);
+  return useMemo(
+    () => bindActionCreators<Action, ActionCreators>(actionCreators, dispatch),
+    [actionCreators, dispatch],
+  );
 };
 
 export const useDeferredValue = <Value>(
