@@ -27,7 +27,7 @@ export interface NavSkeletonProps {}
 
 export const NavSkeleton: React.FC<NavSkeletonProps> = () => (
   <List>
-    {range(0, absolutePrivateNavigationRoutes.length + 1).map((i) => (
+    {range(0, absolutePrivateNavigationRoutes.length + 2).map((i) => (
       <NavItemSkeleton key={i} />
     ))}
   </List>

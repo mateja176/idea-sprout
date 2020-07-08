@@ -6,16 +6,18 @@ import {
 } from '@material-ui/core';
 import { ExitToApp } from '@material-ui/icons';
 import { useBoolean } from 'ahooks';
+import { User } from 'models';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { createQueueSnackbar, useActions, useAuth, useUser } from 'services';
+import { createQueueSnackbar, useActions, useAuth } from 'services';
 import { absolutePublicRoute } from 'utils';
 
 export interface SignoutProps {
+  user: User;
   onClick: React.MouseEventHandler;
 }
 
-export const Signout: React.FC<SignoutProps> = ({ onClick }) => {
+export const Signout: React.FC<SignoutProps> = ({ user, onClick }) => {
   const { queueSnackbar } = useActions({ queueSnackbar: createQueueSnackbar });
 
   const history = useHistory();
@@ -23,8 +25,6 @@ export const Signout: React.FC<SignoutProps> = ({ onClick }) => {
   const [loading, setLoading] = useBoolean();
 
   const auth = useAuth();
-
-  const user = useUser();
 
   return user ? (
     <Tooltip title={`Sign out of ${user.email}`}>

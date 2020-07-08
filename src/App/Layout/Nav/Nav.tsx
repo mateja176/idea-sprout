@@ -37,10 +37,12 @@ export const Nav: React.FC<NavProps> = ({ onClick }) => {
           </ListItem>
         </Link>
       ))}
-      {!!user && <CreateIdea user={user} />}
-      <React.Suspense fallback={<NavItemSkeleton />}>
-        <Signout onClick={onClick} />
-      </React.Suspense>
+      {!!user && (
+        <>
+          <CreateIdea user={user} />
+          <Signout user={user} onClick={onClick} />
+        </>
+      )}
     </List>
   );
 };
