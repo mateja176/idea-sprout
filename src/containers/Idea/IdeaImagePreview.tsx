@@ -9,7 +9,12 @@ export interface IdeaImagePreviewProps {
 }
 
 export const IdeaImagePreview: React.FC<IdeaImagePreviewProps> = ({ path }) => {
-  const ref = useStorage().ref(path);
+  const [extension, name,...parts] = path.split('.').reverse();
+  const previewPath = [
+    ...parts.reverse().concat(name.concat('_200x100')),
+    extension,
+  ].join('.');
+  const ref = useStorage().ref(previewPath);
   const url = useStorageDownloadUrl(ref);
 
   return (
