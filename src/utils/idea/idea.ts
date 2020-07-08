@@ -3,7 +3,7 @@ import {
   FormIdea,
   IdeaModel,
   IdeasState,
-  RatingConfig,
+  Rating,
   RawIdea,
   StorageFile,
   User,
@@ -11,7 +11,7 @@ import {
 
 export const ideasFetchLimit = 15;
 
-export const getRatingHelperText = (rating: RatingConfig) =>
+export const getRatingHelperText = (rating: Rating) =>
   `Average rating ${rating.average} out of total ${rating.count}`;
 
 export const getShareCountHelperText = (count: number) =>

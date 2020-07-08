@@ -1,42 +1,28 @@
-import {
-  Box,
-  BoxProps,
-  Button,
-  Divider,
-  Typography,
-  useTheme,
-} from '@material-ui/core';
-import { Rating } from '@material-ui/lab';
+import { Box, Button, Typography } from '@material-ui/core';
 import { DraggableDialog } from 'containers';
-import { IdeaModel, initialReview, Review } from 'models';
+import { IdeaModel } from 'models';
+import { range } from 'ramda';
 import React from 'react';
-import { useFirestoreCollection, useReviewsRef } from 'services';
+import { useValueWithFallback } from 'services';
 import { withEllipsis } from 'styles';
+import { Reviews } from './Reviews';
+import { ReviewSkeleton } from './ReviewSkeleton';
 
-export interface ReviewsProps extends Pick<IdeaModel, 'id' | 'name'> {
+export interface ReviewsProps
+  extends Pick<IdeaModel, 'id' | 'name'>,
+    Pick<IdeaModel['rating'], 'count'> {
   open: boolean;
   onClose: () => void;
 }
 
-export const Section: React.FC<BoxProps> = (props) => (
-  <Box display={'grid'} gridGap={15} my={3} mx={2} {...props} />
-);
-
 export const ReviewsDialog: React.FC<ReviewsProps> = ({
   id,
   name,
+  count,
   open,
   onClose,
 }) => {
-  const theme = useTheme();
-
-  const reviewsRef = useReviewsRef(id);
-
-  const reviews = useFirestoreCollection<Review>(reviewsRef);
-
-  const reviewsWithFallback: Review[] = reviews.length
-    ? reviews
-    : [initialReview];
+  const openWithFallback = useValueWithFallback(open, { timeoutMs: 500 });
 
   return (
     <DraggableDialog
@@ -50,26 +36,24 @@ export const ReviewsDialog: React.FC<ReviewsProps> = ({
       }
       actions={<Button onClick={onClose}>Close</Button>}
     >
-      {reviews.length ? '' : <Typography>No reviews yet.</Typography>}
-      <Box visibility={reviews.length ? 'visible' : 'hidden'}>
-        {reviewsWithFallback.map(({ id, rating, feedback, author }, i, a) => (
-          <Box key={id} mb={4}>
-            <Section>
-              <Typography variant="h5">Rating</Typography>
-              <Rating readOnly value={rating} />
-            </Section>
-            <Section>
-              <Typography variant="h5">Feedback</Typography>
-              <Typography style={{ wordBreak: 'break-word' }}>
-                {feedback}
-              </Typography>
-            </Section>
-            {i < a.length - 1 && (
-              <Divider style={{ backgroundColor: theme.palette.grey['500'] }} />
-            )}
+      {count <= 0 ? (
+        <>
+          <Typography>No reviews yet.</Typography>
+          <Box visibility={'hidden'}>
+            <ReviewSkeleton />
           </Box>
-        ))}
-      </Box>
+        </>
+      ) : (
+        openWithFallback && (
+          <React.Suspense
+            fallback={range(0, count).map(() => (
+              <ReviewSkeleton />
+            ))}
+          >
+            <Reviews id={id} />
+          </React.Suspense>
+        )
+      )}
     </DraggableDialog>
   );
 };

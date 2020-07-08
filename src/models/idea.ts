@@ -30,6 +30,11 @@ export const StorageFileSchema = yup.object().required().shape<StorageFile>({
   height: yup.number().required(),
 });
 
+export interface Rating {
+  average: number;
+  count: number;
+}
+
 export interface IdeaModel extends WithId, WithAuthor {
   createdAt: firebase.firestore.Timestamp;
   /**
@@ -43,10 +48,7 @@ export interface IdeaModel extends WithId, WithAuthor {
   problemSolution: string;
   images: StorageFile[];
   rationale: string;
-  rating: {
-    average: number;
-    count: number;
-  };
+  rating: Rating;
 }
 
 export const initialIdea: IdeaModel = {

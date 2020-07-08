@@ -22,10 +22,10 @@ import {
   useIdeasRef,
   useUpdateWithCount,
 } from 'services';
+import { breakWordStyle } from 'styles';
 import urljoin from 'url-join';
 import { absolutePrivateRoute, getIsAuthor } from 'utils';
 import { ExpectationsCheck } from './ExpectationsCheck';
-import { IdeaDoubleOptionSkeleton } from './IdeaOptionsSkeleton';
 import { IdeaRatingOption } from './IdeaRatingOption';
 import { NicheCheck } from './NicheCheck';
 import { ReviewDialog, ReviewsDialog } from './Review';
@@ -115,10 +115,10 @@ export const IdeaOptions: React.FC<IdeaOptionsProps> = ({
         <Box
           mr={1}
           style={{
+            ...breakWordStyle,
             flexGrow: 1,
             overflow: 'hidden',
             textOverflow: 'ellipsis',
-            wordBreak: 'break-word',
             display: '-webkit-box',
             WebkitLineClamp: 5,
             WebkitBoxOrient: 'vertical',
@@ -217,6 +217,7 @@ export const IdeaOptions: React.FC<IdeaOptionsProps> = ({
       <ReviewsDialog
         id={idea.id}
         name={idea.name}
+        count={idea.rating.count}
         open={reviewsOpen}
         onClose={toggleReviewsOpen}
       />

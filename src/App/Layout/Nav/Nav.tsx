@@ -7,7 +7,6 @@ import {
   absolutePrivateNavigationRoutes,
   absolutePublicNavigationRoutes,
 } from 'utils';
-import { NavItemSkeleton } from './NavSkeleton';
 
 export interface NavProps {
   onClick: React.MouseEventHandler;

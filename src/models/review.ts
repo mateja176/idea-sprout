@@ -14,7 +14,8 @@ export const initialReview: Review = {
   id: '',
   author: '',
   rating: 0,
-  feedback: 'W'.repeat(FeedbackLength.min),
+  feedback:
+    'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloremque facilis vitae quaerat ullam illum deserunt doloribus omnis eaque dolor laboriosam et harum excepturi, non impedit quisquam nulla corrupti!',
 };
 
 export type CreationReview = Omit<Review, 'id' | 'author'>;
@@ -30,8 +31,3 @@ export const initialCreationReview: CreationReview = {
   rating: 0,
   feedback: '',
 };
-
-export interface RatingConfig {
-  average: number;
-  count: number;
-}

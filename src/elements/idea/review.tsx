@@ -17,3 +17,9 @@ export const doNotShareDescription = (
     </Box>
   </Box>
 );
+
+export const reviewRatingHeading = <Typography variant="h5">Rating</Typography>;
+
+export const reviewFeedbackHeading = (
+  <Typography variant="h5">Feedback</Typography>
+);
