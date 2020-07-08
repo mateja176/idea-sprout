@@ -111,7 +111,12 @@ export const Ideas = ({ user }: IdeasProps) => {
               &nbsp; from {idea.startIndex + 1} to {idea.stopIndex + 1}
             </Box>
           ) : (
-            <IdeaRow key={idea.id} idea={idea} user={user} />
+            <IdeaRow
+              key={idea.id}
+              idea={idea}
+              email={user.email}
+              uid={user.uid}
+            />
           )}
         </Box>
       );

@@ -35,8 +35,7 @@ import {
   feedbackHelperText,
 } from 'utils';
 
-export interface ReviewFormProps {
-  user: User;
+export interface ReviewFormProps extends Pick<User, 'email' | 'uid'> {
   idea: IdeaModel;
   ideaUrl: string;
   onClose: () => void;
@@ -46,18 +45,19 @@ export const ratingSectionMb = 2;
 export const shareSectionMt = 4;
 
 export const ReviewForm: React.FC<ReviewFormProps> = ({
-  user,
+  email,
+  uid,
   idea,
   ideaUrl,
   onClose,
 }) => {
-  const reviewsRef = useReviewsRef(idea.id).where('author', '==', user.email);
+  const reviewsRef = useReviewsRef(idea.id).where('author', '==', email);
 
   const [review] = useFirestoreCollection<Review>(reviewsRef);
 
   const shareIdea = useShareIdea(idea);
 
-  const hasShared = idea.sharedBy.includes(user.uid);
+  const hasShared = idea.sharedBy.includes(uid);
 
   const [doNotShareOrWarn, setDoNotShareOrWarn] = React.useState<
     null | true | string

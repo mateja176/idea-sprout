@@ -55,7 +55,8 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({
     <Box mt={pageMargin} mb={ideaMarginBottom}>
       <IdeaOptionsWrapper>
         <IdeaOptions
-          user={user}
+          email={user.email}
+          uid={user.uid}
           idea={idea}
           ideaUrl={ideaUrl}
           NavigationButton={({ style }) => (

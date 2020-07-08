@@ -23,15 +23,14 @@ import {
   useIdeasRef,
   useUpdateWithCount,
 } from 'services';
-import { breakWordStyle, withStarColor, withPointer } from 'styles';
+import { breakWordStyle, withPointer, withStarColor } from 'styles';
 import urljoin from 'url-join';
 import { absolutePrivateRoute, getRatingHelperText } from 'utils';
 import { ExpectationsCheck } from './ExpectationsCheck';
 import { NicheCheck } from './NicheCheck';
 import { ReviewDialog, ReviewsDialog } from './Review';
 
-export interface IdeaOptionsProps {
-  user: User;
+export interface IdeaOptionsProps extends Pick<User, 'email' | 'uid'> {
   idea: IdeaModel;
   ideaUrl: string;
   NavigationButton: (props: {
@@ -52,7 +51,8 @@ const textSectionStyle: React.CSSProperties = {
 };
 
 export const IdeaOptions: React.FC<IdeaOptionsProps> = ({
-  user,
+  email,
+  uid,
   idea,
   ideaUrl,
   NavigationButton,
@@ -107,7 +107,7 @@ export const IdeaOptions: React.FC<IdeaOptionsProps> = ({
     [idea.checks],
   );
 
-  const isAuthor = user.email === idea.author;
+  const isAuthor = email === idea.author;
 
   const buttonBorder = `1px solid ${theme.palette.grey[600]}`;
 
@@ -227,7 +227,8 @@ export const IdeaOptions: React.FC<IdeaOptionsProps> = ({
         onClose={toggleReviewsOpen}
       />
       <ReviewDialog
-        user={user}
+        email={email}
+        uid={uid}
         idea={idea}
         ideaUrl={ideaUrl}
         open={reviewOpen}

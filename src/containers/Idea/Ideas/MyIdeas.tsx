@@ -35,7 +35,14 @@ export const MyIdeas: React.FC<{ user: User }> = ({ user }) => {
         // * landing on a page where he is prompted to created his or her first idea
         <IdeasSkeleton />
       ) : (
-        ideas.map((idea) => <IdeaRow key={idea.id} idea={idea} user={user} />)
+        ideas.map((idea) => (
+          <IdeaRow
+            key={idea.id}
+            idea={idea}
+            email={user.email}
+            uid={user.uid}
+          />
+        ))
       )}
     </Box>
   );

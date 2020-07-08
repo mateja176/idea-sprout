@@ -1,6 +1,7 @@
 import { DialogProps } from '@material-ui/core';
 import { DraggableDialog } from 'containers';
 import 'firebase/firestore';
+import { User } from 'models';
 import React from 'react';
 import { useValueWithFallback } from 'services';
 import { withEllipsis } from 'styles';
@@ -9,7 +10,8 @@ import { ReviewFormSkeleton } from './ReviewFormSkeleton';
 
 export interface ReviewDialogProps
   extends ReviewFormProps,
-    Pick<DialogProps, 'open'> {}
+    Pick<DialogProps, 'open'>,
+    Pick<User, 'email' | 'uid'> {}
 
 export const ReviewDialog: React.FC<ReviewDialogProps> = ({
   open,

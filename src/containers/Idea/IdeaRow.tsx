@@ -10,36 +10,39 @@ import { useIdeaUrl } from 'services';
 import urljoin from 'url-join';
 import { absolutePrivateRoute } from 'utils';
 
-export interface IdeaRowProps {
+export interface IdeaRowProps extends Pick<User, 'email' | 'uid'> {
   idea: IdeaModel;
-  user: User;
 }
 
-export const IdeaRow: React.FC<IdeaRowProps> = ({ idea, user }) => {
+export const IdeaRow: React.FC<IdeaRowProps> = ({ idea, email, uid }) => {
   const history = useHistory();
 
   const ideaUrl = useIdeaUrl(idea.id);
 
-  const NavigationButton = React.useCallback(({ style }) => (
-    <Tooltip placement={'top'} title={'Open in full'}>
-      <Button
-        style={style}
-        onClick={() => {
-          history.push(urljoin(absolutePrivateRoute.ideas.path, idea.id), {
-            idea,
-          });
-        }}
-      >
-        <OpenInBrowser />
-      </Button>
-    </Tooltip>
-  ), [history, idea]);
+  const NavigationButton = React.useCallback(
+    ({ style }) => (
+      <Tooltip placement={'top'} title={'Open in full'}>
+        <Button
+          style={style}
+          onClick={() => {
+            history.push(urljoin(absolutePrivateRoute.ideas.path, idea.id), {
+              idea,
+            });
+          }}
+        >
+          <OpenInBrowser />
+        </Button>
+      </Tooltip>
+    ),
+    [history, idea],
+  );
 
   return (
     <Box key={idea.id}>
       <IdeaOptionsWrapper key={idea.id}>
         <IdeaOptions
-          user={user}
+          email={email}
+          uid={uid}
           idea={idea}
           ideaUrl={ideaUrl}
           NavigationButton={NavigationButton}
