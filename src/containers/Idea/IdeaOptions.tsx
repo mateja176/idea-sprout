@@ -10,10 +10,11 @@ import {
   CheckBoxOutlineBlank,
   CloudOff,
   CloudUpload,
+  RateReview,
   StarRate,
 } from '@material-ui/icons';
 import { useBoolean } from 'ahooks';
-import { IdeaPreviewWrapper, ReviewButton } from 'components';
+import { IdeaPreviewWrapper } from 'components';
 import { CheckProps, IdeaImagePreview, ShareMenu } from 'containers';
 import { IdeaModel, User } from 'models';
 import React from 'react';
@@ -206,10 +207,11 @@ export const IdeaOptions: React.FC<IdeaOptionsProps> = ({
                     </Tooltip>
                   )
                 ) : (
-                  <ReviewButton
-                    style={buttonStyle}
-                    onClick={toggleReviewOpen}
-                  />
+                  <Tooltip title="Review" placement="top">
+                    <Button onClick={toggleReviewOpen}>
+                      <RateReview color="primary" />
+                    </Button>
+                  </Tooltip>
                 )}
               </Box>
               <Box width={'50%'} height={'100%'}>
