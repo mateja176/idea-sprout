@@ -162,12 +162,10 @@ export const IdeaOptions: React.FC<IdeaOptionsProps> = ({
                 />
               </Box>
               <Box width={'50%'} height={'100%'}>
-                <React.Suspense fallback={<IdeaDoubleOptionSkeleton />}>
-                  <IdeaRatingOption
-                    rating={idea.rating}
-                    onClick={toggleReviewsOpen}
-                  />
-                </React.Suspense>
+                <IdeaRatingOption
+                  rating={idea.rating}
+                  onClick={toggleReviewsOpen}
+                />
               </Box>
             </Box>
             <Box display="flex" width={'100%'} height={'50%'}>
@@ -216,14 +214,12 @@ export const IdeaOptions: React.FC<IdeaOptionsProps> = ({
           </Box>
         </IdeaPreviewWrapper>
       </Box>
-      <React.Suspense fallback={null}>
-        <ReviewsDialog
-          id={idea.id}
-          name={idea.name}
-          open={reviewsOpen}
-          onClose={toggleReviewsOpen}
-        />
-      </React.Suspense>
+      <ReviewsDialog
+        id={idea.id}
+        name={idea.name}
+        open={reviewsOpen}
+        onClose={toggleReviewsOpen}
+      />
       <ReviewDialog
         user={user}
         idea={idea}
