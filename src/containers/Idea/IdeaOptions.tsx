@@ -213,7 +213,7 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
                     )
                   ) : (
                     <Tooltip title="Review" placement="top">
-                      <Button onClick={toggleReviewOpen}>
+                      <Button style={buttonStyle} onClick={toggleReviewOpen}>
                         <RateReview color="primary" />
                       </Button>
                     </Tooltip>
