@@ -1,17 +1,26 @@
 import { Box, Button, DialogActions, Typography } from '@material-ui/core';
 import { Rating } from '@material-ui/lab';
-import { Load, MultilineTextField, SharePrompt } from 'components';
-import { Check, sharingOptions } from 'containers';
+import {
+  Load,
+  MultilineTextField,
+  shareOptionMr,
+  shareOptions,
+  shareOptionSize,
+  ShareOptionsWrapper,
+  SharePrompt,
+} from 'components';
+import { Check } from 'containers';
 import { doNotShareDescription, ratingLabel } from 'elements';
 import React from 'react';
 import { checkWithMessageHeight } from 'styles';
 import { feedbackFieldRows, feedbackHelperText } from 'utils';
+import { ratingSectionMb, shareSectionMt } from './ReviewForm';
 
 export interface ReviewFormSkeletonProps {}
 
 export const ReviewFormSkeleton: React.FC<ReviewFormSkeletonProps> = () => (
   <Box>
-    <Box mb={2}>
+    <Box mb={ratingSectionMb}>
       <Load>{ratingLabel}</Load>
       <br />
       <Load>
@@ -25,23 +34,21 @@ export const ReviewFormSkeleton: React.FC<ReviewFormSkeletonProps> = () => (
         helperText={feedbackHelperText}
       />
     </Load>
-    <Box mt={4}>
+    <Box mt={shareSectionMt}>
       <Load>
         <Typography>
           <SharePrompt name={'placeholder'} />
         </Typography>
       </Load>
-      <Box mt={1} display="flex" flexWrap="wrap">
-        {sharingOptions.map((config) => (
-          <Load>
-            <Box mr={1}>
-              <config.Button url={'https://example.com'}>
-                <config.Icon size={50} />
-              </config.Button>
-            </Box>
-          </Load>
+      <ShareOptionsWrapper>
+        {shareOptions.map((option) => (
+          <Box mr={shareOptionMr}>
+            <Load variant="circle">
+              <option.Icon size={shareOptionSize} />
+            </Load>
+          </Box>
         ))}
-      </Box>
+      </ShareOptionsWrapper>
       <Load>
         <Check
           label="Do not share*"

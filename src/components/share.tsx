@@ -30,7 +30,7 @@ export const shareKeys = [
 export type ShareKeys = typeof shareKeys;
 export type ShareKey = ShareKeys[number];
 
-export const rawShareConfig: Record<ShareKey, ShareConfig> = {
+export const rawShareOption: Record<ShareKey, ShareConfig> = {
   // * there's no way of determining whether the user actually shared the link
   // copyLink: {
   //   label: 'Copy Link',
@@ -64,8 +64,8 @@ export const rawShareConfig: Record<ShareKey, ShareConfig> = {
   },
 };
 
-export const shareConfig = Object.fromEntries(
-  Object.entries(rawShareConfig).map(([key, { Button, Icon, ...config }]) => [
+export const shareOption = Object.fromEntries(
+  Object.entries(rawShareOption).map(([key, { Button, Icon, ...config }]) => [
     key,
     {
       ...config,
@@ -75,6 +75,6 @@ export const shareConfig = Object.fromEntries(
       Icon: ({ round = true, ...props }) => <Icon {...props} round={round} />,
     },
   ]),
-) as typeof rawShareConfig;
+) as typeof rawShareOption;
 
-export const sharingOptions = Object.values(shareConfig);
+export const shareOptions = Object.values(shareOption);

@@ -3,12 +3,11 @@ import {
   Box,
   Button,
   DialogActions,
-  Tooltip,
   Typography,
 } from '@material-ui/core';
 import { Rating } from '@material-ui/lab';
-import { MultilineTextField, SharePrompt } from 'components';
-import { Check, sharingOptions } from 'containers';
+import { MultilineTextField, ShareOptions, SharePrompt } from 'components';
+import { Check } from 'containers';
 import { ratingLabel } from 'elements';
 import 'firebase/firestore';
 import { useFormik } from 'formik';
@@ -30,7 +29,11 @@ import {
   useShareIdea,
 } from 'services';
 import { checkWithMessageHeight } from 'styles';
-import { feedbackFieldRows, feedbackHelperText } from 'utils';
+import {
+  doNotShareWarning,
+  feedbackFieldRows,
+  feedbackHelperText,
+} from 'utils';
 
 export interface ReviewFormProps {
   user: User;
@@ -39,8 +42,8 @@ export interface ReviewFormProps {
   onClose: () => void;
 }
 
-export const doNotShareWarning =
-  'Share the idea to help it grow or just tick the above checkbox';
+export const ratingSectionMb = 2;
+export const shareSectionMt = 4;
 
 export const ReviewForm: React.FC<ReviewFormProps> = ({
   user,
@@ -93,7 +96,7 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
 
   return (
     <form onSubmit={handleSubmit}>
-      <Box mb={2}>
+      <Box mb={ratingSectionMb}>
         {ratingLabel}
         <Rating {...getFieldProps('rating')} precision={0.5} />
       </Box>
@@ -117,25 +120,15 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
           helperText={feedbackHelperText}
         />
       </Badge>
-      <Box mt={4}>
+      <Box mt={shareSectionMt}>
         <Typography>
           <SharePrompt name={idea.name} sharedByCount={idea.sharedBy.length} />
         </Typography>
-        <Box mt={1} display="flex" flexWrap="wrap">
-          {sharingOptions.map((config) => (
-            <Tooltip key={config.label} placement="top" title={config.label}>
-              <Box mr={1}>
-                <config.Button
-                  disabled={doNotShareOrWarn === true}
-                  url={ideaUrl}
-                  onShareWindowClose={shareIdea}
-                >
-                  <config.Icon size={50} />
-                </config.Button>
-              </Box>
-            </Tooltip>
-          ))}
-        </Box>
+        <ShareOptions
+          ideaUrl={ideaUrl}
+          shareIdea={shareIdea}
+          disabled={doNotShareOrWarn === true}
+        />
         <Check
           label="Do not share*"
           description={

@@ -7,3 +7,5 @@ export * from './Loading';
 export * from './MultilineTextField';
 export * from './PageWrapper';
 export * from './ReviewButton';
+export * from './ShareOptions';
+export * from './share';

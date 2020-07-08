@@ -10,11 +10,11 @@ import {
 } from '@material-ui/core';
 import { Share } from '@material-ui/icons';
 import { useBoolean } from 'ahooks';
+import { shareOptions } from 'components';
 import React from 'react';
 import { FacebookShareButton } from 'react-share';
 import { shareIconSize } from 'styles';
 import { getShareCountHelperText } from 'utils';
-import { sharingOptions } from './share';
 
 export interface ShareMenuProps
   extends Pick<React.ComponentProps<typeof FacebookShareButton>, 'url'>,
@@ -52,7 +52,7 @@ export const ShareMenu: React.FC<ShareMenuProps> = ({
           toggle();
         }}
       >
-        {sharingOptions.map((config) => (
+        {shareOptions.map((config) => (
           <MenuItem key={config.label}>
             <config.Button key={config.label} url={url}>
               <Box display="flex" alignItems="center" my={'3px'}>
