@@ -1,5 +1,5 @@
 import { IdeaModel } from 'models';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import urljoin from 'url-join';
 
 export const useIdeaUrl = (id: IdeaModel['id']) => {
@@ -8,7 +8,5 @@ export const useIdeaUrl = (id: IdeaModel['id']) => {
     setOrigin(window.location.origin);
   }, []);
 
-  const ideaUrl = urljoin(origin, id);
-
-  return ideaUrl;
+  return useMemo(() => urljoin(origin, id), [origin, id]);
 };

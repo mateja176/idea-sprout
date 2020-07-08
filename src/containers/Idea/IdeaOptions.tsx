@@ -24,7 +24,7 @@ import {
 } from 'services';
 import { breakWordStyle } from 'styles';
 import urljoin from 'url-join';
-import { absolutePrivateRoute, getIsAuthor } from 'utils';
+import { absolutePrivateRoute } from 'utils';
 import { ExpectationsCheck } from './ExpectationsCheck';
 import { IdeaRatingOption } from './IdeaRatingOption';
 import { NicheCheck } from './NicheCheck';
@@ -91,7 +91,7 @@ export const IdeaOptions: React.FC<IdeaOptionsProps> = ({
 
   const passedPreflightChecks = Object.values(idea.checks).every(Boolean);
 
-  const isAuthor = getIsAuthor(user)(idea);
+  const isAuthor = user.email === idea.author;
 
   const borderColor = theme.palette.grey[600];
 

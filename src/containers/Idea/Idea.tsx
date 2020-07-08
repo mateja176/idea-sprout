@@ -3,7 +3,7 @@ import { TitleEditor } from 'containers';
 import { problemSolutionTitle, rationaleTitle } from 'elements';
 import { IdeaModel, UpdateIdea, User } from 'models';
 import React from 'react';
-import { contentToText, getIsAuthor } from 'utils';
+import { contentToText } from 'utils';
 import { Images } from '../Image';
 import { VideoSuspender } from '../Video';
 
@@ -14,7 +14,7 @@ export interface IdeaProps {
 }
 
 export const Idea: React.FC<IdeaProps> = ({ user, idea, update }) => {
-  const isAuthor = getIsAuthor(user)(idea);
+  const isAuthor = user.email === idea.author;
 
   return (
     <Box>

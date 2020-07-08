@@ -39,9 +39,6 @@ export const getFileName = (file: StorageFile) =>
 export const getFileNames = (files: StorageFile[]) =>
   files.flatMap(getFileName);
 
-export const getIsAuthor = (user: User) => (idea: IdeaModel) =>
-  user.email === idea.author;
-
 export const contentToText = (editorState: EditorState): string => {
   const text = convertToRaw(editorState.getCurrentContent())
     .blocks.reduce((text, block) => text.concat('\n', block.text), '')
