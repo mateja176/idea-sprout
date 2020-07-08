@@ -69,27 +69,28 @@ export const IdeaOptions: React.FC<IdeaOptionsProps> = ({
 
   const [checkMenu, setCheckMenu] = useBoolean(false);
 
-  const publish = () => {
+  const publish = React.useCallback(() => {
     updateWithCount({ count: 1, status: 'sprout' });
-  };
+  }, [updateWithCount]);
 
-  const unpublish = () => {
+  const unpublish = React.useCallback(() => {
     updateWithCount({ count: -1, status: 'seed' });
-  };
+  }, [updateWithCount]);
 
-  const setCheck = (
-    name: keyof IdeaModel['checks'],
-  ): CheckProps['onChange'] => (_, value) => {
-    const withChecks: Pick<IdeaModel, 'checks'> = {
-      checks: {
-        ...idea.checks,
-        [name]: value,
-      },
-    };
-    ideaRef.update(withChecks);
-  };
+  const setCheck = React.useCallback(
+    (name: keyof IdeaModel['checks']): CheckProps['onChange'] => (_, value) => {
+      const withChecks: Pick<IdeaModel, 'checks'> = {
+        checks: {
+          ...idea.checks,
+          [name]: value,
+        },
+      };
+      ideaRef.update(withChecks);
+    },
+    [idea.checks, ideaRef],
+  );
 
-  const passedPreflightChecks = Object.values(idea.checks).every(Boolean);
+  const passedPreflightChecks = React.useMemo(() => Object.values(idea.checks).every(Boolean), [idea.checks]);
 
   const isAuthor = user.email === idea.author;
 

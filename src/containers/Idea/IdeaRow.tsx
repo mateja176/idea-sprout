@@ -20,6 +20,21 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ idea, user }) => {
 
   const ideaUrl = useIdeaUrl(idea.id);
 
+  const NavigationButton = React.useCallback(({ style }) => (
+    <Tooltip placement={'top'} title={'Open in full'}>
+      <Button
+        style={style}
+        onClick={() => {
+          history.push(urljoin(absolutePrivateRoute.ideas.path, idea.id), {
+            idea,
+          });
+        }}
+      >
+        <OpenInBrowser />
+      </Button>
+    </Tooltip>
+  ), [history, idea]);
+
   return (
     <Box key={idea.id}>
       <IdeaOptionsWrapper key={idea.id}>
@@ -27,21 +42,7 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ idea, user }) => {
           user={user}
           idea={idea}
           ideaUrl={ideaUrl}
-          NavigationButton={({ style }) => (
-            <Tooltip placement={'top'} title={'Open in full'}>
-              <Button
-                style={style}
-                onClick={() => {
-                  history.push(
-                    urljoin(absolutePrivateRoute.ideas.path, idea.id),
-                    { idea },
-                  );
-                }}
-              >
-                <OpenInBrowser />
-              </Button>
-            </Tooltip>
-          )}
+          NavigationButton={NavigationButton}
         />
       </IdeaOptionsWrapper>
     </Box>
