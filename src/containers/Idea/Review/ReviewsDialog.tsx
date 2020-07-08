@@ -46,8 +46,8 @@ export const ReviewsDialog: React.FC<ReviewsProps> = ({
       ) : (
         openWithFallback && (
           <React.Suspense
-            fallback={range(0, count).map(() => (
-              <ReviewSkeleton />
+            fallback={range(0, count).map((i) => (
+              <ReviewSkeleton key={i} />
             ))}
           >
             <Reviews id={id} />
