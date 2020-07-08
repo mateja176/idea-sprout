@@ -23,7 +23,7 @@ import {
   useIdeasRef,
   useUpdateWithCount,
 } from 'services';
-import { breakWordStyle, starColor } from 'styles';
+import { breakWordStyle, withStarColor, withPointer } from 'styles';
 import urljoin from 'url-join';
 import { absolutePrivateRoute, getRatingHelperText } from 'utils';
 import { ExpectationsCheck } from './ExpectationsCheck';
@@ -38,6 +38,18 @@ export interface IdeaOptionsProps {
     style: React.CSSProperties;
   }) => React.ReactElement;
 }
+
+const ideaNameStyle: React.CSSProperties = { fontSize: '1.2em' };
+
+const textSectionStyle: React.CSSProperties = {
+  ...breakWordStyle,
+  flexGrow: 1,
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  display: '-webkit-box',
+  WebkitLineClamp: 5,
+  WebkitBoxOrient: 'vertical',
+};
 
 export const IdeaOptions: React.FC<IdeaOptionsProps> = ({
   user,
@@ -90,76 +102,63 @@ export const IdeaOptions: React.FC<IdeaOptionsProps> = ({
     [idea.checks, ideaRef],
   );
 
-  const passedPreflightChecks = React.useMemo(() => Object.values(idea.checks).every(Boolean), [idea.checks]);
+  const passedPreflightChecks = React.useMemo(
+    () => Object.values(idea.checks).every(Boolean),
+    [idea.checks],
+  );
 
   const isAuthor = user.email === idea.author;
 
-  const borderColor = theme.palette.grey[600];
+  const buttonBorder = `1px solid ${theme.palette.grey[600]}`;
+
+  const problemSolutionStyle: React.CSSProperties = {
+    color: theme.palette.text.secondary,
+  };
 
   const ratingTooltip = React.useMemo(() => getRatingHelperText(idea.rating), [
     idea.rating,
   ]);
 
+  const stopPropagation: React.MouseEventHandler = (e) => {
+    e.stopPropagation();
+  };
+
+  const openInFull = React.useCallback(() => {
+    history.push(urljoin(absolutePrivateRoute.ideas.path, idea.id));
+  }, [history, idea.id]);
+
   return (
     <>
-      <Box
-        display="flex"
-        width="100%"
-        style={{
-          cursor: 'pointer',
-        }}
-        onClick={() => {
-          history.push(urljoin(absolutePrivateRoute.ideas.path, idea.id));
-        }}
-      >
+      <Box display="flex" width="100%" style={withPointer} onClick={openInFull}>
         <Box mr={1}>
           <React.Suspense fallback={<IdeaPreviewWrapper />}>
             <IdeaImagePreview path={idea.images[0].path} />
           </React.Suspense>
         </Box>
-        <Box
-          mr={1}
-          style={{
-            ...breakWordStyle,
-            flexGrow: 1,
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            display: '-webkit-box',
-            WebkitLineClamp: 5,
-            WebkitBoxOrient: 'vertical',
-          }}
-        >
+        <Box mr={1} style={textSectionStyle}>
           <Tooltip placement="top" title={idea.name}>
-            <span style={{ fontSize: '1.2em' }}>{idea.name}</span>
+            <span style={ideaNameStyle}>{idea.name}</span>
           </Tooltip>
           <br />
           <Tooltip placement="top" title={idea.problemSolution}>
-            <span style={{ color: theme.palette.text.secondary }}>
-              {idea.problemSolution}
-            </span>
+            <span style={problemSolutionStyle}>{idea.problemSolution}</span>
           </Tooltip>
         </Box>
         <IdeaPreviewWrapper>
           <Box
             width={'100%'}
             height={'100%'}
-            border={`1px solid ${borderColor}`}
+            border={buttonBorder}
             borderRadius={5}
-            onClick={(e) => {
-              e.stopPropagation();
-            }}
+            onClick={stopPropagation}
           >
             <Box
               display="flex"
               width={'100%'}
               height={'50%'}
-              borderBottom={`1px solid ${borderColor}`}
+              borderBottom={buttonBorder}
             >
-              <Box
-                width={'50%'}
-                height={'100%'}
-                borderRight={`1px solid ${borderColor}`}
-              >
+              <Box width={'50%'} height={'100%'} borderRight={buttonBorder}>
                 <ShareMenu
                   style={buttonStyle}
                   shareCount={idea.sharedBy.length}
@@ -170,7 +169,7 @@ export const IdeaOptions: React.FC<IdeaOptionsProps> = ({
                 <Tooltip placement="top" title={ratingTooltip}>
                   <Button
                     style={buttonStyle}
-                    endIcon={<StarRate style={{ color: starColor }} />}
+                    endIcon={<StarRate style={withStarColor} />}
                     onClick={toggleReviewsOpen}
                   >
                     {idea.rating.average}
@@ -179,11 +178,7 @@ export const IdeaOptions: React.FC<IdeaOptionsProps> = ({
               </Box>
             </Box>
             <Box display="flex" width={'100%'} height={'50%'}>
-              <Box
-                width={'50%'}
-                height={'100%'}
-                borderRight={`1px solid ${borderColor}`}
-              >
+              <Box width={'50%'} height={'100%'} borderRight={buttonBorder}>
                 {isAuthor ? (
                   idea.status === 'sprout' ? (
                     <Tooltip placement={'top'} title={'Unpublish'}>

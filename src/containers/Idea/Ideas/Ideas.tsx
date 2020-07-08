@@ -26,6 +26,11 @@ const publishedFilter: IdeaFilter<'status'> = {
   value: 'sprout',
 };
 
+const linkButtonStyle: React.CSSProperties = {
+  textDecoration: 'underline',
+  cursor: 'pointer',
+};
+
 const actionCreators = {
   fetchIdeas: fetchIdeasAsync.request,
 };
@@ -89,10 +94,7 @@ export const Ideas = ({ user }: IdeasProps) => {
           ) : idea instanceof Error ? (
             <Box display="flex" alignItems="center" height="100%" mx={2}>
               <Typography
-                style={{
-                  textDecoration: 'underline',
-                  cursor: 'pointer',
-                }}
+                style={linkButtonStyle}
                 onClick={() => {
                   const fetchOptions = {
                     startIndex: idea.startIndex,

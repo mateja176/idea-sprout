@@ -16,10 +16,15 @@ export const pageMargin = 3;
 export const videoMaxHeight = 720;
 
 export const starColor = '#FFB400';
+export const withStarColor = { color: starColor };
 
 export const shareIconSize = 40;
 
 export const checkWithMessageHeight = 64;
+
+export const withPointer: React.CSSProperties = {
+  cursor: 'pointer',
+};
 
 export const withEllipsis: React.CSSProperties = {
   display: 'inline-block',
