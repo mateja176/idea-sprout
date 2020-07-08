@@ -65,6 +65,8 @@ export const fetch: Epic<
               // * is when the client requests the resource while offline
               // * for the first time after bootstrapping the app
               filter((snapshots) => !!snapshots.length),
+              // * in case a single document is returned from the cache
+              filter((snapshots) => snapshots.length > 1),
               first(), // * necessary because of concatMap, without it the observable would never complete
               map((snapshots) =>
                 fetchIdeasAsync.success({
