@@ -224,15 +224,13 @@ export const IdeaOptions: React.FC<IdeaOptionsProps> = ({
           onClose={toggleReviewsOpen}
         />
       </React.Suspense>
-      <React.Suspense fallback={null}>
-        <ReviewDialog
-          user={user}
-          idea={idea}
-          ideaUrl={ideaUrl}
-          open={reviewOpen}
-          onClose={toggleReviewOpen}
-        />
-      </React.Suspense>
+      <ReviewDialog
+        user={user}
+        idea={idea}
+        ideaUrl={ideaUrl}
+        open={reviewOpen}
+        onClose={toggleReviewOpen}
+      />
       <Menu
         anchorEl={checkRef.current}
         open={checkMenu && !passedPreflightChecks}
