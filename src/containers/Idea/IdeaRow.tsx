@@ -4,6 +4,7 @@ import { IdeaOptionsWrapper } from 'components';
 import { IdeaOptions } from 'containers';
 import 'firebase/firestore';
 import { IdeaModel, User } from 'models';
+import { equals } from 'ramda';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useIdeaUrl } from 'services';
@@ -14,7 +15,7 @@ export interface IdeaRowProps extends Pick<User, 'email' | 'uid'> {
   idea: IdeaModel;
 }
 
-export const IdeaRow: React.FC<IdeaRowProps> = ({ idea, email, uid }) => {
+export const IdeaRow = React.memo<IdeaRowProps>(({ idea, email, uid }) => {
   const history = useHistory();
 
   const ideaUrl = useIdeaUrl(idea.id);
@@ -50,4 +51,4 @@ export const IdeaRow: React.FC<IdeaRowProps> = ({ idea, email, uid }) => {
       </IdeaOptionsWrapper>
     </Box>
   );
-};
+}, equals);

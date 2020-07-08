@@ -22,49 +22,47 @@ export interface ShareMenuProps
   shareCount: number;
 }
 
-export const ShareMenu: React.FC<ShareMenuProps> = ({
-  shareCount,
-  url,
-  ...props
-}) => {
-  const [menuOpen, { toggle }] = useBoolean();
+export const ShareMenu = React.memo<ShareMenuProps>(
+  ({ shareCount, url, ...props }) => {
+    const [menuOpen, { toggle }] = useBoolean();
 
-  const buttonRef = React.useRef<HTMLButtonElement | null>(null);
+    const buttonRef = React.useRef<HTMLButtonElement | null>(null);
 
-  return (
-    <>
-      <Tooltip placement="top" title={getShareCountHelperText(shareCount)}>
-        <Button
-          {...props}
-          ref={buttonRef}
-          onClick={() => {
+    return (
+      <>
+        <Tooltip placement="top" title={getShareCountHelperText(shareCount)}>
+          <Button
+            {...props}
+            ref={buttonRef}
+            onClick={() => {
+              toggle();
+            }}
+            endIcon={<Share fontSize="small" color="primary" />}
+          >
+            {shareCount}
+          </Button>
+        </Tooltip>
+        <Menu
+          anchorEl={buttonRef.current}
+          open={menuOpen}
+          onClose={() => {
             toggle();
           }}
-          endIcon={<Share fontSize="small" color="primary" />}
         >
-          {shareCount}
-        </Button>
-      </Tooltip>
-      <Menu
-        anchorEl={buttonRef.current}
-        open={menuOpen}
-        onClose={() => {
-          toggle();
-        }}
-      >
-        {shareOptions.map((config) => (
-          <MenuItem key={config.label}>
-            <config.Button key={config.label} url={url}>
-              <Box display="flex" alignItems="center" my={'3px'}>
-                <ListItemIcon>
-                  <config.Icon size={shareIconSize} />
-                </ListItemIcon>
-                <ListItemText>{config.label}</ListItemText>
-              </Box>
-            </config.Button>
-          </MenuItem>
-        ))}
-      </Menu>
-    </>
-  );
-};
+          {shareOptions.map((config) => (
+            <MenuItem key={config.label}>
+              <config.Button key={config.label} url={url}>
+                <Box display="flex" alignItems="center" my={'3px'}>
+                  <ListItemIcon>
+                    <config.Icon size={shareIconSize} />
+                  </ListItemIcon>
+                  <ListItemText>{config.label}</ListItemText>
+                </Box>
+              </config.Button>
+            </MenuItem>
+          ))}
+        </Menu>
+      </>
+    );
+  },
+);

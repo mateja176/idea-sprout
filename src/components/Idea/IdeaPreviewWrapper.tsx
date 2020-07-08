@@ -2,10 +2,10 @@ import { Box } from '@material-ui/core';
 import React from 'react';
 import { ideaListItemHeight } from 'styles';
 
-export const IdeaPreviewWrapper: React.FC<{ url?: string }> = ({
-  url,
-  children,
-}) => {
+export const IdeaPreviewWrapper = React.memo<{
+  url?: string;
+  children?: React.ReactNode;
+}>(({ url, children }) => {
   return (
     <Box
       borderRadius={5}
@@ -21,4 +21,4 @@ export const IdeaPreviewWrapper: React.FC<{ url?: string }> = ({
       {!url && children}
     </Box>
   );
-};
+});
