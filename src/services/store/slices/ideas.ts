@@ -1,6 +1,6 @@
 import { FirebaseError } from 'firebase/app';
-import { IdeaModel, IdeaSprout, IdeasState, WithId } from 'models';
-import { range } from 'ramda';
+import { IdeaModel, IdeaSprout, IdeasState, User, WithId } from 'models';
+import { pipe, range } from 'ramda';
 import { IndexRange } from 'react-virtualized';
 import { createSelector } from 'reselect';
 import {
@@ -157,3 +157,12 @@ export const selectIdeas = createSelector(
   selectIdeasSlice,
   ({ ideas }) => ideas,
 );
+
+export const selectMyIdeas = (email: User['email']) =>
+  pipe(
+    selectIdeas,
+    (ideas) =>
+      ideas.filter(
+        (idea) => isIdea(idea) && idea.author === email,
+      ) as IdeaSprout[],
+  );

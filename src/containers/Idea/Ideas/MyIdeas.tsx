@@ -1,10 +1,11 @@
 import { Box, Typography } from '@material-ui/core';
 import { IdeaModel, User } from 'models';
 import React from 'react';
-import { useFirestoreCollection, useIdeasRef } from 'services';
+import { useFirestoreCollection, useIdeasRef, selectMyIdeas } from 'services';
 import { CreateIdea } from '../CreateIdea';
 import { IdeaRow } from '../IdeaRow';
 import { IdeasSkeleton } from './IdeasSkeleton';
+import { useSelector } from 'react-redux';
 
 export const MyEmptyIdeas = ({ user }: { user: User }) => (
   <Box m={3}>
@@ -22,10 +23,15 @@ export const MyEmptyIdeas = ({ user }: { user: User }) => (
 );
 
 export const MyIdeas: React.FC<{ user: User }> = ({ user }) => {
+  const myIdeas = useSelector(selectMyIdeas(user.email));
+
   const ideas = useFirestoreCollection<IdeaModel>(
     useIdeasRef()
       .where('author', '==', user.email)
       .orderBy('createdAt', 'desc'),
+    {
+      startWithValue: myIdeas.length ? myIdeas : undefined,
+    },
   );
 
   return (
