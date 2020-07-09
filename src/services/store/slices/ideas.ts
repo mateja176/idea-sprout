@@ -38,12 +38,12 @@ export const createUpdateIdeas = createAction(
 export type CreateUpdateIdeas = typeof createUpdateIdeas;
 export type UpdateIdeasAction = ReturnType<CreateUpdateIdeas>;
 
-export const createSetIdea = createAction(
+export const createUpdateIdea = createAction(
   'ideas/setOne',
   (payload: Partial<IdeaSprout> & WithId) => payload,
 )();
-export type CreateSetIdea = typeof createSetIdea;
-export type SetIdeaAction = ReturnType<CreateSetIdea>;
+export type CreateUpdateIdea = typeof createUpdateIdea;
+export type SetIdeaAction = ReturnType<CreateUpdateIdea>;
 
 export const createAddIdea = createAction(
   'ideas/add',
@@ -90,7 +90,7 @@ export const ideasSlice = (
   switch (action.type) {
     case getType(createSetIdeas):
       return { ...state, ideas: action.payload.ideas };
-    case getType(createSetIdea):
+    case getType(createUpdateIdea):
       return {
         ...state,
         ideas: state.ideas.map((idea) =>

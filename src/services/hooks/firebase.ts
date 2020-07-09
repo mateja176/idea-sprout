@@ -12,7 +12,7 @@ import {
   useUser as useFirebaseUser,
 } from 'reactfire';
 import { createQueueSnackbar } from 'services';
-import { createSetIdea } from 'services/store';
+import { createUpdateIdea } from 'services/store';
 import {
   convertFirestoreCollection,
   convertFirestoreDocument,
@@ -89,9 +89,9 @@ export const useReviewSubmit = ({
   idea: IdeaModel;
   currentReview?: Review;
 }) => {
-  const { queueSnackbar, setIdea } = useActions({
+  const { queueSnackbar, updateIdea } = useActions({
     queueSnackbar: createQueueSnackbar,
-    setIdea: createSetIdea,
+    updateIdea: createUpdateIdea,
   });
 
   const user = useSignedInUser();
@@ -130,7 +130,7 @@ export const useReviewSubmit = ({
       })
       .commit()
       .then(() => {
-        setIdea({
+        updateIdea({
           id: idea.id,
           rating: {
             count,
@@ -149,7 +149,7 @@ export const useReviewSubmit = ({
 };
 
 export const useShareIdea = (idea: IdeaModel) => {
-  const { setIdea } = useActions({ setIdea: createSetIdea });
+  const { updateIdea } = useActions({ updateIdea: createUpdateIdea });
 
   const user = useSignedInUser();
 
@@ -164,7 +164,7 @@ export const useShareIdea = (idea: IdeaModel) => {
 
     return () => {
       return ideaRef.update(withSharedBy).then(() => {
-        setIdea({ id: idea.id, ...withSharedBy });
+        updateIdea({ id: idea.id, ...withSharedBy });
       });
     };
   }

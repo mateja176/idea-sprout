@@ -3,11 +3,12 @@ import { KeyboardArrowLeft } from '@material-ui/icons';
 import { IdeaOptionsWrapper } from 'components';
 import { Idea } from 'containers';
 import 'firebase/firestore';
-import { IdeaModel } from 'models';
+import { IdeaModel, IdeaSprout } from 'models';
 import React from 'react';
 import { Redirect, useHistory } from 'react-router-dom';
 import {
   createQueueSnackbar,
+  createUpdateIdea,
   useActions,
   useFirestoreDoc,
   useIdeasRef,
@@ -27,7 +28,10 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({
   id,
   initialIdea,
 }) => {
-  const { queueSnackbar } = useActions({ queueSnackbar: createQueueSnackbar });
+  const { queueSnackbar, updateIdea } = useActions({
+    queueSnackbar: createQueueSnackbar,
+    updateIdea: createUpdateIdea,
+  });
 
   const history = useHistory();
 
@@ -41,13 +45,17 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({
 
   const ideaRef = useIdeasRef().doc(id);
 
-  const updateIdea: IdeaProps['update'] = (partialIdea) => {
+  const update: IdeaProps['update'] = (partialIdea) => {
     return ideaRef.update(partialIdea).then(() => {
       queueSnackbar({
         severity: 'success',
         message: 'Update successful',
         autoHideDuration: 2000,
       });
+
+      if (idea?.status === 'sprout') {
+        updateIdea({ id, ...(partialIdea as Partial<IdeaSprout>) });
+      }
     });
   };
 
@@ -73,7 +81,7 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({
           )}
         />
       </IdeaOptionsWrapper>
-      <Idea user={user} idea={idea} update={updateIdea} />
+      <Idea user={user} idea={idea} update={update} />
     </Box>
   ) : (
     <Redirect to={absolutePrivateRoute.ideas.path} />
