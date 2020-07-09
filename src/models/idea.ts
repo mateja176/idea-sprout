@@ -25,6 +25,7 @@ export type SetCheck = (
 export const ideaStatuses = ['seed', 'sprout', 'bloom', 'shrivel'] as const;
 export type IdeaStatuses = typeof ideaStatuses;
 export type IdeaStatus = IdeaStatuses[number];
+export type IdeaStatusRecord = { [key in IdeaStatus]: key };
 
 export interface FileDimensions {
   width: number;
@@ -139,6 +140,10 @@ export class IdeaBatchError extends Error
   }
 }
 
+export type IdeaSprout = Omit<IdeaModel, 'status'> & {
+  status: IdeaStatusRecord['sprout'];
+};
+
 export interface IdeasState {
-  ideas: Array<'loading' | IdeaModel | IdeaBatchError | undefined>;
+  ideas: Array<'loading' | IdeaSprout | IdeaBatchError | undefined>;
 }

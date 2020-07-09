@@ -1,5 +1,5 @@
 import { FirebaseError } from 'firebase/app';
-import { IdeaModel, IdeasState, RawIdea, WithId } from 'models';
+import { IdeaModel, IdeaSprout, IdeasState, WithId } from 'models';
 import { range } from 'ramda';
 import { IndexRange } from 'react-virtualized';
 import { createSelector } from 'reselect';
@@ -9,8 +9,8 @@ import {
   createAsyncAction,
   getType,
 } from 'typesafe-actions';
-import { FetchIdeasOptions } from '../thunks';
 import { isIdea } from 'utils';
+import { FetchIdeasOptions } from '../thunks';
 
 export const initialIdeasState: IdeasState = {
   ideas: [],
@@ -22,13 +22,6 @@ export const createSetIdeas = createAction(
 )();
 export type CreateSetIdeas = typeof createSetIdeas;
 export type SetIdeasAction = ReturnType<CreateSetIdeas>;
-
-export const createSetIdea = createAction(
-  'ideas/setOne',
-  (payload: WithId & Partial<RawIdea>) => payload,
-)();
-export type CreateSetIdea = typeof createSetIdea;
-export type SetIdeaAction = ReturnType<CreateSetIdea>;
 
 export const createConcatIdeas = createAction(
   'ideas/concat',
@@ -44,6 +37,27 @@ export const createUpdateIdeas = createAction(
 )();
 export type CreateUpdateIdeas = typeof createUpdateIdeas;
 export type UpdateIdeasAction = ReturnType<CreateUpdateIdeas>;
+
+export const createSetIdea = createAction(
+  'ideas/setOne',
+  (payload: Partial<IdeaSprout> & WithId) => payload,
+)();
+export type CreateSetIdea = typeof createSetIdea;
+export type SetIdeaAction = ReturnType<CreateSetIdea>;
+
+export const createAddIdea = createAction(
+  'ideas/add',
+  (payload: IdeaSprout) => payload,
+)();
+export type CreateAddIdea = typeof createAddIdea;
+export type AddIdeaAction = ReturnType<CreateAddIdea>;
+
+export const createDeleteIdea = createAction(
+  'ideas/delete',
+  (payload: WithId) => payload,
+)();
+export type CreateDeleteIdea = typeof createDeleteIdea;
+export type DeleteIdeaAction = ReturnType<CreateDeleteIdea>;
 
 export const fetchIdeasAsync = createAsyncAction(
   'ideas/fetch/request',
@@ -63,8 +77,10 @@ export type FetchIdeasAction = ActionType<FetchIdeasAsync>;
 export type IdeasAction =
   | UpdateIdeasAction
   | SetIdeasAction
-  | SetIdeaAction
   | ConcatIdeasAction
+  | SetIdeaAction
+  | AddIdeaAction
+  | DeleteIdeaAction
   | FetchIdeasAction;
 
 export const ideasSlice = (
@@ -81,6 +97,24 @@ export const ideasSlice = (
           isIdea(idea) && idea.id === action.payload.id
             ? { ...idea, ...action.payload }
             : idea,
+        ),
+      };
+    case getType(createAddIdea):
+      return {
+        ...state,
+        ideas: [action.payload, ...state.ideas].sort((a, b) =>
+          !isIdea(a) || !isIdea(b)
+            ? 0
+            : a.createdAt.toMillis() > b.createdAt.toMillis()
+            ? -1
+            : 1,
+        ),
+      };
+    case getType(createDeleteIdea):
+      return {
+        ...state,
+        ideas: state.ideas.filter(
+          (idea) => !isIdea(idea) || idea.id !== action.payload.id,
         ),
       };
     case getType(fetchIdeasAsync.request):

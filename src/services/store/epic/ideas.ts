@@ -1,6 +1,6 @@
 import firebase, { FirebaseError } from 'firebase/app';
 import 'firebase/firestore';
-import { IdeaModel } from 'models';
+import { IdeaSprout } from 'models';
 import { findLast } from 'ramda';
 import { Epic, ofType } from 'redux-observable';
 import { defer, of } from 'rxjs';
@@ -59,7 +59,7 @@ export const fetch: Epic<
                 fetchIdeasAsync.success({
                   startIndex,
                   ideas: docs.map((doc) =>
-                    convertFirestoreDocument<IdeaModel>(doc),
+                    convertFirestoreDocument<IdeaSprout>(doc),
                   ),
                 }),
               ),

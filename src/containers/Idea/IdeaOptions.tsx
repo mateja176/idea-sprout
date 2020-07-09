@@ -14,6 +14,10 @@ import { equals } from 'ramda';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import {
+  createAddIdea,
+  createDeleteIdea,
+  createQueueSnackbar,
+  useActions,
   useIdeaOptionButtonStyle,
   useIdeasRef,
   useUpdateWithCount,
@@ -46,6 +50,12 @@ const textSectionStyle: React.CSSProperties = {
 
 export const IdeaOptions = React.memo<IdeaOptionsProps>(
   ({ email, uid, idea, ideaUrl, NavigationButton }) => {
+    const { addIdea, deleteIdea, queueSnackbar } = useActions({
+      addIdea: createAddIdea,
+      deleteIdea: createDeleteIdea,
+      queueSnackbar: createQueueSnackbar,
+    });
+
     const theme = useTheme();
 
     const history = useHistory();
@@ -70,13 +80,36 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
 
     const [checkMenuOpen, setCheckMenuOpen] = useBoolean(false);
 
+    const [statusPending, setStatusPending] = useBoolean(false);
+
     const publish = React.useCallback(() => {
-      updateWithCount({ count: 1, status: 'sprout' });
-    }, [updateWithCount]);
+      setStatusPending.setTrue();
+      const withStatus = { status: 'sprout' } as const;
+      updateWithCount({ count: 1, ...withStatus })
+        .then(() => {
+          addIdea({ ...idea, ...withStatus });
+        })
+        .then(() => {
+          queueSnackbar({
+            severity: 'success',
+            message: 'Idea published!',
+          });
+        });
+    }, [updateWithCount, addIdea, idea, setStatusPending, queueSnackbar]);
 
     const unpublish = React.useCallback(() => {
-      updateWithCount({ count: -1, status: 'seed' });
-    }, [updateWithCount]);
+      setStatusPending.setTrue();
+      updateWithCount({ count: -1, status: 'seed' })
+        .then(() => {
+          deleteIdea({ id: idea.id });
+        })
+        .then(() => {
+          queueSnackbar({
+            severity: 'success',
+            message: 'Idea unpublished',
+          });
+        });
+    }, [updateWithCount, deleteIdea, idea.id, setStatusPending, queueSnackbar]);
 
     const setCheck: SetCheck = React.useCallback(
       (name) => (_, value) => {
@@ -176,16 +209,34 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
                 <Box width={'50%'} height={'100%'} borderRight={buttonBorder}>
                   {isAuthor ? (
                     idea.status === 'sprout' ? (
-                      <Tooltip placement={'top'} title={'Unpublish'}>
-                        <Button style={buttonStyle} onClick={unpublish}>
-                          <CloudOff />
-                        </Button>
+                      <Tooltip
+                        placement={'top'}
+                        title={statusPending ? 'Update Pending' : 'Unpublish'}
+                      >
+                        <span>
+                          <Button
+                            disabled={statusPending}
+                            style={buttonStyle}
+                            onClick={unpublish}
+                          >
+                            <CloudOff />
+                          </Button>
+                        </span>
                       </Tooltip>
                     ) : passedPreflightChecks ? (
-                      <Tooltip placement={'top'} title={'Publish'}>
-                        <Button style={buttonStyle} onClick={publish}>
-                          <CloudUpload />
-                        </Button>
+                      <Tooltip
+                        placement={'top'}
+                        title={statusPending ? 'Update Pending' : 'Publish'}
+                      >
+                        <span>
+                          <Button
+                            disabled={statusPending}
+                            style={buttonStyle}
+                            onClick={publish}
+                          >
+                            <CloudUpload />
+                          </Button>
+                        </span>
                       </Tooltip>
                     ) : (
                       <Tooltip placement={'top'} title={'Preflight check'}>

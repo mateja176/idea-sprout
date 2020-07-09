@@ -1,6 +1,6 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
-import { IdeaBatchError, IdeaFilter, IdeaModel } from 'models';
+import { IdeaBatchError, IdeaFilter, IdeaModel, IdeaSprout } from 'models';
 import { last, range } from 'ramda';
 import { IndexRange } from 'react-virtualized';
 import { Dispatch } from 'redux';
@@ -53,7 +53,7 @@ const handleGetIdeasSuccess = ({
   dispatch,
   startIndex,
   stopIndex,
-}: IndexRange & WithDispatch & WithGetState) => (ideas: IdeaModel[]) => {
+}: IndexRange & WithDispatch & WithGetState) => (ideas: IdeaSprout[]) => {
   return dispatch(createUpdateIdeas({ startIndex, ideas }));
 };
 
@@ -116,7 +116,7 @@ export const createFetchIdeas = <Key extends keyof IdeaModel>({
     .limit(limit)
     .get()
     .then(interceptGetIdeasError)
-    .then((snapshot) => convertFirestoreCollection<IdeaModel>(snapshot))
+    .then((snapshot) => convertFirestoreCollection<IdeaSprout>(snapshot))
     .then(handleGetIdeasSuccess({ dispatch, getState, startIndex, stopIndex }))
     .catch(
       handleGetIdeasFailure({
