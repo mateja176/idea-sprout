@@ -36,8 +36,7 @@ import {
   getFileNames,
   getFormIdea,
 } from 'utils';
-import { ExpectationsCheck } from '../ExpectationsCheck';
-import { NicheCheck } from '../NicheCheck';
+import { ExpectationsCheck, NicheCheck } from '../Check';
 
 export interface IdeaFormProps {
   idea: IdeaModel;

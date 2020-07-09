@@ -21,7 +21,7 @@ import {
 import { breakWordStyle, withPointer, withStarColor } from 'styles';
 import urljoin from 'url-join';
 import { absolutePrivateRoute, getRatingHelperText } from 'utils';
-import { CheckMenu } from './CheckMenu';
+import { CheckMenu } from './Check';
 import { ReviewDialog, ReviewsDialog } from './Review';
 
 export interface IdeaOptionsProps extends Pick<User, 'email' | 'uid'> {

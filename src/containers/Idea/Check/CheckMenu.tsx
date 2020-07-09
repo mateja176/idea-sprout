@@ -23,10 +23,10 @@ export const CheckMenu = React.forwardRef<
       onClose={onClose}
     >
       {openWithFallback && [
-        <MenuItem>
+        <MenuItem key={'niche'}>
           <NicheCheck checked={checks.niche} onChange={setCheck('niche')} />
         </MenuItem>,
-        <MenuItem>
+        <MenuItem key={'expectations'}>
           <ExpectationsCheck
             checked={checks.expectations}
             onChange={setCheck('expectations')}
