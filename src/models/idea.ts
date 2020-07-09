@@ -1,3 +1,4 @@
+import { CheckboxProps, FormControlProps } from '@material-ui/core';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import { IndexRange } from 'react-virtualized';
@@ -8,6 +9,18 @@ import { WithAuthor, WithId } from './models';
 export const checkNames = ['niche', 'expectations'] as const;
 export type CheckNames = typeof checkNames;
 export type CheckName = CheckNames[number];
+
+export interface CheckProps
+  extends Pick<FormControlProps, 'disabled'>,
+    Pick<CheckboxProps, 'checked' | 'onChange' | 'name' | 'onBlur'>,
+    Pick<React.CSSProperties, 'height'> {
+  label: string;
+  description: React.ReactNode;
+  errorMessage?: string;
+}
+export type SetCheck = (
+  name: keyof IdeaModel['checks'],
+) => CheckProps['onChange'];
 
 export const ideaStatuses = ['seed', 'sprout', 'bloom', 'shrivel'] as const;
 export type IdeaStatuses = typeof ideaStatuses;

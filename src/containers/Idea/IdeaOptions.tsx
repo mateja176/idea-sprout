@@ -1,11 +1,4 @@
-import {
-  Box,
-  Button,
-  Menu,
-  MenuItem,
-  Tooltip,
-  useTheme,
-} from '@material-ui/core';
+import { Box, Button, Tooltip, useTheme } from '@material-ui/core';
 import {
   CheckBoxOutlineBlank,
   CloudOff,
@@ -15,8 +8,8 @@ import {
 } from '@material-ui/icons';
 import { useBoolean } from 'ahooks';
 import { IdeaPreviewWrapper } from 'components';
-import { CheckProps, IdeaImagePreview, ShareMenu } from 'containers';
-import { IdeaModel, User } from 'models';
+import { IdeaImagePreview, ShareMenu } from 'containers';
+import { IdeaModel, SetCheck, User } from 'models';
 import { equals } from 'ramda';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
@@ -28,8 +21,7 @@ import {
 import { breakWordStyle, withPointer, withStarColor } from 'styles';
 import urljoin from 'url-join';
 import { absolutePrivateRoute, getRatingHelperText } from 'utils';
-import { ExpectationsCheck } from './ExpectationsCheck';
-import { NicheCheck } from './NicheCheck';
+import { CheckMenu } from './CheckMenu';
 import { ReviewDialog, ReviewsDialog } from './Review';
 
 export interface IdeaOptionsProps extends Pick<User, 'email' | 'uid'> {
@@ -76,7 +68,7 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
       setReviewsOpen.toggle();
     };
 
-    const [checkMenu, setCheckMenu] = useBoolean(false);
+    const [checkMenuOpen, setCheckMenuOpen] = useBoolean(false);
 
     const publish = React.useCallback(() => {
       updateWithCount({ count: 1, status: 'sprout' });
@@ -86,11 +78,8 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
       updateWithCount({ count: -1, status: 'seed' });
     }, [updateWithCount]);
 
-    const setCheck = React.useCallback(
-      (name: keyof IdeaModel['checks']): CheckProps['onChange'] => (
-        _,
-        value,
-      ) => {
+    const setCheck: SetCheck = React.useCallback(
+      (name) => (_, value) => {
         const withChecks: Pick<IdeaModel, 'checks'> = {
           checks: {
             ...idea.checks,
@@ -204,7 +193,7 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
                           ref={checkRef}
                           style={buttonStyle}
                           onClick={() => {
-                            setCheckMenu.toggle();
+                            setCheckMenuOpen.toggle();
                           }}
                         >
                           <CheckBoxOutlineBlank />
@@ -241,24 +230,15 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
           open={reviewOpen}
           onClose={toggleReviewOpen}
         />
-        <Menu
-          anchorEl={checkRef.current}
-          open={checkMenu && !passedPreflightChecks}
-          onClose={setCheckMenu.setFalse}
-        >
-          <MenuItem>
-            <NicheCheck
-              checked={idea.checks.niche}
-              onChange={setCheck('niche')}
-            />
-          </MenuItem>
-          <MenuItem>
-            <ExpectationsCheck
-              checked={idea.checks.expectations}
-              onChange={setCheck('expectations')}
-            />
-          </MenuItem>
-        </Menu>
+        {!passedPreflightChecks && (
+          <CheckMenu
+            ref={checkRef}
+            open={checkMenuOpen}
+            onClose={setCheckMenuOpen.setFalse}
+            checks={idea.checks}
+            setCheck={setCheck}
+          />
+        )}
       </>
     );
   },

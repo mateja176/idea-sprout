@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   Checkbox,
-  CheckboxProps,
   Dialog,
   DialogActions,
   DialogContent,
@@ -10,23 +9,14 @@ import {
   DialogTitle,
   FormControl,
   FormControlLabel,
-  FormControlProps,
   FormHelperText,
   IconButton,
   Tooltip,
   Typography,
 } from '@material-ui/core';
 import { Info } from '@material-ui/icons';
+import { CheckProps } from 'models';
 import React from 'react';
-
-export interface CheckProps
-  extends Pick<FormControlProps, 'disabled'>,
-    Pick<CheckboxProps, 'checked' | 'onChange' | 'name' | 'onBlur'>,
-    Pick<React.CSSProperties, 'height'> {
-  label: string;
-  description: React.ReactNode;
-  errorMessage?: string;
-}
 
 export const Check: React.FC<CheckProps> = ({
   label,

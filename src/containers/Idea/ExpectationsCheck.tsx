@@ -1,5 +1,6 @@
 import { Box } from '@material-ui/core';
-import { Check, CheckProps } from 'containers';
+import { Check } from 'containers';
+import { CheckProps } from 'models';
 import React from 'react';
 
 export interface ExpectationsCheckProps
