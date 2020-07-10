@@ -119,9 +119,12 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
 
     const isAuthor = email === idea.author;
 
-    const problemSolutionStyle: React.CSSProperties = {
-      color: theme.palette.text.secondary,
-    };
+    const problemSolutionStyle: React.CSSProperties = React.useMemo(
+      () => ({
+        color: theme.palette.text.secondary,
+      }),
+      [theme],
+    );
 
     const ratingTooltip = React.useMemo(
       () => getRatingHelperText(idea.rating),

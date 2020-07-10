@@ -1,15 +1,19 @@
 import { useTheme } from '@material-ui/core';
+import { useMemo } from 'react';
 
 export const useIdeaOptionButtonStyle = () => {
   const theme = useTheme();
 
-  return {
-    padding: 0,
-    height: '100%',
-    width: '100%',
-    minWidth: 'auto',
-    color: theme.palette.action.active,
-  };
+  return useMemo(
+    () => ({
+      padding: 0,
+      height: '100%',
+      width: '100%',
+      minWidth: 'auto',
+      color: theme.palette.action.active,
+    }),
+    [theme],
+  );
 };
 
 export const useIdeaOptionsButtonBorder = () => {

@@ -27,15 +27,33 @@ export const ShareMenu = React.memo<ShareMenuProps>(
 
     const buttonRef = React.useRef<HTMLButtonElement | null>(null);
 
+    const handleClick = React.useCallback(() => {
+      toggle();
+    }, [toggle]);
+
+    const ShareMenuItem = React.useCallback(
+      (config) => (
+        <MenuItem key={config.label}>
+          <config.Button key={config.label} url={url}>
+            <Box display="flex" alignItems="center" my={'3px'}>
+              <ListItemIcon>
+                <config.Icon size={shareIconSize} />
+              </ListItemIcon>
+              <ListItemText>{config.label}</ListItemText>
+            </Box>
+          </config.Button>
+        </MenuItem>
+      ),
+      [url],
+    );
+
     return (
       <>
         <Button
           {...props}
           title={getShareCountHelperText(shareCount)}
           ref={buttonRef}
-          onClick={() => {
-            toggle();
-          }}
+          onClick={handleClick}
           endIcon={<Share fontSize="small" color="primary" />}
         >
           {shareCount}
@@ -43,22 +61,9 @@ export const ShareMenu = React.memo<ShareMenuProps>(
         <Menu
           anchorEl={buttonRef.current}
           open={menuOpen}
-          onClose={() => {
-            toggle();
-          }}
+          onClose={handleClick}
         >
-          {shareOptions.map((config) => (
-            <MenuItem key={config.label}>
-              <config.Button key={config.label} url={url}>
-                <Box display="flex" alignItems="center" my={'3px'}>
-                  <ListItemIcon>
-                    <config.Icon size={shareIconSize} />
-                  </ListItemIcon>
-                  <ListItemText>{config.label}</ListItemText>
-                </Box>
-              </config.Button>
-            </MenuItem>
-          ))}
+          {shareOptions.map(ShareMenuItem)}
         </Menu>
       </>
     );

@@ -19,21 +19,19 @@ export const IdeaRow = React.memo<IdeaRowProps>(({ idea, email, uid }) => {
 
   const ideaUrl = useIdeaUrl(idea.id);
 
+  const openInFull = React.useCallback(() => {
+    history.push(urljoin(absolutePrivateRoute.ideas.path, idea.id), {
+      idea,
+    });
+  }, [history, idea]);
+
   const NavigationButton = React.useCallback(
     ({ style }) => (
-      <Button
-        title={'Open in full'}
-        style={style}
-        onClick={() => {
-          history.push(urljoin(absolutePrivateRoute.ideas.path, idea.id), {
-            idea,
-          });
-        }}
-      >
+      <Button title={'Open in full'} style={style} onClick={openInFull}>
         <OpenInBrowser />
       </Button>
     ),
-    [history, idea],
+    [openInFull],
   );
 
   return (

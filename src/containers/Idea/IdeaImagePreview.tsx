@@ -10,12 +10,21 @@ export interface IdeaImagePreviewProps {
 
 export const IdeaImagePreview = React.memo<IdeaImagePreviewProps>(
   ({ path }) => {
-    const [extension, name, ...parts] = path.split('.').reverse();
-    const previewPath = [
-      ...parts.reverse().concat(name.concat('_200x100')),
-      extension,
-    ].join('.');
-    const ref = useStorage().ref(previewPath);
+    const storage = useStorage();
+
+    const previewPath = React.useMemo(() => {
+      const [extension, name, ...parts] = path.split('.').reverse();
+      return [
+        ...parts.reverse().concat(name.concat('_200x100')),
+        extension,
+      ].join('.');
+    }, [path]);
+
+    const ref = React.useMemo(() => storage.ref(previewPath), [
+      previewPath,
+      storage,
+    ]);
+
     const url = useStorageDownloadUrl(ref);
 
     return (

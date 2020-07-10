@@ -3,7 +3,7 @@ import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/storage';
 import { IdeaModel, RawIdea, Review, User, WithCount, WithId } from 'models';
-import { useMemo } from 'react';
+import { useMemo, useCallback } from 'react';
 import {
   ReactFireOptions,
   useAuth as useFirebaseAuth,
@@ -33,11 +33,17 @@ export const useSignedInUser = (options?: ReactFireOptions<User>) =>
   useFirebaseUser<User>(firebase.auth(), options);
 
 export const useCountsRef = () => {
-  return firebase.firestore().collection(firestoreCollections.counts.path);
+  return useMemo(
+    () => firebase.firestore().collection(firestoreCollections.counts.path),
+    [],
+  );
 };
 
 export const useIdeasCountRef = () => {
-  return useCountsRef().doc(firestoreCollections.ideas.path);
+  const countsRef = useCountsRef();
+  return useMemo(() => countsRef.doc(firestoreCollections.ideas.path), [
+    countsRef,
+  ]);
 };
 
 export const useIdeasRef = () => {
@@ -182,17 +188,22 @@ export const useStorageDownloadUrl: typeof useFirebaseStorageDownloadUrl = (
 };
 
 export const useUpdateWithCount = (id: IdeaModel['id']) => {
-  const ideaRef = useIdeasRef().doc(id);
+  const ideasRef = useIdeasRef();
 
   const ideasCountRef = useIdeasCountRef();
 
-  const batch = firebase.firestore().batch();
-
-  return ({ count, ...partialIdea }: WithCount & Partial<RawIdea>) =>
-    batch
-      .update(ideaRef, partialIdea)
-      .update(ideasCountRef, {
-        count: firebase.firestore.FieldValue.increment(count),
-      })
-      .commit();
+  return useCallback(
+    ({ count, ...partialIdea }: WithCount & Partial<RawIdea>) => {
+      const ideaRef = ideasRef.doc(id);
+      return firebase
+        .firestore()
+        .batch()
+        .update(ideaRef, partialIdea)
+        .update(ideasCountRef, {
+          count: firebase.firestore.FieldValue.increment(count),
+        })
+        .commit();
+    },
+    [id, ideasRef, ideasCountRef],
+  );
 };

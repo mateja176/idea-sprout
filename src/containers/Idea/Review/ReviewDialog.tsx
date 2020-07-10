@@ -23,12 +23,14 @@ export const ReviewDialog: React.FC<ReviewDialogProps> = ({
   } = props;
   const openWithFallback = useValueWithFallback(open, { timeoutMs: 500 });
 
+  const handleClose = React.useCallback(() => {
+    onClose();
+  }, [onClose]);
+
   return (
     <DraggableDialog
       open={open}
-      onClose={() => {
-        onClose();
-      }}
+      onClose={handleClose}
       dialogTitle={
         <>
           Review:&nbsp;<i style={withEllipsis}>{name}</i>
