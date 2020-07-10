@@ -1,4 +1,4 @@
-import { Box, Button, Tooltip, useTheme } from '@material-ui/core';
+import { Button, Tooltip, useTheme } from '@material-ui/core';
 import {
   CheckBoxOutlineBlank,
   CloudOff,
@@ -19,7 +19,6 @@ import {
   createQueueSnackbar,
   useActions,
   useIdeaOptionButtonStyle,
-  useIdeaOptionsButtonBorder,
   useIdeasRef,
   useUpdateWithCount,
 } from 'services';
@@ -58,14 +57,14 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
     const updateWithCount = useUpdateWithCount(idea.id);
 
     const [reviewOpen, setReviewOpen] = useBoolean();
-    const toggleReviewOpen = () => {
+    const toggleReviewOpen = React.useCallback(() => {
       setReviewOpen.toggle();
-    };
+    }, [setReviewOpen]);
 
     const [reviewsOpen, setReviewsOpen] = useBoolean();
-    const toggleReviewsOpen = () => {
+    const toggleReviewsOpen = React.useCallback(() => {
       setReviewsOpen.toggle();
-    };
+    }, [setReviewsOpen]);
 
     const [checkMenuOpen, setCheckMenuOpen] = useBoolean(false);
 
@@ -120,8 +119,6 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
 
     const isAuthor = email === idea.author;
 
-    const buttonBorder = useIdeaOptionsButtonBorder();
-
     const problemSolutionStyle: React.CSSProperties = {
       color: theme.palette.text.secondary,
     };
@@ -131,13 +128,99 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
       [idea.rating],
     );
 
-    const stopPropagation: React.MouseEventHandler = (e) => {
-      e.stopPropagation();
-    };
-
     const openInFull = React.useCallback(() => {
       history.push(urljoin(absolutePrivateRoute.ideas.path, idea.id));
     }, [history, idea.id]);
+
+    const options = React.useMemo(() => {
+      return {
+        share: (
+          <ShareMenu
+            style={buttonStyle}
+            shareCount={idea.sharedBy.length}
+            url={ideaUrl}
+          />
+        ),
+        rate: (
+          <Tooltip placement="top" title={ratingTooltip}>
+            <Button
+              style={buttonStyle}
+              endIcon={<StarRate style={withStarColor} />}
+              onClick={toggleReviewsOpen}
+            >
+              {idea.rating.average}
+            </Button>
+          </Tooltip>
+        ),
+        review: isAuthor ? (
+          idea.status === 'sprout' ? (
+            <Tooltip
+              placement={'top'}
+              title={statusPending ? 'Update Pending' : 'Unpublish'}
+            >
+              <span>
+                <Button
+                  disabled={statusPending}
+                  style={buttonStyle}
+                  onClick={unpublish}
+                >
+                  <CloudOff />
+                </Button>
+              </span>
+            </Tooltip>
+          ) : passedPreflightChecks ? (
+            <Tooltip
+              placement={'top'}
+              title={statusPending ? 'Update Pending' : 'Publish'}
+            >
+              <span>
+                <Button
+                  disabled={statusPending}
+                  style={buttonStyle}
+                  onClick={publish}
+                >
+                  <CloudUpload />
+                </Button>
+              </span>
+            </Tooltip>
+          ) : (
+            <Tooltip placement={'top'} title={'Preflight check'}>
+              <Button
+                ref={checkRef}
+                style={buttonStyle}
+                onClick={() => {
+                  setCheckMenuOpen.toggle();
+                }}
+              >
+                <CheckBoxOutlineBlank />
+              </Button>
+            </Tooltip>
+          )
+        ) : (
+          <Tooltip title="Review" placement="top">
+            <Button style={buttonStyle} onClick={toggleReviewOpen}>
+              <RateReview color="primary" />
+            </Button>
+          </Tooltip>
+        ),
+        navigate: <NavigationButton style={buttonStyle} />,
+      };
+    }, [
+      buttonStyle,
+      idea.rating.average,
+      idea.sharedBy.length,
+      idea.status,
+      ideaUrl,
+      isAuthor,
+      passedPreflightChecks,
+      publish,
+      unpublish,
+      ratingTooltip,
+      setCheckMenuOpen,
+      statusPending,
+      toggleReviewOpen,
+      toggleReviewsOpen,
+    ]);
 
     return (
       <>
@@ -160,101 +243,7 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
               </Tooltip>
             </>
           }
-          options={
-            <IdeaPreviewWrapper>
-              <Box
-                width={'100%'}
-                height={'100%'}
-                border={buttonBorder}
-                borderRadius={5}
-                onClick={stopPropagation}
-              >
-                <Box
-                  display="flex"
-                  width={'100%'}
-                  height={'50%'}
-                  borderBottom={buttonBorder}
-                >
-                  <Box width={'50%'} height={'100%'} borderRight={buttonBorder}>
-                    <ShareMenu
-                      style={buttonStyle}
-                      shareCount={idea.sharedBy.length}
-                      url={ideaUrl}
-                    />
-                  </Box>
-                  <Box width={'50%'} height={'100%'}>
-                    <Tooltip placement="top" title={ratingTooltip}>
-                      <Button
-                        style={buttonStyle}
-                        endIcon={<StarRate style={withStarColor} />}
-                        onClick={toggleReviewsOpen}
-                      >
-                        {idea.rating.average}
-                      </Button>
-                    </Tooltip>
-                  </Box>
-                </Box>
-                <Box display="flex" width={'100%'} height={'50%'}>
-                  <Box width={'50%'} height={'100%'} borderRight={buttonBorder}>
-                    {isAuthor ? (
-                      idea.status === 'sprout' ? (
-                        <Tooltip
-                          placement={'top'}
-                          title={statusPending ? 'Update Pending' : 'Unpublish'}
-                        >
-                          <span>
-                            <Button
-                              disabled={statusPending}
-                              style={buttonStyle}
-                              onClick={unpublish}
-                            >
-                              <CloudOff />
-                            </Button>
-                          </span>
-                        </Tooltip>
-                      ) : passedPreflightChecks ? (
-                        <Tooltip
-                          placement={'top'}
-                          title={statusPending ? 'Update Pending' : 'Publish'}
-                        >
-                          <span>
-                            <Button
-                              disabled={statusPending}
-                              style={buttonStyle}
-                              onClick={publish}
-                            >
-                              <CloudUpload />
-                            </Button>
-                          </span>
-                        </Tooltip>
-                      ) : (
-                        <Tooltip placement={'top'} title={'Preflight check'}>
-                          <Button
-                            ref={checkRef}
-                            style={buttonStyle}
-                            onClick={() => {
-                              setCheckMenuOpen.toggle();
-                            }}
-                          >
-                            <CheckBoxOutlineBlank />
-                          </Button>
-                        </Tooltip>
-                      )
-                    ) : (
-                      <Tooltip title="Review" placement="top">
-                        <Button style={buttonStyle} onClick={toggleReviewOpen}>
-                          <RateReview color="primary" />
-                        </Button>
-                      </Tooltip>
-                    )}
-                  </Box>
-                  <Box width={'50%'} height={'100%'}>
-                    <NavigationButton style={buttonStyle} />
-                  </Box>
-                </Box>
-              </Box>
-            </IdeaPreviewWrapper>
-          }
+          options={options}
         />
         <ReviewsDialog
           id={idea.id}
