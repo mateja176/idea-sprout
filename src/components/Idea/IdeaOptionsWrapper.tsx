@@ -7,18 +7,19 @@ import { IdeaPreviewWrapper } from './IdeaPreviewWrapper';
 export const IdeaOptionsWrapper = ({
   imagePreview,
   textSection,
-  options: { share, rate, review, navigate },
+  shareOption,
+  rateOption,
+  reviewOption,
+  navigateOption,
   style,
   ...props
 }: Omit<ListItemProps, 'button' | 'children'> & {
   imagePreview: React.ReactNode;
   textSection: React.ReactNode;
-  options: {
-    share: React.ReactNode;
-    rate: React.ReactNode;
-    review: React.ReactNode;
-    navigate: React.ReactNode;
-  };
+  shareOption: React.ReactNode;
+  rateOption: React.ReactNode;
+  reviewOption: React.ReactNode;
+  navigateOption: React.ReactNode;
 }) => {
   const buttonBorder = useIdeaOptionsButtonBorder();
 
@@ -56,18 +57,18 @@ export const IdeaOptionsWrapper = ({
             borderBottom={buttonBorder}
           >
             <Box width={'50%'} height={'100%'} borderRight={buttonBorder}>
-              {share}
+              {shareOption}
             </Box>
             <Box width={'50%'} height={'100%'}>
-              {rate}
+              {rateOption}
             </Box>
           </Box>
           <Box display="flex" width={'100%'} height={'50%'}>
             <Box width={'50%'} height={'100%'} borderRight={buttonBorder}>
-              {review}
+              {reviewOption}
             </Box>
             <Box width={'50%'} height={'100%'}>
-              {navigate}
+              {navigateOption}
             </Box>
           </Box>
         </Box>

@@ -22,12 +22,10 @@ export const IdeaOptionsSkeleton: React.FC = () => {
           <Skeleton />
         </Box>
       }
-      options={{
-        share: option,
-        rate: option,
-        review: option,
-        navigate: option,
-      }}
+      shareOption={option}
+      rateOption={option}
+      reviewOption={option}
+      navigateOption={option}
     />
   );
 };
