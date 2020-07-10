@@ -83,9 +83,11 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
   } = useFormik({
     validationSchema: createReviewSchema,
     initialValues,
-    onSubmit: (formValues) => {
+    onSubmit: ({ rating, ...formValues }) => {
       if (hasSharedOrDeclined) {
-        return onSubmit(formValues).then(onClose);
+        return onSubmit({ ...formValues, rating: Number(rating) }).then(
+          onClose,
+        );
       } else {
         setDoNotShareOrWarn(doNotShareWarning);
       }
