@@ -1,4 +1,4 @@
-import { Box, Button, Tooltip } from '@material-ui/core';
+import { Box, Button } from '@material-ui/core';
 import { OpenInBrowser } from '@material-ui/icons';
 import { IdeaOptions } from 'containers';
 import 'firebase/firestore';
@@ -21,18 +21,17 @@ export const IdeaRow = React.memo<IdeaRowProps>(({ idea, email, uid }) => {
 
   const NavigationButton = React.useCallback(
     ({ style }) => (
-      <Tooltip placement={'top'} title={'Open in full'}>
-        <Button
-          style={style}
-          onClick={() => {
-            history.push(urljoin(absolutePrivateRoute.ideas.path, idea.id), {
-              idea,
-            });
-          }}
-        >
-          <OpenInBrowser />
-        </Button>
-      </Tooltip>
+      <Button
+        title={'Open in full'}
+        style={style}
+        onClick={() => {
+          history.push(urljoin(absolutePrivateRoute.ideas.path, idea.id), {
+            idea,
+          });
+        }}
+      >
+        <OpenInBrowser />
+      </Button>
     ),
     [history, idea],
   );

@@ -1,4 +1,4 @@
-import { Button, Tooltip, useTheme } from '@material-ui/core';
+import { Button, useTheme } from '@material-ui/core';
 import {
   CheckBoxOutlineBlank,
   CloudOff,
@@ -144,36 +144,36 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
           }
           textSection={
             <>
-              <Tooltip placement="top" title={idea.name}>
-                <span style={ideaNameStyle}>{idea.name}</span>
-              </Tooltip>
+              <span title={idea.name} style={ideaNameStyle}>
+                {idea.name}
+              </span>
               <br />
-              <Tooltip placement="top" title={idea.problemSolution}>
-                <span style={problemSolutionStyle}>{idea.problemSolution}</span>
-              </Tooltip>
+              <span title={idea.problemSolution} style={problemSolutionStyle}>
+                {idea.problemSolution}
+              </span>
             </>
           }
-          shareOption={<ShareMenu
-            style={buttonStyle}
-            shareCount={idea.sharedBy.length}
-            url={ideaUrl}
-          />}
-          rateOption={<Tooltip placement="top" title={ratingTooltip}>
-          <Button
-            style={buttonStyle}
-            endIcon={<StarRate style={withStarColor} />}
-            onClick={toggleReviewsOpen}
-          >
-            {idea.rating.average}
-          </Button>
-        </Tooltip>}
-          reviewOption={isAuthor ? (
-            idea.status === 'sprout' ? (
-              <Tooltip
-                placement={'top'}
-                title={statusPending ? 'Update Pending' : 'Unpublish'}
-              >
-                <span>
+          shareOption={
+            <ShareMenu
+              style={buttonStyle}
+              shareCount={idea.sharedBy.length}
+              url={ideaUrl}
+            />
+          }
+          rateOption={
+            <Button
+              title={ratingTooltip}
+              style={buttonStyle}
+              endIcon={<StarRate style={withStarColor} />}
+              onClick={toggleReviewsOpen}
+            >
+              {idea.rating.average}
+            </Button>
+          }
+          reviewOption={
+            isAuthor ? (
+              idea.status === 'sprout' ? (
+                <span title={statusPending ? 'Update Pending' : 'Unpublish'}>
                   <Button
                     disabled={statusPending}
                     style={buttonStyle}
@@ -182,13 +182,8 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
                     <CloudOff />
                   </Button>
                 </span>
-              </Tooltip>
-            ) : passedPreflightChecks ? (
-              <Tooltip
-                placement={'top'}
-                title={statusPending ? 'Update Pending' : 'Publish'}
-              >
-                <span>
+              ) : passedPreflightChecks ? (
+                <span title={statusPending ? 'Update Pending' : 'Publish'}>
                   <Button
                     disabled={statusPending}
                     style={buttonStyle}
@@ -197,10 +192,9 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
                     <CloudUpload />
                   </Button>
                 </span>
-              </Tooltip>
-            ) : (
-              <Tooltip placement={'top'} title={'Preflight check'}>
+              ) : (
                 <Button
+                  title={'Preflight check'}
                   ref={checkRef}
                   style={buttonStyle}
                   onClick={() => {
@@ -209,15 +203,17 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
                 >
                   <CheckBoxOutlineBlank />
                 </Button>
-              </Tooltip>
-            )
-          ) : (
-            <Tooltip title="Review" placement="top">
-              <Button style={buttonStyle} onClick={toggleReviewOpen}>
+              )
+            ) : (
+              <Button
+                title={'Review'}
+                style={buttonStyle}
+                onClick={toggleReviewOpen}
+              >
                 <RateReview color="primary" />
               </Button>
-            </Tooltip>
-          )}
+            )
+          }
           navigateOption={<NavigationButton style={buttonStyle} />}
         />
         <ReviewsDialog

@@ -6,7 +6,6 @@ import {
   ListItemText,
   Menu,
   MenuItem,
-  Tooltip,
 } from '@material-ui/core';
 import { Share } from '@material-ui/icons';
 import { useBoolean } from 'ahooks';
@@ -30,18 +29,17 @@ export const ShareMenu = React.memo<ShareMenuProps>(
 
     return (
       <>
-        <Tooltip placement="top" title={getShareCountHelperText(shareCount)}>
-          <Button
-            {...props}
-            ref={buttonRef}
-            onClick={() => {
-              toggle();
-            }}
-            endIcon={<Share fontSize="small" color="primary" />}
-          >
-            {shareCount}
-          </Button>
-        </Tooltip>
+        <Button
+          {...props}
+          title={getShareCountHelperText(shareCount)}
+          ref={buttonRef}
+          onClick={() => {
+            toggle();
+          }}
+          endIcon={<Share fontSize="small" color="primary" />}
+        >
+          {shareCount}
+        </Button>
         <Menu
           anchorEl={buttonRef.current}
           open={menuOpen}
