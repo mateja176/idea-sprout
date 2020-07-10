@@ -45,19 +45,22 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({
 
   const ideaRef = useIdeasRef().doc(id);
 
-  const update: IdeaProps['update'] = (partialIdea) => {
-    return ideaRef.update(partialIdea).then(() => {
-      queueSnackbar({
-        severity: 'success',
-        message: 'Update successful',
-        autoHideDuration: 2000,
-      });
+  const update: IdeaProps['update'] = React.useCallback(
+    (partialIdea) => {
+      return ideaRef.update(partialIdea).then(() => {
+        queueSnackbar({
+          severity: 'success',
+          message: 'Update successful',
+          autoHideDuration: 2000,
+        });
 
-      if (idea?.status === 'sprout') {
-        updateIdea({ id, ...(partialIdea as Partial<IdeaSprout>) });
-      }
-    });
-  };
+        if (idea?.status === 'sprout') {
+          updateIdea({ id, ...(partialIdea as Partial<IdeaSprout>) });
+        }
+      });
+    },
+    [id, idea, ideaRef, queueSnackbar, updateIdea],
+  );
 
   return idea ? (
     <Box mt={pageMargin} mb={ideaMarginBottom}>

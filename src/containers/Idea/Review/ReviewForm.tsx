@@ -101,10 +101,10 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
         <Rating {...getFieldProps('rating')} precision={0.5} />
       </Box>
       <Badge
-        color={'primary'}
+        color={'secondary'}
         badgeContent={
           values.feedback.length < FeedbackLength.min
-            ? `${values.feedback.length} / ${FeedbackLength.min}`
+            ? `${FeedbackLength.min} < ${values.feedback.length}`
             : null
         }
         style={{

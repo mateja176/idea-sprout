@@ -5,8 +5,8 @@ import { last, range } from 'ramda';
 import { IndexRange } from 'react-virtualized';
 import { Dispatch } from 'redux';
 import { ThunkAction } from 'redux-thunk';
-import { getIdeasRef, interceptGetIdeasError } from 'services';
-import { convertFirestoreCollection } from 'utils';
+import { interceptGetIdeasError } from 'services';
+import { convertFirestoreCollection, firestoreCollections } from 'utils';
 import { Action, State } from '../reducer';
 import {
   createConcatIdeas,
@@ -109,7 +109,9 @@ export const createFetchIdeas = <Key extends keyof IdeaModel>({
     }),
   );
 
-  return getIdeasRef()
+  return firebase
+    .firestore()
+    .collection(firestoreCollections.ideas.path)
     .where(fieldPath, opStr, value)
     .orderBy(orderByField, directionStr)
     .startAfter(lastIdea ? (lastIdea as IdeaModel).createdAt : '')

@@ -1,9 +1,14 @@
 import { Box } from '@material-ui/core';
-import { TitleEditor } from 'containers';
+import { SectionEditor } from 'containers';
 import { problemSolutionTitle, rationaleTitle } from 'elements';
-import { IdeaModel, UpdateIdea, User } from 'models';
+import {
+  IdeaModel,
+  ProblemSolutionLength,
+  RationaleLength,
+  UpdateIdea,
+  User,
+} from 'models';
 import React from 'react';
-import { contentToText } from 'utils';
 import { Images } from '../Image';
 import { VideoSuspender } from '../Video';
 
@@ -16,35 +21,43 @@ export interface IdeaProps {
 export const Idea: React.FC<IdeaProps> = ({ user, idea, update }) => {
   const isAuthor = user.email === idea.author;
 
+  const saveProblemSolution = React.useCallback(
+    (problemSolution) => {
+      update({
+        problemSolution,
+      });
+    },
+    [update],
+  );
+
+  const saveRationale = React.useCallback(
+    (rationale) => {
+      update({
+        rationale,
+      });
+    },
+    [update],
+  );
+
   return (
     <Box>
       <VideoSuspender story={idea.story} isAuthor={isAuthor} update={update} />
-      <TitleEditor
+      <SectionEditor
         isAuthor={isAuthor}
         title={problemSolutionTitle}
         text={idea.problemSolution}
-        onBlur={(editorState) => {
-          const text = contentToText(editorState);
-          if (text !== idea.problemSolution) {
-            update({
-              problemSolution: text,
-            });
-          }
-        }}
+        min={ProblemSolutionLength.min}
+        max={ProblemSolutionLength.max}
+        onSave={saveProblemSolution}
       />
       <Images images={idea.images} isAuthor={isAuthor} update={update} />
-      <TitleEditor
+      <SectionEditor
         isAuthor={isAuthor}
         title={rationaleTitle}
         text={idea.rationale}
-        onBlur={(editorState) => {
-          const text = contentToText(editorState);
-          if (text !== idea.rationale) {
-            update({
-              rationale: text,
-            });
-          }
-        }}
+        min={RationaleLength.min}
+        max={RationaleLength.max}
+        onSave={saveRationale}
       />
     </Box>
   );

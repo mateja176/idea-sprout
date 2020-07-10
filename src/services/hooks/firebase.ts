@@ -3,6 +3,7 @@ import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/storage';
 import { IdeaModel, RawIdea, Review, User, WithCount, WithId } from 'models';
+import { useMemo } from 'react';
 import {
   ReactFireOptions,
   useAuth as useFirebaseAuth,
@@ -39,10 +40,11 @@ export const useIdeasCountRef = () => {
   return useCountsRef().doc(firestoreCollections.ideas.path);
 };
 
-export const getIdeasRef = () =>
-  firebase.firestore().collection(firestoreCollections.ideas.path);
 export const useIdeasRef = () => {
-  return getIdeasRef();
+  return useMemo(
+    () => firebase.firestore().collection(firestoreCollections.ideas.path),
+    [],
+  );
 };
 
 export const useReviewsRef = (id: IdeaModel['id']) => {
@@ -61,9 +63,11 @@ export const useFirestoreDoc = <T extends WithId>(
     | firebase.firestore.DocumentSnapshot<Omit<T, 'id'>>
     | T;
 
-  const convertedDoc = convertFirestoreDocument<T>(doc);
+  return useMemo(() => {
+    const convertedDoc = convertFirestoreDocument<T>(doc);
 
-  return hasOnlyId(convertedDoc) ? null : convertedDoc;
+    return hasOnlyId(convertedDoc) ? null : convertedDoc;
+  }, [doc]);
 };
 
 export const useFirestoreCollection = <T extends WithId>(
