@@ -1,4 +1,4 @@
-import { Box, Chip, useTheme } from '@material-ui/core';
+import { Box, Chip, useTheme, FormHelperText } from '@material-ui/core';
 import { Cancel, Edit } from '@material-ui/icons';
 import { IdeaSection } from 'components';
 import {
@@ -11,7 +11,7 @@ import {
 import React from 'react';
 import { contentToText } from 'utils';
 
-const editingStates = ['off', 'blur', 'focus', 'focusEnd'] as const;
+const editingStates = ['off', 'blur', 'focus', 'tooShort', 'tooLong'] as const;
 type EditingStates = typeof editingStates;
 type EditingState = EditingStates[number];
 
@@ -42,14 +42,19 @@ export const SectionEditor: React.FC<
   const [editingState, setEditingState] = React.useState<EditingState>(
     editingStates[0],
   );
-  const editing = editingState === 'focus' || editingState === 'focusEnd';
+  const editing =
+    editingState === 'focus' ||
+    editingState === 'tooShort' ||
+    editingState === 'tooLong';
 
   const editorStateText = React.useMemo(() => contentToText(editorState), [
     editorState,
   ]);
 
-  const isValid =
-    editorStateText.length >= min && editorStateText.length <= max;
+  const isTooShort = editorStateText.length < min;
+  const isTooLong = editorStateText.length > max;
+  const isInvalid = isTooShort || isTooLong;
+  const isValid = !isInvalid;
 
   const focus = React.useCallback(() => {
     if (editorRef.current) {
@@ -75,7 +80,8 @@ export const SectionEditor: React.FC<
       case 'blur':
         blur();
         break;
-      case 'focusEnd':
+      case 'tooShort':
+      case 'tooLong':
         focus();
         break;
       case 'focus':
@@ -166,10 +172,10 @@ export const SectionEditor: React.FC<
             }
           }}
           onBlur={(e) => {
-            if (editorStateText.length < min) {
-              setEditingState('focusEnd');
-            } else if (editorStateText.length > max) {
-              setEditingState('focusEnd');
+            if (isTooShort) {
+              setEditingState('tooShort');
+            } else if (isTooLong) {
+              setEditingState('tooLong');
             } else if (editorStateText === text) {
               setEditingState('off');
             } else {
@@ -181,6 +187,15 @@ export const SectionEditor: React.FC<
             }
           }}
         />
+      </Box>
+      <Box visibility={isValid ? 'hidden' : 'visible'}>
+        <FormHelperText error>
+          {isTooShort
+            ? 'Text is too short'
+            : isTooLong
+            ? 'Text is too long'
+            : 'Placeholder'}
+        </FormHelperText>
       </Box>
     </IdeaSection>
   );
