@@ -120,6 +120,8 @@ export const useReviewSubmit = ({
         idea.rating.count
       : (idea.rating.average * idea.rating.count + rating) / count;
 
+    // const averageIncrement = average - idea.rating.average;
+
     return firebase
       .firestore()
       .batch()
@@ -130,12 +132,10 @@ export const useReviewSubmit = ({
       })
       .update(ideaRef, {
         rating: {
-          average: firebase.firestore.FieldValue.increment(
-            average - idea.rating.average,
-          ),
-          count: currentReview
-            ? count
-            : firebase.firestore.FieldValue.increment(1),
+          // average: firebase.firestore.FieldValue.increment(averageIncrement), // ? not working
+          average,
+          // count: firebase.firestore.FieldValue.increment(1), // ? not working
+          count,
         },
       })
       .commit()
