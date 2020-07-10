@@ -22,6 +22,7 @@ export const ideaNameStyle: React.CSSProperties = { fontSize: '1.2em' };
 
 export const textSectionStyle: React.CSSProperties = {
   ...breakWordStyle,
+  alignSelf: 'flex-start',
   flexGrow: 1,
   overflow: 'hidden',
   textOverflow: 'ellipsis',
