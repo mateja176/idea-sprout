@@ -15,45 +15,41 @@ export interface ReviewsProps
   onClose: () => void;
 }
 
-export const ReviewsDialog: React.FC<ReviewsProps> = ({
-  id,
-  name,
-  count,
-  open,
-  onClose,
-}) => {
-  const openWithFallback = useValueWithFallback(open, { timeoutMs: 500 });
+export const ReviewsDialog = React.memo<ReviewsProps>(
+  ({ id, name, count, open, onClose }) => {
+    const openWithFallback = useValueWithFallback(open, { timeoutMs: 500 });
 
-  return (
-    <DraggableDialog
-      open={open}
-      onClose={onClose}
-      scroll="paper"
-      dialogTitle={
-        <>
-          Reviews:&nbsp;<i style={withEllipsis}>{name}</i>
-        </>
-      }
-      actions={<Button onClick={onClose}>Close</Button>}
-    >
-      {count <= 0 ? (
-        <>
-          <Typography>No reviews yet.</Typography>
-          <Box visibility={'hidden'}>
-            <ReviewSkeleton />
-          </Box>
-        </>
-      ) : (
-        openWithFallback && (
-          <React.Suspense
-            fallback={range(0, count).map((i) => (
-              <ReviewSkeleton key={i} />
-            ))}
-          >
-            <Reviews id={id} />
-          </React.Suspense>
-        )
-      )}
-    </DraggableDialog>
-  );
-};
+    return (
+      <DraggableDialog
+        open={open}
+        onClose={onClose}
+        scroll="paper"
+        dialogTitle={
+          <>
+            Reviews:&nbsp;<i style={withEllipsis}>{name}</i>
+          </>
+        }
+        actions={<Button onClick={onClose}>Close</Button>}
+      >
+        {count <= 0 ? (
+          <>
+            <Typography>No reviews yet.</Typography>
+            <Box visibility={'hidden'}>
+              <ReviewSkeleton />
+            </Box>
+          </>
+        ) : (
+          openWithFallback && (
+            <React.Suspense
+              fallback={range(0, count).map((i) => (
+                <ReviewSkeleton key={i} />
+              ))}
+            >
+              <Reviews id={id} />
+            </React.Suspense>
+          )
+        )}
+      </DraggableDialog>
+    );
+  },
+);

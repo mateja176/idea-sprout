@@ -13,35 +13,34 @@ export interface ReviewDialogProps
     Pick<DialogProps, 'open'>,
     Pick<User, 'email' | 'uid'> {}
 
-export const ReviewDialog: React.FC<ReviewDialogProps> = ({
-  open,
-  ...props
-}) => {
-  const {
-    idea: { name },
-    onClose,
-  } = props;
-  const openWithFallback = useValueWithFallback(open, { timeoutMs: 500 });
+export const ReviewDialog = React.memo<ReviewDialogProps>(
+  ({ open, ...props }) => {
+    const {
+      idea: { name },
+      onClose,
+    } = props;
+    const openWithFallback = useValueWithFallback(open, { timeoutMs: 500 });
 
-  const handleClose = React.useCallback(() => {
-    onClose();
-  }, [onClose]);
+    const handleClose = React.useCallback(() => {
+      onClose();
+    }, [onClose]);
 
-  return (
-    <DraggableDialog
-      open={open}
-      onClose={handleClose}
-      dialogTitle={
-        <>
-          Review:&nbsp;<i style={withEllipsis}>{name}</i>
-        </>
-      }
-    >
-      {openWithFallback && (
-        <React.Suspense fallback={<ReviewFormSkeleton />}>
-          <ReviewForm {...props} />
-        </React.Suspense>
-      )}
-    </DraggableDialog>
-  );
-};
+    return (
+      <DraggableDialog
+        open={open}
+        onClose={handleClose}
+        dialogTitle={
+          <>
+            Review:&nbsp;<i style={withEllipsis}>{name}</i>
+          </>
+        }
+      >
+        {openWithFallback && (
+          <React.Suspense fallback={<ReviewFormSkeleton />}>
+            <ReviewForm {...props} />
+          </React.Suspense>
+        )}
+      </DraggableDialog>
+    );
+  },
+);
