@@ -155,7 +155,6 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
         <Box
           display="flex"
           width="100%"
-          style={withPointer}
           onClick={openInFull}
         >
           <Box mr={1}>
