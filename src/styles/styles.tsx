@@ -1,10 +1,3 @@
-export const ideaListItemHeight = 100;
-export const ideaListItemPadding = 10;
-export const ideaListItemFullHeight =
-  ideaListItemHeight + 2 * ideaListItemPadding;
-
-export const ideaMarginBottom = 15;
-
 export const logoWidth = 30;
 
 export const navIconWidth = 24;
@@ -45,15 +38,4 @@ export const textareaStyle: React.CSSProperties = {
 
 export const breakWordStyle: React.CSSProperties = {
   wordBreak: 'break-word',
-};
-
-export const ideaListStyle: React.CSSProperties = {
-  paddingTop: 0,
-  paddingBottom: 0,
-};
-
-export const ideaListItemStyle: React.CSSProperties = {
-  paddingTop: ideaListItemPadding,
-  paddingBottom: ideaListItemPadding,
-  height: ideaListItemFullHeight,
 };

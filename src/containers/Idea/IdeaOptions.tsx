@@ -22,7 +22,7 @@ import {
   useIdeasRef,
   useUpdateWithCount,
 } from 'services';
-import { breakWordStyle, withPointer, withStarColor } from 'styles';
+import { ideaNameStyle, textSectionStyle, withStarColor } from 'styles';
 import urljoin from 'url-join';
 import { absolutePrivateRoute, getRatingHelperText } from 'utils';
 import { CheckMenu } from './Check';
@@ -35,18 +35,6 @@ export interface IdeaOptionsProps extends Pick<User, 'email' | 'uid'> {
     style: React.CSSProperties;
   }) => React.ReactElement;
 }
-
-const ideaNameStyle: React.CSSProperties = { fontSize: '1.2em' };
-
-const textSectionStyle: React.CSSProperties = {
-  ...breakWordStyle,
-  flexGrow: 1,
-  overflow: 'hidden',
-  textOverflow: 'ellipsis',
-  display: '-webkit-box',
-  WebkitLineClamp: 5,
-  WebkitBoxOrient: 'vertical',
-};
 
 export const IdeaOptions = React.memo<IdeaOptionsProps>(
   ({ email, uid, idea, ideaUrl, NavigationButton }) => {
@@ -152,11 +140,7 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
 
     return (
       <>
-        <Box
-          display="flex"
-          width="100%"
-          onClick={openInFull}
-        >
+        <Box display="flex" width="100%" onClick={openInFull}>
           <Box mr={1}>
             <React.Suspense fallback={<IdeaPreviewWrapper />}>
               <IdeaImagePreview path={idea.images[0].path} />
