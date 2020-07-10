@@ -1,28 +1,29 @@
-import { Box, useTheme } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import { Skeleton } from '@material-ui/lab';
 import { IdeaOptionsWrapper, IdeaPreviewWrapper } from 'components';
 import React from 'react';
+import { useIdeaOptionsButtonBorder } from 'services';
 import { textSectionStyle } from 'styles';
 
 export const IdeaOptionsSkeleton: React.FC = () => {
-  const theme = useTheme();
-
-  const buttonBorder = `1px solid ${theme.palette.grey[600]}`;
+  const buttonBorder = useIdeaOptionsButtonBorder();
 
   return (
-    <IdeaOptionsWrapper>
-      <Box display="flex" width="100%">
-        <Box mr={1}>
-          <IdeaPreviewWrapper>
-            <Skeleton variant={'rect'} width={'100%'} height={'100%'} />
-          </IdeaPreviewWrapper>
-        </Box>
+    <IdeaOptionsWrapper
+      imagePreview={
+        <IdeaPreviewWrapper>
+          <Skeleton variant={'rect'} width={'100%'} height={'100%'} />
+        </IdeaPreviewWrapper>
+      }
+      textSection={
         <Box mr={1} style={textSectionStyle}>
           <Skeleton height={'2em'} />
           <Skeleton />
           <Skeleton />
           <Skeleton />
         </Box>
+      }
+      options={
         <IdeaPreviewWrapper>
           <Box
             width={'100%'}
@@ -53,7 +54,7 @@ export const IdeaOptionsSkeleton: React.FC = () => {
             </Box>
           </Box>
         </IdeaPreviewWrapper>
-      </Box>
-    </IdeaOptionsWrapper>
+      }
+    />
   );
 };

@@ -1,6 +1,5 @@
 import { Box, Button, Tooltip } from '@material-ui/core';
 import { KeyboardArrowLeft } from '@material-ui/icons';
-import { IdeaOptionsWrapper } from 'components';
 import { Idea } from 'containers';
 import 'firebase/firestore';
 import { IdeaModel, IdeaSprout } from 'models';
@@ -64,26 +63,24 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({
 
   return idea ? (
     <Box mt={pageMargin} mb={ideaMarginBottom}>
-      <IdeaOptionsWrapper>
-        <IdeaOptions
-          email={user.email}
-          uid={user.uid}
-          idea={idea}
-          ideaUrl={ideaUrl}
-          NavigationButton={({ style }) => (
-            <Tooltip placement="top" title="Back to ideas">
-              <Button
-                style={style}
-                onClick={() => {
-                  history.push(absolutePrivateRoute.ideas.path);
-                }}
-              >
-                <KeyboardArrowLeft />
-              </Button>
-            </Tooltip>
-          )}
-        />
-      </IdeaOptionsWrapper>
+      <IdeaOptions
+        email={user.email}
+        uid={user.uid}
+        idea={idea}
+        ideaUrl={ideaUrl}
+        NavigationButton={({ style }) => (
+          <Tooltip placement="top" title="Back to ideas">
+            <Button
+              style={style}
+              onClick={() => {
+                history.push(absolutePrivateRoute.ideas.path);
+              }}
+            >
+              <KeyboardArrowLeft />
+            </Button>
+          </Tooltip>
+        )}
+      />
       <Idea user={user} idea={idea} update={update} />
     </Box>
   ) : (

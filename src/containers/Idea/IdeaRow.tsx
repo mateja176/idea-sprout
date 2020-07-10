@@ -1,6 +1,5 @@
 import { Box, Button, Tooltip } from '@material-ui/core';
 import { OpenInBrowser } from '@material-ui/icons';
-import { IdeaOptionsWrapper } from 'components';
 import { IdeaOptions } from 'containers';
 import 'firebase/firestore';
 import { IdeaModel, User } from 'models';
@@ -40,15 +39,13 @@ export const IdeaRow = React.memo<IdeaRowProps>(({ idea, email, uid }) => {
 
   return (
     <Box key={idea.id}>
-      <IdeaOptionsWrapper key={idea.id}>
-        <IdeaOptions
-          email={email}
-          uid={uid}
-          idea={idea}
-          ideaUrl={ideaUrl}
-          NavigationButton={NavigationButton}
-        />
-      </IdeaOptionsWrapper>
+      <IdeaOptions
+        email={email}
+        uid={uid}
+        idea={idea}
+        ideaUrl={ideaUrl}
+        NavigationButton={NavigationButton}
+      />
     </Box>
   );
 }, equals);

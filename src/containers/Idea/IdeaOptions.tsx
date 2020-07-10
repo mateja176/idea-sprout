@@ -7,7 +7,7 @@ import {
   StarRate,
 } from '@material-ui/icons';
 import { useBoolean } from 'ahooks';
-import { IdeaPreviewWrapper } from 'components';
+import { IdeaOptionsWrapper, IdeaPreviewWrapper } from 'components';
 import { IdeaImagePreview, ShareMenu } from 'containers';
 import { IdeaModel, SetCheck, User } from 'models';
 import { equals } from 'ramda';
@@ -19,10 +19,11 @@ import {
   createQueueSnackbar,
   useActions,
   useIdeaOptionButtonStyle,
+  useIdeaOptionsButtonBorder,
   useIdeasRef,
   useUpdateWithCount,
 } from 'services';
-import { ideaNameStyle, textSectionStyle, withStarColor } from 'styles';
+import { ideaNameStyle, withStarColor } from 'styles';
 import urljoin from 'url-join';
 import { absolutePrivateRoute, getRatingHelperText } from 'utils';
 import { CheckMenu } from './Check';
@@ -119,7 +120,7 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
 
     const isAuthor = email === idea.author;
 
-    const buttonBorder = `1px solid ${theme.palette.grey[600]}`;
+    const buttonBorder = useIdeaOptionsButtonBorder();
 
     const problemSolutionStyle: React.CSSProperties = {
       color: theme.palette.text.secondary,
@@ -140,115 +141,121 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
 
     return (
       <>
-        <Box display="flex" width="100%" onClick={openInFull}>
-          <Box mr={1}>
+        <IdeaOptionsWrapper
+          key={idea.id}
+          onClick={openInFull}
+          imagePreview={
             <React.Suspense fallback={<IdeaPreviewWrapper />}>
               <IdeaImagePreview path={idea.images[0].path} />
             </React.Suspense>
-          </Box>
-          <Box mr={1} style={textSectionStyle}>
-            <Tooltip placement="top" title={idea.name}>
-              <span style={ideaNameStyle}>{idea.name}</span>
-            </Tooltip>
-            <br />
-            <Tooltip placement="top" title={idea.problemSolution}>
-              <span style={problemSolutionStyle}>{idea.problemSolution}</span>
-            </Tooltip>
-          </Box>
-          <IdeaPreviewWrapper>
-            <Box
-              width={'100%'}
-              height={'100%'}
-              border={buttonBorder}
-              borderRadius={5}
-              onClick={stopPropagation}
-            >
+          }
+          textSection={
+            <>
+              <Tooltip placement="top" title={idea.name}>
+                <span style={ideaNameStyle}>{idea.name}</span>
+              </Tooltip>
+              <br />
+              <Tooltip placement="top" title={idea.problemSolution}>
+                <span style={problemSolutionStyle}>{idea.problemSolution}</span>
+              </Tooltip>
+            </>
+          }
+          options={
+            <IdeaPreviewWrapper>
               <Box
-                display="flex"
                 width={'100%'}
-                height={'50%'}
-                borderBottom={buttonBorder}
+                height={'100%'}
+                border={buttonBorder}
+                borderRadius={5}
+                onClick={stopPropagation}
               >
-                <Box width={'50%'} height={'100%'} borderRight={buttonBorder}>
-                  <ShareMenu
-                    style={buttonStyle}
-                    shareCount={idea.sharedBy.length}
-                    url={ideaUrl}
-                  />
-                </Box>
-                <Box width={'50%'} height={'100%'}>
-                  <Tooltip placement="top" title={ratingTooltip}>
-                    <Button
+                <Box
+                  display="flex"
+                  width={'100%'}
+                  height={'50%'}
+                  borderBottom={buttonBorder}
+                >
+                  <Box width={'50%'} height={'100%'} borderRight={buttonBorder}>
+                    <ShareMenu
                       style={buttonStyle}
-                      endIcon={<StarRate style={withStarColor} />}
-                      onClick={toggleReviewsOpen}
-                    >
-                      {idea.rating.average}
-                    </Button>
-                  </Tooltip>
-                </Box>
-              </Box>
-              <Box display="flex" width={'100%'} height={'50%'}>
-                <Box width={'50%'} height={'100%'} borderRight={buttonBorder}>
-                  {isAuthor ? (
-                    idea.status === 'sprout' ? (
-                      <Tooltip
-                        placement={'top'}
-                        title={statusPending ? 'Update Pending' : 'Unpublish'}
+                      shareCount={idea.sharedBy.length}
+                      url={ideaUrl}
+                    />
+                  </Box>
+                  <Box width={'50%'} height={'100%'}>
+                    <Tooltip placement="top" title={ratingTooltip}>
+                      <Button
+                        style={buttonStyle}
+                        endIcon={<StarRate style={withStarColor} />}
+                        onClick={toggleReviewsOpen}
                       >
-                        <span>
-                          <Button
-                            disabled={statusPending}
-                            style={buttonStyle}
-                            onClick={unpublish}
-                          >
-                            <CloudOff />
-                          </Button>
-                        </span>
-                      </Tooltip>
-                    ) : passedPreflightChecks ? (
-                      <Tooltip
-                        placement={'top'}
-                        title={statusPending ? 'Update Pending' : 'Publish'}
-                      >
-                        <span>
-                          <Button
-                            disabled={statusPending}
-                            style={buttonStyle}
-                            onClick={publish}
-                          >
-                            <CloudUpload />
-                          </Button>
-                        </span>
-                      </Tooltip>
-                    ) : (
-                      <Tooltip placement={'top'} title={'Preflight check'}>
-                        <Button
-                          ref={checkRef}
-                          style={buttonStyle}
-                          onClick={() => {
-                            setCheckMenuOpen.toggle();
-                          }}
-                        >
-                          <CheckBoxOutlineBlank />
-                        </Button>
-                      </Tooltip>
-                    )
-                  ) : (
-                    <Tooltip title="Review" placement="top">
-                      <Button style={buttonStyle} onClick={toggleReviewOpen}>
-                        <RateReview color="primary" />
+                        {idea.rating.average}
                       </Button>
                     </Tooltip>
-                  )}
+                  </Box>
                 </Box>
-                <Box width={'50%'} height={'100%'}>
-                  <NavigationButton style={buttonStyle} />
+                <Box display="flex" width={'100%'} height={'50%'}>
+                  <Box width={'50%'} height={'100%'} borderRight={buttonBorder}>
+                    {isAuthor ? (
+                      idea.status === 'sprout' ? (
+                        <Tooltip
+                          placement={'top'}
+                          title={statusPending ? 'Update Pending' : 'Unpublish'}
+                        >
+                          <span>
+                            <Button
+                              disabled={statusPending}
+                              style={buttonStyle}
+                              onClick={unpublish}
+                            >
+                              <CloudOff />
+                            </Button>
+                          </span>
+                        </Tooltip>
+                      ) : passedPreflightChecks ? (
+                        <Tooltip
+                          placement={'top'}
+                          title={statusPending ? 'Update Pending' : 'Publish'}
+                        >
+                          <span>
+                            <Button
+                              disabled={statusPending}
+                              style={buttonStyle}
+                              onClick={publish}
+                            >
+                              <CloudUpload />
+                            </Button>
+                          </span>
+                        </Tooltip>
+                      ) : (
+                        <Tooltip placement={'top'} title={'Preflight check'}>
+                          <Button
+                            ref={checkRef}
+                            style={buttonStyle}
+                            onClick={() => {
+                              setCheckMenuOpen.toggle();
+                            }}
+                          >
+                            <CheckBoxOutlineBlank />
+                          </Button>
+                        </Tooltip>
+                      )
+                    ) : (
+                      <Tooltip title="Review" placement="top">
+                        <Button style={buttonStyle} onClick={toggleReviewOpen}>
+                          <RateReview color="primary" />
+                        </Button>
+                      </Tooltip>
+                    )}
+                  </Box>
+                  <Box width={'50%'} height={'100%'}>
+                    <NavigationButton style={buttonStyle} />
+                  </Box>
                 </Box>
               </Box>
-            </Box>
-          </IdeaPreviewWrapper>
-        </Box>
+            </IdeaPreviewWrapper>
+          }
+        />
         <ReviewsDialog
           id={idea.id}
           name={idea.name}

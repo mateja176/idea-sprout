@@ -11,3 +11,9 @@ export const useIdeaOptionButtonStyle = () => {
     color: theme.palette.action.active,
   };
 };
+
+export const useIdeaOptionsButtonBorder = () => {
+  const theme = useTheme();
+
+  return `1px solid ${theme.palette.grey[600]}`;
+};
