@@ -77,7 +77,7 @@ export const IdeaForm: React.FC<IdeaFormProps> = ({ idea }) => {
       const { id, ...rawIdea } = idea;
       const newIdea: RawIdea = {
         ...rawIdea,
-        author: user.email || '',
+        author: user.uid,
         ...formValues,
         createdAt: firebase.firestore.Timestamp.now(),
       };
@@ -89,7 +89,7 @@ export const IdeaForm: React.FC<IdeaFormProps> = ({ idea }) => {
           // * the promise is pending until it resolves or the tab is closed
           .then(() => {
             history.push(absolutePrivateRoute.ideas.path, {
-              search: qs.stringify({ author: user.email }),
+              search: qs.stringify({ author: user.uid }),
             });
 
             queueSnackbar({

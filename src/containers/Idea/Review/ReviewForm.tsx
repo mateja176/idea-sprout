@@ -23,7 +23,7 @@ import {
 import { equals } from 'ramda';
 import React from 'react';
 import {
-  useFirestoreCollection,
+  useFirestoreDoc,
   useReviewsRef,
   useReviewSubmit,
   useShareIdea,
@@ -35,7 +35,7 @@ import {
   feedbackHelperText,
 } from 'utils';
 
-export interface ReviewFormProps extends Pick<User, 'email' | 'uid'> {
+export interface ReviewFormProps extends Pick<User, 'uid'> {
   idea: IdeaModel;
   ideaUrl: string;
   onClose: () => void;
@@ -45,15 +45,14 @@ export const ratingSectionMb = 2;
 export const shareSectionMt = 4;
 
 export const ReviewForm: React.FC<ReviewFormProps> = ({
-  email,
   uid,
   idea,
   ideaUrl,
   onClose,
 }) => {
-  const reviewsRef = useReviewsRef(idea.id).where('author', '==', email);
+  const reviewRef = useReviewsRef(idea.id).doc(uid);
 
-  const [review] = useFirestoreCollection<Review>(reviewsRef);
+  const review = useFirestoreDoc<Review>(reviewRef);
 
   const shareIdea = useShareIdea(idea);
 

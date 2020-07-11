@@ -12,7 +12,7 @@ import { firestoreCollections, getInitialIdea } from 'utils';
 const projectId = 'idea-sprout';
 const myId = '1';
 const theirId = '2';
-const myAuth = { uid: myId, email: 'mateja176@gmail.com' };
+const myAuth = { uid: myId };
 const getFirestore = (auth?: typeof myAuth) =>
   initializeTestApp({
     auth,
@@ -28,7 +28,7 @@ const seedDb = () => {
   const ideasRef = db.collection(firestoreCollections.ideas.path);
 
   const seed: RawIdea = {
-    ...getInitialIdea(myAuth.email),
+    ...getInitialIdea(myAuth.uid),
     createdAt: firestore.Timestamp.now(),
   };
   const sprout: RawIdea = { ...seed, status: 'sprout' };

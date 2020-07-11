@@ -64,7 +64,6 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({
   return idea ? (
     <Box mt={pageMargin} mb={ideaMarginBottom}>
       <IdeaOptions
-        email={user.email}
         uid={user.uid}
         idea={idea}
         ideaUrl={ideaUrl}

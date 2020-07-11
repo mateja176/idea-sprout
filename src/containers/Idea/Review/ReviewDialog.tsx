@@ -11,7 +11,7 @@ import { ReviewFormSkeleton } from './ReviewFormSkeleton';
 export interface ReviewDialogProps
   extends ReviewFormProps,
     Pick<DialogProps, 'open'>,
-    Pick<User, 'email' | 'uid'> {}
+    Pick<User, 'uid'> {}
 
 export const ReviewDialog = React.memo<ReviewDialogProps>(
   ({ open, ...props }) => {

@@ -14,7 +14,7 @@ export const IdeasPage: React.FC<IdeasPageProps> = () => {
 
   const query = qs.parse(useLocation().search, { ignoreQueryPrefix: true });
 
-  const showMyIdeas = (query.author && query.author) === user?.email;
+  const showMyIdeas = (query.author && query.author) === user.uid;
 
   return (
     <Box height={'100%'} display={'flex'} flexDirection={'column'}>
@@ -36,7 +36,7 @@ export const IdeasPage: React.FC<IdeasPageProps> = () => {
           label="Your Ideas"
           onClick={() => {
             history.push({
-              search: qs.stringify({ author: user?.email }),
+              search: qs.stringify({ author: user.uid }),
             });
           }}
         />

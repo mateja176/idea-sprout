@@ -1,7 +1,7 @@
 import * as yup from 'yup';
-import { WithAuthor, WithId } from './models';
+import { WithId } from './models';
 
-export interface Review extends WithId, WithAuthor {
+export interface Review extends WithId {
   rating: number;
   feedback: string;
 }
@@ -12,13 +12,12 @@ export enum FeedbackLength {
 
 export const initialReview: Review = {
   id: '',
-  author: '',
   rating: 0,
   feedback:
     'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloremque facilis vitae quaerat ullam illum deserunt doloribus omnis eaque dolor laboriosam et harum excepturi, non impedit quisquam nulla corrupti!',
 };
 
-export type CreationReview = Omit<Review, 'id' | 'author'>;
+export type CreationReview = Omit<Review, 'id'>;
 export const createReviewSchema = yup
   .object()
   .required()

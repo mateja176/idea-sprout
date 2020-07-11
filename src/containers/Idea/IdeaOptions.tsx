@@ -27,7 +27,7 @@ import { absolutePrivateRoute, getRatingHelperText } from 'utils';
 import { CheckMenu } from './Check';
 import { ReviewDialog, ReviewsDialog } from './Review';
 
-export interface IdeaOptionsProps extends Pick<User, 'email' | 'uid'> {
+export interface IdeaOptionsProps extends Pick<User, 'uid'> {
   idea: IdeaModel;
   ideaUrl: string;
   NavigationButton: (props: {
@@ -36,7 +36,7 @@ export interface IdeaOptionsProps extends Pick<User, 'email' | 'uid'> {
 }
 
 export const IdeaOptions = React.memo<IdeaOptionsProps>(
-  ({ email, uid, idea, ideaUrl, NavigationButton }) => {
+  ({ uid, idea, ideaUrl, NavigationButton }) => {
     const { addIdea, deleteIdea, queueSnackbar } = useActions({
       addIdea: createAddIdea,
       deleteIdea: createDeleteIdea,
@@ -116,7 +116,7 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
       [idea.checks],
     );
 
-    const isAuthor = email === idea.author;
+    const isAuthor = uid === idea.author;
 
     const problemSolutionStyle: React.CSSProperties = React.useMemo(
       () => ({
@@ -230,7 +230,6 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
           onClose={toggleReviewsOpen}
         />
         <ReviewDialog
-          email={email}
           uid={uid}
           idea={idea}
           ideaUrl={ideaUrl}

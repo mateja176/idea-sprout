@@ -158,11 +158,11 @@ export const selectIdeas = createSelector(
   ({ ideas }) => ideas,
 );
 
-export const selectMyIdeas = (email: User['email']) =>
+export const selectMyIdeas = (uid: User['uid']) =>
   pipe(
     selectIdeas,
     (ideas) =>
       ideas.filter(
-        (idea) => isIdea(idea) && idea.author === email,
+        (idea) => isIdea(idea) && idea.author === uid,
       ) as IdeaSprout[],
   );

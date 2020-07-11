@@ -9,11 +9,11 @@ import { useIdeaUrl } from 'services';
 import urljoin from 'url-join';
 import { absolutePrivateRoute } from 'utils';
 
-export interface IdeaRowProps extends Pick<User, 'email' | 'uid'> {
+export interface IdeaRowProps extends Pick<User, 'uid'> {
   idea: IdeaModel;
 }
 
-export const IdeaRow = React.memo<IdeaRowProps>(({ idea, email, uid }) => {
+export const IdeaRow = React.memo<IdeaRowProps>(({ idea, uid }) => {
   const history = useHistory();
 
   const ideaUrl = useIdeaUrl(idea.id);
@@ -36,7 +36,6 @@ export const IdeaRow = React.memo<IdeaRowProps>(({ idea, email, uid }) => {
   return (
     <Box key={idea.id}>
       <IdeaOptions
-        email={email}
         uid={uid}
         idea={idea}
         ideaUrl={ideaUrl}

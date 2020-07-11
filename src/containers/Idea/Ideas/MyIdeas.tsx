@@ -23,11 +23,11 @@ export const MyEmptyIdeas = ({ user }: { user: User }) => (
 );
 
 export const MyIdeas: React.FC<{ user: User }> = ({ user }) => {
-  const myIdeas = useSelector(selectMyIdeas(user.email));
+  const myIdeas = useSelector(selectMyIdeas(user.uid));
 
   const ideas = useFirestoreCollection<IdeaModel>(
     useIdeasRef()
-      .where('author', '==', user.email)
+      .where('author', '==', user.uid)
       .orderBy('createdAt', 'desc'),
     {
       startWithValue: myIdeas.length ? myIdeas : undefined,
@@ -45,7 +45,6 @@ export const MyIdeas: React.FC<{ user: User }> = ({ user }) => {
           <IdeaRow
             key={idea.id}
             idea={idea}
-            email={user.email}
             uid={user.uid}
           />
         ))

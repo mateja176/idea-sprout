@@ -103,7 +103,7 @@ export const useReviewSubmit = ({
   currentReview,
 }: {
   idea: IdeaModel;
-  currentReview?: Review;
+  currentReview: Review | null;
 }) => {
   const { queueSnackbar, updateIdea } = useActions({
     queueSnackbar: createQueueSnackbar,
@@ -134,7 +134,6 @@ export const useReviewSubmit = ({
       .set(reviewsRef.doc(user.uid), {
         rating,
         feedback,
-        author: user.email,
       })
       .update(ideaRef, {
         rating: {
@@ -167,7 +166,7 @@ export const useShareIdea = (idea: IdeaModel) => {
 
   const ideaRef = useIdeasRef().doc(idea.id);
 
-  if (idea.sharedBy.includes(user.email || '')) {
+  if (idea.sharedBy.includes(user.uid)) {
     return () => {};
   } else {
     const withSharedBy: Pick<IdeaModel, 'sharedBy'> = {

@@ -114,7 +114,6 @@ export const Ideas = ({ user }: IdeasProps) => {
             <IdeaRow
               key={idea.id}
               idea={idea}
-              email={user.email}
               uid={user.uid}
             />
           )}

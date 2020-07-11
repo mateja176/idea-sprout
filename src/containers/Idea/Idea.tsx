@@ -19,7 +19,7 @@ export interface IdeaProps {
 }
 
 export const Idea: React.FC<IdeaProps> = ({ user, idea, update }) => {
-  const isAuthor = user.email === idea.author;
+  const isAuthor = user.uid === idea.author;
 
   const saveProblemSolution = React.useCallback(
     (problemSolution) => {

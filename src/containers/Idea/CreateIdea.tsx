@@ -27,7 +27,7 @@ export const CreateIdea: React.FC<CreateIdeaProps> = ({ user }) => {
     const ideaDoc = ideasRef.doc();
     const { id } = ideaDoc;
 
-    const newIdea = getInitialIdea(user.email || '');
+    const newIdea = getInitialIdea(user.uid);
 
     ideaDoc
       .set(newIdea)
