@@ -72,8 +72,8 @@ export const initialIdea: IdeaModel = {
   sharedBy: [],
   status: 'seed',
   checks: {
-    niche: false,
-    expectations: false,
+    niche: true,
+    expectations: true,
   },
 
   name: '',

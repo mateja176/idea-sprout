@@ -60,7 +60,7 @@ export const CreateIdea: React.FC<CreateIdeaProps> = ({ user }) => {
         // * the promise is pending until it resolves or the tab is closed
         queueSnackbar({
           severity: 'success',
-          message: 'Update it and publish. Good luck!',
+          message: 'Update, publish and share to get feedback!',
           autoHideDuration: 10000,
         });
 
