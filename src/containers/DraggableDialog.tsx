@@ -5,10 +5,12 @@ import {
   DialogContent,
   DialogProps,
   DialogTitle,
+  makeStyles,
 } from '@material-ui/core';
 import { DragIndicator } from '@material-ui/icons';
 import { DraggablePaper } from 'components';
 import React from 'react';
+import { modalMaxWidth } from 'styles';
 
 interface WithMinWidth {}
 
@@ -19,8 +21,27 @@ export interface DraggableDialogProps extends DialogProps, WithMinWidth {
 
 const dragHandleId = 'drag-handle';
 
+const titleStyle: React.CSSProperties = { cursor: 'grab' };
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    [theme.breakpoints.up('md')]: {
+      minWidth: modalMaxWidth,
+    },
+  },
+}));
+
 export const DraggableDialog = React.memo<DraggableDialogProps>(
   ({ dialogTitle, children, actions, ...props }) => {
+    const classes = useStyles();
+
+    const root = React.useMemo(
+      () => ({
+        root: classes.root,
+      }),
+      [classes],
+    );
+
     const { scroll } = props;
 
     return (
@@ -29,7 +50,7 @@ export const DraggableDialog = React.memo<DraggableDialogProps>(
         hideBackdrop
         PaperComponent={DraggablePaper}
       >
-        <DialogTitle style={{ cursor: 'grab' }}>
+        <DialogTitle style={titleStyle}>
           <Box display="flex" alignItems="center">
             {dialogTitle}
             <Box ml="auto" id={dragHandleId}>
@@ -37,7 +58,9 @@ export const DraggableDialog = React.memo<DraggableDialogProps>(
             </Box>
           </Box>
         </DialogTitle>
-        <DialogContent dividers={scroll === 'paper'}>{children}</DialogContent>
+        <DialogContent classes={root} dividers={scroll === 'paper'}>
+          {children}
+        </DialogContent>
         {actions && <DialogActions>{actions}</DialogActions>}
       </Dialog>
     );

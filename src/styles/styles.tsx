@@ -1,3 +1,5 @@
+export const modalMaxWidth = 600;
+
 export const logoWidth = 30;
 
 export const navIconWidth = 24;
