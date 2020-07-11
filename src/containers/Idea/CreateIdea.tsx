@@ -2,7 +2,7 @@ import { ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import { Create } from '@material-ui/icons';
 import { useBoolean } from 'ahooks';
 import firebase from 'firebase/app';
-import { initialIdea, RawIdea, User } from 'models';
+import { initialRawIdea, RawIdea, User } from 'models';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { createQueueSnackbar, useActions, useIdeasRef } from 'services';
@@ -26,7 +26,7 @@ export const CreateIdea: React.FC<CreateIdeaProps> = ({ user }) => {
     setLoading.setTrue();
 
     const newIdea: RawIdea = {
-      ...initialIdea,
+      ...initialRawIdea,
       author: user.email || '',
       createdAt: firebase.firestore.Timestamp.now(),
       sharedBy: [],

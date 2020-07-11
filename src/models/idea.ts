@@ -66,8 +66,7 @@ export interface IdeaModel extends WithId, WithAuthor {
   ratingCount: number;
 }
 
-export const initialIdea: IdeaModel = {
-  id: '',
+export const initialRawIdea: RawIdea = {
   author: '',
   createdAt: firebase.firestore.Timestamp.now(),
   sharedBy: [],
