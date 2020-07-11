@@ -32,6 +32,12 @@ export const useUser = (options?: ReactFireOptions<User | null>) =>
 export const useSignedInUser = (options?: ReactFireOptions<User>) =>
   useFirebaseUser<User>(firebase.auth(), options);
 
+export const useUsersRef = () =>
+  useMemo(
+    () => firebase.firestore().collection(firestoreCollections.users.path),
+    [],
+  );
+
 export const useCountsRef = () => {
   return useMemo(
     () => firebase.firestore().collection(firestoreCollections.counts.path),

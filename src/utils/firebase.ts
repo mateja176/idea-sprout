@@ -3,6 +3,10 @@ import { WithId } from 'models';
 import { equals } from 'ramda';
 
 export const firestoreCollections = {
+  users: {
+    path: 'users',
+    collections: {},
+  },
   ideas: {
     path: 'ideas',
     collections: { reviews: { path: 'reviews' } },
