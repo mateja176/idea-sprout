@@ -33,22 +33,36 @@ const seedDb = () => {
   };
   const sprout: RawIdea = { ...seed, status: 'sprout' };
 
-  return Promise.all([ideasRef.add(sprout), ideasRef.add(seed)]);
+  const theirSprout: RawIdea = { ...sprout, author: theirId };
+  const theirSeed: RawIdea = { ...seed, author: theirId };
+
+  return Promise.all([
+    ideasRef.add(seed),
+    ideasRef.add(sprout),
+    ideasRef.add(theirSprout),
+    ideasRef.add(theirSeed),
+  ]);
 };
 
 describe('Firestore rules', () => {
   afterEach(() => clearFirestoreData({ projectId }));
 
-  test('users can read idea sprouts and not seeds', async () => {
-    const [sprout, seed] = await seedDb();
+  test('users can read all of his or her ideas and idea sprouts, but not seeds', async () => {
+    const [sprout, seed, theirSprout, theirSeed] = await seedDb();
 
     const db = getFirestore(myAuth);
 
     await assertSucceeds(
       db.collection(firestoreCollections.ideas.path).doc(sprout.id).get(),
     );
-    await assertFails(
+    await assertSucceeds(
       db.collection(firestoreCollections.ideas.path).doc(seed.id).get(),
+    );
+    await assertSucceeds(
+      db.collection(firestoreCollections.ideas.path).doc(theirSprout.id).get(),
+    );
+    await assertFails(
+      db.collection(firestoreCollections.ideas.path).doc(theirSeed.id).get(),
     );
   });
 });

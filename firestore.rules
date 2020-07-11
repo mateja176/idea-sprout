@@ -5,7 +5,7 @@ service cloud.firestore {
       allow read, write: if false;
     }
     match /ideas/{ideaId} {
-      allow read: if request.auth != null && resource.data.status == 'sprout';
+      allow read: if request.auth != null && (resource.data.author == request.auth.uid || resource.data.status == 'sprout');
     }
   }
 }
