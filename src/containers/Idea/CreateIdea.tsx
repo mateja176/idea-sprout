@@ -1,13 +1,12 @@
 import { ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import { Create } from '@material-ui/icons';
 import { useBoolean } from 'ahooks';
-import firebase from 'firebase/app';
-import { initialRawIdea, RawIdea, User } from 'models';
+import { User } from 'models';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { createQueueSnackbar, useActions, useIdeasRef } from 'services';
 import urljoin from 'url-join';
-import { absolutePrivateRoute } from 'utils';
+import { absolutePrivateRoute, getInitialIdea } from 'utils';
 
 export interface CreateIdeaProps {
   user: User;
@@ -25,33 +24,10 @@ export const CreateIdea: React.FC<CreateIdeaProps> = ({ user }) => {
   const createIdea = () => {
     setLoading.setTrue();
 
-    const newIdea: RawIdea = {
-      ...initialRawIdea,
-      author: user.email || '',
-      createdAt: firebase.firestore.Timestamp.now(),
-      sharedBy: [],
-      status: 'seed',
-      name: 'Apple Computers',
-      problemSolution:
-        'Computers are an invaluable source of information, they save precious time and help us connect with other people. Computers make our lives better.',
-      story: {
-        path: 'videos/placeholder-story.mp4',
-        width: 1920,
-        height: 1080,
-      },
-      images: [
-        {
-          path: 'images/placeholder-image.png',
-          width: 1920,
-          height: 1080,
-        },
-      ],
-      rationale:
-        'Computers enable us to write messages, talk to friends and family, watch videos, share images, learn and teach others, manage finances, buy online, manage calendars, look up addresses, translate text, play games and many more things',
-    };
-
     const ideaDoc = ideasRef.doc();
     const { id } = ideaDoc;
+
+    const newIdea = getInitialIdea(user.email || '');
 
     ideaDoc
       .set(newIdea)
