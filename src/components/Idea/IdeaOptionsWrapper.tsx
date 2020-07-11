@@ -23,9 +23,9 @@ export const IdeaOptionsWrapper = ({
 }) => {
   const buttonBorder = useIdeaOptionsButtonBorder();
 
-  const stopPropagation: React.MouseEventHandler = (e) => {
+  const stopPropagation: React.MouseEventHandler = React.useCallback((e) => {
     e.stopPropagation();
-  };
+  }, []);
 
   return (
     <ListItem

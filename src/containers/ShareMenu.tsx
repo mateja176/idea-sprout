@@ -17,12 +17,12 @@ import { getShareCountHelperText } from 'utils';
 
 export interface ShareMenuProps
   extends Pick<React.ComponentProps<typeof FacebookShareButton>, 'url'>,
-    Omit<ButtonProps, 'color' | 'onClick'> {
+    Pick<ButtonProps, 'style'> {
   shareCount: number;
 }
 
 export const ShareMenu = React.memo<ShareMenuProps>(
-  ({ shareCount, url, ...props }) => {
+  ({ shareCount, url, style }) => {
     const [menuOpen, { toggle }] = useBoolean();
 
     const buttonRef = React.useRef<HTMLButtonElement | null>(null);
@@ -50,7 +50,7 @@ export const ShareMenu = React.memo<ShareMenuProps>(
     return (
       <>
         <Button
-          {...props}
+          style={style}
           title={getShareCountHelperText(shareCount)}
           ref={buttonRef}
           onClick={handleClick}

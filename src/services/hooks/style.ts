@@ -19,5 +19,5 @@ export const useIdeaOptionButtonStyle = () => {
 export const useIdeaOptionsButtonBorder = () => {
   const theme = useTheme();
 
-  return `1px solid ${theme.palette.grey[600]}`;
+  return useMemo(() => `1px solid ${theme.palette.grey[600]}`, [theme]);
 };
