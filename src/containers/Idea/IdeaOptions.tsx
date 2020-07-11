@@ -10,7 +10,6 @@ import { useBoolean } from 'ahooks';
 import { IdeaOptionsWrapper, IdeaPreviewWrapper } from 'components';
 import { IdeaImagePreview, ShareMenu } from 'containers';
 import { IdeaModel, SetCheck, User } from 'models';
-import { equals } from 'ramda';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import {
@@ -250,5 +249,4 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
       </>
     );
   },
-  equals,
 );

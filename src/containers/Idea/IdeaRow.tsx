@@ -3,7 +3,6 @@ import { OpenInBrowser } from '@material-ui/icons';
 import { IdeaOptions } from 'containers';
 import 'firebase/firestore';
 import { IdeaModel, User } from 'models';
-import { equals } from 'ramda';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useIdeaUrl } from 'services';
@@ -45,4 +44,4 @@ export const IdeaRow = React.memo<IdeaRowProps>(({ idea, email, uid }) => {
       />
     </Box>
   );
-}, equals);
+});
