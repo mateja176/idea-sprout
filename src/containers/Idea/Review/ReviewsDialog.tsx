@@ -1,6 +1,6 @@
 import { Box, Button, Typography } from '@material-ui/core';
 import { DraggableDialog } from 'containers';
-import { IdeaModel } from 'models';
+import { IdeaModel, Rating } from 'models';
 import { range } from 'ramda';
 import React from 'react';
 import { useValueWithFallback } from 'services';
@@ -10,7 +10,7 @@ import { ReviewSkeleton } from './ReviewSkeleton';
 
 export interface ReviewsProps
   extends Pick<IdeaModel, 'id' | 'name'>,
-    Pick<IdeaModel['rating'], 'count'> {
+    Pick<Rating, 'count'> {
   open: boolean;
   onClose: () => void;
 }

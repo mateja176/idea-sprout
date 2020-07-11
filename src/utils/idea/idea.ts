@@ -22,14 +22,16 @@ export const getFormIdea = ({
   problemSolution,
   images,
   rationale,
-  rating,
+  ratingCount,
+  averageRating,
 }: RawIdea): FormIdea => ({
   name,
   story,
   problemSolution,
   images,
   rationale,
-  rating,
+  ratingCount,
+  averageRating,
 });
 
 export const getFileName = (file: StorageFile) =>

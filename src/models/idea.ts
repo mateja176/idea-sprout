@@ -62,7 +62,8 @@ export interface IdeaModel extends WithId, WithAuthor {
   problemSolution: string;
   images: StorageFile[];
   rationale: string;
-  rating: Rating;
+  averageRating: number;
+  ratingCount: number;
 }
 
 export const initialIdea: IdeaModel = {
@@ -81,10 +82,8 @@ export const initialIdea: IdeaModel = {
   problemSolution: '',
   images: [],
   rationale: '',
-  rating: {
-    average: 0,
-    count: 0,
-  },
+  averageRating: 0,
+  ratingCount: 0,
 };
 
 export type RawIdea = Omit<IdeaModel, 'id'>;
@@ -117,10 +116,8 @@ export const creationIdeaSchema = yup
       .max(200),
     images: yup.array().required().of(StorageFileSchema).max(2),
     rationale: yup.string().required().min(80).max(400),
-    rating: yup.object().required().shape({
-      average: yup.number().required().positive(),
-      count: yup.number().required().positive(),
-    }),
+    averageRating: yup.number().required().positive(),
+    ratingCount: yup.number().required().positive(),
   });
 
 export type UpdateIdea = (idea: Partial<RawIdea>) => Promise<void>;

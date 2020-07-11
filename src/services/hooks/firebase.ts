@@ -3,7 +3,7 @@ import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/storage';
 import { IdeaModel, RawIdea, Review, User, WithCount, WithId } from 'models';
-import { useMemo, useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import {
   ReactFireOptions,
   useAuth as useFirebaseAuth,
@@ -111,16 +111,16 @@ export const useReviewSubmit = ({
   const ideaRef = useIdeasRef().doc(idea.id);
 
   return ({ rating, feedback }: Pick<Review, 'rating' | 'feedback'>) => {
-    const count = currentReview ? idea.rating.count : idea.rating.count + 1;
+    const count = currentReview ? idea.ratingCount : idea.ratingCount + 1;
 
     const average = currentReview
-      ? (idea.rating.count * idea.rating.average -
+      ? (idea.ratingCount * idea.averageRating -
           currentReview.rating +
           rating) /
-        idea.rating.count
-      : (idea.rating.average * idea.rating.count + rating) / count;
+        idea.ratingCount
+      : (idea.averageRating * idea.ratingCount + rating) / count;
 
-    // const averageIncrement = average - idea.rating.average;
+    const averageIncrement = average - idea.averageRating;
 
     return firebase
       .firestore()
@@ -132,20 +132,16 @@ export const useReviewSubmit = ({
       })
       .update(ideaRef, {
         rating: {
-          // average: firebase.firestore.FieldValue.increment(averageIncrement), // ? not working
-          average,
-          // count: firebase.firestore.FieldValue.increment(1), // ? not working
-          count,
+          average: firebase.firestore.FieldValue.increment(averageIncrement),
+          count: firebase.firestore.FieldValue.increment(1),
         },
       })
       .commit()
       .then(() => {
         updateIdea({
           id: idea.id,
-          rating: {
-            count,
-            average,
-          },
+          averageRating: average,
+          ratingCount: count,
         });
 
         queueSnackbar({

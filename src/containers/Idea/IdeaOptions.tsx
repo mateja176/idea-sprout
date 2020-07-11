@@ -127,8 +127,12 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
     );
 
     const ratingTooltip = React.useMemo(
-      () => getRatingHelperText(idea.rating),
-      [idea.rating],
+      () =>
+        getRatingHelperText({
+          average: idea.averageRating,
+          count: idea.ratingCount,
+        }),
+      [idea.averageRating, idea.ratingCount],
     );
 
     const openInFull = React.useCallback(() => {
@@ -170,7 +174,7 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
               endIcon={<StarRate style={withStarColor} />}
               onClick={toggleReviewsOpen}
             >
-              {idea.rating.average}
+              {idea.averageRating}
             </Button>
           }
           reviewOption={
@@ -222,7 +226,7 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
         <ReviewsDialog
           id={idea.id}
           name={idea.name}
-          count={idea.rating.count}
+          count={idea.ratingCount}
           open={reviewsOpen}
           onClose={toggleReviewsOpen}
         />
