@@ -66,7 +66,7 @@ describe('Firestore rules', () => {
     );
   });
 
-  test('user can write solely to his or her ideas', async () => {
+  test('user can write solely to his or her ideas and not update rating', async () => {
     const [sprout, seed, theirSprout, theirSeed] = await seedDb();
 
     const db = getFirestore(myAuth);
@@ -76,6 +76,18 @@ describe('Firestore rules', () => {
         .collection(firestoreCollections.ideas.path)
         .doc(seed.id)
         .update({ status: 'sprout' }),
+    );
+    await assertFails(
+      db
+        .collection(firestoreCollections.ideas.path)
+        .doc(seed.id)
+        .update({ averageRating: 5 }),
+    );
+    await assertFails(
+      db
+        .collection(firestoreCollections.ideas.path)
+        .doc(seed.id)
+        .update({ ratingCount: 2 }),
     );
     await assertFails(
       db
