@@ -65,4 +65,23 @@ describe('Firestore rules', () => {
       db.collection(firestoreCollections.ideas.path).doc(theirSeed.id).get(),
     );
   });
+
+  test('user can write solely to his or her ideas', async () => {
+    const [sprout, seed, theirSprout, theirSeed] = await seedDb();
+
+    const db = getFirestore(myAuth);
+
+    await assertSucceeds(
+      db
+        .collection(firestoreCollections.ideas.path)
+        .doc(seed.id)
+        .update({ status: 'sprout' }),
+    );
+    await assertFails(
+      db
+        .collection(firestoreCollections.ideas.path)
+        .doc(theirSeed.id)
+        .update({ status: 'sprout' }),
+    );
+  });
 });
