@@ -1,7 +1,19 @@
 rules_version = '2';
 
-function canUpdateRating() {
-  return (!('averageRating' in request.writeFields) || request.writeFields.averateRating == 0) && (!('ratingCount' in request.writeFields) || request.writeFields.ratingCount == 0);
+function isSignedIn() {
+  return request.auth != null;
+}
+
+function isMine() {
+  return request.auth != null && resource.data.author == request.auth.uid;
+}
+
+function canCreateIdea() {
+  return request.resource.data.averageRating == 0 && request.resource.data.ratingCount == 0;
+}
+
+function canUpdateIdea() {
+  return !('averageRating' in request.writeFields) && !('ratingCount' in request.writeFields);
 }
 
 service cloud.firestore {
@@ -10,8 +22,9 @@ service cloud.firestore {
       allow read, write: if false;
     }
     match /ideas/{ideaId} {
-      allow read: if request.auth != null && (resource.data.author == request.auth.uid || resource.data.status == 'sprout');
-      allow write: if request.auth != null && resource.data.author == request.auth.uid && canUpdateRating();
+      allow read: if isSignedIn() && (resource.data.author == request.auth.uid || resource.data.status == 'sprout');
+      allow create: if isSignedIn() && canCreateIdea();
+      allow update: if isMine() && canUpdateIdea();
     }
   }
 }

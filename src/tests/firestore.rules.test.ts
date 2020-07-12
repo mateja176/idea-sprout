@@ -22,23 +22,23 @@ const getAdminFirestore = () =>
   initializeAdminApp({
     projectId,
   }).firestore();
+
+const mySeed: RawIdea = {
+  ...getInitialIdea(myAuth.uid),
+  createdAt: firestore.Timestamp.now(),
+};
+const mySprout: RawIdea = { ...mySeed, status: 'sprout' };
+const theirSprout: RawIdea = { ...mySprout, author: theirId };
+const theirSeed: RawIdea = { ...mySeed, author: theirId };
+
 const seedDb = () => {
   const db = getAdminFirestore();
 
   const ideasRef = db.collection(firestoreCollections.ideas.path);
 
-  const seed: RawIdea = {
-    ...getInitialIdea(myAuth.uid),
-    createdAt: firestore.Timestamp.now(),
-  };
-  const sprout: RawIdea = { ...seed, status: 'sprout' };
-
-  const theirSprout: RawIdea = { ...sprout, author: theirId };
-  const theirSeed: RawIdea = { ...seed, author: theirId };
-
   return Promise.all([
-    ideasRef.add(seed),
-    ideasRef.add(sprout),
+    ideasRef.add(mySeed),
+    ideasRef.add(mySprout),
     ideasRef.add(theirSprout),
     ideasRef.add(theirSeed),
   ]);
@@ -66,7 +66,7 @@ describe('Firestore rules', () => {
     );
   });
 
-  test('user can write solely to his or her ideas and not update rating', async () => {
+  test('user can update solely his or her ideas and not update rating fields', async () => {
     const [sprout, seed, theirSprout, theirSeed] = await seedDb();
 
     const db = getFirestore(myAuth);
@@ -87,18 +87,6 @@ describe('Firestore rules', () => {
       db
         .collection(firestoreCollections.ideas.path)
         .doc(seed.id)
-        .update({ averageRating: 0 }),
-    );
-    await assertFails(
-      db
-        .collection(firestoreCollections.ideas.path)
-        .doc(seed.id)
-        .update({ ratingCount: 0 }),
-    );
-    await assertFails(
-      db
-        .collection(firestoreCollections.ideas.path)
-        .doc(seed.id)
         .update({ averageRating: 5 }),
     );
     await assertFails(
@@ -106,6 +94,24 @@ describe('Firestore rules', () => {
         .collection(firestoreCollections.ideas.path)
         .doc(seed.id)
         .update({ ratingCount: 1 }),
+    );
+  });
+
+  test('user cannot create idea with non-zero rating fields', async () => {
+    const db = getFirestore(myAuth);
+
+    await assertSucceeds(
+      db.collection(firestoreCollections.ideas.path).add(mySeed),
+    );
+    await assertFails(
+      db
+        .collection(firestoreCollections.ideas.path)
+        .add({ ...mySeed, averageRating: 5 }),
+    );
+    await assertFails(
+      db
+        .collection(firestoreCollections.ideas.path)
+        .add({ ...mySeed, ratingCount: 1 }),
     );
   });
 });
