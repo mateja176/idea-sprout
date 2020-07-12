@@ -99,7 +99,7 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
     <form onSubmit={handleSubmit}>
       <Box mb={ratingSectionMb}>
         {ratingLabel}
-        <Rating {...getFieldProps('rating')} precision={0.5} />
+        <Rating {...getFieldProps('rating')} precision={1} />
       </Box>
       <Badge
         color={'secondary'}
