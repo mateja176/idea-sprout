@@ -70,7 +70,7 @@ describe('Firestore rules', () => {
   });
 
   test('user can update solely his or her ideas and not update rating fields', async () => {
-    const [sprout, seed, theirSprout, theirSeed] = await seedDb();
+    const [, seed, , theirSeed] = await seedDb();
 
     const db = getFirestore(myAuth);
 
