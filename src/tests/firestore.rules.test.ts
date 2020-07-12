@@ -115,7 +115,7 @@ describe('Firestore rules', () => {
     );
   });
 
-  test('user can review ideas but cannot review his or her ideas', async () => {
+  test('user can review ideas or update their review', async () => {
     const db = getFirestore(myAuth);
 
     const { id } = await getAdminFirestore()
@@ -123,6 +123,79 @@ describe('Firestore rules', () => {
       .add(theirSprout);
 
     await assertSucceeds(
+      db
+        .batch()
+        .set(
+          db
+            .collection(firestoreCollections.ideas.path)
+            .doc(id)
+            .collection(firestoreCollections.ideas.collections.reviews.path)
+            .doc(myId),
+          {
+            rating: 5,
+            feedback:
+              'Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem neque dolores mollitia temporibus ipsum consequuntur.',
+          } as RawReview,
+        )
+        .update(db.collection(firestoreCollections.ideas.path).doc(id), {
+          averageRating: 5,
+          ratingCount: 1,
+        })
+        .commit(),
+    );
+    await assertSucceeds(
+      db
+        .batch()
+        .set(
+          db
+            .collection(firestoreCollections.ideas.path)
+            .doc(id)
+            .collection(firestoreCollections.ideas.collections.reviews.path)
+            .doc(myId),
+          {
+            rating: 4.5,
+            feedback:
+              'Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem neque dolores mollitia temporibus ipsum consequuntur.',
+          } as RawReview,
+        )
+        .update(db.collection(firestoreCollections.ideas.path).doc(id), {
+          averageRating: 4.5,
+          ratingCount: 1,
+        })
+        .commit(),
+    );
+    // * user cannot increase the review count when updating
+    await assertFails(
+      db
+        .batch()
+        .set(
+          db
+            .collection(firestoreCollections.ideas.path)
+            .doc(id)
+            .collection(firestoreCollections.ideas.collections.reviews.path)
+            .doc(myId),
+          {
+            rating: 4.5,
+            feedback:
+              'Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem neque dolores mollitia temporibus ipsum consequuntur.',
+          } as RawReview,
+        )
+        .update(db.collection(firestoreCollections.ideas.path).doc(id), {
+          averageRating: 4.5,
+          ratingCount: 2,
+        })
+        .commit(),
+    );
+  });
+
+  test('user cannot review his or her ideas', async () => {
+    const db = getFirestore(myAuth);
+
+    const { id } = await getAdminFirestore()
+      .collection(firestoreCollections.ideas.path)
+      .add(mySprout);
+
+    await assertFails(
       db
         .batch()
         .set(
