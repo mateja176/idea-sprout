@@ -21,15 +21,11 @@ function canCreateIdea() {
 }
 
 function notUpdatingRating() {
-  return !('averageRating' in request.writeFields) && !('ratingCount' in request.writeFields);
-}
-
-function updatingRating() {
-  return 'averageRating' in request.writeFields && 'ratingCount' in request.writeFields;
+  return request.resource.data.diff(resource.data).unchangedKeys().hasAll(['averageRating', 'ratingCount']);
 }
 
 function onlyUpdatingRating() {
-  return updatingRating() && (request.writeFields.size() == 2);
+  return request.resource.data.diff(resource.data).changedKeys().hasOnly(['averageRating', 'ratingCount']);
 }
 
 function canCreateReview() {
