@@ -4,15 +4,19 @@ function isSignedIn() {
   return request.auth != null;
 }
 
+function isAuthor() {
+  return resource.data.author == request.auth.uid;
+}
+
 function isMine() {
-  return request.auth != null && resource.data.author == request.auth.uid;
+  return isSignedIn() && isAuthor();
 }
 
 function canCreateIdea() {
   return request.resource.data.averageRating == 0 && request.resource.data.ratingCount == 0;
 }
 
-function canUpdateIdea() {
+function doesNotUpdateRating() {
   return !('averageRating' in request.writeFields) && !('ratingCount' in request.writeFields);
 }
 
@@ -22,9 +26,9 @@ service cloud.firestore {
       allow read, write: if false;
     }
     match /ideas/{ideaId} {
-      allow read: if isSignedIn() && (resource.data.author == request.auth.uid || resource.data.status == 'sprout');
+      allow read: if isSignedIn() && (isAuthor() || resource.data.status == 'sprout');
       allow create: if isSignedIn() && canCreateIdea();
-      allow update: if isMine() && canUpdateIdea();
+      allow update: if isMine() && doesNotUpdateRating();
     }
   }
 }
