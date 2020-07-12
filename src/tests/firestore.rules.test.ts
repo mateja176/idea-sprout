@@ -44,6 +44,9 @@ const seedDb = () => {
   ]);
 };
 
+const getMySprout = () =>
+  getAdminFirestore().collection(firestoreCollections.ideas.path).add(mySprout);
+
 describe('Firestore rules', () => {
   afterEach(() => clearFirestoreData({ projectId }));
 
@@ -256,9 +259,7 @@ describe('Firestore rules', () => {
   test('user cannot review his or her ideas', async () => {
     const db = getFirestore(myAuth);
 
-    const { id } = await getAdminFirestore()
-      .collection(firestoreCollections.ideas.path)
-      .add(mySprout);
+    const { id } = await getMySprout();
 
     await assertFails(
       db
@@ -280,6 +281,16 @@ describe('Firestore rules', () => {
           ratingCount: 1,
         })
         .commit(),
+    );
+  });
+
+  test('user should not be allowed to delete ideas', async () => {
+    const db = getFirestore();
+
+    const { id } = await getMySprout();
+
+    await assertFails(
+      db.collection(firestoreCollections.ideas.path).doc(id).delete(),
     );
   });
 });
