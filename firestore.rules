@@ -52,6 +52,14 @@ function canUpdateReview() {
 function isRatingValid() {
   return request.resource.data.rating is int && request.resource.data.rating >= 1 && request.resource.data.rating <= 5;
 }
+function isFeedbackValid() {
+  return request.resource.data.feedback is string;
+}
+function isReviewType() {
+  return request.resource.data.keys().hasOnly(['rating', 'feedback'])
+    && isRatingValid()
+    && isFeedbackValid();
+}
 
 service cloud.firestore {
   match /databases/{database}/documents {
@@ -90,7 +98,7 @@ service cloud.firestore {
 
       match /reviews/{userId} {
         allow read: if isSignedIn();
-        allow write: if isSignedIn() && userId == request.auth.uid && isRatingValid();
+        allow write: if isSignedIn() && userId == request.auth.uid && isReviewType();
       }
     }
 
