@@ -1,7 +1,7 @@
 rules_version = '2';
 
-function isUpdatingRating() {
-  return 'averageRating' in request.writeFields || 'ratingCount' in request.writeFields;
+function canUpdateRating() {
+  return (!('averageRating' in request.writeFields) || request.writeFields.averateRating == 0) && (!('ratingCount' in request.writeFields) || request.writeFields.ratingCount == 0);
 }
 
 service cloud.firestore {
@@ -11,7 +11,7 @@ service cloud.firestore {
     }
     match /ideas/{ideaId} {
       allow read: if request.auth != null && (resource.data.author == request.auth.uid || resource.data.status == 'sprout');
-      allow write: if request.auth != null && resource.data.author == request.auth.uid && !isUpdatingRating();
+      allow write: if request.auth != null && resource.data.author == request.auth.uid && canUpdateRating();
     }
   }
 }

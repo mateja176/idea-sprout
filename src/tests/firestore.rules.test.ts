@@ -80,6 +80,24 @@ describe('Firestore rules', () => {
     await assertFails(
       db
         .collection(firestoreCollections.ideas.path)
+        .doc(theirSeed.id)
+        .update({ status: 'sprout' }),
+    );
+    await assertFails(
+      db
+        .collection(firestoreCollections.ideas.path)
+        .doc(seed.id)
+        .update({ averageRating: 0 }),
+    );
+    await assertFails(
+      db
+        .collection(firestoreCollections.ideas.path)
+        .doc(seed.id)
+        .update({ ratingCount: 0 }),
+    );
+    await assertFails(
+      db
+        .collection(firestoreCollections.ideas.path)
         .doc(seed.id)
         .update({ averageRating: 5 }),
     );
@@ -87,13 +105,7 @@ describe('Firestore rules', () => {
       db
         .collection(firestoreCollections.ideas.path)
         .doc(seed.id)
-        .update({ ratingCount: 2 }),
-    );
-    await assertFails(
-      db
-        .collection(firestoreCollections.ideas.path)
-        .doc(theirSeed.id)
-        .update({ status: 'sprout' }),
+        .update({ ratingCount: 1 }),
     );
   });
 });
