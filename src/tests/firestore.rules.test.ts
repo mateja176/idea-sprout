@@ -285,7 +285,7 @@ describe('Firestore rules', () => {
   });
 
   test('user should not be allowed to delete ideas', async () => {
-    const db = getFirestore();
+    const db = getFirestore(myAuth);
 
     const { id } = await getMySprout();
 
