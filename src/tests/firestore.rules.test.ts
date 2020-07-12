@@ -293,4 +293,32 @@ describe('Firestore rules', () => {
       db.collection(firestoreCollections.ideas.path).doc(id).delete(),
     );
   });
+
+  test('user can only increment idea count by one', async () => {
+    const db = getFirestore(myAuth);
+
+    await getAdminFirestore()
+      .collection(firestoreCollections.counts.path)
+      .doc(firestoreCollections.ideas.path)
+      .set({ count: 0 });
+
+    await assertFails(
+      db
+        .collection(firestoreCollections.counts.path)
+        .doc(firestoreCollections.ideas.path)
+        .set({ count: -1 }),
+    );
+    await assertSucceeds(
+      db
+        .collection(firestoreCollections.counts.path)
+        .doc(firestoreCollections.ideas.path)
+        .set({ count: 1 }),
+    );
+    await assertFails(
+      db
+        .collection(firestoreCollections.counts.path)
+        .doc(firestoreCollections.ideas.path)
+        .set({ count: 4 }),
+    );
+  });
 });

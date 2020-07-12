@@ -93,5 +93,11 @@ service cloud.firestore {
         allow write: if isSignedIn() && userId == request.auth.uid && isRatingValid();
       }
     }
+
+    match /counts/ideas {
+      allow read: if isSignedIn();
+      // ? is there a way to check what the other operation contained in the batch is
+      allow write: if isSignedIn() && (request.resource.data.count - resource.data.count) == 1;
+    }
   }
 }
