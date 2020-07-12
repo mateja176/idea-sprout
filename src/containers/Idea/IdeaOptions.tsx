@@ -23,7 +23,7 @@ import {
 } from 'services';
 import { ideaNameStyle, withStarColor } from 'styles';
 import urljoin from 'url-join';
-import { absolutePrivateRoute, getRatingHelperText } from 'utils';
+import { absolutePrivateRoute } from 'utils';
 import { CheckMenu } from './Check';
 import { ReviewDialog, ReviewsDialog } from './Review';
 
@@ -125,14 +125,9 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
       [theme],
     );
 
-    const ratingTooltip = React.useMemo(
-      () =>
-        getRatingHelperText({
-          average: idea.averageRating,
-          count: idea.ratingCount,
-        }),
-      [idea.averageRating, idea.ratingCount],
-    );
+    const roundedAverage = idea.averageRating.toFixed(1);
+
+    const ratingTooltip = `Average rating ${roundedAverage} out of total ${idea.ratingCount}`;
 
     const openInFull = React.useCallback(() => {
       history.push(urljoin(absolutePrivateRoute.ideas.path, idea.id));
@@ -173,7 +168,7 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
               endIcon={<StarRate style={withStarColor} />}
               onClick={toggleReviewsOpen}
             >
-              {idea.averageRating}
+              {roundedAverage}
             </Button>
           }
           reviewOption={

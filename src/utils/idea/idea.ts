@@ -6,15 +6,11 @@ import {
   IdeaSprout,
   IdeasState,
   initialRawIdea,
-  Rating,
   RawIdea,
   StorageFile,
 } from 'models';
 
 export const ideasFetchLimit = 15;
-
-export const getRatingHelperText = (rating: Rating) =>
-  `Average rating ${rating.average} out of total ${rating.count}`;
 
 export const getShareCountHelperText = (count: number) =>
   `Shared by ${count} ${count === 1 ? 'person' : 'people'}`;

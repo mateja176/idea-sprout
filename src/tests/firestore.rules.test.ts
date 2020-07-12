@@ -122,6 +122,70 @@ describe('Firestore rules', () => {
       .collection(firestoreCollections.ideas.path)
       .add(theirSprout);
 
+    await assertFails(
+      db
+        .batch()
+        .set(
+          db
+            .collection(firestoreCollections.ideas.path)
+            .doc(id)
+            .collection(firestoreCollections.ideas.collections.reviews.path)
+            .doc(myId),
+          {
+            rating: 6,
+            feedback:
+              'Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem neque dolores mollitia temporibus ipsum consequuntur.',
+          } as RawReview,
+        )
+        .update(db.collection(firestoreCollections.ideas.path).doc(id), {
+          averageRating: 6,
+          ratingCount: 1,
+        })
+        .commit(),
+    );
+    await assertFails(
+      db
+        .batch()
+        .set(
+          db
+            .collection(firestoreCollections.ideas.path)
+            .doc(id)
+            .collection(firestoreCollections.ideas.collections.reviews.path)
+            .doc(myId),
+          {
+            rating: -1,
+            feedback:
+              'Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem neque dolores mollitia temporibus ipsum consequuntur.',
+          } as RawReview,
+        )
+        .update(db.collection(firestoreCollections.ideas.path).doc(id), {
+          averageRating: -1,
+          ratingCount: 1,
+        })
+        .commit(),
+    );
+    await assertFails(
+      db
+        .batch()
+        .set(
+          db
+            .collection(firestoreCollections.ideas.path)
+            .doc(id)
+            .collection(firestoreCollections.ideas.collections.reviews.path)
+            .doc(myId),
+          {
+            rating: 4.5,
+            feedback:
+              'Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem neque dolores mollitia temporibus ipsum consequuntur.',
+          } as RawReview,
+        )
+        .update(db.collection(firestoreCollections.ideas.path).doc(id), {
+          averageRating: -1,
+          ratingCount: 1,
+        })
+        .commit(),
+    );
+    // * create
     await assertSucceeds(
       db
         .batch()
@@ -143,6 +207,7 @@ describe('Firestore rules', () => {
         })
         .commit(),
     );
+    // * update
     await assertSucceeds(
       db
         .batch()
@@ -153,13 +218,13 @@ describe('Firestore rules', () => {
             .collection(firestoreCollections.ideas.collections.reviews.path)
             .doc(myId),
           {
-            rating: 4.5,
+            rating: 4,
             feedback:
               'Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem neque dolores mollitia temporibus ipsum consequuntur.',
           } as RawReview,
         )
         .update(db.collection(firestoreCollections.ideas.path).doc(id), {
-          averageRating: 4.5,
+          averageRating: 4,
           ratingCount: 1,
         })
         .commit(),
@@ -175,13 +240,13 @@ describe('Firestore rules', () => {
             .collection(firestoreCollections.ideas.collections.reviews.path)
             .doc(myId),
           {
-            rating: 4.5,
+            rating: 4,
             feedback:
               'Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem neque dolores mollitia temporibus ipsum consequuntur.',
           } as RawReview,
         )
         .update(db.collection(firestoreCollections.ideas.path).doc(id), {
-          averageRating: 4.5,
+          averageRating: 4,
           ratingCount: 2,
         })
         .commit(),
