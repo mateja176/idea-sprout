@@ -1,10 +1,11 @@
 import * as yup from 'yup';
 import { WithId } from './models';
 
-export interface Review extends WithId {
+export interface RawReview {
   rating: number;
   feedback: string;
 }
+export interface Review extends RawReview, WithId {}
 
 export enum FeedbackLength {
   min = 40,

@@ -12,12 +12,29 @@ function isMine() {
   return isSignedIn() && isAuthor();
 }
 
+function isGuest() {
+  return isSignedIn() && !isAuthor();
+}
+
 function canCreateIdea() {
   return request.resource.data.averageRating == 0 && request.resource.data.ratingCount == 0;
 }
 
-function doesNotUpdateRating() {
+function notUpdatingRating() {
   return !('averageRating' in request.writeFields) && !('ratingCount' in request.writeFields);
+}
+
+function updatingRating() {
+  return 'averageRating' in request.writeFields && 'ratingCount' in request.writeFields;
+}
+
+function onlyUpdatingRating() {
+  return updatingRating() && (request.writeFields.size() == 2);
+}
+
+function canCreateReview() {
+  return onlyUpdatingRating() &&
+    request.resource.data.ratingCount == resource.data.ratingCount + 1;
 }
 
 service cloud.firestore {
@@ -28,7 +45,19 @@ service cloud.firestore {
     match /ideas/{ideaId} {
       allow read: if isSignedIn() && (isAuthor() || resource.data.status == 'sprout');
       allow create: if isSignedIn() && canCreateIdea();
-      allow update: if isMine() && doesNotUpdateRating();
+      allow update: if (isMine() && notUpdatingRating()) ||
+        (isGuest() &&
+          !exists(/databases/$(database)/documents/ideas/$(ideaId)/reviews/$(request.auth.uid)) &&
+          canCreateReview() &&
+          request.resource.data.averageRating ==
+          ((resource.data.averageRating * resource.data.ratingCount +
+            getAfter(/databases/$(database)/documents/ideas/$(ideaId)/reviews/$(request.auth.uid)).data.rating) /
+            (resource.data.ratingCount + 1)));
+
+      match /reviews/{userId} {
+        allow read: if isSignedIn();
+        allow write: if isSignedIn() && userId == request.auth.uid;
+      }
     }
   }
 }
