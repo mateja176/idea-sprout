@@ -8,7 +8,7 @@ function isAuthor() {
   return resource.data.author == request.auth.uid;
 }
 
-function isMine() {
+function isIdeaMine() {
   return isSignedIn() && isAuthor();
 }
 
@@ -46,7 +46,7 @@ service cloud.firestore {
     match /ideas/{ideaId} {
       allow read: if isSignedIn() && (isAuthor() || resource.data.status == 'sprout');
       allow create: if isSignedIn() && canCreateIdea();
-      allow update: if (isMine() && notUpdatingRating()) ||
+      allow update: if (isIdeaMine() && notUpdatingRating()) ||
         (isGuest() &&
           !exists(
             /databases/$(database)/documents/ideas/$(ideaId)/reviews/$(request.auth.uid)
