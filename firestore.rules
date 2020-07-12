@@ -21,11 +21,18 @@ function willBeAuthor() {
 }
 
 function canCreateIdea() {
-  return request.resource.data.averageRating == 0 && request.resource.data.ratingCount == 0 && willBeAuthor();
+  return request.resource.data.averageRating == 0
+    && request.resource.data.ratingCount == 0
+    && request.resource.data.sharedBy.size() ==0
+    && willBeAuthor();
 }
 
 function notUpdatingRating() {
   return request.resource.data.diff(resource.data).unchangedKeys().hasAll(['averageRating', 'ratingCount']);
+}
+
+function notUpdatingSharedBy() {
+  return request.resource.data.diff(resource.data).unchangedKeys().hasAll(['sharedBy']);
 }
 
 function onlyUpdatingRating() {
@@ -54,7 +61,7 @@ service cloud.firestore {
     match /ideas/{ideaId} {
       allow read: if isSignedIn() && (isAuthor() || resource.data.status == 'sprout');
       allow create: if isSignedIn() && canCreateIdea();
-      allow update: if willBeAuthor() && (isIdeaMine() && notUpdatingRating()) ||
+      allow update: if willBeAuthor() && (isIdeaMine() && notUpdatingRating() && notUpdatingSharedBy()) ||
         (isGuest() &&
           !exists(
             /databases/$(database)/documents/ideas/$(ideaId)/reviews/$(request.auth.uid)
