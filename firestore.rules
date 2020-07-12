@@ -16,8 +16,12 @@ function isGuest() {
   return isSignedIn() && !isAuthor();
 }
 
+function willBeAuthor() {
+  return request.resource.data.author == request.auth.uid;
+}
+
 function canCreateIdea() {
-  return request.resource.data.averageRating == 0 && request.resource.data.ratingCount == 0;
+  return request.resource.data.averageRating == 0 && request.resource.data.ratingCount == 0 && willBeAuthor();
 }
 
 function notUpdatingRating() {
@@ -50,7 +54,7 @@ service cloud.firestore {
     match /ideas/{ideaId} {
       allow read: if isSignedIn() && (isAuthor() || resource.data.status == 'sprout');
       allow create: if isSignedIn() && canCreateIdea();
-      allow update: if (isIdeaMine() && notUpdatingRating()) ||
+      allow update: if willBeAuthor() && (isIdeaMine() && notUpdatingRating()) ||
         (isGuest() &&
           !exists(
             /databases/$(database)/documents/ideas/$(ideaId)/reviews/$(request.auth.uid)
