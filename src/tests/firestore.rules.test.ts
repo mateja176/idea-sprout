@@ -306,6 +306,22 @@ describe('Firestore rules', () => {
     );
   });
 
+  test('users can read ideas count', async () => {
+    const db = getFirestore(myAuth);
+
+    await getAdminFirestore()
+      .collection(firestoreCollections.counts.path)
+      .doc(firestoreCollections.ideas.path)
+      .set({ count: 0 });
+
+    await assertSucceeds(
+      db
+        .collection(firestoreCollections.counts.path)
+        .doc(firestoreCollections.ideas.path)
+        .get(),
+    );
+  });
+
   test('user can only increment idea count by one', async () => {
     const db = getFirestore(myAuth);
 
