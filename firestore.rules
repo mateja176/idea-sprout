@@ -18,7 +18,7 @@ function isGuest() {
 
 function isStatusType() {
   return request.resource.data.status is string
-    && request.resource.data.status == 'seed';
+    && (request.resource.data.status == 'seed' || request.resource.data.status == 'sprout');
 }
 function isCreatedAtType() {
   return request.resource.data.createdAt is timestamp
@@ -68,7 +68,7 @@ function isIdeaType() {
     && request.resource.data.author is string
     && isCreatedAtType()
     && isChecksType()
-    && isStatusType()
+    && request.resource.data.status is string && request.resource.data.status == 'seed'
     && isSharedByType()
     && request.resource.data.name is string
     && isFileType(request.resource.data.story)
@@ -79,7 +79,32 @@ function isIdeaType() {
     && request.resource.data.ratingCount is int;
 }
 function isPartialIdeaType() {
-  return true;
+  return request.resource.data.keys().hasAny([
+      'author',
+      'createdAt',
+      'checks',
+      'status',
+      'sharedBy',
+      'name',
+      'story',
+      'problemSolution',
+      'images',
+      'rationale',
+      'averageRating',
+      'ratingCount',
+    ])
+    && (!('author' in request.resource.data)||request.resource.data.author is string)
+    && (!('createdAt' in request.resource.data)||isCreatedAtType())
+    && (!('checks' in request.resource.data)||isChecksType())
+    && (!('status' in request.resource.data)||isStatusType())
+    && (!('sharedBy' in request.resource.data)||isSharedByType())
+    && (!('name' in request.resource.data)||request.resource.data.name is string)
+    && (!('story' in request.resource.data)||isFileType(request.resource.data.story))
+    && (!('problemSolution' in request.resource.data)||request.resource.data.problemSolution is string)
+    && (!('images' in request.resource.data)||isImagesType())
+    && (!('rationale' in request.resource.data)||request.resource.data.rationale is string)
+    && (!('averageRating' in request.resource.data)||request.resource.data.averageRating is number)
+    && (!('ratingCount' in request.resource.data)||request.resource.data.ratingCount is int);
 }
 
 function willBeAuthor() {
