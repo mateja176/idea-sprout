@@ -9,7 +9,12 @@ import { useBoolean } from 'ahooks';
 import { User } from 'models';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { createQueueSnackbar, useActions, useAuth } from 'services';
+import {
+  createQueueSnackbar,
+  createReset,
+  useActions,
+  useAuth,
+} from 'services';
 import { absolutePublicRoute } from 'utils';
 
 export interface SignoutProps {
@@ -18,7 +23,10 @@ export interface SignoutProps {
 }
 
 export const Signout: React.FC<SignoutProps> = ({ user, onClick }) => {
-  const { queueSnackbar } = useActions({ queueSnackbar: createQueueSnackbar });
+  const { reset, queueSnackbar } = useActions({
+    reset: createReset,
+    queueSnackbar: createQueueSnackbar,
+  });
 
   const history = useHistory();
 
@@ -38,14 +46,16 @@ export const Signout: React.FC<SignoutProps> = ({ user, onClick }) => {
             .signOut()
             // * the operation resolves even if the client is offline
             .then(() => {
+              onClick(e);
+
+              history.replace(absolutePublicRoute.signin.path);
+
+              reset();
+
               queueSnackbar({
                 message: 'Successfully signed out',
                 severity: 'success',
               });
-
-              onClick(e);
-
-              history.replace(absolutePublicRoute.signin.path);
             })
             .finally(() => {
               setLoading.setFalse();
