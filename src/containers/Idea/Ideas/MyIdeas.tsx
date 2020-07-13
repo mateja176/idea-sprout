@@ -6,6 +6,7 @@ import { CreateIdea } from '../CreateIdea';
 import { IdeaRow } from '../IdeaRow';
 import { IdeasSkeleton } from './IdeasSkeleton';
 import { useSelector } from 'react-redux';
+import { AutoSizer } from 'react-virtualized';
 
 export const MyEmptyIdeas = ({ user }: { user: User }) => (
   <Box m={3}>
@@ -26,29 +27,27 @@ export const MyIdeas: React.FC<{ user: User }> = ({ user }) => {
   const myIdeas = useSelector(selectMyIdeas(user.uid));
 
   const ideas = useFirestoreCollection<IdeaModel>(
-    useIdeasRef()
-      .where('author', '==', user.uid)
-      .orderBy('createdAt', 'desc'),
+    useIdeasRef().where('author', '==', user.uid).orderBy('createdAt', 'desc'),
     {
       startWithValue: myIdeas.length ? myIdeas : undefined,
     },
   );
 
   return (
-    <Box>
-      {ideas.length <= 0 ? (
-        // * Displaying a Skeleton is preferable considering the case of an user with a number ideas
-        // * landing on a page where he is prompted to created his or her first idea
-        <IdeasSkeleton />
-      ) : (
-        ideas.map((idea) => (
-          <IdeaRow
-            key={idea.id}
-            idea={idea}
-            uid={user.uid}
-          />
-        ))
+    <AutoSizer>
+      {(size) => (
+        <Box {...size} overflow={'auto'}>
+          {ideas.length <= 0 ? (
+            // * Displaying a Skeleton is preferable considering the case of an user with a number ideas
+            // * landing on a page where he is prompted to created his or her first idea
+            <IdeasSkeleton />
+          ) : (
+            ideas.map((idea) => (
+              <IdeaRow key={idea.id} idea={idea} uid={user.uid} />
+            ))
+          )}
+        </Box>
       )}
-    </Box>
+    </AutoSizer>
   );
 };
