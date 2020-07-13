@@ -16,6 +16,72 @@ function isGuest() {
   return isSignedIn() && !isAuthor();
 }
 
+function isStatusType() {
+  return request.resource.data.status is string
+    && request.resource.data.status == 'seed';
+}
+function isCreatedAtType() {
+  return request.resource.data.createdAt is timestamp
+    // * prevents creating ideas from the future
+    && request.resource.data.createdAt.toMillis() <= request.time.toMillis();
+}
+function isChecksType() {
+  return request.resource.data.checks is map
+    && request.resource.data.checks.keys().hasOnly(['niche', 'expectations'])
+    && request.resource.data.checks.niche is bool
+    && request.resource.data.checks.expectations is bool;
+}
+function isSharedByType() {
+  return request.resource.data.sharedBy is list
+    && request.resource.data.sharedBy.size()
+      == request.resource.data.sharedBy.toSet().size();
+}
+function isFileType(file) {
+  return file is map
+    && file.path is string
+    && file.width is int
+    && file.height is int;
+}
+function isImagesType() {
+  return request.resource.data.images is list
+    && ((request.resource.data.images.size() == 1 &&
+        isFileType(request.resource.data.images[0])) ||
+        (request.resource.data.images.size() == 2 &&
+          isFileType(request.resource.data.images[0]) &&
+          isFileType(request.resource.data.images[0])));
+}
+function isIdeaType() {
+  return request.resource.data.keys().hasOnly([
+      'author',
+      'createdAt',
+      'checks',
+      'status',
+      'sharedBy',
+      'name',
+      'story',
+      'problemSolution',
+      'images',
+      'rationale',
+      'averageRating',
+      'ratingCount',
+    ])
+    && request.resource.data.author is string
+    && isCreatedAtType()
+    && isChecksType()
+    && isStatusType()
+    && isSharedByType()
+    && request.resource.data.name is string
+    && isFileType(request.resource.data.story)
+    && request.resource.data.problemSolution is string
+    && isImagesType()
+    && request.resource.data.rationale is string
+    && request.resource.data.averageRating is number
+    && request.resource.data.ratingCount is int;
+}
+function isPartialIdeaType() {
+  return true;
+}
+
 function willBeAuthor() {
   return request.resource.data.author == request.auth.uid;
 }
@@ -73,8 +139,8 @@ service cloud.firestore {
     }
     match /ideas/{ideaId} {
       allow read: if isSignedIn() && (isAuthor() || resource.data.status == 'sprout');
-      allow create: if isSignedIn() && canCreateIdea();
-      allow update: if willBeAuthor() && (isIdeaMine() && notUpdatingRating() && notUpdatingSharedBy()) ||
+      allow create: if isSignedIn() && canCreateIdea() && isIdeaType();
+      allow update: if isPartialIdeaType() && willBeAuthor() && (isIdeaMine() && notUpdatingRating() && notUpdatingSharedBy()) ||
         (isGuest() &&
           !exists(
             /databases/$(database)/documents/ideas/$(ideaId)/reviews/$(request.auth.uid)
