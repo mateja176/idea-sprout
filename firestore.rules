@@ -32,9 +32,7 @@ function isChecksType() {
     && request.resource.data.checks.expectations is bool;
 }
 function isSharedByType() {
-  return request.resource.data.sharedBy is list
-    && request.resource.data.sharedBy.size()
-      == request.resource.data.sharedBy.toSet().size();
+  return request.resource.data.sharedBy is map
 }
 function isFileType(file) {
   return file is map
@@ -107,6 +105,12 @@ function isPartialIdeaType() {
     && (!('ratingCount' in request.resource.data)||request.resource.data.ratingCount is int);
 }
 
+function canShare() {
+  return isSharedByType()
+    && request.resource.data.sharedBy[request.auth.uid] == true
+    && request.resource.data.sharedBy.keys().size() == 1;
+}
+
 function willBeAuthor() {
   return request.resource.data.author == request.auth.uid;
 }
@@ -166,6 +170,7 @@ service cloud.firestore {
       allow read: if isSignedIn() && (isAuthor() || resource.data.status == 'sprout');
       allow create: if isSignedIn() && canCreateIdea() && isIdeaType();
       allow update: if isPartialIdeaType() && willBeAuthor() && (isIdeaMine() && notUpdatingRating() && notUpdatingSharedBy()) ||
+        (isSignedIn() && canShare()) ||
         (isGuest() &&
           !exists(
             /databases/$(database)/documents/ideas/$(ideaId)/reviews/$(request.auth.uid)

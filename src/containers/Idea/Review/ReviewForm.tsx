@@ -50,13 +50,21 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
   ideaUrl,
   onClose,
 }) => {
-  const reviewRef = useReviewsRef(idea.id).doc(uid);
+  const reviewsRef = useReviewsRef(idea.id);
+  const reviewRef = React.useMemo(() => reviewsRef.doc(uid), [reviewsRef, uid]);
 
   const review = useFirestoreDoc<Review>(reviewRef);
 
   const shareIdea = useShareIdea(idea);
 
-  const hasShared = idea.sharedBy.includes(uid);
+  const shareCount = React.useMemo(() => Object.keys(idea.sharedBy).length, [
+    idea.sharedBy,
+  ]);
+
+  const hasShared = React.useMemo(
+    () => Object.keys(idea.sharedBy).includes(uid),
+    [idea.sharedBy, uid],
+  );
 
   const [doNotShareOrWarn, setDoNotShareOrWarn] = React.useState<
     null | true | string
@@ -64,10 +72,13 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
 
   const hasSharedOrDeclined = hasShared || doNotShareOrWarn === true;
 
-  const initialValues: CreationReview = {
-    ...initialCreationReview,
-    ...review,
-  };
+  const initialValues: CreationReview = React.useMemo(
+    () => ({
+      ...initialCreationReview,
+      ...review,
+    }),
+    [review],
+  );
 
   const onSubmit = useReviewSubmit({ idea, currentReview: review });
 
@@ -93,7 +104,10 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
     },
   });
 
-  const areValuesEqualToInitial = equals(initialValues)(values);
+  const areValuesEqualToInitial = React.useMemo(
+    () => equals(initialValues)(values),
+    [initialValues, values],
+  );
 
   return (
     <form onSubmit={handleSubmit}>
@@ -123,7 +137,7 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
       </Badge>
       <Box mt={shareSectionMt}>
         <Typography>
-          <SharePrompt name={idea.name} sharedByCount={idea.sharedBy.length} />
+          <SharePrompt name={idea.name} sharedByCount={shareCount} />
         </Typography>
         <ShareOptions
           ideaUrl={ideaUrl}

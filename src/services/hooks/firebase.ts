@@ -166,17 +166,20 @@ export const useShareIdea = (idea: IdeaModel) => {
 
   const ideaRef = useIdeasRef().doc(idea.id);
 
-  if (idea.sharedBy.includes(user.uid)) {
+  if (Object.keys(idea.sharedBy).includes(user.uid)) {
     return () => {};
   } else {
-    const withSharedBy: Pick<IdeaModel, 'sharedBy'> = {
-      sharedBy: idea.sharedBy.concat(user.uid),
-    };
-
     return () => {
-      return ideaRef.update(withSharedBy).then(() => {
-        updateIdea({ id: idea.id, ...withSharedBy });
-      });
+      return ideaRef
+        .update({
+          [`sharedBy.${user.uid}`]: true,
+        })
+        .then(() => {
+          updateIdea({
+            id: idea.id,
+            sharedBy: { ...idea.sharedBy, [user.uid]: true },
+          });
+        });
     };
   }
 };

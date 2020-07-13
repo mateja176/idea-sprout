@@ -54,7 +54,7 @@ export const getInitialIdea = (author: IdeaModel['author']): RawIdea => ({
   ...initialRawIdea,
   author,
   createdAt: firebase.firestore.Timestamp.now(),
-  sharedBy: [],
+  sharedBy: {},
   status: 'seed',
   name: 'Apple Computers',
   problemSolution:

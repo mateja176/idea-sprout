@@ -321,4 +321,29 @@ describe('Firestore rules', () => {
         .set({ count: 4 }),
     );
   });
+
+  test("user can increase any idea's share count by 1 only once", async () => {
+    const [mySprout, , theirSprout] = await seedDb();
+
+    const db = getFirestore(myAuth);
+
+    await assertSucceeds(
+      db
+        .collection(firestoreCollections.ideas.path)
+        .doc(mySprout.id)
+        .update({ [`sharedBy.${myId}`]: true }),
+    );
+    await assertFails(
+      db
+        .collection(firestoreCollections.ideas.path)
+        .doc(mySprout.id)
+        .update({ [`sharedBy.${theirId}`]: true }),
+    );
+    await assertSucceeds(
+      db
+        .collection(firestoreCollections.ideas.path)
+        .doc(theirSprout.id)
+        .update({ [`sharedBy.${myId}`]: true }),
+    );
+  });
 });

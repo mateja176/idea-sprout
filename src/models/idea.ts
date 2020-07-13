@@ -3,6 +3,7 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 import { IndexRange } from 'react-virtualized';
 import * as yup from 'yup';
+import { User } from './auth';
 import { IdeaFilter } from './firebase';
 import { WithAuthor, WithId } from './models';
 
@@ -56,7 +57,7 @@ export interface IdeaModel extends WithId, WithAuthor {
    */
   checks: { [key in CheckName]: boolean };
   status: IdeaStatus;
-  sharedBy: string[];
+  sharedBy: Record<User['uid'], true | undefined>;
   name: string;
   story: StorageFile;
   problemSolution: string;
@@ -69,7 +70,7 @@ export interface IdeaModel extends WithId, WithAuthor {
 export const initialRawIdea: RawIdea = {
   author: '',
   createdAt: firebase.firestore.Timestamp.now(),
-  sharedBy: [],
+  sharedBy: {},
   status: 'seed',
   checks: {
     niche: true,

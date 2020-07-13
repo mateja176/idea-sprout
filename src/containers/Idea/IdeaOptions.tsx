@@ -133,6 +133,10 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
       history.push(urljoin(absolutePrivateRoute.ideas.path, idea.id));
     }, [history, idea.id]);
 
+    const shareCount = React.useMemo(() => Object.keys(idea.sharedBy).length, [
+      idea.sharedBy,
+    ]);
+
     return (
       <>
         <IdeaOptionsWrapper
@@ -157,7 +161,7 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
           shareOption={
             <ShareMenu
               style={buttonStyle}
-              shareCount={idea.sharedBy.length}
+              shareCount={shareCount}
               url={ideaUrl}
             />
           }
