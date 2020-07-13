@@ -1,4 +1,5 @@
 export * from './ButtonGroup';
+export * from './ErrorBoundary';
 export * from './Check';
 export * from './DraggableDialog';
 export * from './Drop';
