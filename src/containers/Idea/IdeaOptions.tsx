@@ -26,6 +26,7 @@ import urljoin from 'url-join';
 import { absolutePrivateRoute } from 'utils';
 import { CheckMenu } from './Check';
 import { ReviewDialog, ReviewsDialog } from './Review';
+import { Skeleton } from '@material-ui/lab';
 
 export interface IdeaOptionsProps extends Pick<User, 'uid'> {
   idea: IdeaModel;
@@ -143,7 +144,13 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
           key={idea.id}
           onClick={openInFull}
           imagePreview={
-            <React.Suspense fallback={<IdeaPreviewWrapper />}>
+            <React.Suspense
+              fallback={
+                <IdeaPreviewWrapper>
+                  <Skeleton variant={'rect'} width={'100%'} height={'100%'} />
+                </IdeaPreviewWrapper>
+              }
+            >
               <IdeaImagePreview path={idea.images[0].path} />
             </React.Suspense>
           }
