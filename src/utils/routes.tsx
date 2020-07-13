@@ -1,4 +1,4 @@
-import { CollectionsBookmark, Dashboard, Person } from '@material-ui/icons';
+import { CollectionsBookmark, Dashboard } from '@material-ui/icons';
 import { NestedRoutes, Route, Routes, ToAbsoluteRec } from 'models';
 import React from 'react';
 import urljoin from 'url-join';
@@ -39,14 +39,7 @@ const toAbsoluteRec = (parentPath: string) => <R extends NestedRoutes>(
   ) as ToAbsoluteRec<R>;
 };
 
-export const publicNestedNavigationRoute = {
-  signin: {
-    path: 'signin',
-    label: 'Sign in',
-    icon: <Person />,
-    children: {},
-  },
-};
+export const publicNestedNavigationRoute = {};
 export const absolutePublicNavigationRoutes: Route[] = Object.values(
   flatten(toAbsoluteRec('/')(publicNestedNavigationRoute)),
 );
