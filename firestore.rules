@@ -208,5 +208,10 @@ service cloud.firestore {
       // ? is there a way to check what the other operation contained in the batch is
       allow write: if isSignedIn() && isCountType() && (request.resource.data.count - resource.data.count) == 1;
     }
+
+    match /users/{userId} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn() && request.auth.uid == userId;
+    }
   }
 }
