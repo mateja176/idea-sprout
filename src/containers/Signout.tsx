@@ -10,6 +10,7 @@ import { User } from 'models';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import {
+  clearFirestoreCache,
   createQueueSnackbar,
   createReset,
   useActions,
@@ -51,6 +52,8 @@ export const Signout: React.FC<SignoutProps> = ({ user, onClick }) => {
               history.replace(absolutePrivateRoute.ideas.path);
 
               reset();
+
+              clearFirestoreCache();
 
               queueSnackbar({
                 message: 'Successfully signed out',

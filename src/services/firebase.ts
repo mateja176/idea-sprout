@@ -6,3 +6,10 @@ export const interceptGetIdeasError = (
   }
   return snapshot;
 };
+
+export const clearFirestoreCache = () => {
+  const map = (window as any)._reactFirePreloadedObservables;
+  (Array.from(map.keys()) as string[][]).forEach(
+    (key) => key.includes('firestore') && map.delete(key),
+  );
+};
