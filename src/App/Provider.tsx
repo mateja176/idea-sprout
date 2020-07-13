@@ -1,3 +1,5 @@
+import LogRocket from 'logrocket';
+import setupLogRocketReact from 'logrocket-react';
 import React from 'react';
 import { Provider as ReduxProvider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
@@ -17,12 +19,22 @@ const firebaseConfig = {
 
 export interface ProviderProps {}
 
-export const Provider: React.FC<ProviderProps> = ({ children }) => (
-  <ReduxProvider store={store}>
-    <BrowserRouter>
-      <FirebaseAppProvider firebaseConfig={firebaseConfig}>
-        {children}
-      </FirebaseAppProvider>
-    </BrowserRouter>
-  </ReduxProvider>
-);
+export const Provider: React.FC<ProviderProps> = ({ children }) => {
+  React.useEffect(() => {
+    if (env.logRocketId) {
+      LogRocket.init(env.logRocketId);
+
+      setupLogRocketReact(LogRocket);
+    }
+  }, []);
+
+  return (
+    <ReduxProvider store={store}>
+      <BrowserRouter>
+        <FirebaseAppProvider firebaseConfig={firebaseConfig}>
+          {children}
+        </FirebaseAppProvider>
+      </BrowserRouter>
+    </ReduxProvider>
+  );
+};

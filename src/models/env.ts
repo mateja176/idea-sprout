@@ -9,6 +9,8 @@ export interface Env {
   firebaseMessagingSenderId: string;
   firebaseAppId: string;
   firebaseMeasurementId: string;
+
+  logRocketId?: string;
 }
 
 export type RawEnv = DeepPartial<Env>;

@@ -13,4 +13,7 @@ const rawEnv: RawEnv = {
 };
 
 assertRequired(rawEnv);
-export const env: Env = rawEnv;
+export const env: Env = {
+  ...rawEnv,
+  logRocketId: process.env.REACT_APP_LOG_ROCKET_ID,
+};
