@@ -56,6 +56,18 @@ describe('Firestore rules', () => {
     const db = getFirestore(myAuth);
 
     await assertSucceeds(
+      db
+        .collection(firestoreCollections.ideas.path)
+        .where('author', '==', myId)
+        .get(),
+    );
+    await assertSucceeds(
+      db
+        .collection(firestoreCollections.ideas.path)
+        .where('status', '==', 'sprout')
+        .get(),
+    );
+    await assertSucceeds(
       db.collection(firestoreCollections.ideas.path).doc(sprout.id).get(),
     );
     await assertSucceeds(
