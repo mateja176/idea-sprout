@@ -94,6 +94,12 @@ describe('Firestore rules', () => {
         .doc(seed.id)
         .update({ status: 'sprout' }),
     );
+    await assertSucceeds(
+      db
+        .collection(firestoreCollections.ideas.path)
+        .doc(seed.id)
+        .update({ status: 'seed' }),
+    );
     await assertFails(
       db
         .collection(firestoreCollections.ideas.path)
@@ -330,25 +336,31 @@ describe('Firestore rules', () => {
     await getAdminFirestore()
       .collection(firestoreCollections.counts.path)
       .doc(firestoreCollections.ideas.path)
-      .set({ count: 0 });
+      .set({ count: 1 });
 
     await assertFails(
       db
         .collection(firestoreCollections.counts.path)
         .doc(firestoreCollections.ideas.path)
-        .set({ count: -1 }),
-    );
-    await assertSucceeds(
-      db
-        .collection(firestoreCollections.counts.path)
-        .doc(firestoreCollections.ideas.path)
-        .set({ count: 1 }),
+        .update({ count: firestore.FieldValue.increment(2) }),
     );
     await assertFails(
       db
         .collection(firestoreCollections.counts.path)
         .doc(firestoreCollections.ideas.path)
-        .set({ count: 4 }),
+        .update({ count: firestore.FieldValue.increment(-2) }),
+    );
+    await assertSucceeds(
+      db
+        .collection(firestoreCollections.counts.path)
+        .doc(firestoreCollections.ideas.path)
+        .update({ count: firestore.FieldValue.increment(1) }),
+    );
+    await assertSucceeds(
+      db
+        .collection(firestoreCollections.counts.path)
+        .doc(firestoreCollections.ideas.path)
+        .update({ count: firestore.FieldValue.increment(-1) }),
     );
   });
 
