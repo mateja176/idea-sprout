@@ -1,10 +1,11 @@
+import { Box } from '@material-ui/core';
 import { Skeleton } from '@material-ui/lab';
+import { useBoolean } from 'ahooks';
 import { IdeaPreviewWrapper } from 'components';
 import { StorageFile } from 'models';
 import React from 'react';
 import { useStorage, useStorageDownloadUrl } from 'services';
-import { Box } from '@material-ui/core';
-import { useBoolean } from 'ahooks';
+import { ideaListItemHeight } from 'styles';
 
 export interface IdeaImagePreviewProps {
   path: StorageFile['path'];
@@ -14,18 +15,7 @@ export const IdeaImagePreview = React.memo<IdeaImagePreviewProps>(
   ({ path }) => {
     const storage = useStorage();
 
-    const previewPath = React.useMemo(() => {
-      const [extension, name, ...parts] = path.split('.').reverse();
-      return [
-        ...parts.reverse().concat(name.concat('_200x100')),
-        extension,
-      ].join('.');
-    }, [path]);
-
-    const ref = React.useMemo(() => storage.ref(previewPath), [
-      previewPath,
-      storage,
-    ]);
+    const ref = React.useMemo(() => storage.ref(path), [path, storage]);
 
     const url = useStorageDownloadUrl(ref);
 
@@ -46,7 +36,12 @@ export const IdeaImagePreview = React.memo<IdeaImagePreviewProps>(
             display={'flex'}
             justifyContent={'center'}
           >
-            <img src={url} alt="Preview" onLoad={handleImageLoad} />
+            <img
+              src={url}
+              height={ideaListItemHeight}
+              alt="Preview"
+              onLoad={handleImageLoad}
+            />
           </Box>
         )}
       </IdeaPreviewWrapper>
