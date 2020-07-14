@@ -54,18 +54,19 @@ export const MyIdeas: React.FC<{ user: User }> = ({ user }) => {
   );
 
   return (
-    <AutoSizer>
-      {(size) => (
-        <Box {...size} overflow={'auto'}>
-          {ideas.length <= 0 ? (
-            <MyEmptyIdeas user={user} />
-          ) : (
-            ideas.map((idea) => (
-              <IdeaRow key={idea.id} idea={idea} uid={user.uid} />
-            ))
+    <Box height={'100%'} display={'flex'} flexDirection={'column'}>
+      <CreateIdea user={user} />
+      <Box flex={1}>
+        <AutoSizer>
+          {(size) => (
+            <Box {...size} overflow={'auto'}>
+              {ideas.map((idea) => (
+                <IdeaRow key={idea.id} idea={idea} uid={user.uid} />
+              ))}
+            </Box>
           )}
-        </Box>
-      )}
-    </AutoSizer>
+        </AutoSizer>
+      </Box>
+    </Box>
   );
 };
