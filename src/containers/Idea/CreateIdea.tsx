@@ -2,10 +2,10 @@ import { ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import { Create } from '@material-ui/icons';
 import { useBoolean } from 'ahooks';
 import { User } from 'models';
+import qs from 'qs';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { createQueueSnackbar, useActions, useIdeasRef } from 'services';
-import urljoin from 'url-join';
 import { absolutePrivateRoute, getInitialIdea } from 'utils';
 
 export interface CreateIdeaProps {
@@ -25,7 +25,6 @@ export const CreateIdea: React.FC<CreateIdeaProps> = ({ user }) => {
     setLoading.setTrue();
 
     const ideaDoc = ideasRef.doc();
-    const { id } = ideaDoc;
 
     const newIdea = getInitialIdea(user.uid);
 
@@ -40,9 +39,12 @@ export const CreateIdea: React.FC<CreateIdeaProps> = ({ user }) => {
           autoHideDuration: 10000,
         });
 
-        history.push(urljoin(absolutePrivateRoute.ideas.path, id), {
-          idea: { ...newIdea, id },
-        });
+        history.push(
+          absolutePrivateRoute.ideas.path.concat(
+            '?',
+            qs.stringify({ author: user.uid }),
+          ),
+        );
       })
       .finally(() => {
         setLoading.setFalse();
