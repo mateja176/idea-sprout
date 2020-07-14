@@ -136,11 +136,11 @@ export const useReviewSubmit = ({
         feedback,
       })
       .update(ideaRef, {
-        rating: {
-          average: firebase.firestore.FieldValue.increment(averageIncrement),
-          count: firebase.firestore.FieldValue.increment(1),
-        },
-      })
+        averageRating: firebase.firestore.FieldValue.increment(
+          averageIncrement,
+        ),
+        ratingCount: firebase.firestore.FieldValue.increment(1),
+      } as { [key in Extract<keyof IdeaModel, 'averageRating' | 'ratingCount'>]: firebase.firestore.FieldValue })
       .commit()
       .then(() => {
         updateIdea({
