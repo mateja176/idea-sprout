@@ -1,5 +1,5 @@
 import { ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
-import { Create } from '@material-ui/icons';
+import { LibraryAdd } from '@material-ui/icons';
 import { useBoolean } from 'ahooks';
 import { User } from 'models';
 import qs from 'qs';
@@ -52,7 +52,7 @@ export const CreateIdea: React.FC<CreateIdeaProps> = ({ user }) => {
   return (
     <ListItem button disabled={loading} onClick={createIdea}>
       <ListItemIcon>
-        <Create />
+        <LibraryAdd />
       </ListItemIcon>
       <ListItemText>Create</ListItemText>
     </ListItem>
