@@ -1,27 +1,47 @@
 import { Box, Typography } from '@material-ui/core';
 import { IdeaModel, User } from 'models';
 import React from 'react';
-import { useFirestoreCollection, useIdeasRef, selectMyIdeas } from 'services';
-import { CreateIdea } from '../CreateIdea';
-import { IdeaRow } from '../IdeaRow';
-import { IdeasSkeleton } from './IdeasSkeleton';
 import { useSelector } from 'react-redux';
 import { AutoSizer } from 'react-virtualized';
+import {
+  selectMyIdeas,
+  useFirestoreCollection,
+  useIdeaOptionsButtonBorder,
+  useIdeasRef,
+} from 'services';
+import { CreateIdea } from '../CreateIdea';
+import { IdeaRow } from '../IdeaRow';
 
-export const MyEmptyIdeas = ({ user }: { user: User }) => (
-  <Box m={3}>
-    <Typography variant="h6">
-      I have no idea{' '}
-      <span role="img" aria-label="thinking">
-        🤔
-      </span>{' '}
-      Do you?
-    </Typography>
-    <Box mt={2}>
-      <CreateIdea user={user} />
+export const MyEmptyIdeas = ({ user }: { user: User }) => {
+  const buttonBorder = useIdeaOptionsButtonBorder();
+
+  return (
+    <Box
+      m={3}
+      mt={5}
+      display={'flex'}
+      flexDirection={'column'}
+      alignItems={'center'}
+    >
+      <Typography variant="h6">
+        I have no idea{' '}
+        <span role="img" aria-label="thinking">
+          🤔
+        </span>{' '}
+        Do you?
+      </Typography>
+      <Box
+        mt={2}
+        justifySelf={'center'}
+        borderRadius={4}
+        overflow={'hidden'}
+        border={buttonBorder}
+      >
+        <CreateIdea user={user} />
+      </Box>
     </Box>
-  </Box>
-);
+  );
+};
 
 export const MyIdeas: React.FC<{ user: User }> = ({ user }) => {
   const myIdeas = useSelector(selectMyIdeas(user.uid));
@@ -38,9 +58,7 @@ export const MyIdeas: React.FC<{ user: User }> = ({ user }) => {
       {(size) => (
         <Box {...size} overflow={'auto'}>
           {ideas.length <= 0 ? (
-            // * Displaying a Skeleton is preferable considering the case of an user with a number ideas
-            // * landing on a page where he is prompted to created his or her first idea
-            <IdeasSkeleton />
+            <MyEmptyIdeas user={user} />
           ) : (
             ideas.map((idea) => (
               <IdeaRow key={idea.id} idea={idea} uid={user.uid} />
