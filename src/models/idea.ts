@@ -144,3 +144,8 @@ export type IdeaSprout = Omit<IdeaModel, 'status'> & {
 export interface IdeasState {
   ideas: Array<'loading' | IdeaSprout | IdeaBatchError | undefined>;
 }
+
+export const headingIds = {
+  problemSolution: 'problem-solution',
+  rationale: 'rationale',
+};

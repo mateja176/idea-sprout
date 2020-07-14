@@ -1,4 +1,5 @@
 import { Box, Tab, Tabs } from '@material-ui/core';
+import { Person, Search } from '@material-ui/icons';
 import { Ideas, IdeasSkeleton, MyIdeas } from 'containers';
 import qs from 'qs';
 import React from 'react';
@@ -25,7 +26,12 @@ export const IdeasPage: React.FC<IdeasPageProps> = () => {
         variant="fullWidth"
       >
         <Tab
-          label="Discover"
+          label={
+            <Box display={'flex'} alignItems={'center'}>
+              <Search />
+              &nbsp; Discover
+            </Box>
+          }
           onClick={() => {
             history.push({
               search: qs.stringify({}),
@@ -33,7 +39,12 @@ export const IdeasPage: React.FC<IdeasPageProps> = () => {
           }}
         />
         <Tab
-          label="Your Ideas"
+          label={
+            <Box display={'flex'} alignItems={'center'}>
+              <Person />
+              &nbsp; Your Ideas
+            </Box>
+          }
           onClick={() => {
             history.push({
               search: qs.stringify({ author: user.uid }),

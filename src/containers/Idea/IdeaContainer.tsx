@@ -1,10 +1,19 @@
-import { Box, Button, Tooltip } from '@material-ui/core';
-import { KeyboardArrowLeft } from '@material-ui/icons';
+import {
+  Box,
+  Button,
+  Tab,
+  Tabs,
+  Tooltip,
+  useTheme,
+  makeStyles,
+} from '@material-ui/core';
+import { Edit, KeyboardArrowLeft } from '@material-ui/icons';
 import { Idea } from 'containers';
 import 'firebase/firestore';
-import { IdeaModel, IdeaSprout } from 'models';
+import { headingIds, IdeaModel, IdeaSprout } from 'models';
 import React from 'react';
 import { Redirect, useHistory } from 'react-router-dom';
+import { HashLink } from 'react-router-hash-link';
 import {
   createQueueSnackbar,
   createUpdateIdea,
@@ -14,7 +23,7 @@ import {
   useIdeaUrl,
   useSignedInUser,
 } from 'services';
-import { ideaMarginBottom, pageMargin } from 'styles';
+import { ideaMarginBottom } from 'styles';
 import { absolutePrivateRoute } from 'utils';
 import { IdeaProps } from './Idea';
 import { IdeaOptions } from './IdeaOptions';
@@ -22,6 +31,12 @@ import { IdeaOptions } from './IdeaOptions';
 export interface IdeaContainerProps extends Pick<IdeaModel, 'id'> {
   initialIdea?: IdeaModel;
 }
+
+const useStyles = makeStyles(() => ({
+  textColorInherit: {
+    opacity: 1,
+  },
+}));
 
 export const IdeaContainer: React.FC<IdeaContainerProps> = ({
   id,
@@ -33,6 +48,10 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({
   });
 
   const history = useHistory();
+
+  const theme = useTheme();
+
+  const classes = useStyles();
 
   const user = useSignedInUser();
 
@@ -62,7 +81,45 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({
   );
 
   return idea ? (
-    <Box mt={pageMargin} mb={ideaMarginBottom}>
+    <Box mb={ideaMarginBottom}>
+      <Tabs value={false} variant="fullWidth">
+        <Tab
+          onClick={() => {
+            history.push({
+              pathname: absolutePrivateRoute.ideas.path,
+            });
+          }}
+          classes={{
+            textColorInherit: classes.textColorInherit,
+          }}
+          label={
+            <Box display={'flex'} color={theme.palette.action.active}>
+              <KeyboardArrowLeft />
+              &nbsp; Back
+            </Box>
+          }
+        />
+        <Tab
+          classes={{
+            textColorInherit: classes.textColorInherit,
+          }}
+          label={
+            user.uid === idea.author ? (
+              <HashLink
+                to={history.location.pathname
+                  .concat('#')
+                  .concat(headingIds.problemSolution)}
+                smooth
+              >
+                <Box display={'flex'} color={theme.palette.action.active}>
+                  <Edit />
+                  &nbsp; Edit Idea
+                </Box>
+              </HashLink>
+            ) : null
+          }
+        />
+      </Tabs>
       <IdeaOptions
         uid={user.uid}
         idea={idea}
