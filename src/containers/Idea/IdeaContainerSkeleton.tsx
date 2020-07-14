@@ -1,13 +1,20 @@
-import { Box } from '@material-ui/core';
+import { Box, Tab, Tabs } from '@material-ui/core';
+import { Load } from 'components';
 import React from 'react';
-import { ideaMarginBottom, pageMargin } from 'styles';
+import { ideaMarginBottom } from 'styles';
 import { IdeaOptionsSkeleton } from './IdeaOptionsSkeleton';
 import { IdeaSkeleton } from './IdeaSkeleton';
 
 export interface IdeaContainerSkeletonProps {}
 
 export const IdeaContainerSkeleton: React.FC<IdeaContainerSkeletonProps> = () => (
-  <Box mt={pageMargin} mb={ideaMarginBottom}>
+  <Box mb={ideaMarginBottom}>
+    <Load boxWidth={'100%'}>
+      <Tabs value={false} variant={'fullWidth'}>
+        <Tab />
+        <Tab />
+      </Tabs>
+    </Load>
     <IdeaOptionsSkeleton />
     <IdeaSkeleton />
   </Box>
