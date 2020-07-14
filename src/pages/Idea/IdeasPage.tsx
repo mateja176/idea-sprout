@@ -1,6 +1,7 @@
 import { Box, Tab, Tabs } from '@material-ui/core';
 import { Person, Search } from '@material-ui/icons';
 import { Ideas, IdeasSkeleton, MyIdeas } from 'containers';
+import { MyIdeasSkeleton } from 'containers/Idea/Ideas/MyIdeasSkeleton';
 import qs from 'qs';
 import React from 'react';
 import { RouteComponentProps, useHistory, useLocation } from 'react-router-dom';
@@ -54,7 +55,7 @@ export const IdeasPage: React.FC<IdeasPageProps> = () => {
       </Tabs>
       <Box flex={1}>
         {showMyIdeas ? (
-          <React.Suspense fallback={<IdeasSkeleton />}>
+          <React.Suspense fallback={<MyIdeasSkeleton />}>
             <MyIdeas user={user} />
           </React.Suspense>
         ) : (
