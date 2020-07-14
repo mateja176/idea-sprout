@@ -3,22 +3,17 @@ import React from 'react';
 import { ideaListItemHeight } from 'styles';
 
 export const IdeaPreviewWrapper = React.memo<{
-  url?: string;
   children?: React.ReactNode;
-}>(({ url, children }) => {
-  const style = React.useMemo(
-    () => ({
-      backgroundImage: url ? `url(${url})` : 'none',
-      backgroundPosition: 'center center',
-      backgroundSize: 'cover',
-      overflow: 'hidden',
-      minWidth: ideaListItemHeight,
-    }),
-    [url],
-  );
+}>(({ children }) => {
   return (
-    <Box borderRadius={5} height={ideaListItemHeight} style={style}>
-      {!url && children}
+    <Box
+      borderRadius={5}
+      minWidth={ideaListItemHeight}
+      maxWidth={ideaListItemHeight} // * possible allow wider images in the future
+      height={ideaListItemHeight}
+      overflow={'hidden'}
+    >
+      {children}
     </Box>
   );
 });
