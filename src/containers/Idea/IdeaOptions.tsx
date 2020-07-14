@@ -1,4 +1,4 @@
-import { Button, useTheme } from '@material-ui/core';
+import { Button, useTheme, makeStyles } from '@material-ui/core';
 import {
   CheckBoxOutlineBlank,
   CloudOff,
@@ -36,6 +36,8 @@ export interface IdeaOptionsProps extends Pick<User, 'uid'> {
   }) => React.ReactElement;
 }
 
+const useStyles = makeStyles(() => ({ withoutMargin: { marginLeft: 0 } }));
+
 export const IdeaOptions = React.memo<IdeaOptionsProps>(
   ({ uid, idea, ideaUrl, NavigationButton }) => {
     const { addIdea, deleteIdea, queueSnackbar } = useActions({
@@ -43,6 +45,8 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
       deleteIdea: createDeleteIdea,
       queueSnackbar: createQueueSnackbar,
     });
+
+    const classes = useStyles();
 
     const theme = useTheme();
 
@@ -178,6 +182,9 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
               style={buttonStyle}
               endIcon={<StarRate style={withStarColor} />}
               onClick={toggleReviewsOpen}
+              classes={{
+                endIcon: classes.withoutMargin,
+              }}
             >
               {roundedAverage}
             </Button>
