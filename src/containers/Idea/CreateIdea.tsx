@@ -39,12 +39,10 @@ export const CreateIdea: React.FC<CreateIdeaProps> = ({ user }) => {
           autoHideDuration: 10000,
         });
 
-        history.push(
-          absolutePrivateRoute.ideas.path.concat(
-            '?',
-            qs.stringify({ author: user.uid }),
-          ),
-        );
+        history.push({
+          pathname: absolutePrivateRoute.ideas.path,
+          search: qs.stringify({ author: user.uid }),
+        });
       })
       .finally(() => {
         setLoading.setFalse();
