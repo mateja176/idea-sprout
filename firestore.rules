@@ -210,7 +210,7 @@ service cloud.firestore {
     }
 
     match /users/{userId} {
-      allow read: if isSignedIn();
+      allow read: if isSignedIn() && request.auth.uid == userId;
       allow write: if isSignedIn() && request.auth.uid == userId;
     }
   }
