@@ -12,11 +12,12 @@ import 'firebase/auth';
 import { random } from 'lodash';
 import { quotes } from 'models';
 import React from 'react';
+import { RouteComponentProps } from 'react-router-dom';
 import { FacebookIcon, TwitterIcon } from 'react-share';
 import { createQueueSnackbar, useActions } from 'services';
 import { logoWidth } from 'styles';
 
-export interface SigninProps {}
+export interface SigninProps extends RouteComponentProps {}
 
 const useButtonStyles = makeStyles(() => ({
   label: { textTransform: 'capitalize' },

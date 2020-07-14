@@ -1,4 +1,3 @@
-import { Signin } from 'pages';
 import React from 'react';
 import { hot } from 'react-hot-loader';
 import { Auth } from './Auth';
@@ -14,9 +13,7 @@ const AppComponent: React.FC<AppProps> = () => {
     <Provider>
       <Auth>
         <Layout>
-          <React.Suspense fallback={<Signin />}>
-            <Routes />
-          </React.Suspense>
+          <Routes />
           <Snackbar />
         </Layout>
       </Auth>

@@ -2,29 +2,41 @@ import { Box } from '@material-ui/core';
 import { IdeasSwitch, Signin } from 'pages';
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import { AuthCheck } from 'reactfire';
-import { absolutePrivateRoute } from 'utils';
+import { useUser } from 'services';
+import { absolutePrivateRoute, absolutePublicRoute } from 'utils';
+import { initialUser } from 'models';
 
 export interface RoutesProps {}
 
 export const Routes: React.FC<RoutesProps> = () => {
+  const isSignedIn = !!useUser({
+    startWithValue: initialUser,
+  })?.uid;
+
   return (
-    <AuthCheck fallback={<Signin />}>
-      <Switch>
+    <Switch>
+      {!isSignedIn && <Route component={Signin} />}
+      {isSignedIn && (
         <Route
-          exact
-          path={absolutePrivateRoute.root.path}
-          render={() => <Redirect to={absolutePrivateRoute.ideas.path} />}
+          path={absolutePublicRoute.signin.path}
+          render={() => {
+            return <Redirect to={absolutePrivateRoute.ideas.path} />;
+          }}
         />
-        <Route path={absolutePrivateRoute.ideas.path} component={IdeasSwitch} />
-        <Route
-          render={() => (
-            <Box mt={4} display="flex" justifyContent="center">
-              Not Found
-            </Box>
-          )}
-        />
-      </Switch>
-    </AuthCheck>
+      )}
+      <Route
+        exact
+        path={absolutePrivateRoute.root.path}
+        render={() => <Redirect to={absolutePrivateRoute.ideas.path} />}
+      />
+      <Route path={absolutePrivateRoute.ideas.path} component={IdeasSwitch} />
+      <Route
+        render={() => (
+          <Box mt={4} display="flex" justifyContent="center">
+            Not Found
+          </Box>
+        )}
+      />
+    </Switch>
   );
 };
