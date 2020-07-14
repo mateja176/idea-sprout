@@ -49,7 +49,7 @@ export const ShareMenu = React.memo<ShareMenuProps>(
           </config.Button>
         </MenuItem>
       ),
-      [url],
+      [url, shareIdea],
     );
 
     return (
