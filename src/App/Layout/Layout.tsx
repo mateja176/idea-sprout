@@ -10,6 +10,8 @@ import {
 import { ChevronLeft, Menu } from '@material-ui/icons';
 import React from 'react';
 import { minNavWidth, Nav, NavSkeleton } from './Nav';
+import { Link } from 'components';
+import { absolutePrivateRoute } from 'utils';
 
 export interface LayoutProps {}
 
@@ -39,7 +41,9 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
             </IconButton>
           </Box>
           <Box flex={1}>
-            <Typography variant="h6">Idea Sprout</Typography>
+            <Link to={absolutePrivateRoute.ideas.path}>
+              <Typography variant="h6">Idea Sprout</Typography>
+            </Link>
           </Box>
         </Toolbar>
       </AppBar>
