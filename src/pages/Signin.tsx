@@ -4,6 +4,8 @@ import {
   ButtonGroup,
   makeStyles,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from '@material-ui/core';
 import { useBoolean } from 'ahooks';
 import { Google, PageWrapper } from 'components';
@@ -25,6 +27,8 @@ const useButtonStyles = makeStyles(() => ({
 
 export const Signin: React.FC<SigninProps> = () => {
   const { queueSnackbar } = useActions({ queueSnackbar: createQueueSnackbar });
+
+  const theme = useTheme();
 
   const [loading, setLoading] = useBoolean();
 
@@ -51,6 +55,8 @@ export const Signin: React.FC<SigninProps> = () => {
 
   const opacity = loading ? 0.5 : 1;
 
+  const xsAndDown = useMediaQuery(theme.breakpoints.down('xs'));
+
   return (
     <PageWrapper>
       <Box display="flex" flexDirection="column" alignItems="center">
@@ -67,7 +73,7 @@ export const Signin: React.FC<SigninProps> = () => {
                 classes={buttonClasses}
                 startIcon={<Google opacity={opacity} />}
               >
-                Google
+                {!xsAndDown && 'Google'}
               </Button>
               <Button
                 onClick={() => {
@@ -78,7 +84,7 @@ export const Signin: React.FC<SigninProps> = () => {
                   <FacebookIcon round size={logoWidth} opacity={opacity} />
                 }
               >
-                Facebook
+                {!xsAndDown && 'Facebook'}
               </Button>
               <Button
                 onClick={() => {
@@ -89,7 +95,7 @@ export const Signin: React.FC<SigninProps> = () => {
                   <TwitterIcon round size={logoWidth} opacity={opacity} />
                 }
               >
-                Twitter
+                {!xsAndDown && 'Twitter'}
               </Button>
             </ButtonGroup>
           </Box>
