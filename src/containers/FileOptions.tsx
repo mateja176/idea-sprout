@@ -5,11 +5,12 @@ import React from 'react';
 import { createQueueSnackbar, useActions, useUpload } from 'services';
 
 export const FileOptions: React.FC<{
+  label: string;
   update: UpdateIdea;
   storagePath: StoragePath;
   files?: StorageFile[];
   i?: number;
-}> = ({ update, storagePath, files = [], i = -1 }) => {
+}> = ({ label, update, storagePath, files = [], i = -1 }) => {
   const { queueSnackbar } = useActions({ queueSnackbar: createQueueSnackbar });
 
   const inputRef = React.useRef<HTMLInputElement | null>(null);
@@ -58,7 +59,7 @@ export const FileOptions: React.FC<{
           }}
           startIcon={<CloudUpload />}
         >
-          Choose new
+          {label}
         </Button>
         {files.length > 1 ? (
           <Button

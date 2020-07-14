@@ -44,7 +44,13 @@ export const VideoSuspender: React.FC<VideoSuspenderProps> = ({
           <Video path={path} />
         </React.Suspense>
       </div>
-      {isAuthor && <FileOptions update={update} storagePath={'videos'} />}
+      {isAuthor && (
+        <FileOptions
+          label={'Choose new video'}
+          update={update}
+          storagePath={'videos'}
+        />
+      )}
     </Box>
   );
 };

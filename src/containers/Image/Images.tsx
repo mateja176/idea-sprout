@@ -21,6 +21,7 @@ export const Images: React.FC<ImagesProps> = ({ images, isAuthor, update }) => {
           {isAuthor && (
             <FileOptions
               i={i}
+              label={'Choose new image'}
               storagePath={'images'}
               files={images}
               update={update}
