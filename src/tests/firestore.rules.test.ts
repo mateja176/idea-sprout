@@ -59,12 +59,14 @@ describe('Firestore rules', () => {
       db
         .collection(firestoreCollections.ideas.path)
         .where('author', '==', myId)
+        .limit(30)
         .get(),
     );
     await assertSucceeds(
       db
         .collection(firestoreCollections.ideas.path)
         .where('status', '==', 'sprout')
+        .limit(30)
         .get(),
     );
     await assertSucceeds(
