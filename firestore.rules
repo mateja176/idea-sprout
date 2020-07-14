@@ -167,7 +167,9 @@ service cloud.firestore {
       allow read, write: if false;
     }
     match /ideas/{ideaId} {
-      allow read: if isSignedIn() && (!('query' in request) || request.query.limit <= 30) && (isAuthor() || resource.data.status == 'sprout');
+      allow read: if isSignedIn()
+        // && (!('query' in request) || request.query.limit <= 30) // * my ideas aren't yet being lazy loaded
+        && (isAuthor() || resource.data.status == 'sprout');
       allow create: if isSignedIn() && canCreateIdea() && isIdeaType();
       allow update: if isPartialIdeaType() && willBeAuthor() && (isIdeaMine() && notUpdatingRating() && notUpdatingSharedBy()) ||
         (isSignedIn() && canShare()) ||
