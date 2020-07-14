@@ -1,4 +1,4 @@
-import { Button, useTheme, makeStyles } from '@material-ui/core';
+import { Button, makeStyles, useTheme } from '@material-ui/core';
 import {
   CheckBoxOutlineBlank,
   CloudOff,
@@ -6,6 +6,7 @@ import {
   RateReview,
   StarRate,
 } from '@material-ui/icons';
+import { Skeleton } from '@material-ui/lab';
 import { useBoolean } from 'ahooks';
 import { IdeaOptionsWrapper, IdeaPreviewWrapper } from 'components';
 import { IdeaImagePreview, ShareMenu } from 'containers';
@@ -19,6 +20,7 @@ import {
   useActions,
   useIdeaOptionButtonStyle,
   useIdeasRef,
+  useShareIdea,
   useUpdateWithCount,
 } from 'services';
 import { ideaNameStyle, withStarColor } from 'styles';
@@ -26,7 +28,6 @@ import urljoin from 'url-join';
 import { absolutePrivateRoute } from 'utils';
 import { CheckMenu } from './Check';
 import { ReviewDialog, ReviewsDialog } from './Review';
-import { Skeleton } from '@material-ui/lab';
 
 export interface IdeaOptionsProps extends Pick<User, 'uid'> {
   idea: IdeaModel;
@@ -57,6 +58,8 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
     const ideaRef = useIdeasRef().doc(idea.id);
 
     const buttonStyle = useIdeaOptionButtonStyle();
+
+    const shareIdea = useShareIdea(idea);
 
     const updateWithCount = useUpdateWithCount(idea.id);
 
@@ -174,6 +177,7 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
               style={buttonStyle}
               shareCount={shareCount}
               url={ideaUrl}
+              shareIdea={shareIdea}
             />
           }
           rateOption={
