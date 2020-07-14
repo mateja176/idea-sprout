@@ -27,7 +27,7 @@ export const FileOptions: React.FC<{
       <input
         ref={inputRef}
         type={'file'}
-        accept={`${storagePath.slice(-1)}/*`}
+        accept={`${storagePath.slice(0, -1)}/*`}
         style={{ display: 'none' }}
         onChange={(e) => {
           const newFile = e.target.files?.[0];
