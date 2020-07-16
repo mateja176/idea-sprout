@@ -1,6 +1,6 @@
-import { Box, Chip, useTheme, FormHelperText } from '@material-ui/core';
+import { Box, Chip, FormHelperText, useTheme } from '@material-ui/core';
 import { Cancel, Edit } from '@material-ui/icons';
-import { IdeaSection } from 'components';
+import { IdeaSection, IdeaSectionProps } from 'components';
 import {
   ContentState,
   Editor as DraftEditor,
@@ -23,8 +23,8 @@ export const SectionEditor: React.FC<
     min: number;
     max: number;
     onSave: (text: string) => void;
-  }
-> = ({ isAuthor, title, text, min, max, onSave, ...props }) => {
+  } & Pick<IdeaSectionProps, 'mb'>
+> = ({ isAuthor, title, text, min, max, onSave, mb, ...props }) => {
   const theme = useTheme();
 
   const [editorState, setEditorState] = React.useState(
@@ -92,7 +92,7 @@ export const SectionEditor: React.FC<
   }, [editingState, focus, blur, editorState]);
 
   return (
-    <IdeaSection>
+    <IdeaSection mb={mb}>
       <Box display={'flex'} alignItems={'center'}>
         {title}&nbsp;
         {isAuthor && (

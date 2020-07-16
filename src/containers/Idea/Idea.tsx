@@ -9,6 +9,7 @@ import {
   User,
 } from 'models';
 import React from 'react';
+import { ideaMarginBottom } from 'styles';
 import { Images } from '../Image';
 import { VideoSuspender } from '../Video';
 
@@ -40,7 +41,7 @@ export const Idea: React.FC<IdeaProps> = ({ user, idea, update }) => {
   );
 
   return (
-    <Box>
+    <Box flex={1} display={'flex'} flexDirection={'column'} overflow={'auto'}>
       <VideoSuspender story={idea.story} isAuthor={isAuthor} update={update} />
       <SectionEditor
         isAuthor={isAuthor}
@@ -58,6 +59,7 @@ export const Idea: React.FC<IdeaProps> = ({ user, idea, update }) => {
         min={RationaleLength.min}
         max={RationaleLength.max}
         onSave={saveRationale}
+        mb={ideaMarginBottom}
       />
     </Box>
   );

@@ -16,7 +16,6 @@ import {
   useLinkStyle,
   useSignedInUser,
 } from 'services';
-import { ideaMarginBottom } from 'styles';
 import { absolutePrivateRoute } from 'utils';
 import { BackToIdeas } from './BackToIdeas';
 import { IdeaProps } from './Idea';
@@ -69,7 +68,7 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({
   );
 
   return idea ? (
-    <Box mb={ideaMarginBottom}>
+    <Box flex={1} display={'flex'} flexDirection={'column'} overflow={'auto'}>
       <Tabs value={false} variant="fullWidth">
         <BackToIdeas />
         <Tab
