@@ -92,19 +92,29 @@ describe('Firestore rules', () => {
       db
         .collection(firestoreCollections.ideas.path)
         .doc(seed.id)
-        .update({ status: 'sprout' }),
+        .update({
+          story: {
+            path: 'videos/placeholder-story.mp4',
+            width: 1920,
+            height: 1080,
+          },
+        }),
     );
     await assertSucceeds(
       db
         .collection(firestoreCollections.ideas.path)
         .doc(seed.id)
-        .update({ status: 'seed' }),
+        .update({
+          images: [
+            { path: 'images/placeholder-image.png', width: 1920, height: 1080 },
+          ],
+        }),
     );
     await assertFails(
       db
         .collection(firestoreCollections.ideas.path)
         .doc(theirSeed.id)
-        .update({ status: 'sprout' }),
+        .update({ averageRating: 1 }),
     );
     await assertFails(
       db
