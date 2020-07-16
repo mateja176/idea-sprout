@@ -8,7 +8,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import { ChevronLeft, LibraryAdd, Menu } from '@material-ui/icons';
-import { Link, Load } from 'components';
+import { IdeaSprout, Link, Load } from 'components';
 import { CreateIdeaIcon } from 'containers';
 import React from 'react';
 import { absolutePrivateRoute } from 'utils';
@@ -41,7 +41,10 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
               <Menu />
             </IconButton>
           </Box>
-          <Box flex={1}>
+          <Box flex={1} display={'flex'}>
+            <Box mr={1}>
+              <IdeaSprout width={'2em'} height={'2em'} />
+            </Box>
             <Link to={absolutePrivateRoute.ideas.path}>
               <Typography variant="h6">Idea Sprout</Typography>
             </Link>
