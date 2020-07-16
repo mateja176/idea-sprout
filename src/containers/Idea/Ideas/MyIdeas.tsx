@@ -10,6 +10,7 @@ import {
 } from 'services';
 import { CreateIdea } from '../CreateIdea';
 import { IdeaRow } from '../IdeaRow';
+import FlipMove from 'react-flip-move';
 
 export const MyEmptyIdeas = ({ user }: { user: User }) => {
   const buttonBorder = useIdeaOptionsButtonBorder();
@@ -57,9 +58,11 @@ export const MyIdeas: React.FC<{ user: User }> = ({ user }) => {
       {ideas.length <= 0 ? (
         <MyEmptyIdeas user={user} />
       ) : (
-        ideas.map((idea) => (
-          <IdeaRow key={idea.id} idea={idea} uid={user.uid} />
-        ))
+        <FlipMove>
+          {ideas.map((idea) => (
+            <IdeaRow key={idea.id} idea={idea} uid={user.uid} />
+          ))}
+        </FlipMove>
       )}
     </Box>
   );
