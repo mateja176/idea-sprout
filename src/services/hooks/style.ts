@@ -1,4 +1,4 @@
-import { useTheme } from '@material-ui/core';
+import { makeStyles, useTheme } from '@material-ui/core';
 import { useMemo } from 'react';
 
 export const useIdeaOptionButtonStyle = () => {
@@ -21,3 +21,9 @@ export const useIdeaOptionsButtonBorder = () => {
 
   return useMemo(() => `1px solid ${theme.palette.grey[600]}`, [theme]);
 };
+
+export const useLinkStyle = makeStyles(() => ({
+  textColorInherit: {
+    opacity: 1,
+  },
+}));

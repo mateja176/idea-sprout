@@ -3,15 +3,15 @@ import { Skeleton, SkeletonProps } from '@material-ui/lab';
 import React from 'react';
 
 export interface LoaderProps extends SkeletonProps {
-  boxWidth?: React.CSSProperties['width'];
+  boxFlex?: React.CSSProperties['flex'];
 }
 
 export const Load: React.FC<LoaderProps> = ({
-  boxWidth,
+  boxFlex,
   children,
   ...props
 }) => (
-  <Box position="relative" display={'inline-block'} width={boxWidth}>
+  <Box position="relative" display={'inline-block'} flex={boxFlex}>
     <Skeleton
       variant="rect"
       width={'100%'}

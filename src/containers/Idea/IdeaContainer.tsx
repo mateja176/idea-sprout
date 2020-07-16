@@ -1,12 +1,4 @@
-import {
-  Box,
-  Button,
-  Tab,
-  Tabs,
-  Tooltip,
-  useTheme,
-  makeStyles,
-} from '@material-ui/core';
+import { Box, Button, Tab, Tabs, Tooltip, useTheme } from '@material-ui/core';
 import { Edit, KeyboardArrowLeft } from '@material-ui/icons';
 import { Idea } from 'containers';
 import 'firebase/firestore';
@@ -21,22 +13,18 @@ import {
   useFirestoreDoc,
   useIdeasRef,
   useIdeaUrl,
+  useLinkStyle,
   useSignedInUser,
 } from 'services';
 import { ideaMarginBottom } from 'styles';
 import { absolutePrivateRoute } from 'utils';
+import { BackToIdeas } from './BackToIdeas';
 import { IdeaProps } from './Idea';
 import { IdeaOptions } from './IdeaOptions';
 
 export interface IdeaContainerProps extends Pick<IdeaModel, 'id'> {
   initialIdea?: IdeaModel;
 }
-
-const useStyles = makeStyles(() => ({
-  textColorInherit: {
-    opacity: 1,
-  },
-}));
 
 export const IdeaContainer: React.FC<IdeaContainerProps> = ({
   id,
@@ -51,7 +39,7 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({
 
   const theme = useTheme();
 
-  const classes = useStyles();
+  const linkStyle = useLinkStyle();
 
   const user = useSignedInUser();
 
@@ -83,26 +71,9 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({
   return idea ? (
     <Box mb={ideaMarginBottom}>
       <Tabs value={false} variant="fullWidth">
+        <BackToIdeas />
         <Tab
-          onClick={() => {
-            history.push({
-              pathname: absolutePrivateRoute.ideas.path,
-            });
-          }}
-          classes={{
-            textColorInherit: classes.textColorInherit,
-          }}
-          label={
-            <Box display={'flex'} color={theme.palette.action.active}>
-              <KeyboardArrowLeft />
-              &nbsp; Back
-            </Box>
-          }
-        />
-        <Tab
-          classes={{
-            textColorInherit: classes.textColorInherit,
-          }}
+          classes={linkStyle}
           label={
             user.uid === idea.author ? (
               <HashLink
