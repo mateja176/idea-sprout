@@ -30,6 +30,7 @@ export const useUpload = (path: StoragePath) => {
           return size.then(({ width, height }) =>
             ref
               .putString(data, firebase.storage.StringFormat.DATA_URL, {
+                cacheControl: 'public, max-age=300',
                 customMetadata: {
                   width: width.toString(),
                   height: height.toString(),
