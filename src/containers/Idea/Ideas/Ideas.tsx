@@ -111,11 +111,7 @@ export const Ideas = ({ user }: IdeasProps) => {
               &nbsp; from {idea.startIndex + 1} to {idea.stopIndex + 1}
             </Box>
           ) : (
-            <IdeaRow
-              key={idea.id}
-              idea={idea}
-              uid={user.uid}
-            />
+            <IdeaRow key={idea.id} idea={idea} uid={user.uid} />
           )}
         </Box>
       );
@@ -124,14 +120,14 @@ export const Ideas = ({ user }: IdeasProps) => {
   );
 
   return (
-    <InfiniteLoader
-      loadMoreRows={loadMoreRows}
-      isRowLoaded={isRowLoaded}
-      rowCount={rowCount}
-    >
-      {({ onRowsRendered, registerChild }) => (
-        <AutoSizer>
-          {({ width, height }) => (
+    <AutoSizer>
+      {({ width, height }) => (
+        <InfiniteLoader
+          loadMoreRows={loadMoreRows}
+          isRowLoaded={isRowLoaded}
+          rowCount={rowCount}
+        >
+          {({ onRowsRendered, registerChild }) => (
             <List
               rowCount={rowCount}
               ref={registerChild}
@@ -143,8 +139,8 @@ export const Ideas = ({ user }: IdeasProps) => {
               rowRenderer={RowRenderer}
             />
           )}
-        </AutoSizer>
+        </InfiniteLoader>
       )}
-    </InfiniteLoader>
+    </AutoSizer>
   );
 };
