@@ -39,7 +39,7 @@ export const getFileName = (file: StorageFile) =>
 export const getFileNames = (files: StorageFile[]) =>
   files.flatMap(getFileName);
 
-export const contentToText = (editorState: EditorState): string => {
+export const stateToString = (editorState: EditorState): string => {
   const text = convertToRaw(editorState.getCurrentContent())
     .blocks.reduce((text, block) => text.concat('\n', block.text), '')
     .trim();

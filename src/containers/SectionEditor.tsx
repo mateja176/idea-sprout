@@ -8,8 +8,9 @@ import {
   EditorState,
   getDefaultKeyBinding,
 } from 'draft-js';
+import 'draft-js/dist/Draft.css';
 import React from 'react';
-import { contentToText } from 'utils';
+import { stateToString } from 'utils';
 
 const editingStates = ['off', 'blur', 'focus', 'tooShort', 'tooLong'] as const;
 type EditingStates = typeof editingStates;
@@ -47,7 +48,7 @@ export const SectionEditor: React.FC<
     editingState === 'tooShort' ||
     editingState === 'tooLong';
 
-  const editorStateText = React.useMemo(() => contentToText(editorState), [
+  const editorStateText = React.useMemo(() => stateToString(editorState), [
     editorState,
   ]);
 
