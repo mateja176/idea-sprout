@@ -19,7 +19,7 @@ export const IdeasPage: React.FC<IdeasPageProps> = () => {
   const showMyIdeas = (query.author && query.author) === user.uid;
 
   return (
-    <Box height={'100%'} display={'flex'} flexDirection={'column'}>
+    <Box flex={1} display={'flex'} flexDirection={'column'} overflow={'auto'}>
       <Tabs
         value={Number(showMyIdeas)}
         indicatorColor="primary"
@@ -53,7 +53,7 @@ export const IdeasPage: React.FC<IdeasPageProps> = () => {
           }}
         />
       </Tabs>
-      <Box flex={1}>
+      <Box flex={1} display={'flex'} flexDirection={'column'} overflow={'auto'}>
         {showMyIdeas ? (
           <React.Suspense fallback={<MyIdeasSkeleton />}>
             <MyIdeas user={user} />

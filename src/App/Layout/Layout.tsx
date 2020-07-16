@@ -73,7 +73,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
           </React.Suspense>
         </Box>
       </Drawer>
-      <Box flex={1}>{children}</Box>
+      {children}
     </Box>
   );
 };

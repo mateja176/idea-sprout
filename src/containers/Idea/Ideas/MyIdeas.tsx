@@ -2,7 +2,6 @@ import { Box, Typography } from '@material-ui/core';
 import { IdeaModel, User } from 'models';
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { AutoSizer } from 'react-virtualized';
 import {
   selectMyIdeas,
   useFirestoreCollection,
@@ -54,19 +53,13 @@ export const MyIdeas: React.FC<{ user: User }> = ({ user }) => {
   );
 
   return (
-    <Box height={'100%'} display={'flex'} flexDirection={'column'}>
+    <>
       <CreateIdea user={user} />
-      <Box flex={1}>
-        <AutoSizer>
-          {(size) => (
-            <Box {...size} overflow={'auto'}>
-              {ideas.map((idea) => (
-                <IdeaRow key={idea.id} idea={idea} uid={user.uid} />
-              ))}
-            </Box>
-          )}
-        </AutoSizer>
+      <Box flex={1} display={'flex'} flexDirection={'column'} overflow={'auto'}>
+        {ideas.map((idea) => (
+          <IdeaRow key={idea.id} idea={idea} uid={user.uid} />
+        ))}
       </Box>
-    </Box>
+    </>
   );
 };
