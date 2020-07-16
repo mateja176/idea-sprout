@@ -1,6 +1,6 @@
 import { List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import { Link } from 'components';
-import { CreateIdea, Signout } from 'containers';
+import { Signout } from 'containers';
 import React from 'react';
 import { useUser } from 'services';
 import {
@@ -36,12 +36,7 @@ export const Nav: React.FC<NavProps> = ({ onClick }) => {
           </ListItem>
         </Link>
       ))}
-      {!!user && (
-        <>
-          <CreateIdea user={user} />
-          <Signout user={user} onClick={onClick} />
-        </>
-      )}
+      {!!user && <Signout user={user} onClick={onClick} />}
     </List>
   );
 };

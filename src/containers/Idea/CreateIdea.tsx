@@ -1,56 +1,18 @@
 import { ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import { LibraryAdd } from '@material-ui/icons';
-import { useBoolean } from 'ahooks';
 import { User } from 'models';
-import qs from 'qs';
 import React from 'react';
-import { useHistory } from 'react-router-dom';
-import { createQueueSnackbar, useActions, useIdeasRef } from 'services';
-import { absolutePrivateRoute, getInitialIdea } from 'utils';
+import { useCreateIdea } from 'services';
 
 export interface CreateIdeaProps {
   user: User;
 }
 
-export const CreateIdea: React.FC<CreateIdeaProps> = ({ user }) => {
-  const { queueSnackbar } = useActions({ queueSnackbar: createQueueSnackbar });
-
-  const history = useHistory();
-
-  const ideasRef = useIdeasRef();
-
-  const [loading, setLoading] = useBoolean();
-
-  const createIdea = () => {
-    setLoading.setTrue();
-
-    const ideaDoc = ideasRef.doc();
-
-    const newIdea = getInitialIdea(user.uid);
-
-    ideaDoc
-      .set(newIdea)
-      .then(() => {
-        // * the promise is not rejected even if the client is offline
-        // * the promise is pending until it resolves or the tab is closed
-        queueSnackbar({
-          severity: 'success',
-          message: 'Update, publish and share to get feedback!',
-          autoHideDuration: 10000,
-        });
-
-        history.push({
-          pathname: absolutePrivateRoute.ideas.path,
-          search: qs.stringify({ author: user.uid }),
-        });
-      })
-      .finally(() => {
-        setLoading.setFalse();
-      });
-  };
+export const CreateIdea: React.FC<CreateIdeaProps> = () => {
+  const { create, loading } = useCreateIdea();
 
   return (
-    <ListItem button disabled={loading} onClick={createIdea}>
+    <ListItem button disabled={loading} onClick={create}>
       <ListItemIcon>
         <LibraryAdd />
       </ListItemIcon>

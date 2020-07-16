@@ -7,11 +7,12 @@ import {
   Toolbar,
   Typography,
 } from '@material-ui/core';
-import { ChevronLeft, Menu } from '@material-ui/icons';
+import { ChevronLeft, LibraryAdd, Menu } from '@material-ui/icons';
+import { Link, Load } from 'components';
+import { CreateIdeaIcon } from 'containers';
 import React from 'react';
-import { minNavWidth, Nav, NavSkeleton } from './Nav';
-import { Link } from 'components';
 import { absolutePrivateRoute } from 'utils';
+import { minNavWidth, Nav, NavSkeleton } from './Nav';
 
 export interface LayoutProps {}
 
@@ -45,6 +46,17 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
               <Typography variant="h6">Idea Sprout</Typography>
             </Link>
           </Box>
+          <React.Suspense
+            fallback={
+              <Load variant={'circle'}>
+                <IconButton>
+                  <LibraryAdd />
+                </IconButton>
+              </Load>
+            }
+          >
+            <CreateIdeaIcon />
+          </React.Suspense>
         </Toolbar>
       </AppBar>
       <Drawer

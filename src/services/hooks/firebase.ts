@@ -1,9 +1,12 @@
+import { useBoolean } from 'ahooks';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/storage';
 import { IdeaModel, RawIdea, Review, User, WithCount, WithId } from 'models';
+import qs from 'qs';
 import { useCallback, useMemo } from 'react';
+import { useHistory } from 'react-router-dom';
 import {
   ReactFireOptions,
   useAuth as useFirebaseAuth,
@@ -15,9 +18,11 @@ import {
 import { createQueueSnackbar } from 'services';
 import { createUpdateIdea } from 'services/store';
 import {
+  absolutePrivateRoute,
   convertFirestoreCollection,
   convertFirestoreDocument,
   firestoreCollections,
+  getInitialIdea,
   hasOnlyId,
 } from 'utils';
 import { useActions } from './hooks';
@@ -210,4 +215,41 @@ export const useUpdateWithCount = (id: IdeaModel['id']) => {
     },
     [id, ideasRef, ideasCountRef],
   );
+};
+
+export const useCreateIdea = () => {
+  const user = useSignedInUser();
+
+  const { queueSnackbar } = useActions({ queueSnackbar: createQueueSnackbar });
+
+  const history = useHistory();
+
+  const ideasRef = useIdeasRef();
+
+  const [loading, setLoading] = useBoolean();
+
+  const create = () => {
+    setLoading.setTrue();
+    history.push({
+      pathname: absolutePrivateRoute.ideas.path,
+      search: qs.stringify({ author: user.uid }),
+    });
+    // * the promise is not rejected even if the client is offline
+    // * the promise is pending until it resolves or the tab is closed
+    return ideasRef
+      .add(getInitialIdea(user.uid))
+      .finally(setLoading.setFalse)
+      .then(() => {
+        queueSnackbar({
+          severity: 'success',
+          message: 'Update, publish and share to get feedback!',
+          autoHideDuration: 10000,
+        });
+      });
+  };
+
+  return {
+    create,
+    loading,
+  };
 };

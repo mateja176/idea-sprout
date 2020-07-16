@@ -53,13 +53,10 @@ export const MyIdeas: React.FC<{ user: User }> = ({ user }) => {
   );
 
   return (
-    <>
-      <CreateIdea user={user} />
-      <Box flex={1} display={'flex'} flexDirection={'column'} overflow={'auto'}>
-        {ideas.map((idea) => (
-          <IdeaRow key={idea.id} idea={idea} uid={user.uid} />
-        ))}
-      </Box>
-    </>
+    <Box flex={1} display={'flex'} flexDirection={'column'} overflow={'auto'}>
+      {ideas.map((idea) => (
+        <IdeaRow key={idea.id} idea={idea} uid={user.uid} />
+      ))}
+    </Box>
   );
 };

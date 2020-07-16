@@ -1,6 +1,7 @@
 export * from './Check';
 export * from './CopyUrl';
 export * from './CreateIdea';
+export * from './CreateIdeaIcon';
 export * from './Form';
 export * from './Idea';
 export * from './IdeaContainer';
