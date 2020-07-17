@@ -18,7 +18,11 @@ export const ideaListItemStyle: React.CSSProperties = {
   height: ideaListItemFullHeight,
 };
 
-export const ideaNameStyle: React.CSSProperties = { fontSize: '1.2em' };
+export const ideaNameStyle: React.CSSProperties = {
+  fontSize: '1.2em',
+  whiteSpace: 'nowrap',
+  display: 'inline-block',
+};
 
 export const textSectionStyle: React.CSSProperties = {
   ...breakWordStyle,

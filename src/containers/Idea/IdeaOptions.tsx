@@ -145,6 +145,29 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
       idea.sharedBy,
     ]);
 
+    const nameRef = React.useRef<HTMLSpanElement | null>(null);
+    React.useEffect(() => {
+      if (nameRef.current) {
+        const nameWidth = nameRef.current.getBoundingClientRect().width;
+        const parentWidth =
+          nameRef.current.parentElement?.getBoundingClientRect().width ?? 0;
+        if (parentWidth ?? 0 < nameWidth) {
+          nameRef.current.animate(
+            [
+              { transform: 'translateX(0px)' },
+              { transform: `translateX(-${nameWidth - parentWidth + 10}px)` },
+            ],
+            {
+              duration: 3000,
+              iterations: Infinity,
+              easing: 'cubic-bezier(.8,0,.3,1)',
+              direction: 'alternate',
+            },
+          );
+        }
+      }
+    }, []);
+
     return (
       <>
         <IdeaOptionsWrapper
@@ -163,7 +186,7 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
           }
           textSection={
             <>
-              <span title={idea.name} style={ideaNameStyle}>
+              <span ref={nameRef} title={idea.name} style={ideaNameStyle}>
                 {idea.name}
               </span>
               <br />
