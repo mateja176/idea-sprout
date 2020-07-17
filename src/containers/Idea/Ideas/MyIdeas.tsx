@@ -1,43 +1,71 @@
-import { Box, Typography } from '@material-ui/core';
+import {
+  Box,
+  Button,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemIcon,
+} from '@material-ui/core';
+import { LibraryAdd, Edit, Publish, Share } from '@material-ui/icons';
 import { IdeaModel, User } from 'models';
 import React from 'react';
+import FlipMove from 'react-flip-move';
 import { useSelector } from 'react-redux';
 import {
   selectMyIdeas,
+  useCreateIdea,
   useFirestoreCollection,
-  useIdeaOptionsButtonBorder,
   useIdeasRef,
 } from 'services';
-import { CreateIdea } from '../CreateIdea';
 import { IdeaRow } from '../IdeaRow';
-import FlipMove from 'react-flip-move';
 
 export const MyEmptyIdeas = ({ user }: { user: User }) => {
-  const buttonBorder = useIdeaOptionsButtonBorder();
+  const { create, loading } = useCreateIdea();
 
   return (
-    <Box
-      m={3}
-      mt={5}
-      display={'flex'}
-      flexDirection={'column'}
-      alignItems={'center'}
-    >
-      <Typography variant="h6">
-        I have no idea{' '}
-        <span role="img" aria-label="thinking">
-          🤔
-        </span>{' '}
-        Do you?
-      </Typography>
-      <Box
-        mt={2}
-        justifySelf={'center'}
-        borderRadius={4}
-        overflow={'hidden'}
-        border={buttonBorder}
-      >
-        <CreateIdea user={user} />
+    <Box m={3} mt={5}>
+      Plant an idea seed by clicking on the button below. Next, give it some
+      water by:
+      <List>
+        <ListItem>
+          <ListItemIcon>
+            <Edit />
+          </ListItemIcon>
+          <ListItemText>
+            Updating its <i>name</i>, <i>story</i> (video),{' '}
+            <i>problem-solution</i>, <i>image</i> and
+            <i>rationale</i>. Don't worry you can do this incrementally.
+          </ListItemText>
+        </ListItem>
+        <ListItem>
+          <ListItemIcon>
+            <Publish />
+          </ListItemIcon>
+          <ListItemText>
+            When you that think it's time to take the spotlight, <i>publish</i>{' '}
+            your idea to the world!
+          </ListItemText>
+        </ListItem>
+        <ListItem>
+          <ListItemIcon>
+            <Share />
+          </ListItemIcon>
+          <ListItemText>
+            To help the idea sprout grow, <i>share</i> it with a person or
+            people who may like it.
+          </ListItemText>
+        </ListItem>
+      </List>
+      <Box mt={2}>
+        <Button
+          variant={'contained'}
+          color={'primary'}
+          startIcon={<LibraryAdd />}
+          disabled={loading}
+          onClick={create}
+        >
+          Create idea
+        </Button>
       </Box>
     </Box>
   );
