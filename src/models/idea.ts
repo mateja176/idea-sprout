@@ -120,12 +120,12 @@ export const creationIdeaSchema = yup
   .required()
   .shape<FormIdea>({
     name: yup.string().required().min(NameLength.min).max(NameLength.max),
-    story: StorageFileSchema,
     tagline: yup
       .string()
       .required()
       .min(TaglineLength.min)
       .max(TaglineLength.max),
+    story: StorageFileSchema,
     problemSolution: yup
       .string()
       .required('Problem-solution field is required')
