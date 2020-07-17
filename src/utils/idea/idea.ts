@@ -50,7 +50,34 @@ export function isIdea(idea: IdeasState['ideas'][number]): idea is IdeaSprout {
   return !!idea && idea !== 'loading' && !(idea instanceof Error);
 }
 
+export const problemSolutionText = `What do all successful businesses have in common? They solve a problem or fulfill a need that a certain group of people experiences. Why would they care and what would the proposed solution be?`;
+
+export const rationaleText = `Win over the hearts of customers with your story. Win over the minds of customers with common logic.`;
+
 export const getInitialIdea = (author: IdeaModel['author']): RawIdea => ({
+  ...initialRawIdea,
+  author,
+  createdAt: firebase.firestore.Timestamp.now(),
+  sharedBy: {},
+  status: 'seed',
+  name: 'Idea Seed',
+  problemSolution: problemSolutionText,
+  story: {
+    path: 'videos/idea-seed.mp4',
+    width: 1920,
+    height: 1080,
+  },
+  images: [
+    {
+      path: 'images/idea-seed.png',
+      width: 512,
+      height: 512,
+    },
+  ],
+  rationale: rationaleText,
+});
+
+export const getAppleIdea = (author: IdeaModel['author']): RawIdea => ({
   ...initialRawIdea,
   author,
   createdAt: firebase.firestore.Timestamp.now(),

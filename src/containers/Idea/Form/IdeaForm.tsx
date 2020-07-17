@@ -35,6 +35,8 @@ import {
   getFileName,
   getFileNames,
   getFormIdea,
+  problemSolutionText,
+  rationaleText,
 } from 'utils';
 import { ExpectationsCheck, NicheCheck } from '../Check';
 
@@ -229,7 +231,7 @@ export const IdeaForm: React.FC<IdeaFormProps> = ({ idea }) => {
           error={touched.problemSolution && !!errors.problemSolution}
           helperText={
             (touched.problemSolution && errors.problemSolution) ||
-            `What do all successful businesses have in common? They either solve a problem or bring a feeling of well-being to their customers. Write this section with your ideal customer in mind.`
+            problemSolutionText
           }
         />
         <Box mt={6}>
@@ -281,10 +283,7 @@ export const IdeaForm: React.FC<IdeaFormProps> = ({ idea }) => {
           rows={6}
           fullWidth
           error={touched.rationale && !!errors.rationale}
-          helperText={
-            (touched.rationale && errors.rationale) ||
-            `Win over the hearts of customers with your story. Win over the minds of customers with common logic.`
-          }
+          helperText={(touched.rationale && errors.rationale) || rationaleText}
         />
         <Box mt={10} mb={15}>
           <Button
