@@ -1,11 +1,10 @@
 import { Box, Button, Tab, Tabs, Tooltip, useTheme } from '@material-ui/core';
-import { Edit, KeyboardArrowLeft } from '@material-ui/icons';
+import { KeyboardArrowLeft } from '@material-ui/icons';
 import { Idea } from 'containers';
 import 'firebase/firestore';
-import { headingIds, IdeaModel, IdeaSprout } from 'models';
+import { IdeaModel, IdeaSprout } from 'models';
 import React from 'react';
 import { Redirect, useHistory } from 'react-router-dom';
-import { HashLink } from 'react-router-hash-link';
 import {
   createQueueSnackbar,
   createUpdateIdea,
@@ -13,7 +12,6 @@ import {
   useFirestoreDoc,
   useIdeasRef,
   useIdeaUrl,
-  useLinkStyle,
   useSignedInUser,
 } from 'services';
 import { absolutePrivateRoute } from 'utils';
@@ -37,8 +35,6 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({
   const history = useHistory();
 
   const theme = useTheme();
-
-  const linkStyle = useLinkStyle();
 
   const user = useSignedInUser();
 
@@ -71,7 +67,8 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({
     <Box flex={1} display={'flex'} flexDirection={'column'} overflow={'auto'}>
       <Tabs value={false} variant="fullWidth">
         <BackToIdeas />
-        <Tab
+        <Tab />
+        {/* <Tab
           classes={linkStyle}
           label={
             user.uid === idea.author ? (
@@ -88,7 +85,7 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({
               </HashLink>
             ) : null
           }
-        />
+        /> */}
       </Tabs>
       <Box boxShadow={theme.shadows[6]}>
         <IdeaOptions
