@@ -2,6 +2,12 @@ import { Typography } from '@material-ui/core';
 import { headingIds } from 'models';
 import React from 'react';
 
+export const nameTitle = (
+  <Typography id={headingIds.name} variant="h5">
+    Name
+  </Typography>
+);
+
 export const problemSolutionTitle = (
   <Typography id={headingIds.problemSolution} variant="h5">
     Problem-Solution
