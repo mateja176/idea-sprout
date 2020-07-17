@@ -59,6 +59,7 @@ export interface IdeaModel extends WithId, WithAuthor {
   status: IdeaStatus;
   sharedBy: Record<User['uid'], true | undefined>;
   name: string;
+  tagline: string;
   story: StorageFile;
   problemSolution: string;
   images: StorageFile[];
@@ -78,6 +79,7 @@ export const initialRawIdea: RawIdea = {
   },
 
   name: '',
+  tagline: '',
   story: { path: '', width: 0, height: 0 },
   problemSolution: '',
   images: [],
@@ -98,6 +100,11 @@ export enum NameLength {
   max = 30,
 }
 
+export enum TaglineLength {
+  min = 20,
+  max = 60,
+}
+
 export enum ProblemSolutionLength {
   min = 80,
   max = 200,
@@ -114,6 +121,11 @@ export const creationIdeaSchema = yup
   .shape<FormIdea>({
     name: yup.string().required().min(NameLength.min).max(NameLength.max),
     story: StorageFileSchema,
+    tagline: yup
+      .string()
+      .required()
+      .min(TaglineLength.min)
+      .max(TaglineLength.max),
     problemSolution: yup
       .string()
       .required('Problem-solution field is required')
@@ -156,6 +168,7 @@ export interface IdeasState {
 
 export const headingIds = {
   name: 'name',
+  tagline: 'name',
   problemSolution: 'problem-solution',
   rationale: 'rationale',
 };

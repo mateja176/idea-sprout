@@ -1,11 +1,12 @@
 import { Box } from '@material-ui/core';
 import { SectionEditor } from 'containers';
-import { problemSolutionTitle, rationaleTitle } from 'elements';
+import { problemSolutionTitle, rationaleTitle, taglineTitle } from 'elements';
 import {
   IdeaModel,
   NameLength,
   ProblemSolutionLength,
   RationaleLength,
+  TaglineLength,
   UpdateIdea,
   User,
 } from 'models';
@@ -26,6 +27,13 @@ export const Idea: React.FC<IdeaProps> = ({ user, idea, update }) => {
   const saveName = React.useCallback(
     (name: IdeaModel['name']) => {
       update({ name });
+    },
+    [update],
+  );
+
+  const saveTagline = React.useCallback(
+    (tagline: IdeaModel['tagline']) => {
+      update({ tagline });
     },
     [update],
   );
@@ -58,6 +66,17 @@ export const Idea: React.FC<IdeaProps> = ({ user, idea, update }) => {
         text={idea.name}
         onSave={saveName}
         blockStyleFn={() => 'MuiTypography-h4'}
+        mb={2}
+      />
+      <SectionEditor
+        mt={0}
+        mb={4}
+        isAuthor={isAuthor}
+        title={taglineTitle}
+        min={TaglineLength.min}
+        max={TaglineLength.max}
+        text={idea.tagline}
+        onSave={saveTagline}
       />
       <VideoSuspender story={idea.story} isAuthor={isAuthor} update={update} />
       <SectionEditor

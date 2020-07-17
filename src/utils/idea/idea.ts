@@ -18,6 +18,7 @@ export const getShareCountHelperText = (count: number) =>
 export const getFormIdea = ({
   name,
   story,
+  tagline,
   problemSolution,
   images,
   rationale,
@@ -25,6 +26,7 @@ export const getFormIdea = ({
   averageRating,
 }: RawIdea): FormIdea => ({
   name,
+  tagline,
   story,
   problemSolution,
   images,

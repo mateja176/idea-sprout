@@ -24,8 +24,8 @@ export const SectionEditor: React.FC<
     min: number;
     max: number;
     onSave: (text: string) => void;
-  } & Pick<IdeaSectionProps, 'mb'>
-> = ({ isAuthor, title, text, min, max, onSave, mb, ...props }) => {
+  } & Pick<IdeaSectionProps, 'mt' | 'mb'>
+> = ({ isAuthor, title, text, min, max, onSave, mt, mb, ...props }) => {
   const theme = useTheme();
 
   const [editorState, setEditorState] = React.useState(
@@ -93,7 +93,7 @@ export const SectionEditor: React.FC<
   }, [editingState, focus, blur, editorState]);
 
   return (
-    <IdeaSection mb={mb}>
+    <IdeaSection mt={mt} mb={mb}>
       <Box display={'flex'} alignItems={'center'}>
         {title && <>{title}&nbsp;</>}
         {isAuthor && (

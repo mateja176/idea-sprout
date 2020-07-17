@@ -8,6 +8,12 @@ export const nameTitle = (
   </Typography>
 );
 
+export const taglineTitle = (
+  <Typography id={headingIds.tagline} variant="h5">
+    Tagline
+  </Typography>
+);
+
 export const problemSolutionTitle = (
   <Typography id={headingIds.problemSolution} variant="h5">
     Problem-Solution

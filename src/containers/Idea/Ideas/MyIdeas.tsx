@@ -38,7 +38,7 @@ export const MyEmptyIdeas = ({ user }: { user: User }) => {
             <Edit />
           </ListItemIcon>
           <ListItemText>
-            Updating its <i>name</i>, <i>story</i> (video),{' '}
+            Updating its <i>name</i>, <i>tagline</i>, <i>story</i> (video),{' '}
             <i>problem-solution</i>, <i>image</i> and
             <i>rationale</i>. You can do this one step at a time.
           </ListItemText>

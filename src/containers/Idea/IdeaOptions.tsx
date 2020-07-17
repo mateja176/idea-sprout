@@ -4,7 +4,7 @@ import {
   CloudOff,
   CloudUpload,
   RateReview,
-  StarRate,
+  StarRate
 } from '@material-ui/icons';
 import { Skeleton } from '@material-ui/lab';
 import { useBoolean } from 'ahooks';
@@ -21,7 +21,7 @@ import {
   useIdeaOptionButtonStyle,
   useIdeasRef,
   useShareIdea,
-  useUpdateWithCount,
+  useUpdateWithCount
 } from 'services';
 import { ideaNameStyle, withStarColor } from 'styles';
 import urljoin from 'url-join';
@@ -126,7 +126,7 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
 
     const isAuthor = uid === idea.author;
 
-    const problemSolutionStyle: React.CSSProperties = React.useMemo(
+    const taglineStyle: React.CSSProperties = React.useMemo(
       () => ({
         color: theme.palette.text.secondary,
       }),
@@ -190,8 +190,8 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
                 {idea.name}
               </span>
               <br />
-              <span title={idea.problemSolution} style={problemSolutionStyle}>
-                {idea.problemSolution}
+              <span title={idea.problemSolution} style={taglineStyle}>
+                {idea.tagline}
               </span>
             </>
           }

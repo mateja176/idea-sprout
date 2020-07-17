@@ -6,10 +6,11 @@ export interface IdeaSectionProps extends BoxProps {}
 export const IdeaSection: React.FC<IdeaSectionProps> = ({
   children,
   mx = 3,
-  my = 4,
+  mt = 4,
+  mb = 4,
   ...props
 }) => (
-  <Box mx={mx} my={my} {...props}>
+  <Box mx={mx} mt={mt} mb={mb} {...props}>
     {React.Children.map(children, (child, i) =>
       i === 0 ? <Box mb={2}>{child}</Box> : child,
     )}
