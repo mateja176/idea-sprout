@@ -151,7 +151,7 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
         const nameWidth = nameRef.current.getBoundingClientRect().width;
         const parentWidth =
           nameRef.current.parentElement?.getBoundingClientRect().width ?? 0;
-        if (parentWidth ?? 0 < nameWidth) {
+        if (parentWidth < nameWidth) {
           nameRef.current.animate(
             [
               { transform: 'translateX(0px)' },
