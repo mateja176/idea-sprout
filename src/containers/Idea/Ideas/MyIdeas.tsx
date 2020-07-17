@@ -23,10 +23,16 @@ export const MyEmptyIdeas = ({ user }: { user: User }) => {
   const { create, loading } = useCreateIdea();
 
   return (
-    <Box m={3} mt={5}>
-      Plant an idea seed by clicking on the button below. Next, give it some
-      water by:
+    <Box m={3}>
       <List>
+        <ListItem>
+          <ListItemIcon>
+            <LibraryAdd />
+          </ListItemIcon>
+          <ListItemText>
+            Plant an idea seed by clicking on the button below.
+          </ListItemText>
+        </ListItem>
         <ListItem>
           <ListItemIcon>
             <Edit />
@@ -34,7 +40,7 @@ export const MyEmptyIdeas = ({ user }: { user: User }) => {
           <ListItemText>
             Updating its <i>name</i>, <i>story</i> (video),{' '}
             <i>problem-solution</i>, <i>image</i> and
-            <i>rationale</i>. Don't worry you can do this incrementally.
+            <i>rationale</i>. You can do this one step at a time.
           </ListItemText>
         </ListItem>
         <ListItem>
