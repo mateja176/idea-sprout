@@ -112,15 +112,19 @@ export const creationIdeaSchema = yup
   .object()
   .required()
   .shape<FormIdea>({
-    name: yup.string().required().min(1).max(30),
+    name: yup.string().required().min(NameLength.min).max(NameLength.max),
     story: StorageFileSchema,
     problemSolution: yup
       .string()
       .required('Problem-solution field is required')
-      .min(80)
-      .max(200),
+      .min(ProblemSolutionLength.min)
+      .max(ProblemSolutionLength.max),
     images: yup.array().required().of(StorageFileSchema).max(2),
-    rationale: yup.string().required().min(80).max(400),
+    rationale: yup
+      .string()
+      .required()
+      .min(RationaleLength.min)
+      .max(RationaleLength.max),
     averageRating: yup.number().required().positive(),
     ratingCount: yup.number().required().positive(),
   });
