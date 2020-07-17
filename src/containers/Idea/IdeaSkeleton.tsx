@@ -1,4 +1,4 @@
-import { Box } from '@material-ui/core';
+import { Box, Typography } from '@material-ui/core';
 import { Skeleton } from '@material-ui/lab';
 import { IdeaSection, Load } from 'components';
 import { problemSolutionTitle, rationaleTitle } from 'elements';
@@ -8,6 +8,11 @@ export interface IdeaSkeletonProps {}
 
 export const IdeaSkeleton: React.FC<IdeaSkeletonProps> = () => (
   <Box>
+    <IdeaSection>
+      <Load>
+        <Typography variant={'h4'}>Placeholder Name</Typography>
+      </Load>
+    </IdeaSection>
     <Skeleton variant="rect" width={'100%'} height={720} />
     <IdeaSection>
       <Load>{problemSolutionTitle}</Load>

@@ -95,7 +95,7 @@ export const SectionEditor: React.FC<
   return (
     <IdeaSection mb={mb}>
       <Box display={'flex'} alignItems={'center'}>
-        {title}&nbsp;
+        {title && <>{title}&nbsp;</>}
         {isAuthor && (
           <Box
             onMouseDown={(e) => {

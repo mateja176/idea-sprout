@@ -3,6 +3,7 @@ import { SectionEditor } from 'containers';
 import { problemSolutionTitle, rationaleTitle } from 'elements';
 import {
   IdeaModel,
+  NameLength,
   ProblemSolutionLength,
   RationaleLength,
   UpdateIdea,
@@ -21,6 +22,13 @@ export interface IdeaProps {
 
 export const Idea: React.FC<IdeaProps> = ({ user, idea, update }) => {
   const isAuthor = user.uid === idea.author;
+
+  const saveName = React.useCallback(
+    (name: IdeaModel['name']) => {
+      update({ name });
+    },
+    [update],
+  );
 
   const saveProblemSolution = React.useCallback(
     (problemSolution) => {
@@ -42,6 +50,15 @@ export const Idea: React.FC<IdeaProps> = ({ user, idea, update }) => {
 
   return (
     <Box flex={1} display={'flex'} flexDirection={'column'} overflow={'auto'}>
+      <SectionEditor
+        isAuthor={isAuthor}
+        title={''}
+        min={NameLength.min}
+        max={NameLength.max}
+        text={idea.name}
+        onSave={saveName}
+        blockStyleFn={() => 'MuiTypography-h4'}
+      />
       <VideoSuspender story={idea.story} isAuthor={isAuthor} update={update} />
       <SectionEditor
         isAuthor={isAuthor}

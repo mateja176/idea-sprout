@@ -93,6 +93,11 @@ export type FormIdea = Omit<
   'id' | 'author' | 'createdAt' | 'checks' | 'status' | 'sharedBy'
 >;
 
+export enum NameLength {
+  min = 2,
+  max = 30,
+}
+
 export enum ProblemSolutionLength {
   min = 80,
   max = 200,
@@ -146,6 +151,7 @@ export interface IdeasState {
 }
 
 export const headingIds = {
+  name: 'name',
   problemSolution: 'problem-solution',
   rationale: 'rationale',
 };
