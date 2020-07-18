@@ -1,5 +1,5 @@
 import { FileDimensions, WithTimeout } from 'models';
-import { useCallback, useEffect, useRef, useState, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { ActionCreatorsMapObject, bindActionCreators } from 'redux';
 import { Action, AnyThunk, GetBoundThunk } from 'services';
@@ -83,14 +83,13 @@ export const useTransition = ({ timeoutMs }: WithTimeout) => {
 };
 
 export const useComputedHeight = ({ width, height }: FileDimensions) => {
-  const ref = useRef<HTMLDivElement | null>(null);
-
   const [computedHeight, setComputedHeight] = useState(height);
 
   useEffect(() => {
     const handleResize = () => {
-      if (ref.current && ref.current.clientWidth < width) {
-        setComputedHeight((height * ref.current.clientWidth) / width);
+      if (document.body.clientWidth < width) {
+        console.log(document.body.clientWidth, width);
+        setComputedHeight((height * document.body.clientWidth) / width);
       }
     };
 
@@ -103,7 +102,7 @@ export const useComputedHeight = ({ width, height }: FileDimensions) => {
     };
   }, [height, width]);
 
-  return { computedHeight, ref };
+  return computedHeight;
 };
 
 export const useFileDimensions = ({ width, height }: FileDimensions) => {

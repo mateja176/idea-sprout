@@ -20,12 +20,11 @@ export const Image: React.FC<ImageProps> = ({
 }) => {
   const theme = useTheme();
 
-  const { computedHeight, ref } = useComputedHeight({ width, height });
+  const computedHeight = useComputedHeight({ width, height });
 
   return (
     <div
       key={path}
-      ref={ref}
       style={{
         display: 'flex',
         justifyContent: 'center',

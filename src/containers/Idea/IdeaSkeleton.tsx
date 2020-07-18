@@ -12,8 +12,8 @@ const idea = getInitialIdea('');
 
 export const IdeaSkeleton: React.FC<IdeaSkeletonProps> = () => (
   <Box>
-    <Box display={'flex'}>
-      <Box mt={nameAndLogoMt} flex={1} mr={1}>
+    <Box mt={nameAndLogoMt} display={'flex'}>
+      <Box flex={1} mr={1}>
         <IdeaSection>
           <Load>
             <Typography variant={'h4'}>{idea.name}</Typography>

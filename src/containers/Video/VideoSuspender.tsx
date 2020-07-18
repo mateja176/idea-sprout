@@ -18,7 +18,7 @@ export const VideoSuspender: React.FC<VideoSuspenderProps> = ({
 }) => {
   const theme = useTheme();
 
-  const { computedHeight, ref } = useComputedHeight({ width, height });
+  const computedHeight = useComputedHeight({ width, height });
 
   const updateStory = React.useCallback(
     (story: StorageFile) => {
@@ -30,7 +30,6 @@ export const VideoSuspender: React.FC<VideoSuspenderProps> = ({
   return (
     <Box>
       <div
-        ref={ref}
         style={{
           backgroundColor: theme.palette.grey[900],
           display: 'flex',
