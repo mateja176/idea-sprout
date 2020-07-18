@@ -12,7 +12,7 @@ export const IdeaSection: React.FC<IdeaSectionProps> = ({
 }) => (
   <Box mx={mx} mt={mt} mb={mb} {...props}>
     {React.Children.map(children, (child, i) =>
-      i === 0 ? <Box mb={2}>{child}</Box> : child,
+      i === 0 && child ? <Box mb={2}>{child}</Box> : child,
     )}
   </Box>
 );

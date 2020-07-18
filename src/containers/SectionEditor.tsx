@@ -19,11 +19,11 @@ type EditingState = EditingStates[number];
 export const SectionEditor: React.FC<
   Omit<EditorProps, 'editorState' | 'onChange'> & {
     isAuthor: boolean;
-    title: React.ReactNode;
     text: string;
     min: number;
     max: number;
     onSave: (text: string) => void;
+    title?: React.ReactNode;
   } & Pick<IdeaSectionProps, 'mt' | 'mb'>
 > = ({ isAuthor, title, text, min, max, onSave, mt, mb, ...props }) => {
   const theme = useTheme();
@@ -94,45 +94,7 @@ export const SectionEditor: React.FC<
 
   return (
     <IdeaSection mt={mt} mb={mb}>
-      <Box display={'flex'} alignItems={'center'}>
-        {title && <>{title}&nbsp;</>}
-        {isAuthor && (
-          <Box
-            onMouseDown={(e) => {
-              e.preventDefault();
-
-              if (editing) {
-                cancel();
-              } else {
-                setEditingState('focus');
-                setEditorState(EditorState.moveFocusToEnd(editorState));
-              }
-            }}
-          >
-            <Chip
-              icon={editing ? <Cancel /> : <Edit />}
-              label={
-                <Box
-                  display={'flex'}
-                  alignItems={'center'}
-                  color={theme.palette.text.secondary}
-                >
-                  <Box>{min}</Box>
-                  &nbsp;{'<'}&nbsp;
-                  <Box color={theme.palette.primary.main}>
-                    {editorStateText.length}
-                  </Box>
-                  &nbsp;{'<'}&nbsp;
-                  <Box>{max}</Box>
-                </Box>
-              }
-              color={isValid ? 'primary' : 'secondary'}
-              clickable
-              variant={'outlined'}
-            />
-          </Box>
-        )}
-      </Box>
+      {title}
       <Box onClick={focus}>
         <DraftEditor
           ref={editorRef}
@@ -189,14 +151,52 @@ export const SectionEditor: React.FC<
           }}
         />
       </Box>
-      <Box visibility={isValid ? 'hidden' : 'visible'}>
-        <FormHelperText error>
-          {isTooShort
-            ? 'Text is too short'
-            : isTooLong
-            ? 'Text is too long'
-            : 'Placeholder'}
-        </FormHelperText>
+      <Box my={1} display={'flex'} alignItems={'center'}>
+        {isAuthor && (
+          <Box
+            onMouseDown={(e) => {
+              e.preventDefault();
+
+              if (editing) {
+                cancel();
+              } else {
+                setEditingState('focus');
+                setEditorState(EditorState.moveFocusToEnd(editorState));
+              }
+            }}
+          >
+            <Chip
+              icon={editing ? <Cancel /> : <Edit />}
+              label={
+                <Box
+                  display={'flex'}
+                  alignItems={'center'}
+                  color={theme.palette.text.secondary}
+                >
+                  <Box>{min}</Box>
+                  &nbsp;{'<'}&nbsp;
+                  <Box color={theme.palette.primary.main}>
+                    {editorStateText.length}
+                  </Box>
+                  &nbsp;{'<'}&nbsp;
+                  <Box>{max}</Box>
+                </Box>
+              }
+              color={isValid ? 'primary' : 'secondary'}
+              clickable
+              variant={'outlined'}
+            />
+          </Box>
+        )}
+        <Box visibility={isValid ? 'hidden' : 'visible'}>
+          <FormHelperText error>
+            {isTooShort
+              ? 'Text is too short'
+              : isTooLong
+              ? 'Text is too long'
+              : 'Placeholder'}
+          </FormHelperText>
+        </Box>
       </Box>
     </IdeaSection>
   );

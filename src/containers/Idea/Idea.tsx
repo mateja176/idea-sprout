@@ -1,5 +1,5 @@
 import { Box } from '@material-ui/core';
-import { SectionEditor } from 'containers';
+import { IdeaImagePreview, SectionEditor } from 'containers';
 import { problemSolutionTitle, rationaleTitle, taglineTitle } from 'elements';
 import {
   IdeaModel,
@@ -60,19 +60,15 @@ export const Idea: React.FC<IdeaProps> = ({ user, idea, update }) => {
     <Box flex={1} display={'flex'} flexDirection={'column'} overflow={'auto'}>
       <SectionEditor
         isAuthor={isAuthor}
-        title={''}
         min={NameLength.min}
         max={NameLength.max}
         text={idea.name}
         onSave={saveName}
         blockStyleFn={() => 'MuiTypography-h4'}
-        mb={2}
       />
       <SectionEditor
         mt={0}
-        mb={4}
         isAuthor={isAuthor}
-        title={taglineTitle}
         min={TaglineLength.min}
         max={TaglineLength.max}
         text={idea.tagline}
