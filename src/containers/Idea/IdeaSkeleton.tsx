@@ -1,32 +1,42 @@
-import { Box, Typography } from '@material-ui/core';
+import { Box, Chip, Typography } from '@material-ui/core';
+import { Edit } from '@material-ui/icons';
 import { Skeleton } from '@material-ui/lab';
 import { IdeaPreviewWrapper, IdeaSection, Load } from 'components';
 import { problemSolutionTitle, rationaleTitle } from 'elements';
 import React from 'react';
-import { logoMr, nameAndLogoMt, ideaMarginBottom } from 'styles';
+import { ideaMarginBottom, logoMr, nameAndLogoMt } from 'styles';
 import { getInitialIdea } from 'utils';
-
-export interface IdeaSkeletonProps {}
 
 const idea = getInitialIdea('');
 
-export const IdeaSkeleton: React.FC<IdeaSkeletonProps> = () => (
+const SectionEditorSkeleton: React.FC<React.ComponentProps<
+  typeof IdeaSection
+>> = ({ children, ...props }) => (
+  <IdeaSection {...props}>
+    <>
+      {children}
+      <Box my={1} visibility={'hidden'}>
+        <Chip icon={<Edit />} label={'1 < 10 < 20'} />
+      </Box>
+    </>
+  </IdeaSection>
+);
+
+export const IdeaSkeleton: React.FC = () => (
   <Box>
     <Box mt={nameAndLogoMt} display={'flex'}>
       <Box flex={1} mr={1}>
-        <IdeaSection>
-          <Load>
-            <Typography variant={'h4'}>{idea.name}</Typography>
-          </Load>
-        </IdeaSection>
+        <SectionEditorSkeleton>
+          <Typography variant={'h4'}>{idea.name}</Typography>
+        </SectionEditorSkeleton>
       </Box>
       <IdeaPreviewWrapper mr={logoMr}>
         <Skeleton variant={'rect'} width={'100%'} height={'100%'} />
       </IdeaPreviewWrapper>
     </Box>
-    <IdeaSection mt={0}>
+    <SectionEditorSkeleton mt={0}>
       <Load>{idea.tagline}</Load>
-    </IdeaSection>
+    </SectionEditorSkeleton>
     <Skeleton variant="rect" width={'100%'} height={1080} />
     <IdeaSection>
       <Load>{problemSolutionTitle}</Load>
