@@ -63,6 +63,7 @@ export const getInitialIdea = (author: IdeaModel['author']): RawIdea => ({
   sharedBy: {},
   status: 'seed',
   name: 'Idea Seed',
+  tagline: 'A good tagline is brief, but memorable.',
   problemSolution: problemSolutionText,
   story: {
     path: 'videos/idea-seed.mp4',
