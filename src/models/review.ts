@@ -8,7 +8,7 @@ export interface RawReview {
 export interface Review extends RawReview, WithId {}
 
 export enum FeedbackLength {
-  min = 40,
+  min = 30,
 }
 
 export const initialReview: Review = {
