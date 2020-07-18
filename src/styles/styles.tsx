@@ -1,4 +1,5 @@
 export const logoMr = '6px';
+export const nameAndLogoMt = 2;
 
 export const modalMaxWidth = 600;
 

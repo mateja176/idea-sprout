@@ -3,7 +3,7 @@ import { Skeleton } from '@material-ui/lab';
 import { IdeaPreviewWrapper, IdeaSection, Load } from 'components';
 import { problemSolutionTitle, rationaleTitle } from 'elements';
 import React from 'react';
-import { logoMr } from 'styles';
+import { logoMr, nameAndLogoMt } from 'styles';
 import { getInitialIdea } from 'utils';
 
 export interface IdeaSkeletonProps {}
@@ -13,7 +13,7 @@ const idea = getInitialIdea('');
 export const IdeaSkeleton: React.FC<IdeaSkeletonProps> = () => (
   <Box>
     <Box display={'flex'}>
-      <Box flex={1} mr={1}>
+      <Box mt={nameAndLogoMt} flex={1} mr={1}>
         <IdeaSection>
           <Load>
             <Typography variant={'h4'}>{idea.name}</Typography>

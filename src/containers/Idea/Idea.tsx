@@ -12,7 +12,7 @@ import {
   User,
 } from 'models';
 import React from 'react';
-import { ideaMarginBottom, logoMr } from 'styles';
+import { ideaMarginBottom, logoMr, nameAndLogoMt } from 'styles';
 import { Images } from '../Image';
 import { VideoSuspender } from '../Video';
 
@@ -66,7 +66,7 @@ export const Idea: React.FC<IdeaProps> = ({ user, idea, update }) => {
 
   return (
     <Box flex={1} display={'flex'} flexDirection={'column'} overflow={'auto'}>
-      <Box display={'flex'} flexWrap={'wrap'}>
+      <Box mt={nameAndLogoMt} display={'flex'} flexWrap={'wrap'}>
         <Box flex={1} mr={1}>
           <SectionEditor
             isAuthor={isAuthor}
@@ -77,7 +77,7 @@ export const Idea: React.FC<IdeaProps> = ({ user, idea, update }) => {
             blockStyleFn={() => 'MuiTypography-h4'}
           />
         </Box>
-        <Box mt={2} mr={logoMr}>
+        <Box mr={logoMr}>
           <IdeaImagePreview path={idea.logo.path} />
           {isAuthor && (
             <FileOptions
