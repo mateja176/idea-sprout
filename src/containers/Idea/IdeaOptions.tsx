@@ -4,7 +4,7 @@ import {
   CloudOff,
   CloudUpload,
   RateReview,
-  StarRate
+  StarRate,
 } from '@material-ui/icons';
 import { Skeleton } from '@material-ui/lab';
 import { useBoolean } from 'ahooks';
@@ -21,7 +21,7 @@ import {
   useIdeaOptionButtonStyle,
   useIdeasRef,
   useShareIdea,
-  useUpdateWithCount
+  useUpdateWithCount,
 } from 'services';
 import { ideaNameStyle, withStarColor } from 'styles';
 import urljoin from 'url-join';
@@ -181,7 +181,7 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
                 </IdeaPreviewWrapper>
               }
             >
-              <IdeaImagePreview path={idea.images[0].path} />
+              <IdeaImagePreview path={idea.logo.path} />
             </React.Suspense>
           }
           textSection={

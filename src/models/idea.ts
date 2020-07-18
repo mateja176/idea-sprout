@@ -59,6 +59,7 @@ export interface IdeaModel extends WithId, WithAuthor {
   status: IdeaStatus;
   sharedBy: Record<User['uid'], true | undefined>;
   name: string;
+  logo: StorageFile;
   tagline: string;
   story: StorageFile;
   problemSolution: string;
@@ -79,6 +80,7 @@ export const initialRawIdea: RawIdea = {
   },
 
   name: '',
+  logo: { path: '', width: 0, height: 0 },
   tagline: '',
   story: { path: '', width: 0, height: 0 },
   problemSolution: '',
@@ -120,6 +122,7 @@ export const creationIdeaSchema = yup
   .required()
   .shape<FormIdea>({
     name: yup.string().required().min(NameLength.min).max(NameLength.max),
+    logo: StorageFileSchema,
     tagline: yup
       .string()
       .required()

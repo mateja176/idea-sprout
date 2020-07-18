@@ -1,30 +1,35 @@
 import { Box, Button, ButtonGroup } from '@material-ui/core';
 import { CloudUpload, Remove } from '@material-ui/icons';
-import { StorageFile, StoragePath, UpdateIdea } from 'models';
+import { StorageFile, StoragePath } from 'models';
 import React from 'react';
-import { createQueueSnackbar, useActions, useUpload } from 'services';
+import { useUpload } from 'services';
 
 export const FileOptions: React.FC<{
-  label: string;
-  update: UpdateIdea;
+  update: (file: StorageFile) => void;
   storagePath: StoragePath;
-  files?: StorageFile[];
-  i?: number;
-}> = ({ label, update, storagePath, files = [], i = -1 }) => {
-  const { queueSnackbar } = useActions({ queueSnackbar: createQueueSnackbar });
-
+  remove?: () => void;
+  label?: string;
+  justify?: React.CSSProperties['justifyContent'];
+}> = ({ label, update, storagePath, remove, justify = 'flex-end' }) => {
   const inputRef = React.useRef<HTMLInputElement | null>(null);
 
   const { upload, loading } = useUpload(storagePath);
 
-  const buttonStyle: React.CSSProperties = {
-    borderTop: 'none',
-    borderTopLeftRadius: 0,
-    borderTopRightRadius: 0,
-  };
+  const buttonStyle: React.CSSProperties = React.useMemo(
+    () => ({
+      borderTop: 'none',
+      borderTopLeftRadius: 0,
+      borderTopRightRadius: 0,
+    }),
+    [],
+  );
+
+  const handleClick: React.MouseEventHandler = React.useCallback(() => {
+    inputRef.current?.click();
+  }, []);
 
   return (
-    <Box px={2} display={'flex'} justifyContent={'flex-end'}>
+    <Box px={2} display={'flex'} justifyContent={justify}>
       <input
         ref={inputRef}
         type={'file'}
@@ -36,47 +41,27 @@ export const FileOptions: React.FC<{
             upload([newFile]).then(([{ path, width, height }]) => {
               const newStorageFile: StorageFile = { path, width, height };
 
-              update(
-                storagePath === 'images'
-                  ? {
-                      images: files.map((_, j) =>
-                        j === i ? newStorageFile : _,
-                      ),
-                    }
-                  : {
-                      story: newStorageFile,
-                    },
-              );
+              update(newStorageFile);
             });
           }
         }}
       />
       <ButtonGroup color={'primary'} disabled={loading}>
-        <Button
-          style={buttonStyle}
-          onClick={() => {
-            inputRef.current?.click();
-          }}
-          startIcon={<CloudUpload />}
-        >
-          {label}
-        </Button>
-        {files.length > 1 ? (
+        {label ? (
           <Button
             style={buttonStyle}
-            onClick={() => {
-              update({
-                images: files.filter((_, j) => j !== i),
-              }).then(() => {
-                queueSnackbar({
-                  severity: 'success',
-                  message: 'File removed',
-                  autoHideDuration: 2000,
-                });
-              });
-            }}
-            startIcon={<Remove />}
+            onClick={handleClick}
+            startIcon={<CloudUpload />}
           >
+            {label}
+          </Button>
+        ) : (
+          <Button style={buttonStyle} onClick={handleClick}>
+            <CloudUpload fontSize={'small'} />
+          </Button>
+        )}
+        {remove ? (
+          <Button style={buttonStyle} onClick={remove} startIcon={<Remove />}>
             Remove
           </Button>
         ) : null}

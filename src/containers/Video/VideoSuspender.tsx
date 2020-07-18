@@ -1,7 +1,7 @@
 import { Box, useTheme } from '@material-ui/core';
 import { Skeleton } from '@material-ui/lab';
 import { FileOptions } from 'containers';
-import { IdeaModel, UpdateIdea } from 'models';
+import { IdeaModel, StorageFile, UpdateIdea } from 'models';
 import React from 'react';
 import { useComputedHeight } from 'services';
 import { Video } from './Video';
@@ -19,6 +19,13 @@ export const VideoSuspender: React.FC<VideoSuspenderProps> = ({
   const theme = useTheme();
 
   const { computedHeight, ref } = useComputedHeight({ width, height });
+
+  const updateStory = React.useCallback(
+    (story: StorageFile) => {
+      update({ story });
+    },
+    [update],
+  );
 
   return (
     <Box>
@@ -47,8 +54,8 @@ export const VideoSuspender: React.FC<VideoSuspenderProps> = ({
       {isAuthor && (
         <FileOptions
           label={'Choose new video'}
-          update={update}
           storagePath={'videos'}
+          update={updateStory}
         />
       )}
     </Box>

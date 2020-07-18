@@ -154,6 +154,7 @@ export const SectionEditor: React.FC<
       <Box my={1} display={'flex'} alignItems={'center'}>
         {isAuthor && (
           <Box
+            mr={1}
             onMouseDown={(e) => {
               e.preventDefault();
 

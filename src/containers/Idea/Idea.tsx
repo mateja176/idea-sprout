@@ -1,6 +1,7 @@
 import { Box } from '@material-ui/core';
 import { IdeaImagePreview, SectionEditor } from 'containers';
-import { problemSolutionTitle, rationaleTitle, taglineTitle } from 'elements';
+import { FileOptions } from 'containers/FileOptions';
+import { problemSolutionTitle, rationaleTitle } from 'elements';
 import {
   IdeaModel,
   NameLength,
@@ -27,6 +28,13 @@ export const Idea: React.FC<IdeaProps> = ({ user, idea, update }) => {
   const saveName = React.useCallback(
     (name: IdeaModel['name']) => {
       update({ name });
+    },
+    [update],
+  );
+
+  const saveLogo = React.useCallback(
+    (logo: IdeaModel['logo']) => {
+      update({ logo });
     },
     [update],
   );
@@ -58,14 +66,28 @@ export const Idea: React.FC<IdeaProps> = ({ user, idea, update }) => {
 
   return (
     <Box flex={1} display={'flex'} flexDirection={'column'} overflow={'auto'}>
-      <SectionEditor
-        isAuthor={isAuthor}
-        min={NameLength.min}
-        max={NameLength.max}
-        text={idea.name}
-        onSave={saveName}
-        blockStyleFn={() => 'MuiTypography-h4'}
-      />
+      <Box display={'flex'} flexWrap={'wrap'}>
+        <Box flex={1} mr={1}>
+          <SectionEditor
+            isAuthor={isAuthor}
+            min={NameLength.min}
+            max={NameLength.max}
+            text={idea.name}
+            onSave={saveName}
+            blockStyleFn={() => 'MuiTypography-h4'}
+          />
+        </Box>
+        <Box mt={2} mr={'6px'}>
+          <IdeaImagePreview path={idea.logo.path} />
+          {isAuthor && (
+            <FileOptions
+              storagePath={'images'}
+              update={saveLogo}
+              justify={'center'}
+            />
+          )}
+        </Box>
+      </Box>
       <SectionEditor
         mt={0}
         isAuthor={isAuthor}

@@ -56,6 +56,7 @@ function isIdeaType() {
       'status',
       'sharedBy',
       'name',
+      'logo',
       'tagline',
       'story',
       'problemSolution',
@@ -70,6 +71,7 @@ function isIdeaType() {
     && request.resource.data.status is string && request.resource.data.status == 'seed'
     && isSharedByType()
     && request.resource.data.name is string
+    && isFileType(request.resource.data.logo)
     && request.resource.data.tagline is string
     && isFileType(request.resource.data.story)
     && request.resource.data.problemSolution is string
@@ -86,6 +88,7 @@ function isPartialIdeaType() {
       'status',
       'sharedBy',
       'name',
+      'logo',
       'tagline',
       'story',
       'problemSolution',
@@ -100,6 +103,7 @@ function isPartialIdeaType() {
     && (!('status' in request.resource.data)||isStatusType())
     && (!('sharedBy' in request.resource.data)||isSharedByType())
     && (!('name' in request.resource.data)||request.resource.data.name is string)
+    && (!('logo' in request.resource.data)||isFileType(request.resource.data.logo))
     && (!('tagline' in request.resource.data)||request.resource.data.tagline is string)
     && (!('story' in request.resource.data)||isFileType(request.resource.data.story))
     && (!('problemSolution' in request.resource.data)||request.resource.data.problemSolution is string)

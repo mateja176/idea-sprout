@@ -17,8 +17,9 @@ export const getShareCountHelperText = (count: number) =>
 
 export const getFormIdea = ({
   name,
-  story,
+  logo,
   tagline,
+  story,
   problemSolution,
   images,
   rationale,
@@ -26,6 +27,7 @@ export const getFormIdea = ({
   averageRating,
 }: RawIdea): FormIdea => ({
   name,
+  logo,
   tagline,
   story,
   problemSolution,
@@ -63,6 +65,11 @@ export const getInitialIdea = (author: IdeaModel['author']): RawIdea => ({
   sharedBy: {},
   status: 'seed',
   name: 'Idea Seed',
+  logo: {
+    path: 'images/idea-seed-logo.png',
+    width: 1920,
+    height: 1080,
+  },
   tagline: 'A good tagline is brief, but memorable.',
   problemSolution: problemSolutionText,
   story: {
@@ -73,8 +80,8 @@ export const getInitialIdea = (author: IdeaModel['author']): RawIdea => ({
   images: [
     {
       path: 'images/idea-seed.png',
-      width: 512,
-      height: 512,
+      width: 1920,
+      height: 1080,
     },
   ],
   rationale: rationaleText,
