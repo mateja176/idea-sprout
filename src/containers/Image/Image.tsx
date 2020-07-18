@@ -3,7 +3,6 @@ import { Skeleton } from '@material-ui/lab';
 import { StorageFile } from 'models';
 import React from 'react';
 import { StorageImage } from 'reactfire';
-import { useComputedHeight } from 'services';
 
 export interface ImageProps
   extends StorageFile,
@@ -20,8 +19,6 @@ export const Image: React.FC<ImageProps> = ({
 }) => {
   const theme = useTheme();
 
-  const computedHeight = useComputedHeight({ width, height });
-
   return (
     <div
       key={path}
@@ -30,7 +27,8 @@ export const Image: React.FC<ImageProps> = ({
         justifyContent: 'center',
         backgroundColor: theme.palette.grey[900],
         borderBottom: isLast ? 'none' : `1px solid ${theme.palette.grey[900]}`,
-        height: computedHeight,
+        height: `calc(${height / width} * 100vw)`,
+        maxHeight: height,
       }}
     >
       <React.Suspense
@@ -47,7 +45,6 @@ export const Image: React.FC<ImageProps> = ({
           storagePath={path}
           width={'100%'}
           style={{ maxWidth: width }}
-          height={computedHeight}
           onClick={onClick}
         />
       </React.Suspense>
