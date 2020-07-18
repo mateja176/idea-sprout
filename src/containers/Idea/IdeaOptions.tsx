@@ -155,7 +155,7 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
           nameRef.current.animate(
             [
               { transform: 'translateX(0px)' },
-              { transform: `translateX(-${nameWidth - parentWidth + 10}px)` },
+              { transform: `translateX(${-(nameWidth - parentWidth + 10)}px)` },
             ],
             {
               duration: 3000,
