@@ -12,7 +12,7 @@ import {
   User,
 } from 'models';
 import React from 'react';
-import { ideaMarginBottom } from 'styles';
+import { ideaMarginBottom, logoMr } from 'styles';
 import { Images } from '../Image';
 import { VideoSuspender } from '../Video';
 
@@ -77,7 +77,7 @@ export const Idea: React.FC<IdeaProps> = ({ user, idea, update }) => {
             blockStyleFn={() => 'MuiTypography-h4'}
           />
         </Box>
-        <Box mt={2} mr={'6px'}>
+        <Box mt={2} mr={logoMr}>
           <IdeaImagePreview path={idea.logo.path} />
           {isAuthor && (
             <FileOptions

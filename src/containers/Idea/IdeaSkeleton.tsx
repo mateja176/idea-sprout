@@ -1,17 +1,31 @@
 import { Box, Typography } from '@material-ui/core';
 import { Skeleton } from '@material-ui/lab';
-import { IdeaSection, Load } from 'components';
+import { IdeaPreviewWrapper, IdeaSection, Load } from 'components';
 import { problemSolutionTitle, rationaleTitle } from 'elements';
 import React from 'react';
+import { logoMr } from 'styles';
+import { getInitialIdea } from 'utils';
 
 export interface IdeaSkeletonProps {}
 
+const idea = getInitialIdea('');
+
 export const IdeaSkeleton: React.FC<IdeaSkeletonProps> = () => (
   <Box>
-    <IdeaSection>
-      <Load>
-        <Typography variant={'h4'}>Placeholder Name</Typography>
-      </Load>
+    <Box display={'flex'}>
+      <Box flex={1} mr={1}>
+        <IdeaSection>
+          <Load>
+            <Typography variant={'h4'}>{idea.name}</Typography>
+          </Load>
+        </IdeaSection>
+      </Box>
+      <IdeaPreviewWrapper mr={logoMr}>
+        <Skeleton variant={'rect'} width={'100%'} height={'100%'} />
+      </IdeaPreviewWrapper>
+    </Box>
+    <IdeaSection mt={0}>
+      <Load>{idea.tagline}</Load>
     </IdeaSection>
     <Skeleton variant="rect" width={'100%'} height={720} />
     <IdeaSection>
