@@ -30,9 +30,11 @@ export const Auth: React.FC = ({ children }) => {
         providerId,
       } as User);
 
-      LogRocket.identify(user.uid, { email, displayName } as DeepNonNullable<
-        Pick<User, 'email' | 'displayName'>
-      >);
+      if (process.env.NODE_ENV === 'production') {
+        LogRocket.identify(user.uid, { email, displayName } as DeepNonNullable<
+          Pick<User, 'email' | 'displayName'>
+        >);
+      }
     }
   }, [user, usersRef]);
 
