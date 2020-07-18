@@ -1,6 +1,5 @@
 import { Box, Tab, Tabs } from '@material-ui/core';
 import React from 'react';
-import { ideaMarginBottom } from 'styles';
 import { BackToIdeas } from './BackToIdeas';
 import { IdeaOptionsSkeleton } from './IdeaOptionsSkeleton';
 import { IdeaSkeleton } from './IdeaSkeleton';
@@ -14,13 +13,7 @@ export const IdeaContainerSkeleton: React.FC<IdeaContainerSkeletonProps> = () =>
       <Tab />
     </Tabs>
     <IdeaOptionsSkeleton />
-    <Box
-      flex={1}
-      display={'flex'}
-      flexDirection={'column'}
-      overflow={'auto'}
-      mb={ideaMarginBottom}
-    >
+    <Box flex={1} display={'flex'} flexDirection={'column'} overflow={'auto'}>
       <IdeaSkeleton />
     </Box>
   </>

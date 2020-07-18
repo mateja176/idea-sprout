@@ -3,7 +3,7 @@ import { Skeleton } from '@material-ui/lab';
 import { IdeaPreviewWrapper, IdeaSection, Load } from 'components';
 import { problemSolutionTitle, rationaleTitle } from 'elements';
 import React from 'react';
-import { logoMr, nameAndLogoMt } from 'styles';
+import { logoMr, nameAndLogoMt, ideaMarginBottom } from 'styles';
 import { getInitialIdea } from 'utils';
 
 export interface IdeaSkeletonProps {}
@@ -27,15 +27,15 @@ export const IdeaSkeleton: React.FC<IdeaSkeletonProps> = () => (
     <IdeaSection mt={0}>
       <Load>{idea.tagline}</Load>
     </IdeaSection>
-    <Skeleton variant="rect" width={'100%'} height={720} />
+    <Skeleton variant="rect" width={'100%'} height={1080} />
     <IdeaSection>
       <Load>{problemSolutionTitle}</Load>
       <Skeleton width={'100%'} />
       <Skeleton width={'100%'} />
       <Skeleton width={'100%'} />
     </IdeaSection>
-    <Skeleton variant="rect" width={'100%'} height={720} />
-    <IdeaSection>
+    <Skeleton variant="rect" width={'100%'} height={1080} />
+    <IdeaSection mb={ideaMarginBottom}>
       <Load>{rationaleTitle}</Load>
       <Skeleton width={'100%'} />
       <Skeleton width={'100%'} />
