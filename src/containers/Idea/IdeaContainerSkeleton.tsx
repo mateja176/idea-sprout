@@ -1,5 +1,4 @@
 import { Box, Tab, Tabs } from '@material-ui/core';
-import { Load } from 'components';
 import React from 'react';
 import { ideaMarginBottom } from 'styles';
 import { BackToIdeas } from './BackToIdeas';
