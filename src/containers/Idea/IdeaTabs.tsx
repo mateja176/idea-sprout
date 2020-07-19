@@ -129,7 +129,7 @@ export const IdeaTabs: React.FC<{ user: User; idea: IdeaModel }> = ({
               <Box display={'flex'} onClick={setReviewOpen.setTrue}>
                 <RateReview color="primary" />
                 &nbsp;
-                {roundedAverage}
+                Review
               </Box>
             )
           }
