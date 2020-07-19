@@ -107,11 +107,15 @@ export const IdeaTabs: React.FC<{ user: User; idea: IdeaModel }> = ({
         />
         <Tab
           classes={classes}
-          style={{ flex: 1 }}
+          style={{ flex: 1, maxWidth: '100%' }}
           label={
             isAuthor ? (
               idea.status === 'sprout' ? (
-                <Box display={'flex'} onClick={unpublish}>
+                <Box
+                  display={'flex'}
+                  justifyContent={'center'}
+                  onClick={unpublish}
+                >
                   <CloudOff fontSize={'small'} color={'action'} />
                   &nbsp;Unpublish
                 </Box>
