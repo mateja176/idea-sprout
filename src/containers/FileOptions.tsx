@@ -1,8 +1,19 @@
-import { Box, Button, ButtonGroup } from '@material-ui/core';
+import { Box, Button, ButtonGroup, CircularProgress } from '@material-ui/core';
 import { CloudUpload, Remove } from '@material-ui/icons';
 import { StorageFile, StoragePath } from 'models';
 import React from 'react';
 import { useUpload } from 'services';
+
+export const buttonStyle: React.CSSProperties = {
+  borderTop: 'none',
+  borderTopLeftRadius: 0,
+  borderTopRightRadius: 0,
+};
+
+export const uploadButtonStyle: React.CSSProperties = {
+  ...buttonStyle,
+  minWidth: 200,
+};
 
 export const FileOptions: React.FC<{
   update: (file: StorageFile) => void;
@@ -15,25 +26,18 @@ export const FileOptions: React.FC<{
 
   const { upload, loading } = useUpload(storagePath);
 
-  const buttonStyle: React.CSSProperties = React.useMemo(
-    () => ({
-      borderTop: 'none',
-      borderTopLeftRadius: 0,
-      borderTopRightRadius: 0,
-    }),
-    [],
-  );
-
   const handleClick: React.MouseEventHandler = React.useCallback(() => {
     inputRef.current?.click();
   }, []);
+
+  const type = storagePath.slice(0, -1);
 
   return (
     <Box px={2} display={'flex'} justifyContent={justify}>
       <input
         ref={inputRef}
         type={'file'}
-        accept={`${storagePath.slice(0, -1)}/*`}
+        accept={`${type}/*`}
         style={{ display: 'none' }}
         onChange={(e) => {
           const newFile = e.target.files?.[0];
@@ -49,15 +53,21 @@ export const FileOptions: React.FC<{
       <ButtonGroup color={'primary'} disabled={loading}>
         {label ? (
           <Button
-            style={buttonStyle}
+            style={uploadButtonStyle}
             onClick={handleClick}
-            startIcon={<CloudUpload />}
+            startIcon={
+              loading ? <CircularProgress size={'1em'} /> : <CloudUpload />
+            }
           >
-            {label}
+            {loading ? `Uploading ${type}` : label}
           </Button>
         ) : (
           <Button style={buttonStyle} onClick={handleClick}>
-            <CloudUpload fontSize={'small'} />
+            {loading ? (
+              <CircularProgress size={'1em'} />
+            ) : (
+              <CloudUpload fontSize={'small'} />
+            )}
           </Button>
         )}
         {remove ? (
