@@ -10,7 +10,12 @@ export const ShareMenu: React.FC<
 > = ({ anchorEl, open, onClose, url, shareIdea }) => (
   <Menu anchorEl={anchorEl} open={open} onClose={onClose}>
     {shareOptions.map((config) => (
-      <ShareMenuItem url={url} shareIdea={shareIdea} config={config} />
+      <ShareMenuItem
+        key={config.label}
+        url={url}
+        shareIdea={shareIdea}
+        config={config}
+      />
     ))}
   </Menu>
 );
