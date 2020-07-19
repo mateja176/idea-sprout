@@ -9,7 +9,7 @@ import {
 import { Skeleton } from '@material-ui/lab';
 import { useBoolean } from 'ahooks';
 import { IdeaOptionsWrapper, IdeaPreviewWrapper } from 'components';
-import { IdeaImagePreview, ShareMenu } from 'containers';
+import { IdeaImagePreview, ShareMenuButton } from 'containers';
 import { IdeaModel, SetCheck, User } from 'models';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
@@ -196,7 +196,7 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
             </>
           }
           shareOption={
-            <ShareMenu
+            <ShareMenuButton
               style={buttonStyle}
               shareCount={shareCount}
               url={ideaUrl}
