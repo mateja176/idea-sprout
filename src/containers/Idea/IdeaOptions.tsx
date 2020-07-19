@@ -2,7 +2,7 @@ import { Button, makeStyles, useTheme } from '@material-ui/core';
 import {
   CheckBoxOutlineBlank,
   CloudOff,
-  CloudUpload,
+  Publish,
   RateReview,
   StarRate,
 } from '@material-ui/icons';
@@ -243,7 +243,7 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
                     style={buttonStyle}
                     onClick={publish}
                   >
-                    <CloudUpload />
+                    <Publish />
                   </Button>
                 </span>
               ) : (

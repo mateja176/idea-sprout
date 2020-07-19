@@ -1,7 +1,7 @@
 import { Box, Tab, Tabs, Tooltip, useTheme } from '@material-ui/core';
 import {
   CloudOff,
-  CloudUpload,
+  Publish,
   RateReview,
   Share,
   StarRate,
@@ -121,7 +121,7 @@ export const IdeaTabs: React.FC<{ user: User; idea: IdeaModel }> = ({
                 </Box>
               ) : (
                 <Box display={'flex'} onClick={publish}>
-                  <CloudUpload color={'primary'} />
+                  <Publish color={'primary'} />
                   &nbsp; Publish
                 </Box>
               )
