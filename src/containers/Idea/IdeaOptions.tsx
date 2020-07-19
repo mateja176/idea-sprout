@@ -1,32 +1,23 @@
 import { Button, makeStyles, useTheme } from '@material-ui/core';
-import {
-  CheckBoxOutlineBlank,
-  CloudOff,
-  Publish,
-  RateReview,
-  StarRate,
-} from '@material-ui/icons';
+import { CloudOff, Publish, RateReview, StarRate } from '@material-ui/icons';
 import { Skeleton } from '@material-ui/lab';
 import { useBoolean } from 'ahooks';
 import { IdeaOptionsWrapper, IdeaPreviewWrapper } from 'components';
 import { IdeaImagePreview, ShareMenuButton } from 'containers';
-import { IdeaModel, SetCheck, User } from 'models';
+import { IdeaModel, User } from 'models';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import {
   createAddIdea,
   createDeleteIdea,
-  createQueueSnackbar,
   useActions,
   useIdeaOptionButtonStyle,
-  useIdeasRef,
   useShareIdea,
   useUpdateWithCount,
 } from 'services';
 import { ideaNameStyle, withStarColor } from 'styles';
 import urljoin from 'url-join';
 import { absolutePrivateRoute, getRatingTooltip, roundAverage } from 'utils';
-import { CheckMenu } from './Check';
 import { ReviewDialog, ReviewsDialog } from './Review';
 
 export interface IdeaOptionsProps extends Pick<User, 'uid'> {
@@ -41,10 +32,9 @@ const useStyles = makeStyles(() => ({ withoutMargin: { marginLeft: 0 } }));
 
 export const IdeaOptions = React.memo<IdeaOptionsProps>(
   ({ uid, idea, ideaUrl, NavigationButton }) => {
-    const { addIdea, deleteIdea, queueSnackbar } = useActions({
+    const { addIdea, deleteIdea } = useActions({
       addIdea: createAddIdea,
       deleteIdea: createDeleteIdea,
-      queueSnackbar: createQueueSnackbar,
     });
 
     const classes = useStyles();
@@ -53,9 +43,9 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
 
     const history = useHistory();
 
-    const checkRef = React.useRef<HTMLButtonElement | null>(null);
+    // const checkRef = React.useRef<HTMLButtonElement | null>(null);
 
-    const ideaRef = useIdeasRef().doc(idea.id);
+    // const ideaRef = useIdeasRef().doc(idea.id);
 
     const buttonStyle = useIdeaOptionButtonStyle();
 
@@ -73,56 +63,36 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
       setReviewsOpen.toggle();
     }, [setReviewsOpen]);
 
-    const [checkMenuOpen, setCheckMenuOpen] = useBoolean(false);
-
-    const [statusPending, setStatusPending] = useBoolean(false);
-
     const publish = React.useCallback(() => {
-      setStatusPending.setTrue();
       const withStatus = { status: 'sprout' } as const;
-      updateWithCount({ count: 1, ...withStatus })
-        .then(() => {
-          addIdea({ ...idea, ...withStatus });
-        })
-        .then(() => {
-          queueSnackbar({
-            severity: 'success',
-            message: 'Idea published!',
-          });
-        });
-    }, [updateWithCount, addIdea, idea, setStatusPending, queueSnackbar]);
+      updateWithCount({ count: 1, ...withStatus }).then(() => {
+        addIdea({ ...idea, ...withStatus });
+      });
+    }, [updateWithCount, addIdea, idea]);
 
     const unpublish = React.useCallback(() => {
-      setStatusPending.setTrue();
-      updateWithCount({ count: -1, status: 'seed' })
-        .then(() => {
-          deleteIdea({ id: idea.id });
-        })
-        .then(() => {
-          queueSnackbar({
-            severity: 'success',
-            message: 'Idea unpublished',
-          });
-        });
-    }, [updateWithCount, deleteIdea, idea.id, setStatusPending, queueSnackbar]);
+      updateWithCount({ count: -1, status: 'seed' }).then(() => {
+        deleteIdea({ id: idea.id });
+      });
+    }, [updateWithCount, deleteIdea, idea.id]);
 
-    const setCheck: SetCheck = React.useCallback(
-      (name) => (_, value) => {
-        const withChecks: Pick<IdeaModel, 'checks'> = {
-          checks: {
-            ...idea.checks,
-            [name]: value,
-          },
-        };
-        ideaRef.update(withChecks);
-      },
-      [idea.checks, ideaRef],
-    );
+    // const setCheck: SetCheck = React.useCallback(
+    //   (name) => (_, value) => {
+    //     const withChecks: Pick<IdeaModel, 'checks'> = {
+    //       checks: {
+    //         ...idea.checks,
+    //         [name]: value,
+    //       },
+    //     };
+    //     ideaRef.update(withChecks);
+    //   },
+    //   [idea.checks, ideaRef],
+    // );
 
-    const passedPreflightChecks = React.useMemo(
-      () => Object.values(idea.checks).every(Boolean),
-      [idea.checks],
-    );
+    // const passedPreflightChecks = React.useMemo(
+    //   () => Object.values(idea.checks).every(Boolean),
+    //   [idea.checks],
+    // );
 
     const isAuthor = uid === idea.author;
 
@@ -227,36 +197,27 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
           reviewOption={
             isAuthor ? (
               idea.status === 'sprout' ? (
-                <span title={statusPending ? 'Update Pending' : 'Unpublish'}>
-                  <Button
-                    disabled={statusPending}
-                    style={buttonStyle}
-                    onClick={unpublish}
-                  >
+                <span title={'Unpublish'}>
+                  <Button style={buttonStyle} onClick={unpublish}>
                     <CloudOff />
                   </Button>
                 </span>
-              ) : passedPreflightChecks ? (
-                <span title={statusPending ? 'Update Pending' : 'Publish'}>
-                  <Button
-                    disabled={statusPending}
-                    style={buttonStyle}
-                    onClick={publish}
-                  >
+              ) : (
+                <span title={'Publish'}>
+                  <Button style={buttonStyle} onClick={publish}>
                     <Publish />
                   </Button>
                 </span>
-              ) : (
-                <Button
-                  title={'Preflight check'}
-                  ref={checkRef}
-                  style={buttonStyle}
-                  onClick={() => {
-                    setCheckMenuOpen.toggle();
-                  }}
-                >
-                  <CheckBoxOutlineBlank />
-                </Button>
+                // <Button
+                //   title={'Preflight check'}
+                //   ref={checkRef}
+                //   style={buttonStyle}
+                //   onClick={() => {
+                //     setCheckMenuOpen.toggle();
+                //   }}
+                // >
+                //   <CheckBoxOutlineBlank />
+                // </Button>
               )
             ) : (
               <Button
@@ -284,7 +245,7 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
           open={reviewOpen}
           onClose={toggleReviewOpen}
         />
-        {!passedPreflightChecks && (
+        {/* {!passedPreflightChecks && (
           <CheckMenu
             ref={checkRef}
             open={checkMenuOpen}
@@ -292,7 +253,7 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
             checks={idea.checks}
             setCheck={setCheck}
           />
-        )}
+        )} */}
       </>
     );
   },
