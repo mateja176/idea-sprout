@@ -16,6 +16,11 @@ const editingStates = ['off', 'blur', 'focus', 'tooShort', 'tooLong'] as const;
 type EditingStates = typeof editingStates;
 type EditingState = EditingStates[number];
 
+const initialFocusStyle = {
+  boxShadow: '1px 1px #fff, -1px -1px #fff',
+  borderRadius: '4px',
+};
+
 export const SectionEditor: React.FC<
   Omit<EditorProps, 'editorState' | 'onChange'> & {
     isAuthor: boolean;
@@ -92,10 +97,26 @@ export const SectionEditor: React.FC<
     }
   }, [editingState, focus, blur, editorState]);
 
+  const wrapperRef = React.useRef<HTMLDivElement | null>(null);
+  const animateFocus = React.useCallback(() => {
+    console.log(wrapperRef.current);
+    wrapperRef.current?.animate(
+      [
+        initialFocusStyle,
+        {
+          boxShadow: `1px 1px ${theme.palette.primary.main}, -1px -1px ${theme.palette.primary.main}`,
+          borderRadius: '4px',
+        },
+        initialFocusStyle,
+      ],
+      { duration: 1000, easing: 'cubic-bezier(0, .50, 1, .50)' },
+    );
+  }, [theme.palette.primary.main]);
+
   return (
     <IdeaSection mt={mt} mb={mb}>
       {title}
-      <Box onClick={focus}>
+      <div ref={wrapperRef} onClick={focus}>
         <DraftEditor
           ref={editorRef}
           editorState={editorState}
@@ -129,6 +150,7 @@ export const SectionEditor: React.FC<
             }
           }}
           onFocus={(e) => {
+            animateFocus();
             setEditingState('focus');
             if (props.onFocus) {
               props.onFocus(e);
@@ -150,7 +172,7 @@ export const SectionEditor: React.FC<
             }
           }}
         />
-      </Box>
+      </div>
       <Box my={1} display={'flex'} alignItems={'center'}>
         {isAuthor && (
           <Box
