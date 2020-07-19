@@ -183,6 +183,7 @@ export const SectionEditor: React.FC<
               if (editing) {
                 cancel();
               } else {
+                animateFocus();
                 setEditingState('focus');
                 setEditorState(EditorState.moveFocusToEnd(editorState));
               }
