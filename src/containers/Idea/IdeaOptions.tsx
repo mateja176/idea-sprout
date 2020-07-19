@@ -168,6 +168,13 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
       }
     }, []);
 
+    const rateOptionsClasses = React.useMemo(
+      () => ({
+        endIcon: classes.withoutMargin,
+      }),
+      [classes.withoutMargin],
+    );
+
     return (
       <>
         <IdeaOptionsWrapper
@@ -209,9 +216,7 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
               style={buttonStyle}
               endIcon={<StarRate style={withStarColor} />}
               onClick={toggleReviewsOpen}
-              classes={{
-                endIcon: classes.withoutMargin,
-              }}
+              classes={rateOptionsClasses}
             >
               {roundedAverage}
             </Button>
