@@ -9,9 +9,5 @@ export const Video: React.FC<VideoProps> = ({ path }) => {
 
   const storyURL = useStorageDownloadURL(storyRef);
 
-  return (
-    <video controls width={'100%'}>
-      <source src={storyURL} />
-    </video>
-  );
+  return <video controls width={'100%'} src={storyURL} />;
 };
