@@ -15,7 +15,7 @@ export const Images: React.FC<ImagesProps> = ({ images, isAuthor, update }) => {
       {images.map((image, i) => (
         <Box key={`${image.path}${i}`} display="flex" flexDirection="column">
           <Image
-            isLast={i === images.length - 1 && images.length > 1}
+            isLast={i === images.length - 1}
             {...image}
           />
           {isAuthor && (
