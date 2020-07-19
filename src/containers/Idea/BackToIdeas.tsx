@@ -2,7 +2,6 @@ import { Box, Tab, TabProps, useTheme } from '@material-ui/core';
 import { KeyboardArrowLeft } from '@material-ui/icons';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useLinkStyle } from 'services';
 import { absolutePrivateRoute } from 'utils';
 
 export const BackToIdeas: React.FC<Omit<TabProps, 'onClick' | 'label'>> = ({
@@ -10,8 +9,6 @@ export const BackToIdeas: React.FC<Omit<TabProps, 'onClick' | 'label'>> = ({
   ...props
 }) => {
   const theme = useTheme();
-
-  const linkStyle = useLinkStyle();
 
   const history = useHistory();
 
@@ -23,11 +20,10 @@ export const BackToIdeas: React.FC<Omit<TabProps, 'onClick' | 'label'>> = ({
     <Tab
       {...props}
       onClick={handleClick}
-      classes={{ ...classes, ...linkStyle }}
+      classes={classes}
       label={
         <Box display={'flex'} color={theme.palette.action.active}>
           <KeyboardArrowLeft />
-          &nbsp; Back
         </Box>
       }
     />

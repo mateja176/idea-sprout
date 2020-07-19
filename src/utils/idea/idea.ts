@@ -15,6 +15,10 @@ export const ideasFetchLimit = 15;
 export const getShareCountHelperText = (count: number) =>
   `Shared by ${count} ${count === 1 ? 'person' : 'people'}`;
 
+export const roundAverage = (average: number) => average.toFixed(1);
+export const getRatingTooltip = (count: number, average: number) =>
+  `Average rating ${roundAverage(average)} out of total ${count}`;
+
 export const getFormIdea = ({
   name,
   logo,

@@ -27,7 +27,9 @@ export const IdeaSkeleton: React.FC = () => (
     <Box mt={nameAndLogoMt} display={'flex'}>
       <Box flex={1} mr={1}>
         <SectionEditorSkeleton>
-          <Typography variant={'h4'}>{idea.name}</Typography>
+          <Load>
+            <Typography variant={'h4'}>{idea.name}</Typography>
+          </Load>
         </SectionEditorSkeleton>
       </Box>
       <IdeaPreviewWrapper mr={logoMr}>

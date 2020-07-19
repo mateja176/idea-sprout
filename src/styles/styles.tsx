@@ -1,3 +1,5 @@
+export const ideaTabsShadowVariant = 6;
+
 export const logoMr = '6px';
 export const nameAndLogoMt = 2;
 

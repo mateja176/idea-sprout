@@ -1,23 +1,20 @@
-import { Box, Button, Tab, Tabs, Tooltip, useTheme } from '@material-ui/core';
-import { KeyboardArrowLeft } from '@material-ui/icons';
+import { Box } from '@material-ui/core';
 import { Idea } from 'containers';
 import 'firebase/firestore';
 import { IdeaModel, IdeaSprout } from 'models';
 import React from 'react';
-import { Redirect, useHistory } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import {
   createQueueSnackbar,
   createUpdateIdea,
   useActions,
   useFirestoreDoc,
   useIdeasRef,
-  useIdeaUrl,
   useSignedInUser,
 } from 'services';
 import { absolutePrivateRoute } from 'utils';
-import { BackToIdeas } from './BackToIdeas';
 import { IdeaProps } from './Idea';
-import { IdeaOptions } from './IdeaOptions';
+import { IdeaTabs } from './IdeaTabs';
 
 export interface IdeaContainerProps extends Pick<IdeaModel, 'id'> {
   initialIdea?: IdeaModel;
@@ -32,17 +29,11 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({
     updateIdea: createUpdateIdea,
   });
 
-  const history = useHistory();
-
-  const theme = useTheme();
-
   const user = useSignedInUser();
 
   const idea = useFirestoreDoc<IdeaModel>(useIdeasRef().doc(id), {
     startWithValue: initialIdea,
   });
-
-  const ideaUrl = useIdeaUrl(id);
 
   const ideaRef = useIdeasRef().doc(id);
 
@@ -65,47 +56,7 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({
 
   return idea ? (
     <Box flex={1} display={'flex'} flexDirection={'column'} overflow={'auto'}>
-      <Tabs value={false} variant="fullWidth">
-        <BackToIdeas />
-        <Tab />
-        {/* <Tab
-          classes={linkStyle}
-          label={
-            user.uid === idea.author ? (
-              <HashLink
-                to={history.location.pathname
-                  .concat('#')
-                  .concat(headingIds.problemSolution)}
-                smooth
-              >
-                <Box display={'flex'} color={theme.palette.action.active}>
-                  <Edit />
-                  &nbsp; Edit Idea
-                </Box>
-              </HashLink>
-            ) : null
-          }
-        /> */}
-      </Tabs>
-      <Box boxShadow={theme.shadows[6]}>
-        <IdeaOptions
-          uid={user.uid}
-          idea={idea}
-          ideaUrl={ideaUrl}
-          NavigationButton={({ style }) => (
-            <Tooltip placement="top" title="Back to ideas">
-              <Button
-                style={style}
-                onClick={() => {
-                  history.push(absolutePrivateRoute.ideas.path);
-                }}
-              >
-                <KeyboardArrowLeft />
-              </Button>
-            </Tooltip>
-          )}
-        />
-      </Box>
+      <IdeaTabs user={user} idea={idea} />
       <Idea user={user} idea={idea} update={update} />
     </Box>
   ) : (

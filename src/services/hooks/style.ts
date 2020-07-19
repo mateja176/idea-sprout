@@ -22,8 +22,9 @@ export const useIdeaOptionsButtonBorder = () => {
   return useMemo(() => `1px solid ${theme.palette.grey[600]}`, [theme]);
 };
 
-export const useLinkStyle = makeStyles(() => ({
+export const useIdeaTabStyles = makeStyles(() => ({
   textColorInherit: {
     opacity: 1,
+    fontWeight: 'normal',
   },
 }));

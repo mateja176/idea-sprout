@@ -5,7 +5,7 @@ import { ShareMenuItem } from './ShareMenuItem';
 
 export const ShareMenu: React.FC<
   Pick<React.ComponentProps<typeof ShareMenuItem>, 'url' | 'shareIdea'> &
-    Pick<MenuProps, 'anchorEl'> &
+    Required<Pick<MenuProps, 'anchorEl'>> &
     Pick<MenuProps, 'open' | 'onClose'>
 > = ({ anchorEl, open, onClose, url, shareIdea }) => (
   <Menu anchorEl={anchorEl} open={open} onClose={onClose}>
