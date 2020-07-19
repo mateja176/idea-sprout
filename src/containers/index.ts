@@ -7,7 +7,6 @@ export * from './FileOptions';
 export * from './Idea';
 export * from './Image';
 export * from './SectionEditor';
-export * from './ShareDial';
-export * from './ShareMenuButton';
+export * from './Share';
 export * from './Signout';
 export * from './Video';
