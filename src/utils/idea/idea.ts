@@ -70,9 +70,9 @@ export const getInitialIdea = (author: IdeaModel['author']): RawIdea => ({
   status: 'seed',
   name: 'Idea Seed',
   logo: {
-    path: 'images/idea-seed-logo.png',
-    width: 1920,
-    height: 1080,
+    path: 'images/idea-seed.svg',
+    width: 100,
+    height: 100,
   },
   tagline: 'A good tagline is brief, but memorable.',
   problemSolution: problemSolutionText,
