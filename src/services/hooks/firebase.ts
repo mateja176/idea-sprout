@@ -64,12 +64,17 @@ export const useIdeasRef = () => {
   );
 };
 
-export const useReviewsRef = (id: IdeaModel['id']) => {
+export const useIdeaRef = (id: IdeaModel['id']) => {
   const ideasRef = useIdeasRef();
+  return useMemo(() => ideasRef.doc(id), [ideasRef, id]);
+};
 
-  return ideasRef
-    .doc(id)
-    .collection(firestoreCollections.ideas.collections.reviews.path);
+export const useReviewsRef = (id: IdeaModel['id']) => {
+  const ideaRef = useIdeaRef(id);
+
+  return ideaRef.collection(
+    firestoreCollections.ideas.collections.reviews.path,
+  );
 };
 
 export const useFirestoreDoc = <T extends WithId>(
@@ -119,7 +124,7 @@ export const useReviewSubmit = ({
 
   const reviewsRef = useReviewsRef(idea.id);
 
-  const ideaRef = useIdeasRef().doc(idea.id);
+  const ideaRef = useIdeaRef(idea.id);
 
   return ({ rating, feedback }: Pick<Review, 'rating' | 'feedback'>) => {
     const count = currentReview ? idea.ratingCount : idea.ratingCount + 1;
@@ -169,7 +174,7 @@ export const useShareIdea = (idea: IdeaModel) => {
 
   const user = useSignedInUser();
 
-  const ideaRef = useIdeasRef().doc(idea.id);
+  const ideaRef = useIdeaRef(idea.id);
 
   if (Object.keys(idea.sharedBy).includes(user.uid)) {
     return () => {};

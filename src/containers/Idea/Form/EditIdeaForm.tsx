@@ -2,7 +2,7 @@ import 'firebase/firestore';
 import { IdeaModel, WithId } from 'models';
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { useFirestoreDoc, useIdeasRef } from 'services';
+import { useFirestoreDoc, useIdeaRef } from 'services';
 import { absolutePrivateRoute } from 'utils';
 import { IdeaForm } from './IdeaForm';
 
@@ -14,7 +14,7 @@ export const EditIdeaForm: React.FC<EditIdeaFormProps> = ({
   id,
   initialIdea,
 }) => {
-  const idea = useFirestoreDoc<IdeaModel>(useIdeasRef().doc(id), {
+  const idea = useFirestoreDoc<IdeaModel>(useIdeaRef(id), {
     startWithValue: initialIdea,
   });
 

@@ -9,7 +9,7 @@ import {
   createUpdateIdea,
   useActions,
   useFirestoreDoc,
-  useIdeasRef,
+  useIdeaRef,
   useSignedInUser,
 } from 'services';
 import { absolutePrivateRoute } from 'utils';
@@ -31,11 +31,11 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({
 
   const user = useSignedInUser();
 
-  const idea = useFirestoreDoc<IdeaModel>(useIdeasRef().doc(id), {
+  const ideaRef = useIdeaRef(id);
+
+  const idea = useFirestoreDoc<IdeaModel>(ideaRef, {
     startWithValue: initialIdea,
   });
-
-  const ideaRef = useIdeasRef().doc(id);
 
   const update: IdeaProps['update'] = React.useCallback(
     (partialIdea) => {
