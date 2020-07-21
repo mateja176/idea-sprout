@@ -224,7 +224,8 @@ service cloud.firestore {
     }
 
     match /users/{userId} {
-      allow read: if isSignedIn() && request.auth.uid == userId;
+      // if the user who is performing the request has an idea which has been reviewed by the request users
+      allow read: if isSignedIn() && (request.auth.uid == userId || request.auth.token.isPro);
       allow write: if isSignedIn() && request.auth.uid == userId;
     }
   }
