@@ -78,32 +78,31 @@ export const IdeaTabs: React.FC<{ user: User; idea: IdeaModel }> = ({
       >
         <BackToIdeas classes={classes} />
         <Tab
+          ref={shareButtonRef}
           classes={classes}
           label={
             <Tooltip title={shareCountHelperText}>
-              <div
-                ref={shareButtonRef}
-                style={{ display: 'flex' }}
-                onClick={setShareMenuOpen.setTrue}
-              >
+              <Box display={'flex'}>
                 {shareCount}
                 &nbsp;
                 <Share fontSize={'small'} color={'primary'} />
-              </div>
+              </Box>
             </Tooltip>
           }
+          onClick={setShareMenuOpen.setTrue}
         />
         <Tab
           classes={classes}
           label={
             <Tooltip title={ratingTooltip}>
-              <Box display={'flex'} onClick={setReviewsOpen.setTrue}>
+              <Box display={'flex'}>
                 {roundedAverage}
                 &nbsp;
                 <StarRate style={withStarColor} />
               </Box>
             </Tooltip>
           }
+          onClick={setReviewsOpen.setTrue}
         />
         <Tab
           classes={classes}
@@ -112,6 +111,7 @@ export const IdeaTabs: React.FC<{ user: User; idea: IdeaModel }> = ({
             isAuthor ? (
               idea.status === 'sprout' ? (
                 <Box
+                  width={'100%'}
                   display={'flex'}
                   justifyContent={'center'}
                   onClick={unpublish}
@@ -120,16 +120,25 @@ export const IdeaTabs: React.FC<{ user: User; idea: IdeaModel }> = ({
                   &nbsp;Unpublish
                 </Box>
               ) : (
-                <Box display={'flex'} onClick={publish}>
+                <Box
+                  width={'100%'}
+                  display={'flex'}
+                  onClick={publish}
+                  justifyContent={'center'}
+                >
                   <Publish color={'primary'} />
                   &nbsp; Publish
                 </Box>
               )
             ) : (
-              <Box display={'flex'} onClick={setReviewOpen.setTrue}>
+              <Box
+                width={'100%'}
+                display={'flex'}
+                onClick={setReviewOpen.setTrue}
+                justifyContent={'center'}
+              >
                 <RateReview color="primary" />
-                &nbsp;
-                Review
+                &nbsp; Review
               </Box>
             )
           }
