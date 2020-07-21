@@ -11,13 +11,15 @@ export interface ImagesProps extends Pick<IdeaModel, 'images'> {
 
 export const Images: React.FC<ImagesProps> = ({ images, isAuthor, update }) => {
   return (
-    <Box>
+    <>
       {images.map((image, i) => (
-        <Box key={`${image.path}${i}`} display="flex" flexDirection="column">
-          <Image
-            isLast={i === images.length - 1}
-            {...image}
-          />
+        <Box
+          height={'100%'}
+          key={`${image.path}${i}`}
+          display="flex"
+          flexDirection="column"
+        >
+          <Image isLast={i === images.length - 1} {...image} />
           {isAuthor && (
             <FileOptions
               label={'Choose new image'}
@@ -31,6 +33,6 @@ export const Images: React.FC<ImagesProps> = ({ images, isAuthor, update }) => {
           )}
         </Box>
       ))}
-    </Box>
+    </>
   );
 };

@@ -24,15 +24,13 @@ export const VideoSuspender: React.FC<VideoSuspenderProps> = ({
   );
 
   return (
-    <Box>
-      <div
-        style={{
-          backgroundColor: theme.palette.grey[900],
-          display: 'flex',
-          justifyContent: 'center',
-          height: `calc(${height / width} * 100vw)`,
-          maxHeight: height,
-        }}
+    <>
+      <Box
+        bgcolor={theme.palette.grey[900]}
+        display={'flex'}
+        justifyContent={'center'}
+        height={`calc(100vw * ${height / width})`}
+        maxHeight={'100%'}
       >
         <React.Suspense
           fallback={
@@ -46,7 +44,7 @@ export const VideoSuspender: React.FC<VideoSuspenderProps> = ({
         >
           <Video path={path} />
         </React.Suspense>
-      </div>
+      </Box>
       {isAuthor && (
         <FileOptions
           label={'Choose new video'}
@@ -54,6 +52,6 @@ export const VideoSuspender: React.FC<VideoSuspenderProps> = ({
           update={updateStory}
         />
       )}
-    </Box>
+    </>
   );
 };

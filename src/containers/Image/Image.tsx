@@ -1,4 +1,4 @@
-import { useTheme } from '@material-ui/core';
+import { useTheme, Box } from '@material-ui/core';
 import { Skeleton } from '@material-ui/lab';
 import { StorageFile } from 'models';
 import React from 'react';
@@ -20,16 +20,14 @@ export const Image: React.FC<ImageProps> = ({
   const theme = useTheme();
 
   return (
-    <div
+    <Box
       key={path}
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        backgroundColor: theme.palette.grey[900],
-        borderBottom: isLast ? 'none' : `1px solid ${theme.palette.grey[900]}`,
-        height: `calc(${height / width} * 100vw)`,
-        maxHeight: height,
-      }}
+      display={'flex'}
+      justifyContent={'center'}
+      bgcolor={theme.palette.grey[900]}
+      borderBottom={isLast ? 'none' : `1px solid ${theme.palette.grey[900]}`}
+      height={`calc(100vw * ${height / width})`}
+      maxHeight={'100%'}
     >
       <React.Suspense
         fallback={
@@ -41,13 +39,8 @@ export const Image: React.FC<ImageProps> = ({
           />
         }
       >
-        <StorageImage
-          storagePath={path}
-          width={'100%'}
-          style={{ maxWidth: width }}
-          onClick={onClick}
-        />
+        <StorageImage storagePath={path} height={'100%'} onClick={onClick} />
       </React.Suspense>
-    </div>
+    </Box>
   );
 };
