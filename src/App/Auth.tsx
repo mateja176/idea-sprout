@@ -16,16 +16,13 @@ export const Auth: React.FC = ({ children }) => {
         uid,
         email,
         displayName,
-        photoURL,
         phoneNumber,
         providerId,
       } = user;
 
-      usersRef.doc(user.uid).set({
-        uid,
+      usersRef.doc(uid).set({
         email,
         displayName,
-        photoURL,
         phoneNumber,
         providerId,
       } as User);
