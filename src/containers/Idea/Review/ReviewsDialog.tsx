@@ -3,7 +3,7 @@ import { DraggableDialog } from 'containers';
 import { IdeaModel, Rating } from 'models';
 import { range } from 'ramda';
 import React from 'react';
-import { useValueWithFallback } from 'services';
+import { useBooleanWithFallback } from 'services';
 import { withEllipsis } from 'styles';
 import { Reviews } from './Reviews';
 import { ReviewSkeleton } from './ReviewSkeleton';
@@ -17,7 +17,7 @@ export interface ReviewsProps
 
 export const ReviewsDialog = React.memo<ReviewsProps>(
   ({ id, name, count, open, onClose }) => {
-    const openWithFallback = useValueWithFallback(open, { timeoutMs: 500 });
+    const openWithFallback = useBooleanWithFallback(open, { timeoutMs: 500 });
 
     return (
       <DraggableDialog

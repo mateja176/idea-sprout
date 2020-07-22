@@ -20,10 +20,6 @@ export interface ISnackbar
   message: string;
 }
 
-export interface WithTimeout {
-  timeoutMs: number;
-}
-
 export interface ShareButtonProps
   extends React.ComponentProps<typeof FacebookShareButton> {}
 

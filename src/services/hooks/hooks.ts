@@ -1,5 +1,11 @@
-import { FileDimensions, WithTimeout } from 'models';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { FileDimensions } from 'models';
+import {
+  SuspenseConfig,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { useDispatch } from 'react-redux';
 import { ActionCreatorsMapObject, bindActionCreators } from 'redux';
 import { Action, AnyThunk, GetBoundThunk } from 'services';
@@ -19,7 +25,7 @@ export const useActions = <
 
 export const useDeferredValue = <Value>(
   value: Value,
-  { timeoutMs }: WithTimeout,
+  { timeoutMs }: SuspenseConfig,
 ) => {
   const [deferredValue, setDeferredValue] = useState<Value>(value);
 
@@ -60,7 +66,33 @@ export const useValueWithFallback: typeof useDeferredValue = (
   };
 };
 
-export const useTransition = ({ timeoutMs }: WithTimeout) => {
+export const useBooleanWithFallback = (
+  value: boolean,
+  { timeoutMs }: SuspenseConfig,
+) => {
+  const [valueWithFallback, setValueWithFallback] = useState(value);
+
+  useEffect(() => {
+    const timeout = (() => {
+      if (value) {
+        return setValueWithFallback(true);
+      } else {
+        return setTimeout(() => {
+          setValueWithFallback(false);
+        }, timeoutMs);
+      }
+    })();
+    return () => {
+      if (timeout) {
+        clearTimeout(timeout);
+      }
+    };
+  }, [timeoutMs, value]);
+
+  return valueWithFallback;
+};
+
+export const useTransition = ({ timeoutMs }: SuspenseConfig) => {
   const [isPending, setIsPending] = useState(false);
 
   const startTransition = useCallback(

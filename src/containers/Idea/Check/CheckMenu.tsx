@@ -1,7 +1,7 @@
 import { Menu, MenuItem, MenuProps } from '@material-ui/core';
 import { IdeaModel, SetCheck } from 'models';
 import React from 'react';
-import { useValueWithFallback } from 'services';
+import { useBooleanWithFallback } from 'services';
 import { ExpectationsCheck } from './ExpectationsCheck';
 import { NicheCheck } from './NicheCheck';
 
@@ -13,7 +13,7 @@ export const CheckMenu = React.memo(
         setCheck: SetCheck;
       }
   >(({ open, onClose, checks, setCheck }, ref) => {
-    const openWithFallback = useValueWithFallback(open, { timeoutMs: 500 });
+    const openWithFallback = useBooleanWithFallback(open, { timeoutMs: 500 });
 
     return (
       <Menu

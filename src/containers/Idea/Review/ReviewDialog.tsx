@@ -3,7 +3,7 @@ import { DraggableDialog } from 'containers';
 import 'firebase/firestore';
 import { User } from 'models';
 import React from 'react';
-import { useValueWithFallback } from 'services';
+import { useBooleanWithFallback } from 'services';
 import { withEllipsis } from 'styles';
 import { ReviewForm, ReviewFormProps } from './ReviewForm';
 import { ReviewFormSkeleton } from './ReviewFormSkeleton';
@@ -19,7 +19,7 @@ export const ReviewDialog = React.memo<ReviewDialogProps>(
       idea: { name },
       onClose,
     } = props;
-    const openWithFallback = useValueWithFallback(open, { timeoutMs: 500 });
+    const openWithFallback = useBooleanWithFallback(open, { timeoutMs: 500 });
 
     const handleClose = React.useCallback(() => {
       onClose();
