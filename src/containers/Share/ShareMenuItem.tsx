@@ -3,12 +3,15 @@ import { ShareConfig } from 'components';
 import React from 'react';
 import { shareIconSize } from 'styles';
 
-export const ShareMenuItem: React.FC<{
-  config: ShareConfig;
-  url: string;
-  shareIdea: () => void;
-}> = ({ config, url, shareIdea }) => (
-  <MenuItem key={config.label}>
+export const ShareMenuItem = React.forwardRef<
+  HTMLLIElement,
+  {
+    config: ShareConfig;
+    url: string;
+    shareIdea: () => void;
+  }
+>(({ config, url, shareIdea }, ref) => (
+  <MenuItem ref={ref} key={config.label}>
     <config.Button key={config.label} url={url} onShareWindowClose={shareIdea}>
       <Box display="flex" alignItems="center" my={'3px'}>
         <ListItemIcon>
@@ -18,4 +21,4 @@ export const ShareMenuItem: React.FC<{
       </Box>
     </config.Button>
   </MenuItem>
-);
+));
