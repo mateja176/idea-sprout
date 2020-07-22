@@ -120,7 +120,6 @@ export const useComputedHeight = ({ width, height }: FileDimensions) => {
   useEffect(() => {
     const handleResize = () => {
       if (document.body.clientWidth < width) {
-        console.log(document.body.clientWidth, width);
         setComputedHeight((height * document.body.clientWidth) / width);
       }
     };

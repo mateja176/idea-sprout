@@ -99,7 +99,6 @@ export const SectionEditor: React.FC<
 
   const wrapperRef = React.useRef<HTMLDivElement | null>(null);
   const animateFocus = React.useCallback(() => {
-    console.log(wrapperRef.current);
     wrapperRef.current?.animate(
       [
         initialFocusStyle,
