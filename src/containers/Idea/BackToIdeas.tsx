@@ -1,15 +1,14 @@
-import { Box, Tab, TabProps, useTheme } from '@material-ui/core';
+import { Box, Tab, TabProps, Tooltip } from '@material-ui/core';
 import { KeyboardArrowLeft } from '@material-ui/icons';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import { tabChildStyle } from 'styles';
 import { absolutePrivateRoute } from 'utils';
 
 export const BackToIdeas: React.FC<Omit<TabProps, 'onClick' | 'label'>> = ({
   classes,
   ...props
 }) => {
-  const theme = useTheme();
-
   const history = useHistory();
 
   const handleClick: React.MouseEventHandler = React.useCallback(() => {
@@ -22,9 +21,11 @@ export const BackToIdeas: React.FC<Omit<TabProps, 'onClick' | 'label'>> = ({
       onClick={handleClick}
       classes={classes}
       label={
-        <Box display={'flex'} color={theme.palette.action.active}>
-          <KeyboardArrowLeft />
-        </Box>
+        <Tooltip title={'Back to ideas'}>
+          <Box style={tabChildStyle}>
+            <KeyboardArrowLeft color={'action'} />
+          </Box>
+        </Tooltip>
       }
     />
   );

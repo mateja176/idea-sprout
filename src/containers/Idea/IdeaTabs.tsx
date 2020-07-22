@@ -19,7 +19,7 @@ import {
   useShareIdea,
   useUpdateWithCount,
 } from 'services';
-import { ideaTabsShadowVariant, withStarColor } from 'styles';
+import { ideaTabsShadowVariant, withStarColor, tabChildStyle } from 'styles';
 import { getRatingTooltip, getShareCountHelperText, roundAverage } from 'utils';
 import { BackToIdeas } from './BackToIdeas';
 
@@ -75,6 +75,7 @@ export const IdeaTabs: React.FC<{ user: User; idea: IdeaModel }> = ({
       <Tabs
         value={false}
         style={{ boxShadow: theme.shadows[ideaTabsShadowVariant] }}
+        variant={'fullWidth'}
       >
         <BackToIdeas classes={classes} />
         <Tab
@@ -82,64 +83,49 @@ export const IdeaTabs: React.FC<{ user: User; idea: IdeaModel }> = ({
           classes={classes}
           label={
             <Tooltip title={shareCountHelperText}>
-              <Box display={'flex'}>
+              <Box style={tabChildStyle} onClick={setShareMenuOpen.setTrue}>
                 {shareCount}
                 &nbsp;
                 <Share fontSize={'small'} color={'primary'} />
               </Box>
             </Tooltip>
           }
-          onClick={setShareMenuOpen.setTrue}
         />
         <Tab
           classes={classes}
           label={
             <Tooltip title={ratingTooltip}>
-              <Box display={'flex'}>
+              <Box style={tabChildStyle} onClick={setReviewsOpen.setTrue}>
                 {roundedAverage}
                 &nbsp;
                 <StarRate style={withStarColor} />
               </Box>
             </Tooltip>
           }
-          onClick={setReviewsOpen.setTrue}
         />
         <Tab
           classes={classes}
-          style={{ flex: 1, maxWidth: '100%' }}
           label={
             isAuthor ? (
               idea.status === 'sprout' ? (
-                <Box
-                  width={'100%'}
-                  display={'flex'}
-                  justifyContent={'center'}
-                  onClick={unpublish}
-                >
-                  <CloudOff fontSize={'small'} color={'action'} />
-                  &nbsp;Unpublish
-                </Box>
+                <Tooltip title={'Unpublish'}>
+                  <Box style={tabChildStyle} onClick={unpublish}>
+                    <CloudOff fontSize={'small'} color={'action'} />
+                  </Box>
+                </Tooltip>
               ) : (
-                <Box
-                  width={'100%'}
-                  display={'flex'}
-                  onClick={publish}
-                  justifyContent={'center'}
-                >
-                  <Publish color={'primary'} />
-                  &nbsp; Publish
-                </Box>
+                <Tooltip title={'Publish'}>
+                  <Box style={tabChildStyle} onClick={publish}>
+                    <Publish color={'primary'} />
+                  </Box>
+                </Tooltip>
               )
             ) : (
-              <Box
-                width={'100%'}
-                display={'flex'}
-                onClick={setReviewOpen.setTrue}
-                justifyContent={'center'}
-              >
-                <RateReview color="primary" />
-                &nbsp; Review
-              </Box>
+              <Tooltip title={'Review'}>
+                <Box style={tabChildStyle} onClick={setReviewOpen.setTrue}>
+                  <RateReview color="primary" />
+                </Box>
+              </Tooltip>
             )
           }
         />

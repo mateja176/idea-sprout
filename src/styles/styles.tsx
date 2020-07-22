@@ -46,3 +46,9 @@ export const textareaStyle: React.CSSProperties = {
 export const breakWordStyle: React.CSSProperties = {
   wordBreak: 'break-word',
 };
+
+export const tabChildStyle: React.CSSProperties = {
+  width: '100%',
+  display: 'flex',
+  justifyContent: 'center',
+};
