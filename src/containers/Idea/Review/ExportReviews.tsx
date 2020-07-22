@@ -48,13 +48,13 @@ export const ExportReviews: React.FC<
     <Tab
       {...props}
       label={
-        <Tooltip title={'Export reviews'}>
-          <AuthCheck requiredClaims={claims.pro} fallback={<Tab />}>
+        <AuthCheck requiredClaims={claims.pro} fallback={<Tab />}>
+          <Tooltip title={'Export reviews'}>
             <Box style={tabChildStyle} onClick={exportReviews}>
               <CloudDownload color={'secondary'} />
             </Box>
-          </AuthCheck>
-        </Tooltip>
+          </Tooltip>
+        </AuthCheck>
       }
     />
   );
