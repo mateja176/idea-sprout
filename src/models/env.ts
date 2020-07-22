@@ -9,7 +9,11 @@ export interface Env {
   firebaseMessagingSenderId: string;
   firebaseAppId: string;
   firebaseMeasurementId: string;
-
+  smtpHost: string;
+  smtpUsername: string;
+  smtpPassword: string;
+  smtpTo: string;
+  smtpFrom: string;
   logRocketId?: string;
 }
 

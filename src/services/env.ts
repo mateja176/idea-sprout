@@ -10,6 +10,11 @@ const rawEnv: RawEnv = {
   firebaseMessagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
   firebaseAppId: process.env.REACT_APP_FIREBASE_APP_ID,
   firebaseMeasurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
+  smtpHost: process.env.REACT_APP_SMTP_HOST,
+  smtpUsername: process.env.REACT_APP_SMTP_USERNAME,
+  smtpPassword: process.env.REACT_APP_SMTP_PASSWORD,
+  smtpTo: process.env.REACT_APP_SMTP_TO,
+  smtpFrom: process.env.REACT_APP_SMTP_FROM,
 };
 
 assertRequired(rawEnv);
