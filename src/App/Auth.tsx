@@ -18,6 +18,7 @@ export const Auth: React.FC = ({ children }) => {
         displayName,
         phoneNumber,
         providerId,
+        photoURL,
       } = user;
 
       usersRef.doc(uid).set({
@@ -25,6 +26,7 @@ export const Auth: React.FC = ({ children }) => {
         displayName,
         phoneNumber,
         providerId,
+        photoURL,
       } as User);
 
       if (process.env.NODE_ENV === 'production') {
