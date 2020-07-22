@@ -7,7 +7,12 @@ import {
   StarRate,
 } from '@material-ui/icons';
 import { useBoolean } from 'ahooks';
-import { ReviewDialog, ReviewsDialog, ShareMenu } from 'containers';
+import {
+  ExportReviews,
+  ReviewDialog,
+  ReviewsDialog,
+  ShareMenu,
+} from 'containers';
 import { IdeaModel, User } from 'models';
 import React from 'react';
 import {
@@ -19,7 +24,7 @@ import {
   useShareIdea,
   useUpdateWithCount,
 } from 'services';
-import { ideaTabsShadowVariant, withStarColor, tabChildStyle } from 'styles';
+import { ideaTabsShadowVariant, tabChildStyle, withStarColor } from 'styles';
 import { getRatingTooltip, getShareCountHelperText, roundAverage } from 'utils';
 import { BackToIdeas } from './BackToIdeas';
 
@@ -129,6 +134,7 @@ export const IdeaTabs: React.FC<{ user: User; idea: IdeaModel }> = ({
             )
           }
         />
+        <ExportReviews ideaId={idea.id} classes={classes} />
       </Tabs>
       <ShareMenu
         anchorEl={shareButtonRef.current}

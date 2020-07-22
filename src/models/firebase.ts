@@ -13,3 +13,9 @@ export interface IdeaFilter<Key extends keyof IdeaModel> {
   opStr: firebase.firestore.WhereFilterOp;
   value: IdeaModel[Key];
 }
+
+export const claims = {
+  pro: {
+    isPro: true,
+  },
+};

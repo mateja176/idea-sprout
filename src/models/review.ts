@@ -1,4 +1,5 @@
 import * as yup from 'yup';
+import { User } from './auth';
 import { WithId } from './models';
 
 export interface RawReview {
@@ -31,3 +32,8 @@ export const initialCreationReview: CreationReview = {
   rating: 0,
   feedback: '',
 };
+
+export interface ReviewWithAuthor extends Review {
+  authorName: User['displayName'];
+  authorEmail: User['email'];
+}
