@@ -155,7 +155,7 @@ export const IdeaTabs: React.FC<{ user: User; idea: IdeaModel }> = ({
         idea={idea}
         ideaUrl={ideaUrl}
         open={reviewOpen}
-        onClose={setReviewsOpen.setFalse}
+        onClose={setReviewOpen.setFalse}
       />
     </>
   );
