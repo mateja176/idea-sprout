@@ -33,7 +33,7 @@ export const initialCreationReview: CreationReview = {
   feedback: '',
 };
 
-export interface ReviewWithAuthor extends Review {
-  authorName: User['displayName'];
-  authorEmail: User['email'];
+export interface ReviewWithAuthor extends Review, Pick<User, 'email'> {
+  firstName: string;
+  lastName: string;
 }

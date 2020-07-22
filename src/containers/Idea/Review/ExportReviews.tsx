@@ -60,15 +60,16 @@ export const ExportReviews: React.FC<
               .doc(id)
               .get()
               .then((doc) => convertFirestoreDocument<FirestoreUser>(doc))
-              .then(
-                ({ displayName, email }) =>
-                  ({
-                    rating,
-                    feedback,
-                    authorName: displayName,
-                    authorEmail: email,
-                  } as ReviewWithAuthor),
-              ),
+              .then(({ displayName, email }) => {
+                const [firstName, lastName] = displayName?.split(' ') || [];
+                return {
+                  rating,
+                  feedback,
+                  firstName,
+                  lastName,
+                  email,
+                } as ReviewWithAuthor;
+              }),
           ),
         ),
       )
