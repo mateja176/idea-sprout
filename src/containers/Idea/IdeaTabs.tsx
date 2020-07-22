@@ -134,7 +134,7 @@ export const IdeaTabs: React.FC<{ user: User; idea: IdeaModel }> = ({
             )
           }
         />
-        <ExportReviews ideaId={idea.id} classes={classes} />
+        <ExportReviews idea={idea} classes={classes} />
       </Tabs>
       <ShareMenu
         anchorEl={shareButtonRef.current}
