@@ -1,4 +1,11 @@
-import { Box, Tab, Tabs, Tooltip, useTheme } from '@material-ui/core';
+import {
+  Box,
+  Tab,
+  Tabs,
+  Tooltip,
+  Typography,
+  useTheme,
+} from '@material-ui/core';
 import {
   CloudOff,
   Publish,
@@ -6,10 +13,12 @@ import {
   Share,
   StarRate,
 } from '@material-ui/icons';
+import { Skeleton } from '@material-ui/lab';
 import { useBoolean } from 'ahooks';
 import { ReviewDialog, ReviewsDialog, ShareMenu } from 'containers';
 import { IdeaModel, User } from 'models';
 import React from 'react';
+import { StorageImage } from 'reactfire';
 import {
   createAddIdea,
   createDeleteIdea,
@@ -24,10 +33,17 @@ import { getRatingTooltip, getShareCountHelperText, roundAverage } from 'utils';
 import { BackToIdeas } from './BackToIdeas';
 import { ExportReviewSuspender } from './Review/ExportReviewSuspender';
 
-export const IdeaTabs: React.FC<{ user: User; idea: IdeaModel }> = ({
-  user,
-  idea,
-}) => {
+const logoHeight = 40;
+const logoMargin = 2;
+const titleSectionMarginBottom = 5;
+const titleSectionHeight =
+  logoHeight + 2 * logoMargin + titleSectionMarginBottom;
+
+export const IdeaTabs: React.FC<{
+  user: User;
+  idea: IdeaModel;
+  showName: boolean;
+}> = ({ user, idea, showName }) => {
   const theme = useTheme();
   const { addIdea, deleteIdea } = useActions({
     addIdea: createAddIdea,
@@ -72,10 +88,12 @@ export const IdeaTabs: React.FC<{ user: User; idea: IdeaModel }> = ({
   const [reviewOpen, setReviewOpen] = useBoolean();
 
   return (
-    <>
+    <Box boxShadow={showName ? theme.shadows[ideaTabsShadowVariant] : 'none'}>
       <Tabs
         value={false}
-        style={{ boxShadow: theme.shadows[ideaTabsShadowVariant] }}
+        style={{
+          boxShadow: showName ? 'none' : theme.shadows[ideaTabsShadowVariant],
+        }}
         variant={'fullWidth'}
       >
         <BackToIdeas classes={classes} />
@@ -138,6 +156,45 @@ export const IdeaTabs: React.FC<{ user: User; idea: IdeaModel }> = ({
           classes={classes}
         />
       </Tabs>
+      <Box
+        height={titleSectionHeight}
+        mb={titleSectionMarginBottom.toString().concat('px')}
+        position={'absolute'}
+        width={'100%'}
+        bgcolor={showName ? 'white' : 'transparent'}
+        zIndex={2}
+        style={{
+          transition: 'background 300ms ease-in-out',
+        }}
+      >
+        <Box
+          mx={3}
+          display={'flex'}
+          alignItems={'center'}
+          height={showName ? '100%' : 0}
+          overflow={'hidden'}
+          style={{ transition: 'height 300ms ease-in-out' }}
+        >
+          <Typography variant={'h4'}>{idea.name}</Typography>
+          <Box mt={'2px'} ml={1}>
+            <React.Suspense
+              fallback={
+                <Skeleton
+                  variant={'circle'}
+                  width={logoHeight}
+                  height={logoHeight}
+                />
+              }
+            >
+              <StorageImage
+                storagePath={idea.logo.path}
+                width={logoHeight}
+                height={logoHeight}
+              />
+            </React.Suspense>
+          </Box>
+        </Box>
+      </Box>
       <ShareMenu
         anchorEl={shareButtonRef.current}
         open={shareMenuOpen}
@@ -159,6 +216,6 @@ export const IdeaTabs: React.FC<{ user: User; idea: IdeaModel }> = ({
         open={reviewOpen}
         onClose={setReviewOpen.setFalse}
       />
-    </>
+    </Box>
   );
 };

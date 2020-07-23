@@ -1,4 +1,5 @@
 import { Box } from '@material-ui/core';
+import { useBoolean } from 'ahooks';
 import { Idea } from 'containers';
 import 'firebase/firestore';
 import { IdeaModel, IdeaSprout } from 'models';
@@ -54,10 +55,33 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({
     [id, idea, ideaRef, queueSnackbar, updateIdea],
   );
 
+  const [showName, setShowName] = useBoolean();
+
+  const tabsWrapperRef = React.useRef<HTMLDivElement | null>(null);
+
+  const nameWrapperRef = React.useRef<HTMLDivElement | null>(null);
+
+  const handleScroll: React.UIEventHandler<HTMLDivElement> = React.useCallback(() => {
+    if (tabsWrapperRef.current && nameWrapperRef.current) {
+      const tabsWrapperRect = tabsWrapperRef.current.getBoundingClientRect();
+      const nameWrapperRect = nameWrapperRef.current.getBoundingClientRect();
+
+      setShowName.toggle(nameWrapperRect.bottom - tabsWrapperRect.bottom < 0);
+    }
+  }, [setShowName]);
+
   return idea ? (
-    <Box flex={1} display={'flex'} flexDirection={'column'} overflow={'auto'}>
-      <IdeaTabs user={user} idea={idea} />
-      <Idea user={user} idea={idea} update={update} />
+    <Box
+      flex={1}
+      display={'flex'}
+      flexDirection={'column'}
+      overflow={'auto'}
+      onScroll={handleScroll}
+    >
+      <div ref={tabsWrapperRef} style={{ position: 'relative' }}>
+        <IdeaTabs user={user} idea={idea} showName={showName} />
+      </div>
+      <Idea ref={nameWrapperRef} user={user} idea={idea} update={update} />
     </Box>
   ) : (
     <Redirect to={absolutePrivateRoute.ideas.path} />

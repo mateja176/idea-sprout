@@ -21,7 +21,8 @@ const initialFocusStyle = {
   borderRadius: '4px',
 };
 
-export const SectionEditor: React.FC<
+export const SectionEditorWithRef: React.ForwardRefRenderFunction<
+  HTMLDivElement,
   Omit<EditorProps, 'editorState' | 'onChange'> & {
     isAuthor: boolean;
     text: string;
@@ -30,7 +31,10 @@ export const SectionEditor: React.FC<
     onSave: (text: string) => void;
     title?: React.ReactNode;
   } & Pick<IdeaSectionProps, 'mt' | 'mb'>
-> = ({ isAuthor, title, text, min, max, onSave, mt, mb, ...props }) => {
+> = (
+  { isAuthor, title, text, min, max, onSave, mt, mb, ...props },
+  editorWrapperRef,
+) => {
   const theme = useTheme();
 
   const [editorState, setEditorState] = React.useState(
@@ -115,62 +119,64 @@ export const SectionEditor: React.FC<
   return (
     <IdeaSection mt={mt} mb={mb}>
       {title}
-      <div ref={wrapperRef} onClick={focus}>
-        <DraftEditor
-          ref={editorRef}
-          editorState={editorState}
-          onChange={setEditorState}
-          readOnly={!isAuthor}
-          {...props}
-          keyBindingFn={(e) => {
-            switch (e.key) {
-              case 'Enter':
-                return 'save';
+      <div ref={editorWrapperRef}>
+        <div ref={wrapperRef} onClick={focus}>
+          <DraftEditor
+            ref={editorRef}
+            editorState={editorState}
+            onChange={setEditorState}
+            readOnly={!isAuthor}
+            {...props}
+            keyBindingFn={(e) => {
+              switch (e.key) {
+                case 'Enter':
+                  return 'save';
 
-              case 'Escape':
-                return 'cancel';
+                case 'Escape':
+                  return 'cancel';
 
-              default:
-                return getDefaultKeyBinding(e);
-            }
-          }}
-          handleKeyCommand={(command) => {
-            switch (command) {
-              case 'save':
-                setEditingState('blur');
-                return 'handled';
+                default:
+                  return getDefaultKeyBinding(e);
+              }
+            }}
+            handleKeyCommand={(command) => {
+              switch (command) {
+                case 'save':
+                  setEditingState('blur');
+                  return 'handled';
 
-              case 'cancel':
-                cancel();
-                return 'handled';
+                case 'cancel':
+                  cancel();
+                  return 'handled';
 
-              default:
-                return 'not-handled';
-            }
-          }}
-          onFocus={(e) => {
-            animateFocus();
-            setEditingState('focus');
-            if (props.onFocus) {
-              props.onFocus(e);
-            }
-          }}
-          onBlur={(e) => {
-            if (isTooShort) {
-              setEditingState('tooShort');
-            } else if (isTooLong) {
-              setEditingState('tooLong');
-            } else if (editorStateText === text) {
-              setEditingState('off');
-            } else {
-              setEditingState('off');
-              onSave(editorStateText);
-            }
-            if (props.onBlur) {
-              props.onBlur(e);
-            }
-          }}
-        />
+                default:
+                  return 'not-handled';
+              }
+            }}
+            onFocus={(e) => {
+              animateFocus();
+              setEditingState('focus');
+              if (props.onFocus) {
+                props.onFocus(e);
+              }
+            }}
+            onBlur={(e) => {
+              if (isTooShort) {
+                setEditingState('tooShort');
+              } else if (isTooLong) {
+                setEditingState('tooLong');
+              } else if (editorStateText === text) {
+                setEditingState('off');
+              } else {
+                setEditingState('off');
+                onSave(editorStateText);
+              }
+              if (props.onBlur) {
+                props.onBlur(e);
+              }
+            }}
+          />
+        </div>
       </div>
       <Box my={1} display={'flex'} alignItems={'center'}>
         {isAuthor && (
@@ -224,3 +230,5 @@ export const SectionEditor: React.FC<
     </IdeaSection>
   );
 };
+
+export const SectionEditor = React.forwardRef(SectionEditorWithRef);
