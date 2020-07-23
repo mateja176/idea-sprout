@@ -21,13 +21,16 @@ export const Auth: React.FC = ({ children }) => {
         photoURL,
       } = user;
 
-      usersRef.doc(uid).set({
-        email,
-        displayName,
-        phoneNumber,
-        providerId,
-        photoURL,
-      } as User);
+      usersRef.doc(uid).set(
+        {
+          email,
+          displayName,
+          phoneNumber,
+          providerId,
+          photoURL,
+        } as User,
+        { merge: true },
+      );
 
       if (process.env.NODE_ENV === 'production') {
         LogRocket.identify(uid, { email, displayName } as DeepNonNullable<
