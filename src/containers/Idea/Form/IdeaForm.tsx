@@ -105,19 +105,11 @@ export const IdeaForm: React.FC<IdeaFormProps> = ({ idea }) => {
     validateOnMount: true,
   });
 
-  const [checks, setChecks] = React.useState(idea.checks);
-
-  React.useEffect(() => {
-    setChecks(idea.checks);
-  }, [idea.checks]);
-
   const setCheck = (name: keyof IdeaModel['checks']) => (
     _: React.ChangeEvent,
     value: boolean,
   ) => {
-    const newChecks: IdeaModel['checks'] = { ...checks, [name]: value };
-
-    setChecks(newChecks);
+    const newChecks: IdeaModel['checks'] = { ...idea.checks, [name]: value };
 
     if (Object.values(newChecks).every(Boolean)) {
       setExpanded(false);
@@ -141,9 +133,9 @@ export const IdeaForm: React.FC<IdeaFormProps> = ({ idea }) => {
             </Box>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails style={{ flexDirection: 'column' }}>
-            <NicheCheck checked={checks.niche} onChange={setCheck('niche')} />
+            <NicheCheck checked={idea.checks.niche} onChange={setCheck('niche')} />
             <ExpectationsCheck
-              checked={checks.expectations}
+              checked={idea.checks.expectations}
               onChange={setCheck('expectations')}
             />
           </ExpansionPanelDetails>
