@@ -7,13 +7,7 @@ import {
   StarRate,
 } from '@material-ui/icons';
 import { useBoolean } from 'ahooks';
-import { Load } from 'components';
-import {
-  ExportReviews,
-  ReviewDialog,
-  ReviewsDialog,
-  ShareMenu,
-} from 'containers';
+import { ReviewDialog, ReviewsDialog, ShareMenu } from 'containers';
 import { IdeaModel, User } from 'models';
 import React from 'react';
 import {
@@ -28,6 +22,7 @@ import {
 import { ideaTabsShadowVariant, tabChildStyle, withStarColor } from 'styles';
 import { getRatingTooltip, getShareCountHelperText, roundAverage } from 'utils';
 import { BackToIdeas } from './BackToIdeas';
+import { ExportReviewSuspender } from './Review/ExportReviewSuspender';
 
 export const IdeaTabs: React.FC<{ user: User; idea: IdeaModel }> = ({
   user,
@@ -135,21 +130,13 @@ export const IdeaTabs: React.FC<{ user: User; idea: IdeaModel }> = ({
             )
           }
         />
-        <React.Suspense
-          fallback={
-            <Load>
-              <Tab classes={classes} />
-            </Load>
-          }
-        >
-          <ExportReviews
-            idea={idea}
-            uid={user.uid}
-            email={user.email}
-            isAuthor={isAuthor}
-            classes={classes}
-          />
-        </React.Suspense>
+        <ExportReviewSuspender
+          idea={idea}
+          uid={user.uid}
+          email={user.email}
+          isAuthor={isAuthor}
+          classes={classes}
+        />
       </Tabs>
       <ShareMenu
         anchorEl={shareButtonRef.current}
