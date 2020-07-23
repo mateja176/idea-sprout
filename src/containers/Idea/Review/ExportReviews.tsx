@@ -326,7 +326,7 @@ export const ExportReviews: React.FC<
       <Dialog open={infoDialogOpen} onClose={setInfoDialogOpen.setFalse}>
         <DialogContent>{proMembership.info}</DialogContent>
         <DialogActions>
-          <Button>Close</Button>
+          <Button onClick={setInfoDialogOpen.setFalse}>Close</Button>
         </DialogActions>
       </Dialog>
     </>
