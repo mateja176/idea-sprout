@@ -6,6 +6,7 @@ import {
   makeStyles,
   Toolbar,
   Typography,
+  colors,
 } from '@material-ui/core';
 import { ChevronLeft, LibraryAdd, Menu } from '@material-ui/icons';
 import { IdeaSprout, Link, Load } from 'components';
@@ -42,8 +43,16 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
             </IconButton>
           </Box>
           <Box flex={1} display={'flex'}>
-            <Box mr={1}>
-              <IdeaSprout width={'2em'} height={'2em'} />
+            <Box
+              mr={1}
+              bgcolor={colors.teal[50]}
+              width={'2em'}
+              height={'2em'}
+              borderRadius={'50%'}
+              boxSizing={'initial'}
+              border={`3px solid${colors.teal[50]}`}
+            >
+              <IdeaSprout width={'100%'} height={'100%'} />
             </Box>
             <Link to={absolutePrivateRoute.ideas.path}>
               <Typography variant="h6">Idea Sprout</Typography>

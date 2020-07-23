@@ -5,6 +5,7 @@ import { Provider as ReduxProvider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { FirebaseAppProvider } from 'reactfire';
 import { env, store } from 'services';
+import { ThemeProvider } from './ThemeProvider';
 
 const firebaseConfig = {
   apiKey: env.firebaseApiKey,
@@ -32,7 +33,7 @@ export const Provider: React.FC<ProviderProps> = ({ children }) => {
     <ReduxProvider store={store}>
       <BrowserRouter>
         <FirebaseAppProvider firebaseConfig={firebaseConfig}>
-          {children}
+          <ThemeProvider>{children}</ThemeProvider>
         </FirebaseAppProvider>
       </BrowserRouter>
     </ReduxProvider>
