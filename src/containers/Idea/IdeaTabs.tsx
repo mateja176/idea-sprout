@@ -7,6 +7,7 @@ import {
   StarRate,
 } from '@material-ui/icons';
 import { useBoolean } from 'ahooks';
+import { Load } from 'components';
 import {
   ExportReviews,
   ReviewDialog,
@@ -134,12 +135,21 @@ export const IdeaTabs: React.FC<{ user: User; idea: IdeaModel }> = ({
             )
           }
         />
-        <ExportReviews
-          idea={idea}
-          email={user.email}
-          isAuthor={isAuthor}
-          classes={classes}
-        />
+        <React.Suspense
+          fallback={
+            <Load>
+              <Tab classes={classes} />
+            </Load>
+          }
+        >
+          <ExportReviews
+            idea={idea}
+            uid={user.uid}
+            email={user.email}
+            isAuthor={isAuthor}
+            classes={classes}
+          />
+        </React.Suspense>
       </Tabs>
       <ShareMenu
         anchorEl={shareButtonRef.current}

@@ -17,4 +17,4 @@ export type FirestoreUser = Pick<
   User,
   'displayName' | 'email' | 'phoneNumber' | 'photoURL' | 'providerId'
 > &
-  WithId;
+  WithId & { proMembershipOrder?: string };

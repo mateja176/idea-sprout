@@ -43,6 +43,11 @@ export const useUsersRef = () =>
     [],
   );
 
+export const useUserRef = (uid: User['uid']) => {
+  const usersRef = useUsersRef();
+  return useMemo(() => usersRef.doc(uid), [usersRef, uid]);
+};
+
 export const useCountsRef = () => {
   return useMemo(
     () => firebase.firestore().collection(firestoreCollections.counts.path),

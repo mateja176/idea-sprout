@@ -19,6 +19,7 @@ import {
   CloudUpload,
   EmojiEvents,
   ExpandMore,
+  HourglassEmpty,
 } from '@material-ui/icons';
 import { Skeleton } from '@material-ui/lab';
 import { useBoolean } from 'ahooks';
@@ -43,6 +44,7 @@ import {
   env,
   formatCurrency,
   useActions,
+  useFirestoreDoc,
   useReviewsRef,
   useUsersRef,
 } from 'services';
@@ -72,14 +74,20 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const ExportReviews: React.FC<
-  { idea: IdeaModel; isAuthor: boolean } & Required<Pick<User, 'email'>> &
+  { idea: IdeaModel; isAuthor: boolean } & Required<
+    Pick<User, 'uid' | 'email'>
+  > &
     Pick<TabProps, 'classes'>
-> = ({ idea, isAuthor, email, ...props }) => {
+> = ({ idea, uid, email, isAuthor, ...props }) => {
   const { queueSnackbar } = useActions({ queueSnackbar: createQueueSnackbar });
 
   const reviewsRef = useReviewsRef(idea.id);
 
   const usersRef = useUsersRef();
+
+  const userRef = React.useMemo(() => usersRef.doc(uid), [usersRef, uid]);
+
+  const user = useFirestoreDoc<FirestoreUser>(userRef);
 
   const classes = useStyles();
 
@@ -136,11 +144,11 @@ export const ExportReviews: React.FC<
 
   const [scriptLoading, setScriptLoading] = useBoolean();
 
-  const [sendingEmail, setSendingEmail] = useBoolean();
+  const [processing, setProcessing] = useBoolean();
 
   const sendEmail = React.useCallback(
     (order: Order) => {
-      setSendingEmail.setTrue();
+      setProcessing.setTrue();
       return Email.send({
         Host: env.smtpHost,
         Username: env.smtpUsername,
@@ -150,20 +158,22 @@ export const ExportReviews: React.FC<
         Subject: 'Pro Membership Order',
         Body: `- Order placed by: ${email}
 - Order id is: ${order.id}`,
-      }).then(() => {
-        setSendingEmail.setFalse();
+      })
+        .then(() => userRef.update({ proMembershipOrder: order.id }))
+        .then(() => {
+          setProcessing.setFalse();
 
-        setUpgradeDialogOpen.setFalse();
+          setUpgradeDialogOpen.setFalse();
 
-        queueSnackbar({
-          severity: 'success',
-          message:
-            "You'll receive an email, up to 12 hours from now, stating that your membership is active",
-          autoHideDuration: 10000,
+          queueSnackbar({
+            severity: 'success',
+            message:
+              "You'll receive an email, up to 12 hours from now, stating that your membership is active",
+            autoHideDuration: 10000,
+          });
         });
-      });
     },
-    [email, queueSnackbar, setUpgradeDialogOpen, setSendingEmail],
+    [email, queueSnackbar, setUpgradeDialogOpen, setProcessing, userRef],
   );
 
   const renderButtons = React.useCallback(() => {
@@ -221,36 +231,46 @@ export const ExportReviews: React.FC<
     }
   }, [renderButtons, loadScript]);
 
+  const [infoDialogOpen, setInfoDialogOpen] = useBoolean();
+
   return (
     <>
       <Tab
         {...props}
         disabled={loading}
         label={
-          <AuthCheck
-            requiredClaims={claims.pro}
-            fallback={
-              isAuthor ? (
+          user?.proMembershipOrder ? (
+            <Tooltip title={'Membership is being processed'}>
+              <Box style={tabChildStyle} onClick={setInfoDialogOpen.setTrue}>
+                <HourglassEmpty color={'secondary'} />
+              </Box>
+            </Tooltip>
+          ) : (
+            <AuthCheck
+              requiredClaims={claims.pro}
+              fallback={
+                isAuthor ? (
+                  <Tooltip title={'Export reviews'}>
+                    <Box style={tabChildStyle} onClick={openUpgradeDialog}>
+                      <CloudUpload color={'secondary'} />
+                    </Box>
+                  </Tooltip>
+                ) : (
+                  becomeAPro
+                )
+              }
+            >
+              {isAuthor ? (
                 <Tooltip title={'Export reviews'}>
-                  <Box style={tabChildStyle} onClick={openUpgradeDialog}>
-                    <CloudUpload color={'secondary'} />
+                  <Box style={tabChildStyle} onClick={exportReviews}>
+                    <CloudDownload color={'secondary'} />
                   </Box>
                 </Tooltip>
               ) : (
                 becomeAPro
-              )
-            }
-          >
-            {isAuthor ? (
-              <Tooltip title={'Export reviews'}>
-                <Box style={tabChildStyle} onClick={exportReviews}>
-                  <CloudDownload color={'secondary'} />
-                </Box>
-              </Tooltip>
-            ) : (
-              becomeAPro
-            )}
-          </AuthCheck>
+              )}
+            </AuthCheck>
+          )
         }
       />
       <Dialog open={upgradeDialogOpen} fullScreen onEntered={handleEntered}>
@@ -263,7 +283,7 @@ export const ExportReviews: React.FC<
         </DialogTitle>
         <DialogContent style={{ overflowY: 'scroll' }}>
           <Box textAlign={'justify'} position={'relative'}>
-            {sendingEmail && (
+            {processing && (
               <Box
                 position={'absolute'}
                 display={'flex'}
@@ -275,7 +295,7 @@ export const ExportReviews: React.FC<
                 <CircularProgress />
               </Box>
             )}
-            <Box visibility={sendingEmail ? 'hidden' : 'visible'}>
+            <Box visibility={processing ? 'hidden' : 'visible'}>
               <Box>
                 {proMembership.proposition}
                 <br />
@@ -301,6 +321,12 @@ export const ExportReviews: React.FC<
         </DialogContent>
         <DialogActions>
           <Button onClick={setUpgradeDialogOpen.setFalse}>Close</Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={infoDialogOpen} onClose={setInfoDialogOpen.setFalse}>
+        <DialogContent>{proMembership.info}</DialogContent>
+        <DialogActions>
+          <Button>Close</Button>
         </DialogActions>
       </Dialog>
     </>
