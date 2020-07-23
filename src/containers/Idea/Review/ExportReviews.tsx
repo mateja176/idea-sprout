@@ -17,7 +17,6 @@ import {
 import {
   Beenhere,
   CloudDownload,
-  CloudUpload,
   EmojiEvents,
   ExpandMore,
   HourglassEmpty,
