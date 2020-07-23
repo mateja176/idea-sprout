@@ -8,7 +8,7 @@ import {
   TabProps,
   Tooltip,
 } from '@material-ui/core';
-import { CloudDownload, CloudUpload } from '@material-ui/icons';
+import { CloudDownload, CloudUpload, EmojiEvents } from '@material-ui/icons';
 import { useBoolean } from 'ahooks';
 import { proMembership, proMembershipDiscount } from 'elements';
 import { parseAsync } from 'json2csv';
@@ -34,9 +34,9 @@ import { convertFirestoreCollection, convertFirestoreDocument } from 'utils';
 import { ExportReviewsContent } from './ExportReviewsContent';
 
 export const ExportReviews: React.FC<
-  { idea: IdeaModel } & Required<Pick<User, 'email'>> &
+  { idea: IdeaModel; isAuthor: boolean } & Required<Pick<User, 'email'>> &
     Pick<TabProps, 'classes'>
-> = ({ idea, email, ...props }) => {
+> = ({ idea, isAuthor, email, ...props }) => {
   const reviewsRef = useReviewsRef(idea.id);
 
   const usersRef = useUsersRef();
@@ -96,6 +96,14 @@ export const ExportReviews: React.FC<
     timeoutMs: 500,
   });
 
+  const becomeAPro = (
+    <Tooltip title={'Become a Pro'}>
+      <Box style={tabChildStyle} onClick={setUpgradeDialogOpen.setTrue}>
+        <EmojiEvents color={'secondary'} />
+      </Box>
+    </Tooltip>
+  );
+
   return (
     <>
       <Tab
@@ -105,21 +113,29 @@ export const ExportReviews: React.FC<
           <AuthCheck
             requiredClaims={claims.pro}
             fallback={
-              <Tooltip title={'Export reviews'}>
-                <Box
-                  style={tabChildStyle}
-                  onClick={setUpgradeDialogOpen.setTrue}
-                >
-                  <CloudUpload color={'secondary'} />
-                </Box>
-              </Tooltip>
+              isAuthor ? (
+                <Tooltip title={'Export reviews'}>
+                  <Box
+                    style={tabChildStyle}
+                    onClick={setUpgradeDialogOpen.setTrue}
+                  >
+                    <CloudUpload color={'secondary'} />
+                  </Box>
+                </Tooltip>
+              ) : (
+                becomeAPro
+              )
             }
           >
-            <Tooltip title={'Export reviews'}>
-              <Box style={tabChildStyle} onClick={exportReviews}>
-                <CloudDownload color={'secondary'} />
-              </Box>
-            </Tooltip>
+            {isAuthor ? (
+              <Tooltip title={'Export reviews'}>
+                <Box style={tabChildStyle} onClick={exportReviews}>
+                  <CloudDownload color={'secondary'} />
+                </Box>
+              </Tooltip>
+            ) : (
+              becomeAPro
+            )}
           </AuthCheck>
         }
       />
