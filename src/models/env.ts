@@ -14,6 +14,7 @@ export interface Env {
   smtpPassword: string;
   smtpTo: string;
   smtpFrom: string;
+  paypalClientId: string;
   logRocketId?: string;
 }
 

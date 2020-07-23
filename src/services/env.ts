@@ -15,6 +15,7 @@ const rawEnv: RawEnv = {
   smtpPassword: process.env.REACT_APP_SMTP_PASSWORD,
   smtpTo: process.env.REACT_APP_SMTP_TO,
   smtpFrom: process.env.REACT_APP_SMTP_FROM,
+  paypalClientId: process.env.REACT_APP_PAYPAL_CLIENT_ID,
 };
 
 assertRequired(rawEnv);
