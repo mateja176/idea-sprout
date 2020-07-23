@@ -15,6 +15,7 @@ import {
   Tooltip,
 } from '@material-ui/core';
 import {
+  Beenhere,
   CloudDownload,
   CloudUpload,
   EmojiEvents,
@@ -233,44 +234,51 @@ export const ExportReviews: React.FC<
 
   const [infoDialogOpen, setInfoDialogOpen] = useBoolean();
 
+  const placedOrder = !!user?.proMembershipOrder;
+
   return (
     <>
       <Tab
         {...props}
         disabled={loading}
         label={
-          user?.proMembershipOrder ? (
-            <Tooltip title={'Membership is being processed'}>
-              <Box style={tabChildStyle} onClick={setInfoDialogOpen.setTrue}>
-                <HourglassEmpty color={'secondary'} />
-              </Box>
-            </Tooltip>
-          ) : (
-            <AuthCheck
-              requiredClaims={claims.pro}
-              fallback={
-                isAuthor ? (
-                  <Tooltip title={'Export reviews'}>
-                    <Box style={tabChildStyle} onClick={openUpgradeDialog}>
-                      <CloudUpload color={'secondary'} />
-                    </Box>
-                  </Tooltip>
-                ) : (
-                  becomeAPro
-                )
-              }
-            >
-              {isAuthor ? (
+          <AuthCheck
+            requiredClaims={claims.pro}
+            fallback={
+              placedOrder ? (
+                <Tooltip title={'Membership is being processed'}>
+                  <Box
+                    style={tabChildStyle}
+                    onClick={setInfoDialogOpen.setTrue}
+                  >
+                    <HourglassEmpty color={'secondary'} />
+                  </Box>
+                </Tooltip>
+              ) : isAuthor ? (
                 <Tooltip title={'Export reviews'}>
-                  <Box style={tabChildStyle} onClick={exportReviews}>
+                  <Box style={tabChildStyle} onClick={openUpgradeDialog}>
                     <CloudDownload color={'secondary'} />
                   </Box>
                 </Tooltip>
               ) : (
                 becomeAPro
-              )}
-            </AuthCheck>
-          )
+              )
+            }
+          >
+            {isAuthor ? (
+              <Tooltip title={'Export reviews'}>
+                <Box style={tabChildStyle} onClick={exportReviews}>
+                  <CloudDownload color={'secondary'} />
+                </Box>
+              </Tooltip>
+            ) : (
+              <Tooltip title={"You're already a pro"}>
+                <Box style={tabChildStyle}>
+                  <Beenhere color={'primary'} />
+                </Box>
+              </Tooltip>
+            )}
+          </AuthCheck>
         }
       />
       <Dialog open={upgradeDialogOpen} fullScreen onEntered={handleEntered}>
