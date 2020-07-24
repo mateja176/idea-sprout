@@ -22,7 +22,7 @@ export const Images: React.FC<ImagesProps> = ({ images, isAuthor, update }) => {
           <Image isLast={i === images.length - 1} {...image} />
           {isAuthor && (
             <FileOptions
-              label={'Choose new image'}
+              label={'New image'}
               storagePath={'images'}
               update={(newImage) => {
                 update({
