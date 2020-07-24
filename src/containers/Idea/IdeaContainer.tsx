@@ -61,14 +61,17 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({
 
   const nameWrapperRef = React.useRef<HTMLDivElement | null>(null);
 
-  const handleScroll: React.UIEventHandler<HTMLDivElement> = React.useCallback(() => {
-    if (tabsWrapperRef.current && nameWrapperRef.current) {
-      const tabsWrapperRect = tabsWrapperRef.current.getBoundingClientRect();
-      const nameWrapperRect = nameWrapperRef.current.getBoundingClientRect();
+  const handleScroll: React.UIEventHandler<HTMLDivElement> = React.useCallback(
+    () => {
+      if (tabsWrapperRef.current && nameWrapperRef.current) {
+        const tabsWrapperRect = tabsWrapperRef.current.getBoundingClientRect();
+        const nameWrapperRect = nameWrapperRef.current.getBoundingClientRect();
 
-      setShowName.toggle(nameWrapperRect.bottom - tabsWrapperRect.bottom < 0);
-    }
-  }, [setShowName]);
+        setShowName.toggle(nameWrapperRect.bottom - tabsWrapperRect.bottom < 0);
+      }
+    },
+    [setShowName],
+  );
 
   return idea ? (
     <Box
