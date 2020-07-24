@@ -171,6 +171,7 @@ export const IdeaTabs: React.FC<{
         style={{
           transition: 'background 300ms ease-in-out',
         }}
+        boxShadow={showName ? 'rgba(0, 0, 0, 0.2) 0px 5px 8px' : 'none'}
       >
         <Box
           mx={3}
