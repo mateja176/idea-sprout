@@ -1,21 +1,63 @@
-import { Box } from '@material-ui/core';
+import { Box, Tab, Tabs } from '@material-ui/core';
+import { Load } from 'components';
+import { IdeaContainerSkeleton, IdeasSkeleton } from 'containers';
+import { initialUser } from 'models';
 import { IdeasSwitch, Signin } from 'pages';
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { useUser } from 'services';
 import { absolutePrivateRoute, absolutePublicRoute } from 'utils';
-import { initialUser } from 'models';
 
 export interface RoutesProps {}
 
 export const Routes: React.FC<RoutesProps> = () => {
-  const isSignedIn = !!useUser({
+  const uid = useUser({
     startWithValue: initialUser,
   })?.uid;
+  const isLoading = uid === initialUser.uid;
+  const isSignedIn = !!uid;
 
   return (
     <Switch>
-      {!isSignedIn && <Route component={Signin} />}
+      {!isSignedIn && (
+        <Route
+          render={(props) => {
+            const {
+              location: { pathname },
+            } = props;
+
+            if (isLoading) {
+              if (pathname === absolutePrivateRoute.ideas.path) {
+                return (
+                  <Box flex={1} display={'flex'} flexDirection={'column'}>
+                    <Tabs value={false} variant={'fullWidth'}>
+                      <Load boxFlex={1}>
+                        <Tab />
+                      </Load>
+                      <Load boxFlex={1}>
+                        <Tab />
+                      </Load>
+                    </Tabs>
+                    <Box flex={1} overflow={'auto'}>
+                      <IdeasSkeleton />
+                    </Box>
+                  </Box>
+                );
+              } else if (
+                /^\/[\w\d]+$/.test(
+                  pathname.split(absolutePrivateRoute.ideas.path).join(''),
+                )
+              ) {
+                return <IdeaContainerSkeleton />;
+              } else {
+                return <Signin {...props} />;
+              }
+            } else {
+              return <Signin {...props} />;
+            }
+          }}
+        />
+      )}
       {isSignedIn && (
         <Route
           path={absolutePublicRoute.signin.path}
