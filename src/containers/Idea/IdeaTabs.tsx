@@ -30,19 +30,17 @@ import {
 } from 'services';
 import {
   ideaTabsShadowVariant,
+  logoBorderRadius,
   tabChildStyle,
   withStarColor,
-  logoBorderRadius,
 } from 'styles';
 import { getRatingTooltip, getShareCountHelperText, roundAverage } from 'utils';
 import { BackToIdeas } from './BackToIdeas';
 import { ExportReviewSuspender } from './Review/ExportReviewSuspender';
 
-const logoHeight = 40;
-const logoMargin = 2;
-const titleSectionMarginBottom = 5;
-const titleSectionHeight =
-  logoHeight + 2 * logoMargin + titleSectionMarginBottom;
+const logoHeight = 41;
+const titleSectionPaddingBottom = 4;
+const titleSectionHeight = logoHeight + titleSectionPaddingBottom;
 
 const imageStyle: React.CSSProperties = { borderRadius: logoBorderRadius };
 
@@ -164,8 +162,8 @@ export const IdeaTabs: React.FC<{
         />
       </Tabs>
       <Box
+        pb={titleSectionPaddingBottom.toString().concat('px')}
         height={titleSectionHeight}
-        mb={titleSectionMarginBottom.toString().concat('px')}
         position={'absolute'}
         width={'100%'}
         bgcolor={showName ? 'white' : 'transparent'}
@@ -183,7 +181,7 @@ export const IdeaTabs: React.FC<{
           style={{ transition: 'height 300ms ease-in-out' }}
         >
           <Typography variant={'h4'}>{idea.name}</Typography>
-          <Box mt={'2px'} ml={2}>
+          <Box ml={2}>
             <React.Suspense
               fallback={
                 <Skeleton
