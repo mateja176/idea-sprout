@@ -1,11 +1,4 @@
-import {
-  Box,
-  Tab,
-  Tabs,
-  Tooltip,
-  Typography,
-  useTheme,
-} from '@material-ui/core';
+import { Box, Tab, Tabs, Tooltip, Typography } from '@material-ui/core';
 import {
   CloudOff,
   Publish,
@@ -28,12 +21,7 @@ import {
   useShareIdea,
   useUpdateWithCount,
 } from 'services';
-import {
-  ideaTabsShadowVariant,
-  logoBorderRadius,
-  tabChildStyle,
-  withStarColor,
-} from 'styles';
+import { logoBorderRadius, tabChildStyle, withStarColor } from 'styles';
 import { getRatingTooltip, getShareCountHelperText, roundAverage } from 'utils';
 import { BackToIdeas } from './BackToIdeas';
 import { ExportReviewSuspender } from './Review/ExportReviewSuspender';
@@ -42,6 +30,8 @@ const logoHeight = 41;
 const titleSectionPaddingBottom = 4;
 const titleSectionHeight = logoHeight + titleSectionPaddingBottom;
 
+const boxShadow = 'rgba(0, 0, 0, 0.2) 0px 5px 8px';
+
 const imageStyle: React.CSSProperties = { borderRadius: logoBorderRadius };
 
 export const IdeaTabs: React.FC<{
@@ -49,7 +39,6 @@ export const IdeaTabs: React.FC<{
   idea: IdeaModel;
   showName: boolean;
 }> = ({ user, idea, showName }) => {
-  const theme = useTheme();
   const { addIdea, deleteIdea } = useActions({
     addIdea: createAddIdea,
     deleteIdea: createDeleteIdea,
@@ -94,13 +83,7 @@ export const IdeaTabs: React.FC<{
 
   return (
     <Box>
-      <Tabs
-        value={false}
-        style={{
-          boxShadow: showName ? 'none' : theme.shadows[ideaTabsShadowVariant],
-        }}
-        variant={'fullWidth'}
-      >
+      <Tabs value={false} variant={'fullWidth'}>
         <BackToIdeas classes={classes} />
         <Tab
           ref={shareButtonRef}
@@ -171,7 +154,7 @@ export const IdeaTabs: React.FC<{
         style={{
           transition: 'background 300ms ease-in-out',
         }}
-        boxShadow={showName ? 'rgba(0, 0, 0, 0.2) 0px 5px 8px' : 'none'}
+        boxShadow={showName ? boxShadow : 'none'}
       >
         <Box
           mx={3}

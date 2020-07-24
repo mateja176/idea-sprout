@@ -1,21 +1,15 @@
-import { Box, Tab, Tabs, useTheme } from '@material-ui/core';
+import { Box, Tab, Tabs } from '@material-ui/core';
 import { Load } from 'components';
 import React from 'react';
-import { ideaTabsShadowVariant } from 'styles';
 import { BackToIdeas } from './BackToIdeas';
 import { IdeaSkeleton } from './IdeaSkeleton';
 
 export interface IdeaContainerSkeletonProps {}
 
 export const IdeaContainerSkeleton: React.FC<IdeaContainerSkeletonProps> = () => {
-  const theme = useTheme();
-
   return (
     <Box>
-      <Tabs
-        value={false}
-        style={{ boxShadow: theme.shadows[ideaTabsShadowVariant] }}
-      >
+      <Tabs value={false}>
         <BackToIdeas />
         <Load boxFlex={1}>
           <Tab />
