@@ -60,14 +60,21 @@ export const Drop: React.FC<DropProps> = ({
     onDrop: (acceptedFiles) => {
       setFiles(acceptedFiles);
 
-      upload(acceptedFiles.slice(0, fileLimit)).then((files) => {
-        queueSnackbar({
-          severity: 'success',
-          message: `Files uploaded`,
-        });
+      upload(acceptedFiles.slice(0, fileLimit))
+        .then((files) => {
+          queueSnackbar({
+            severity: 'success',
+            message: `Files uploaded`,
+          });
 
-        onUploadSuccess(files);
-      });
+          onUploadSuccess(files);
+        })
+        .catch((error: Error) => {
+          queueSnackbar({
+            severity: 'error',
+            message: error.message,
+          });
+        });
     },
     disabled: loading,
     ...props,

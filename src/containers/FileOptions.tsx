@@ -2,7 +2,7 @@ import { Box, Button, ButtonGroup, CircularProgress } from '@material-ui/core';
 import { CloudUpload, Remove } from '@material-ui/icons';
 import { StorageFile, StoragePath } from 'models';
 import React from 'react';
-import { useUpload } from 'services';
+import { createQueueSnackbar, useActions, useUpload } from 'services';
 
 export const buttonStyle: React.CSSProperties = {
   borderTop: 'none',
@@ -22,6 +22,8 @@ export const FileOptions: React.FC<{
   label?: string;
   justify?: React.CSSProperties['justifyContent'];
 }> = ({ label, update, storagePath, remove, justify = 'flex-end' }) => {
+  const { queueSnackbar } = useActions({ queueSnackbar: createQueueSnackbar });
+
   const inputRef = React.useRef<HTMLInputElement | null>(null);
 
   const { upload, loading } = useUpload(storagePath);
@@ -42,11 +44,18 @@ export const FileOptions: React.FC<{
         onChange={(e) => {
           const newFile = e.target.files?.[0];
           if (newFile) {
-            upload([newFile]).then(([{ path, width, height }]) => {
-              const newStorageFile: StorageFile = { path, width, height };
+            upload([newFile])
+              .then(([{ path, width, height }]) => {
+                const newStorageFile: StorageFile = { path, width, height };
 
-              update(newStorageFile);
-            });
+                update(newStorageFile);
+              })
+              .catch((error: Error) => {
+                queueSnackbar({
+                  severity: 'error',
+                  message: error.message,
+                });
+              });
           }
         }}
       />

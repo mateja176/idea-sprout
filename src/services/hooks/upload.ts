@@ -1,7 +1,11 @@
 import { useBoolean } from 'ahooks';
 import firebase from 'firebase/app';
 import { StorageFile, StoragePath } from 'models';
-import { getFileData, getImageDimensions, getVideoDimensions } from 'services';
+import {
+  getFileData,
+  getImageDimensions,
+  getVideoDimensionsAndValidate,
+} from 'services';
 import urljoin from 'url-join';
 import { useSignedInUser, useStorage } from './firebase';
 
@@ -25,7 +29,7 @@ export const useUpload = (path: StoragePath) => {
           const size =
             path === 'images'
               ? getImageDimensions(data)
-              : getVideoDimensions(data);
+              : getVideoDimensionsAndValidate(data);
 
           return size.then(({ width, height }) =>
             ref

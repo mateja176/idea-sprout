@@ -24,13 +24,16 @@ export const getImageDimensions = (data: string) =>
     height: instance.height,
   }));
 
-export const getVideoDimensions = (data: string) =>
-  new Promise<HTMLVideoElement>((resolve) => {
+export const getVideoDimensionsAndValidate = (data: string) =>
+  new Promise<HTMLVideoElement>((resolve, reject) => {
     const instance = document.createElement('video');
 
     instance.src = data;
 
     instance.addEventListener('loadedmetadata', () => {
+      if (instance.duration > 180) {
+        reject(new Error('Video may only be up to 3 minutes long'));
+      }
       resolve(instance);
     });
   }).then((instance) => ({
