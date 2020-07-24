@@ -93,7 +93,7 @@ export const IdeaTabs: React.FC<{
   const [reviewOpen, setReviewOpen] = useBoolean();
 
   return (
-    <Box boxShadow={showName ? theme.shadows[ideaTabsShadowVariant] : 'none'}>
+    <Box>
       <Tabs
         value={false}
         style={{
