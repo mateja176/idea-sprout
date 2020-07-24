@@ -151,9 +151,6 @@ export const IdeaTabs: React.FC<{
         width={'100%'}
         bgcolor={showName ? 'white' : 'transparent'}
         zIndex={2}
-        style={{
-          transition: 'background 300ms ease-in-out',
-        }}
         boxShadow={showName ? boxShadow : 'none'}
       >
         <Box
@@ -162,7 +159,10 @@ export const IdeaTabs: React.FC<{
           alignItems={'center'}
           height={showName ? '100%' : 0}
           overflow={'hidden'}
-          style={{ transition: 'height 300ms ease-in-out' }}
+          style={{
+            opacity: showName ? 1 : 0,
+            transition: 'height 300ms ease-in-out, opacity 300ms ease-in-out',
+          }}
         >
           <Typography variant={'h4'}>{idea.name}</Typography>
           <Box ml={2}>
