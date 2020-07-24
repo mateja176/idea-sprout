@@ -39,7 +39,12 @@ export const Image: React.FC<ImageProps> = ({
           />
         }
       >
-        <StorageImage storagePath={path} height={'100%'} onClick={onClick} />
+        <StorageImage
+          storagePath={path}
+          height={'100%'}
+          style={{ maxWidth: '100%' }}
+          onClick={onClick}
+        />
       </React.Suspense>
     </Box>
   );
