@@ -1,12 +1,12 @@
 import { Box, BoxProps } from '@material-ui/core';
 import React from 'react';
-import { ideaListItemHeight } from 'styles';
+import { ideaListItemHeight, logoBorderRadius } from 'styles';
 
 export const IdeaPreviewWrapper = React.memo<BoxProps>(
   ({ children, ...props }) => {
     return (
       <Box
-        borderRadius={5}
+        borderRadius={logoBorderRadius}
         minWidth={ideaListItemHeight}
         maxWidth={ideaListItemHeight} // * possible allow wider images in the future
         height={ideaListItemHeight}
