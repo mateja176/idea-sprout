@@ -12,7 +12,7 @@ import {
   User,
 } from 'models';
 import React from 'react';
-import { ideaMarginBottom, logoMr, nameAndLogoMt } from 'styles';
+import { ideaMarginBottom, ideaSectionMl, ideaSectionMt } from 'styles';
 import { Images } from '../Image';
 import { VideoSuspender } from '../Video';
 
@@ -67,31 +67,29 @@ export const Idea = React.forwardRef<HTMLDivElement, IdeaProps>(
 
     return (
       <Box flex={1} display={'flex'} flexDirection={'column'} overflow={'auto'}>
-        <Box mt={nameAndLogoMt} display={'flex'} flexWrap={'wrap'}>
-          <Box flex={1} mr={1}>
-            <SectionEditor
-              ref={nameWrapperRef}
-              isAuthor={isAuthor}
-              min={NameLength.min}
-              max={NameLength.max}
-              text={idea.name}
-              onSave={saveName}
-              blockStyleFn={() => 'MuiTypography-h4'}
+        <Box ml={ideaSectionMl} mt={ideaSectionMt}>
+          <IdeaImagePreview path={idea.logo.path} />
+          <Box visibility={isAuthor ? 'visible' : 'hidden'}>
+            <FileOptions
+              storagePath={'images'}
+              update={saveLogo}
+              justify={'flex-start'}
             />
-          </Box>
-          <Box mr={logoMr}>
-            <IdeaImagePreview path={idea.logo.path} />
-            {isAuthor && (
-              <FileOptions
-                storagePath={'images'}
-                update={saveLogo}
-                justify={'center'}
-              />
-            )}
           </Box>
         </Box>
         <SectionEditor
+          mb={0}
+          ref={nameWrapperRef}
+          isAuthor={isAuthor}
+          min={NameLength.min}
+          max={NameLength.max}
+          text={idea.name}
+          onSave={saveName}
+          blockStyleFn={() => 'MuiTypography-h4'}
+        />
+        <SectionEditor
           mt={0}
+          mb={2}
           isAuthor={isAuthor}
           min={TaglineLength.min}
           max={TaglineLength.max}
