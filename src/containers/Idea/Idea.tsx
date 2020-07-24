@@ -34,9 +34,7 @@ export const Idea = React.forwardRef<HTMLDivElement, IdeaProps>(
     );
 
     const saveLogo = React.useCallback(
-      (logo: IdeaModel['logo']) => {
-        update({ logo });
-      },
+      (logo: IdeaModel['logo']) => update({ logo }),
       [update],
     );
 
@@ -67,13 +65,14 @@ export const Idea = React.forwardRef<HTMLDivElement, IdeaProps>(
 
     return (
       <Box flex={1} display={'flex'} flexDirection={'column'} overflow={'auto'}>
-        <Box ml={ideaSectionMl} mt={ideaSectionMt}>
+        <Box display={'flex'} ml={ideaSectionMl} mt={ideaSectionMt}>
           <IdeaImagePreview path={idea.logo.path} />
           <Box visibility={isAuthor ? 'visible' : 'hidden'}>
             <FileOptions
               storagePath={'images'}
               update={saveLogo}
-              justify={'flex-start'}
+              variant={'right'}
+              justify={'center'}
             />
           </Box>
         </Box>

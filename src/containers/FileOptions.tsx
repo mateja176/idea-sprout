@@ -1,27 +1,48 @@
-import { Box, Button, ButtonGroup, CircularProgress } from '@material-ui/core';
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  ButtonProps,
+  CircularProgress,
+} from '@material-ui/core';
 import { CloudUpload, Remove } from '@material-ui/icons';
 import { StorageFile, StoragePath } from 'models';
 import React from 'react';
 import { createQueueSnackbar, useActions, useUpload } from 'services';
-
-export const buttonStyle: React.CSSProperties = {
+export const bottomButtonStyle: React.CSSProperties = {
   borderTop: 'none',
   borderTopLeftRadius: 0,
   borderTopRightRadius: 0,
 };
 
+export const rightButtonStyle: React.CSSProperties = {
+  borderLeft: 'none',
+  borderTopLeftRadius: 0,
+  borderBottomLeftRadius: 0,
+};
+
 export const uploadButtonStyle: React.CSSProperties = {
-  ...buttonStyle,
-  minWidth: 200,
+  ...bottomButtonStyle,
+  minWidth: 135,
 };
 
 export const FileOptions: React.FC<{
-  update: (file: StorageFile) => void;
+  update: (file: StorageFile) => Promise<void>;
   storagePath: StoragePath;
-  remove?: () => void;
   label?: string;
+  Embed?: React.FC<Pick<ButtonProps, 'style'>>;
+  remove?: () => void;
+  variant?: 'bottom' | 'right';
   justify?: React.CSSProperties['justifyContent'];
-}> = ({ label, update, storagePath, remove, justify = 'flex-end' }) => {
+}> = ({
+  update,
+  storagePath,
+  label,
+  Embed,
+  remove,
+  variant = 'bottom',
+  justify = 'flex-end',
+}) => {
   const { queueSnackbar } = useActions({ queueSnackbar: createQueueSnackbar });
 
   const inputRef = React.useRef<HTMLInputElement | null>(null);
@@ -34,8 +55,17 @@ export const FileOptions: React.FC<{
 
   const type = storagePath.slice(0, -1);
 
+  const buttonStyle =
+    variant === 'bottom' ? bottomButtonStyle : rightButtonStyle;
+
   return (
-    <Box px={2} display={'flex'} justifyContent={justify}>
+    <Box
+      px={2}
+      display={'flex'}
+      justifyContent={justify}
+      flexDirection={variant === 'bottom' ? 'row' : 'column'}
+      height={variant === 'bottom' ? 'auto' : '100%'}
+    >
       <input
         ref={inputRef}
         type={'file'}
@@ -59,7 +89,11 @@ export const FileOptions: React.FC<{
           }
         }}
       />
-      <ButtonGroup color={'primary'} disabled={loading}>
+      <ButtonGroup
+        color={'primary'}
+        disabled={loading}
+        orientation={variant === 'bottom' ? 'horizontal' : 'vertical'}
+      >
         {label ? (
           <Button
             style={uploadButtonStyle}
@@ -79,6 +113,7 @@ export const FileOptions: React.FC<{
             )}
           </Button>
         )}
+        {Embed && <Embed style={buttonStyle} />}
         {remove ? (
           <Button style={buttonStyle} onClick={remove} startIcon={<Remove />}>
             Remove

@@ -1,8 +1,9 @@
 import { Box, useTheme } from '@material-ui/core';
 import { Skeleton } from '@material-ui/lab';
-import { FileOptions, Video } from 'containers';
-import { IdeaModel, StorageFile, UpdateIdea } from 'models';
+import { FileOptions, Video, YoutubeVideo } from 'containers';
+import { IdeaModel, StorageFile, storagePath, UpdateIdea } from 'models';
 import React from 'react';
+import { EmbedVideo } from './EmbedVideo';
 
 export interface VideoSuspenderProps extends Pick<IdeaModel, 'story'> {
   isAuthor: boolean;
@@ -17,10 +18,25 @@ export const VideoSuspender: React.FC<VideoSuspenderProps> = ({
   const theme = useTheme();
 
   const updateStory = React.useCallback(
-    (story: StorageFile) => {
-      update({ story });
-    },
+    (story: StorageFile) => update({ story }),
     [update],
+  );
+
+  const skeleton = (
+    <Skeleton
+      variant={'rect'}
+      height={'100%'}
+      width={'100%'}
+      style={{ maxWidth: width }}
+    />
+  );
+
+  const Embed: React.FC<Omit<
+    React.ComponentProps<typeof EmbedVideo>,
+    'update' | 'label'
+  >> = React.useCallback(
+    (props) => <EmbedVideo {...props} update={updateStory} label={'Embed'} />,
+    [updateStory],
   );
 
   return (
@@ -32,24 +48,20 @@ export const VideoSuspender: React.FC<VideoSuspenderProps> = ({
         height={`calc(100vw * ${height / width})`}
         maxHeight={'100%'}
       >
-        <React.Suspense
-          fallback={
-            <Skeleton
-              variant={'rect'}
-              height={'100%'}
-              width={'100%'}
-              style={{ maxWidth: width }}
-            />
-          }
-        >
-          <Video path={path} />
-        </React.Suspense>
+        {path.startsWith(storagePath.videos) ? (
+          <React.Suspense fallback={skeleton}>
+            <Video path={path} />
+          </React.Suspense>
+        ) : (
+          <YoutubeVideo path={path}>{skeleton}</YoutubeVideo>
+        )}
       </Box>
       {isAuthor && (
         <FileOptions
           label={'New video'}
           storagePath={'videos'}
           update={updateStory}
+          Embed={Embed}
         />
       )}
     </>

@@ -26,13 +26,13 @@ export const Images: React.FC<ImagesProps> = ({ images, isAuthor, update }) => {
         <FileOptions
           label={'New image'}
           storagePath={'images'}
-          update={(newImage) => {
-            // * FileOptions is outside because of the '100%' height constraint
-            // * images restricted to 1 for the time being
+          // * FileOptions is outside because of the '100%' height constraint
+          // * images restricted to 1 for the time being
+          update={(newImage) =>
             update({
               images: [newImage],
-            });
-          }}
+            })
+          }
         />
       )}
     </>

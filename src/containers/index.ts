@@ -10,3 +10,4 @@ export * from './SectionEditor';
 export * from './Share';
 export * from './Signout';
 export * from './Video';
+export * from './YoutubeVideo';
