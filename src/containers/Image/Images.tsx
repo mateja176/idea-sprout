@@ -20,19 +20,21 @@ export const Images: React.FC<ImagesProps> = ({ images, isAuthor, update }) => {
           flexDirection="column"
         >
           <Image isLast={i === images.length - 1} {...image} />
-          {isAuthor && (
-            <FileOptions
-              label={'New image'}
-              storagePath={'images'}
-              update={(newImage) => {
-                update({
-                  images: images.map((_, j) => (j === i ? newImage : _)),
-                });
-              }}
-            />
-          )}
         </Box>
       ))}
+      {isAuthor && (
+        <FileOptions
+          label={'New image'}
+          storagePath={'images'}
+          update={(newImage) => {
+            // * FileOptions is outside because of the '100%' height constraint
+            // * images restricted to 1 for the time being
+            update({
+              images: [newImage],
+            });
+          }}
+        />
+      )}
     </>
   );
 };
