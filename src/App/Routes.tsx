@@ -29,7 +29,12 @@ export const Routes: React.FC<RoutesProps> = () => {
             if (isLoading) {
               if (pathname === absolutePrivateRoute.ideas.path) {
                 return (
-                  <Box flex={1} display={'flex'} flexDirection={'column'}>
+                  <Box
+                    flex={1}
+                    display={'flex'}
+                    flexDirection={'column'}
+                    overflow={'auto'}
+                  >
                     <Tabs value={false} variant={'fullWidth'}>
                       <Load boxFlex={1}>
                         <Tab />
@@ -38,9 +43,7 @@ export const Routes: React.FC<RoutesProps> = () => {
                         <Tab />
                       </Load>
                     </Tabs>
-                    <Box flex={1} overflow={'auto'}>
-                      <IdeasSkeleton />
-                    </Box>
+                    <IdeasSkeleton />
                   </Box>
                 );
               } else if (
