@@ -28,7 +28,12 @@ import {
   useShareIdea,
   useUpdateWithCount,
 } from 'services';
-import { ideaTabsShadowVariant, tabChildStyle, withStarColor } from 'styles';
+import {
+  ideaTabsShadowVariant,
+  tabChildStyle,
+  withStarColor,
+  logoBorderRadius,
+} from 'styles';
 import { getRatingTooltip, getShareCountHelperText, roundAverage } from 'utils';
 import { BackToIdeas } from './BackToIdeas';
 import { ExportReviewSuspender } from './Review/ExportReviewSuspender';
@@ -38,6 +43,8 @@ const logoMargin = 2;
 const titleSectionMarginBottom = 5;
 const titleSectionHeight =
   logoHeight + 2 * logoMargin + titleSectionMarginBottom;
+
+const imageStyle: React.CSSProperties = { borderRadius: logoBorderRadius };
 
 export const IdeaTabs: React.FC<{
   user: User;
@@ -176,7 +183,7 @@ export const IdeaTabs: React.FC<{
           style={{ transition: 'height 300ms ease-in-out' }}
         >
           <Typography variant={'h4'}>{idea.name}</Typography>
-          <Box mt={'2px'} ml={1}>
+          <Box mt={'2px'} ml={2}>
             <React.Suspense
               fallback={
                 <Skeleton
@@ -187,6 +194,7 @@ export const IdeaTabs: React.FC<{
               }
             >
               <StorageImage
+                style={imageStyle}
                 storagePath={idea.logo.path}
                 width={logoHeight}
                 height={logoHeight}

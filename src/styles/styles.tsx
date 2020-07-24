@@ -1,3 +1,8 @@
+export const logoBorderRadius = 5;
+
+export const ideaSectionMt = 4;
+export const ideaSectionMl = 3;
+
 export const ideaTabsShadowVariant = 6;
 
 export const logoMr = '6px';
