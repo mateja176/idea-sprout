@@ -8,7 +8,7 @@ export interface IdeaContainerSkeletonProps {}
 
 export const IdeaContainerSkeleton: React.FC<IdeaContainerSkeletonProps> = () => {
   return (
-    <Box>
+    <>
       <Tabs value={false}>
         <BackToIdeas />
         <Load boxFlex={1}>
@@ -18,6 +18,6 @@ export const IdeaContainerSkeleton: React.FC<IdeaContainerSkeletonProps> = () =>
       <Box flex={1} display={'flex'} flexDirection={'column'} overflow={'auto'}>
         <IdeaSkeleton />
       </Box>
-    </Box>
+    </>
   );
 };
