@@ -4,7 +4,7 @@ import { Skeleton } from '@material-ui/lab';
 import { IdeaPreviewWrapper, IdeaSection, Load } from 'components';
 import { problemSolutionTitle, rationaleTitle } from 'elements';
 import React from 'react';
-import { ideaMarginBottom, logoMr, nameAndLogoMt } from 'styles';
+import { ideaMarginBottom, ideaSectionMl } from 'styles';
 import { getInitialIdea } from 'utils';
 
 const idea = getInitialIdea('');
@@ -24,19 +24,15 @@ const SectionEditorSkeleton: React.FC<React.ComponentProps<
 
 export const IdeaSkeleton: React.FC = () => (
   <Box>
-    <Box mt={nameAndLogoMt} display={'flex'}>
-      <Box flex={1} mr={1}>
-        <SectionEditorSkeleton>
-          <Load>
-            <Typography variant={'h4'}>{idea.name}</Typography>
-          </Load>
-        </SectionEditorSkeleton>
-      </Box>
-      <IdeaPreviewWrapper mr={logoMr}>
-        <Skeleton variant={'rect'} width={'100%'} height={'100%'} />
-      </IdeaPreviewWrapper>
-    </Box>
-    <SectionEditorSkeleton mt={0}>
+    <IdeaPreviewWrapper ml={ideaSectionMl}>
+      <Skeleton variant={'rect'} width={'100%'} height={'100%'} />
+    </IdeaPreviewWrapper>
+    <SectionEditorSkeleton mb={0}>
+      <Load>
+        <Typography variant={'h4'}>{idea.name}</Typography>
+      </Load>
+    </SectionEditorSkeleton>
+    <SectionEditorSkeleton mt={0} mb={2}>
       <Load>{idea.tagline}</Load>
     </SectionEditorSkeleton>
     <Skeleton variant="rect" width={'100%'} height={1080} />
