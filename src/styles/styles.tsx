@@ -1,3 +1,5 @@
+export const mediaBgGreyVariant = 900 as const;
+
 export const logoBorderRadius = 5;
 
 export const ideaSectionMt = 4;

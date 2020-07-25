@@ -3,6 +3,7 @@ import { Skeleton } from '@material-ui/lab';
 import { FileOptions, Video, YoutubeVideo } from 'containers';
 import { IdeaModel, StorageFile, storagePath, UpdateIdea } from 'models';
 import React from 'react';
+import { mediaBgGreyVariant } from 'styles';
 import { EmbedVideo } from './EmbedVideo';
 
 export interface VideoSuspenderProps extends Pick<IdeaModel, 'story'> {
@@ -44,7 +45,7 @@ export const VideoSuspender: React.FC<VideoSuspenderProps> = ({
   return (
     <>
       <Box
-        bgcolor={theme.palette.grey[900]}
+        bgcolor={theme.palette.grey[mediaBgGreyVariant]}
         display={'flex'}
         justifyContent={'center'}
         height={isStoragePath ? `calc(100vw * ${height / width})` : height}
