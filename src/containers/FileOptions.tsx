@@ -21,11 +21,6 @@ export const rightButtonStyle: React.CSSProperties = {
   borderBottomLeftRadius: 0,
 };
 
-export const uploadButtonStyle: React.CSSProperties = {
-  ...bottomButtonStyle,
-  minWidth: 135,
-};
-
 export const FileOptions: React.FC<{
   update: (file: StorageFile) => Promise<void>;
   storagePath: StoragePath;
@@ -57,6 +52,14 @@ export const FileOptions: React.FC<{
 
   const buttonStyle =
     variant === 'bottom' ? bottomButtonStyle : rightButtonStyle;
+
+  const uploadButtonStyle: React.CSSProperties = React.useMemo(
+    () => ({
+      ...buttonStyle,
+      minWidth: 135,
+    }),
+    [buttonStyle],
+  );
 
   return (
     <Box
