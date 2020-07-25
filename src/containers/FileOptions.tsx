@@ -63,7 +63,8 @@ export const FileOptions: React.FC<{
 
   return (
     <Box
-      px={2}
+      px={variant === 'bottom' ? 2 : 0}
+      py={variant === 'bottom' ? 0 : 2}
       display={'flex'}
       justifyContent={justify}
       flexDirection={variant === 'bottom' ? 'row' : 'column'}
