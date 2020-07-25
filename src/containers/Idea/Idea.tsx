@@ -12,7 +12,7 @@ import {
   User,
 } from 'models';
 import React from 'react';
-import { ideaMarginBottom, ideaSectionMl, ideaSectionMt } from 'styles';
+import { ideaMarginBottom, ideaSectionMl } from 'styles';
 import { Images } from '../Image';
 import { VideoSuspender } from '../Video';
 
@@ -65,7 +65,7 @@ export const Idea = React.forwardRef<HTMLDivElement, IdeaProps>(
 
     return (
       <Box flex={1} display={'flex'} flexDirection={'column'} overflow={'auto'}>
-        <Box display={'flex'} ml={ideaSectionMl} mt={ideaSectionMt}>
+        <Box display={'flex'} ml={ideaSectionMl}>
           <IdeaImagePreview path={idea.logo.path} />
           <Box visibility={isAuthor ? 'visible' : 'hidden'}>
             <FileOptions

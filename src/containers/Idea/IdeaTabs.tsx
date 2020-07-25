@@ -82,7 +82,7 @@ export const IdeaTabs: React.FC<{
   const [reviewOpen, setReviewOpen] = useBoolean();
 
   return (
-    <Box>
+    <Box boxShadow={showName ? boxShadow : 'none'}>
       <Tabs value={false} variant={'fullWidth'}>
         <BackToIdeas classes={classes} />
         <Tab
@@ -144,15 +144,7 @@ export const IdeaTabs: React.FC<{
           classes={classes}
         />
       </Tabs>
-      <Box
-        pb={titleSectionPaddingBottom.toString().concat('px')}
-        height={titleSectionHeight}
-        position={'absolute'}
-        width={'100%'}
-        bgcolor={showName ? 'white' : 'transparent'}
-        zIndex={2}
-        boxShadow={showName ? boxShadow : 'none'}
-      >
+      <Box pb={`${titleSectionPaddingBottom}px`} height={titleSectionHeight}>
         <Box
           mx={3}
           display={'flex'}

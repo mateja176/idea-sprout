@@ -67,7 +67,7 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({
         const tabsWrapperRect = tabsWrapperRef.current.getBoundingClientRect();
         const nameWrapperRect = nameWrapperRef.current.getBoundingClientRect();
 
-        setShowName.toggle(nameWrapperRect.bottom - tabsWrapperRect.bottom < 0);
+        setShowName.toggle(nameWrapperRect.top - tabsWrapperRect.bottom < 0);
       }
     },
     [setShowName],
@@ -81,7 +81,7 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({
       overflow={'auto'}
       onScroll={handleScroll}
     >
-      <div ref={tabsWrapperRef} style={{ position: 'relative' }}>
+      <div ref={tabsWrapperRef}>
         <IdeaTabs user={user} idea={idea} showName={showName} />
       </div>
       <Idea ref={nameWrapperRef} user={user} idea={idea} update={update} />
