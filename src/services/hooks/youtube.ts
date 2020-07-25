@@ -22,8 +22,6 @@ export const useRenderPlayer = () => {
       try {
         new (window as any).YT.Player(playerId, {
           videoId,
-          height: '100%',
-          width: '100%',
           events: {
             onReady: () => {
               setVideoLoading.setFalse();

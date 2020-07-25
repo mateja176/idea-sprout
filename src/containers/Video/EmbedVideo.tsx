@@ -49,6 +49,8 @@ export const EmbedVideo: React.FC<
 
   const [embedDialogOpen, setEmbedDialogOpen] = useBoolean();
 
+  const wrapperRef = React.useRef<HTMLDivElement | null>(null);
+
   const [videoId, setVideoId] = React.useState('');
 
   const handleEntered = React.useCallback(() => {
@@ -56,7 +58,13 @@ export const EmbedVideo: React.FC<
   }, [loadScript]);
 
   const handleEmbed: React.MouseEventHandler = React.useCallback(() => {
-    update({ path: videoId, width: 1920, height: 1080 });
+    if (wrapperRef.current && wrapperRef.current.firstElementChild) {
+      update({
+        path: videoId,
+        width: wrapperRef.current.firstElementChild.clientWidth,
+        height: wrapperRef.current.firstElementChild.clientHeight,
+      });
+    }
 
     setEmbedDialogOpen.setFalse();
   }, [update, videoId, setEmbedDialogOpen]);
@@ -127,11 +135,19 @@ export const EmbedVideo: React.FC<
               </Button>
             </Box>
           </form>
-          <Box my={5} flex={1}>
+          <Box
+            my={5}
+            flex={1}
+            display={'flex'}
+            justifyContent={'center'}
+            alignItems={'center'}
+          >
             {videoLoading && (
               <Skeleton variant={'rect'} width={'100%'} height={'100%'} />
             )}
-            <div id={playerId} />
+            <div ref={wrapperRef}>
+              <div id={playerId} />
+            </div>
           </Box>
         </DialogContent>
         <DialogActions>
