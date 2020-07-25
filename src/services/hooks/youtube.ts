@@ -51,7 +51,11 @@ export const useLoadYoutubeScript = () => {
 
   const loadScript = useCallback(
     (onLoad?: () => void) => {
-      if (!document.getElementById(scriptId)) {
+      if (document.getElementById(scriptId)) {
+        if (onLoad) {
+          onLoad();
+        }
+      } else {
         setScriptLoading.setTrue();
         const script = document.createElement('script');
 
