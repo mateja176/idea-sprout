@@ -19,19 +19,23 @@ export const IdeaImagePreview = React.memo<IdeaImagePreviewProps>(
 
     const url = useStorageDownloadUrl(ref);
 
-    const [imageLoaded, setImageLoaded] = useBoolean();
+    const [imageLoading, setImageLoading] = useBoolean();
+
+    React.useEffect(() => {
+      setImageLoading.setTrue();
+    }, [path, setImageLoading]);
 
     const handleImageLoad = React.useCallback(() => {
-      setImageLoaded.setTrue();
-    }, [setImageLoaded]);
+      setImageLoading.setFalse();
+    }, [setImageLoading]);
 
     return (
       <IdeaPreviewWrapper>
-        {!imageLoaded && (
+        {imageLoading && (
           <Skeleton variant={'rect'} width={'100%'} height={'100%'} />
         )}
         <Box
-          visibility={imageLoaded ? 'visible' : 'hidden'}
+          visibility={imageLoading ? 'hidden' : 'visible'}
           display={'flex'}
           justifyContent={'center'}
         >
