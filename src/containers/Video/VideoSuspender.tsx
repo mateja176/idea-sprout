@@ -31,6 +31,8 @@ export const VideoSuspender: React.FC<VideoSuspenderProps> = ({
     />
   );
 
+  const isStoragePath = path.startsWith(storagePath.videos);
+
   const Embed: React.FC<Omit<
     React.ComponentProps<typeof EmbedVideo>,
     'update' | 'label'
@@ -45,10 +47,10 @@ export const VideoSuspender: React.FC<VideoSuspenderProps> = ({
         bgcolor={theme.palette.grey[900]}
         display={'flex'}
         justifyContent={'center'}
-        height={`calc(100vw * ${height / width})`}
+        height={isStoragePath ? `calc(100vw * ${height / width})` : height}
         maxHeight={'100%'}
       >
-        {path.startsWith(storagePath.videos) ? (
+        {isStoragePath ? (
           <React.Suspense fallback={skeleton}>
             <Video path={path} />
           </React.Suspense>
