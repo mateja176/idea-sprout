@@ -72,7 +72,8 @@ export const Idea = React.forwardRef<HTMLDivElement, IdeaProps>(
               storagePath={'images'}
               update={saveLogo}
               variant={'right'}
-              justify={'center'}
+              justify={'flex-start'}
+              label={'New logo'}
             />
           </Box>
         </Box>
