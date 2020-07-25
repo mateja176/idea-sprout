@@ -1,9 +1,8 @@
 import { Button, makeStyles, useTheme } from '@material-ui/core';
 import { CloudOff, Publish, RateReview, StarRate } from '@material-ui/icons';
-import { Skeleton } from '@material-ui/lab';
 import { useBoolean } from 'ahooks';
-import { IdeaOptionsWrapper, IdeaPreviewWrapper } from 'components';
-import { IdeaImagePreview, ShareMenuButton } from 'containers';
+import { IdeaOptionsWrapper } from 'components';
+import { ShareMenuButton } from 'containers';
 import { IdeaModel, User } from 'models';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
@@ -18,6 +17,7 @@ import {
 import { ideaNameStyle, withStarColor } from 'styles';
 import urljoin from 'url-join';
 import { absolutePrivateRoute, getRatingTooltip, roundAverage } from 'utils';
+import { IdeaImagePreviewSuspender } from './IdeaImagePreviewSuspender';
 import { ReviewDialog, ReviewsDialog } from './Review';
 
 export interface IdeaOptionsProps extends Pick<User, 'uid'> {
@@ -153,17 +153,7 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
         <IdeaOptionsWrapper
           key={idea.id}
           onClick={openInFull}
-          imagePreview={
-            <React.Suspense
-              fallback={
-                <IdeaPreviewWrapper>
-                  <Skeleton variant={'rect'} width={'100%'} height={'100%'} />
-                </IdeaPreviewWrapper>
-              }
-            >
-              <IdeaImagePreview path={idea.logo.path} />
-            </React.Suspense>
-          }
+          imagePreview={<IdeaImagePreviewSuspender path={idea.logo.path} />}
           textSection={
             <>
               <span ref={nameRef} title={idea.name} style={ideaNameStyle}>

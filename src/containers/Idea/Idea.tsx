@@ -1,5 +1,5 @@
 import { Box } from '@material-ui/core';
-import { IdeaImagePreview, SectionEditor } from 'containers';
+import { SectionEditor } from 'containers';
 import { FileOptions } from 'containers/FileOptions';
 import { problemSolutionTitle, rationaleTitle } from 'elements';
 import {
@@ -15,6 +15,7 @@ import React from 'react';
 import { ideaMarginBottom, ideaSectionMl } from 'styles';
 import { Images } from '../Image';
 import { VideoSuspender } from '../Video';
+import { IdeaImagePreviewSuspender } from './IdeaImagePreviewSuspender';
 
 export interface IdeaProps {
   user: User;
@@ -66,7 +67,7 @@ export const Idea = React.forwardRef<HTMLDivElement, IdeaProps>(
     return (
       <Box flex={1} display={'flex'} flexDirection={'column'} overflow={'auto'}>
         <Box display={'flex'} ml={ideaSectionMl}>
-          <IdeaImagePreview path={idea.logo.path} />
+          <IdeaImagePreviewSuspender path={idea.logo.path} />
           <Box visibility={isAuthor ? 'visible' : 'hidden'}>
             <FileOptions
               storagePath={'images'}

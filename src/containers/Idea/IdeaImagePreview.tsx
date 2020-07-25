@@ -27,23 +27,21 @@ export const IdeaImagePreview = React.memo<IdeaImagePreviewProps>(
 
     return (
       <IdeaPreviewWrapper>
-        {(!url || !imageLoaded) && (
+        {!imageLoaded && (
           <Skeleton variant={'rect'} width={'100%'} height={'100%'} />
         )}
-        {url && (
-          <Box
-            visibility={imageLoaded ? 'visible' : 'hidden'}
-            display={'flex'}
-            justifyContent={'center'}
-          >
-            <img
-              src={url}
-              height={ideaListItemHeight}
-              alt="Preview"
-              onLoad={handleImageLoad}
-            />
-          </Box>
-        )}
+        <Box
+          visibility={imageLoaded ? 'visible' : 'hidden'}
+          display={'flex'}
+          justifyContent={'center'}
+        >
+          <img
+            src={url}
+            height={ideaListItemHeight}
+            alt="Preview"
+            onLoad={handleImageLoad}
+          />
+        </Box>
       </IdeaPreviewWrapper>
     );
   },
