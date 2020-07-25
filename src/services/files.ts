@@ -32,7 +32,11 @@ export const getVideoDimensionsAndValidate = (data: string) =>
 
     instance.addEventListener('loadedmetadata', () => {
       if (instance.duration > 180) {
-        reject(new Error('Video may only be up to 3 minutes long'));
+        reject(
+          new Error(
+            'For videos longer than 3 minutes, use YouTube embed option.',
+          ),
+        );
       }
       resolve(instance);
     });
