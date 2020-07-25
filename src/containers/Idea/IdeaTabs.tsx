@@ -21,14 +21,17 @@ import {
   useShareIdea,
   useUpdateWithCount,
 } from 'services';
-import { logoBorderRadius, tabChildStyle, withStarColor } from 'styles';
+import {
+  logoBorderRadius,
+  tabChildStyle,
+  tabsLogoHeight,
+  tabsTitleSectionHeight,
+  tabsTitleSectionPaddingBottom,
+  withStarColor,
+} from 'styles';
 import { getRatingTooltip, getShareCountHelperText, roundAverage } from 'utils';
 import { BackToIdeas } from './BackToIdeas';
 import { ExportReviewSuspender } from './Review/ExportReviewSuspender';
-
-const logoHeight = 41;
-const titleSectionPaddingBottom = 4;
-const titleSectionHeight = logoHeight + titleSectionPaddingBottom;
 
 const boxShadow = 'rgba(0, 0, 0, 0.2) 0px 5px 8px';
 
@@ -144,12 +147,13 @@ export const IdeaTabs: React.FC<{
           classes={classes}
         />
       </Tabs>
-      <Box pb={`${titleSectionPaddingBottom}px`} height={titleSectionHeight}>
+      <Box height={tabsTitleSectionHeight}>
         <Box
           mx={3}
+          mb={`${tabsTitleSectionPaddingBottom}px`}
           display={'flex'}
           alignItems={'center'}
-          height={showName ? '100%' : 0}
+          height={showName ? tabsLogoHeight : 0}
           overflow={'hidden'}
           style={{
             opacity: showName ? 1 : 0,
@@ -162,16 +166,16 @@ export const IdeaTabs: React.FC<{
               fallback={
                 <Skeleton
                   variant={'circle'}
-                  width={logoHeight}
-                  height={logoHeight}
+                  width={tabsLogoHeight}
+                  height={tabsLogoHeight}
                 />
               }
             >
               <StorageImage
                 style={imageStyle}
                 storagePath={idea.logo.path}
-                width={logoHeight}
-                height={logoHeight}
+                width={tabsLogoHeight}
+                height={tabsLogoHeight}
               />
             </React.Suspense>
           </Box>

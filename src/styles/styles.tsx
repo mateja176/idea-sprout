@@ -1,3 +1,8 @@
+export const tabsLogoHeight = 41;
+export const tabsTitleSectionPaddingBottom = 4;
+export const tabsTitleSectionHeight =
+  tabsLogoHeight + tabsTitleSectionPaddingBottom;
+
 export const mediaBgGreyVariant = 900 as const;
 
 export const logoBorderRadius = 5;
