@@ -16,7 +16,7 @@ export const useRenderPlayer = () => {
   const playerId = useMemo(() => v4(), []);
 
   const renderPlayer = useCallback(
-    ({ videoId }: { videoId: string }) => {
+    ({ videoId, onReady }: { videoId: string; onReady?: () => void }) => {
       setVideoLoading.setTrue();
 
       try {
@@ -25,6 +25,10 @@ export const useRenderPlayer = () => {
           events: {
             onReady: () => {
               setVideoLoading.setFalse();
+
+              if (onReady) {
+                onReady();
+              }
             },
           },
         });

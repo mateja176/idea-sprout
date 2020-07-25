@@ -7,6 +7,7 @@ import {
   DialogTitle,
   TextField,
   ButtonProps,
+  makeStyles,
 } from '@material-ui/core';
 import { Skeleton } from '@material-ui/lab';
 import { useBoolean } from 'ahooks';
@@ -20,7 +21,7 @@ import {
   useLoadYoutubeScript,
   useRenderPlayer,
 } from 'services';
-import { inputStyle } from 'styles';
+import { inputStyle, mediaBgGreyVariant } from 'styles';
 import * as yup from 'yup';
 import { Link } from '@material-ui/icons';
 
@@ -35,6 +36,17 @@ const validationSchema = yup
   .required()
   .shape<Values>({ link: yup.string().required().url() });
 
+const useStyles = makeStyles((theme) => ({
+  wrapper: {
+    display: 'flex',
+    width: '100%',
+    justifyContent: 'center',
+    background: theme.palette.grey[mediaBgGreyVariant],
+    height: ({ height }: Required<Pick<React.CSSProperties, 'height'>>) =>
+      height,
+  },
+}));
+
 export const EmbedVideo: React.FC<
   {
     update: (file: StorageFile) => Promise<void>;
@@ -46,6 +58,12 @@ export const EmbedVideo: React.FC<
   const { renderPlayer, playerId } = useRenderPlayer();
 
   const { loadScript } = useLoadYoutubeScript();
+
+  const [wrapperHeight, setWrapperHeight] = React.useState<
+    NonNullable<React.CSSProperties['height']>
+  >('auto');
+
+  const classes = useStyles({ height: wrapperHeight });
 
   const [embedDialogOpen, setEmbedDialogOpen] = useBoolean();
 
@@ -80,6 +98,13 @@ export const EmbedVideo: React.FC<
 
         renderPlayer({
           videoId: maybeVideoId,
+          onReady: () => {
+            if (wrapperRef.current?.firstElementChild) {
+              setWrapperHeight(
+                wrapperRef.current.firstElementChild.clientHeight,
+              );
+            }
+          },
         });
       } else {
         queueSnackbar({
@@ -142,7 +167,7 @@ export const EmbedVideo: React.FC<
             justifyContent={'center'}
             alignItems={'center'}
           >
-            <div ref={wrapperRef}>
+            <div ref={wrapperRef} className={classes.wrapper}>
               <div id={playerId}>
                 <Skeleton variant={'rect'} width={'100%'} height={'100%'} />
               </div>
