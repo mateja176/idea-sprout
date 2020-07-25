@@ -57,18 +57,9 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({
 
   const [showName, setShowName] = useBoolean();
 
-  const tabsWrapperRef = React.useRef<HTMLDivElement | null>(null);
-
-  const nameWrapperRef = React.useRef<HTMLDivElement | null>(null);
-
   const handleScroll: React.UIEventHandler<HTMLDivElement> = React.useCallback(
-    () => {
-      if (tabsWrapperRef.current && nameWrapperRef.current) {
-        const tabsWrapperRect = tabsWrapperRef.current.getBoundingClientRect();
-        const nameWrapperRect = nameWrapperRef.current.getBoundingClientRect();
-
-        setShowName.toggle(nameWrapperRect.top - tabsWrapperRect.bottom < 0);
-      }
+    (e) => {
+      setShowName.toggle((e.target as HTMLDivElement).scrollTop > 0);
     },
     [setShowName],
   );
@@ -81,10 +72,8 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({
       overflow={'auto'}
       onScroll={handleScroll}
     >
-      <div ref={tabsWrapperRef}>
-        <IdeaTabs user={user} idea={idea} showName={showName} />
-      </div>
-      <Idea ref={nameWrapperRef} user={user} idea={idea} update={update} />
+      <IdeaTabs user={user} idea={idea} showName={showName} />
+      <Idea user={user} idea={idea} update={update} />
     </Box>
   ) : (
     <Redirect to={absolutePrivateRoute.ideas.path} />
