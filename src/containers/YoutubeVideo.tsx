@@ -1,13 +1,13 @@
 import React from 'react';
-import { useRenderPlayer, useLoadYoutubeScript } from 'services';
+import { useLoadYoutubeScript, useRenderPlayer } from 'services';
 
 export const YoutubeVideo: React.FC<{ path: string }> = ({
   path,
   children,
 }) => {
-  const { renderPlayer, videoLoading, playerId } = useRenderPlayer();
+  const { renderPlayer, playerId } = useRenderPlayer();
 
-  const { loadScript, scriptLoading } = useLoadYoutubeScript();
+  const { loadScript } = useLoadYoutubeScript();
 
   const renderVideo = React.useCallback(() => renderPlayer({ videoId: path }), [
     path,
@@ -20,8 +20,7 @@ export const YoutubeVideo: React.FC<{ path: string }> = ({
 
   return (
     <>
-      {(videoLoading || scriptLoading) && children}
-      <div id={playerId} />
+      <div id={playerId}>{children}</div>
     </>
   );
 };

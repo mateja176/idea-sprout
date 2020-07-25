@@ -43,7 +43,7 @@ export const EmbedVideo: React.FC<
 > = ({ update, style, label, ...props }) => {
   const { queueSnackbar } = useActions({ queueSnackbar: createQueueSnackbar });
 
-  const { renderPlayer, videoLoading, playerId } = useRenderPlayer();
+  const { renderPlayer, playerId } = useRenderPlayer();
 
   const { loadScript } = useLoadYoutubeScript();
 
@@ -142,11 +142,10 @@ export const EmbedVideo: React.FC<
             justifyContent={'center'}
             alignItems={'center'}
           >
-            {videoLoading && (
-              <Skeleton variant={'rect'} width={'100%'} height={'100%'} />
-            )}
             <div ref={wrapperRef}>
-              <div id={playerId} />
+              <div id={playerId}>
+                <Skeleton variant={'rect'} width={'100%'} height={'100%'} />
+              </div>
             </div>
           </Box>
         </DialogContent>
