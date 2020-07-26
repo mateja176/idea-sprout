@@ -1,44 +1,62 @@
-﻿/* eslint-disable */
-// @ts-nocheck
+﻿import { SendEmailParams } from 'models/email';
 
-import { SendEmailParams } from 'models/email';
+const url = 'https://smtpjs.com/v3/smtpjs.aspx?';
+const method = 'POST';
 
 export const Email = {
-  send: function (a: SendEmailParams) {
-    return new Promise(function (n, e) {
-      (a.nocache = Math.floor(1e6 * Math.random() + 1)), (a.Action = 'Send');
-      var t = JSON.stringify(a);
-      Email.ajaxPost('https://smtpjs.com/v3/smtpjs.aspx?', t, function (e) {
-        n(e);
+  send: (params: SendEmailParams) => {
+    return new Promise((resolve, reject) => {
+      const body = JSON.stringify({
+        ...params,
+        nocache: Math.floor(1e6 * Math.random() + 1),
+        Action: 'Send',
+      });
+
+      Email.ajaxPost({
+        url,
+        body,
+        resolve,
+        reject,
       });
     });
   },
-  ajaxPost: function (e, n, t) {
-    var a = Email.createCORSRequest('POST', e);
-    a.setRequestHeader('Content-type', 'application/x-www-form-urlencoded'),
-      (a.onload = function () {
-        var e = a.responseText;
-        null != t && t(e);
-      }),
-      a.send(n);
-  },
-  ajax: function (e, n) {
-    var t = Email.createCORSRequest('GET', e);
-    (t.onload = function () {
-      var e = t.responseText;
-      null != n && n(e);
-    }),
-      t.send();
-  },
-  createCORSRequest: function (e, n) {
-    var t = new XMLHttpRequest();
-    return (
-      'withCredentials' in t
-        ? t.open(e, n, !0)
-        : 'undefined' != typeof XDomainRequest
-        ? (t = new XDomainRequest()).open(e, n)
-        : (t = null),
-      t
+  ajaxPost: ({
+    url,
+    body,
+    resolve,
+    reject,
+  }: {
+    url: string;
+    body: string;
+    resolve: (responseText: string) => void;
+    reject: (responseText: string) => void;
+  }) => {
+    const request = Email.createCORSRequest(method, url);
+
+    request.setRequestHeader(
+      'Content-type',
+      'application/x-www-form-urlencoded',
     );
+
+    request.onreadystatechange = () => {
+      if (request.readyState === XMLHttpRequest.DONE) {
+        const { status } = request;
+
+        if (status >= 200 && status < 400) {
+          resolve(request.responseText);
+        } else {
+          reject(request.responseText);
+        }
+      }
+    };
+
+    request.send(body);
+  },
+  createCORSRequest: (method: string, url: string) => {
+    const request = new XMLHttpRequest();
+
+    request.open(method, url, true);
+
+    return request;
   },
 };
