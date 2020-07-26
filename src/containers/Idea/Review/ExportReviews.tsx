@@ -1,4 +1,5 @@
 import {
+  Backdrop,
   Box,
   Button,
   CircularProgress,
@@ -71,6 +72,10 @@ const useStyles = makeStyles((theme) => ({
       height: paypalButtonsHeight[168],
     },
   },
+  backdrop: {
+    // * covers paypal buttons
+    zIndex: 1000,
+  },
 }));
 
 export const ExportReviews: React.FC<
@@ -140,7 +145,7 @@ export const ExportReviews: React.FC<
       });
   }, [reviewsRef, usersRef, idea, setLoading]);
 
-  const [upgradeDialogOpen, setUpgradeDialogOpen] = useBoolean();
+  const [upgradeDialogOpen, setUpgradeDialogOpen] = useBoolean(false);
 
   const [scriptLoading, setScriptLoading] = useBoolean();
 
@@ -290,18 +295,9 @@ export const ExportReviews: React.FC<
         </DialogTitle>
         <DialogContent style={{ overflowY: 'scroll' }}>
           <Box textAlign={'justify'} position={'relative'}>
-            {processing && (
-              <Box
-                position={'absolute'}
-                display={'flex'}
-                width={'100%'}
-                justifyContent={'center'}
-                height={'100%'}
-                alignItems={'center'}
-              >
-                <CircularProgress />
-              </Box>
-            )}
+            <Backdrop open={processing} className={classes.backdrop}>
+              <CircularProgress variant={'indeterminate'} size={'3.5em'} />
+            </Backdrop>
             <Box visibility={processing ? 'hidden' : 'visible'}>
               <Box>
                 {proMembership.proposition}
