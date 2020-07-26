@@ -4,6 +4,7 @@ const url = 'https://smtpjs.com/v3/smtpjs.aspx?';
 const method = 'POST';
 
 export const Email = {
+  // * ajax to circumvents CORS error
   send: (params: SendEmailParams) => {
     return new Promise((resolve, reject) => {
       const body = JSON.stringify({
