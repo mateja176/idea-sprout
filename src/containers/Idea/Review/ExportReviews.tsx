@@ -166,16 +166,26 @@ export const ExportReviews: React.FC<
       })
         .then(() => userRef.update({ proMembershipOrder: order.id }))
         .then(() => {
-          setProcessing.setFalse();
-
-          setUpgradeDialogOpen.setFalse();
-
           queueSnackbar({
             severity: 'success',
             message:
               "You'll receive an email, up to 12 hours from now, stating that your membership is active",
             autoHideDuration: 10000,
           });
+        })
+        .catch((error: Error) => {
+          console.warn('Error while sending order:', error);
+          queueSnackbar({
+            severity: 'error',
+            message:
+              'Something went wrong while sending order. Please contact support via chat or startupideasprout@gmail.com',
+            autoHideDuration: 60000,
+          });
+        })
+        .finally(() => {
+          setProcessing.setFalse();
+
+          setUpgradeDialogOpen.setFalse();
         });
     },
     [email, queueSnackbar, setUpgradeDialogOpen, setProcessing, userRef],
