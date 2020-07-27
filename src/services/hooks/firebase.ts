@@ -77,9 +77,17 @@ export const useIdeaRef = (id: IdeaModel['id']) => {
 export const useReviewsRef = (id: IdeaModel['id']) => {
   const ideaRef = useIdeaRef(id);
 
-  return ideaRef.collection(
-    firestoreCollections.ideas.collections.reviews.path,
+  return useMemo(
+    () =>
+      ideaRef.collection(firestoreCollections.ideas.collections.reviews.path),
+    [ideaRef],
   );
+};
+
+export const useReviewRef = (id: IdeaModel['id'], uid: User['uid']) => {
+  const reviewsRef = useReviewsRef(id);
+
+  return useMemo(() => reviewsRef.doc(uid), [uid, reviewsRef]);
 };
 
 export const useFirestoreDoc = <T extends WithId>(
