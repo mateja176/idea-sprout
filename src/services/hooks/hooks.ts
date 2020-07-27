@@ -4,11 +4,39 @@ import {
   useCallback,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from 'react';
 import { useDispatch } from 'react-redux';
 import { ActionCreatorsMapObject, bindActionCreators } from 'redux';
 import { Action, AnyThunk, GetBoundThunk } from 'services';
+
+export const useRetry = <A, B>({
+  request,
+  maxAttempts,
+  onError,
+}: {
+  request: (...params: A[]) => Promise<B>;
+  maxAttempts: number;
+  onError: (error: Error) => void;
+}) => {
+  // * state is not an option since the reference changes
+  const retryCountRef = useRef(1);
+
+  const retry = (...params: A[]) => (error: Error) => {
+    if (retryCountRef.current <= maxAttempts) {
+      retryCountRef.current += 1;
+
+      setTimeout(() => {
+        request(...params).catch(retry(...params));
+      }, 1000 * retryCountRef.current);
+    } else {
+      onError(error);
+    }
+  };
+
+  return (...params: A[]) => request(...params).catch(retry(...params));
+};
 
 export const useActions = <
   ActionCreators extends ActionCreatorsMapObject<Action>
