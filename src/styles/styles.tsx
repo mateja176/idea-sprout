@@ -1,3 +1,5 @@
+export const iconSize = 24;
+
 export const tabsLogoHeight = 41;
 export const tabsTitleSectionPaddingBottom = 4;
 export const tabsTitleSectionHeight =
@@ -16,8 +18,6 @@ export const nameAndLogoMt = 2;
 export const modalMaxWidth = 600;
 
 export const logoWidth = 30;
-
-export const navIconWidth = 24;
 
 export const speedDialZIndex = 1050;
 

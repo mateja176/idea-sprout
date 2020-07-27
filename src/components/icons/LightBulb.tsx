@@ -1,13 +1,13 @@
 import clsx from 'clsx';
 import { IconProps } from 'models';
 import React from 'react';
-import { navIconWidth } from 'styles';
+import { iconSize } from 'styles';
 
 export const LightBulb: React.FC<IconProps> = (props) => {
   return (
     <svg
       viewBox="0 0 24 24"
-      width={navIconWidth}
+      width={iconSize}
       {...props}
       className={clsx('MuiSvgIcon-root', props.className)}
     >
