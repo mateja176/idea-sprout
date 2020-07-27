@@ -46,6 +46,7 @@ import {
   formatCurrency,
   useActions,
   useFirestoreDoc,
+  useRetry,
   useReviewsRef,
   useUsersRef,
 } from 'services';
@@ -166,30 +167,39 @@ export const ExportReviews: React.FC<
       })
         .then(() => userRef.update({ proMembershipOrder: order.id }))
         .then(() => {
+          setProcessing.setFalse();
+
+          setUpgradeDialogOpen.setFalse();
+
           queueSnackbar({
             severity: 'success',
             message:
               "You'll receive an email, up to 12 hours from now, stating that your membership is active",
             autoHideDuration: 10000,
           });
-        })
-        .catch((error: Error) => {
-          console.warn('Error while sending order:', error);
-          queueSnackbar({
-            severity: 'error',
-            message:
-              'Something went wrong while sending order. Please contact support via chat or startupideasprout@gmail.com',
-            autoHideDuration: 60000,
-          });
-        })
-        .finally(() => {
-          setProcessing.setFalse();
-
-          setUpgradeDialogOpen.setFalse();
         });
     },
     [email, queueSnackbar, setUpgradeDialogOpen, setProcessing, userRef],
   );
+
+  const sendEmailWithRetry = useRetry({
+    request: sendEmail,
+    maxAttempts: 2,
+    onError: (error: Error) => {
+      console.warn('Error while sending order:', error);
+
+      setProcessing.setFalse();
+
+      setUpgradeDialogOpen.setFalse();
+
+      queueSnackbar({
+        severity: 'error',
+        message:
+          'Something went wrong while sending order. Please contact support via chat or startupideasprout@gmail.com',
+        autoHideDuration: 60000,
+      });
+    },
+  });
 
   const renderButtons = React.useCallback(() => {
     ((window as unknown) as WithPaypal).paypal
@@ -205,10 +215,11 @@ export const ExportReviews: React.FC<
               },
             ],
           }),
-        onApprove: (_, actions) => actions.order.capture().then(sendEmail),
+        onApprove: (_, actions) =>
+          actions.order.capture().then(sendEmailWithRetry),
       })
       .render(`#${id}`);
-  }, [sendEmail]);
+  }, [sendEmailWithRetry]);
 
   const loadScript = React.useCallback(() => {
     setScriptLoading.setTrue();
