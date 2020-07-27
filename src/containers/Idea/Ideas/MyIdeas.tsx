@@ -3,10 +3,10 @@ import {
   Button,
   List,
   ListItem,
-  ListItemText,
   ListItemIcon,
+  ListItemText,
 } from '@material-ui/core';
-import { LibraryAdd, Edit, Publish, Share } from '@material-ui/icons';
+import { Edit, LibraryAdd, Publish, Share } from '@material-ui/icons';
 import { IdeaModel, User } from 'models';
 import React from 'react';
 import FlipMove from 'react-flip-move';
@@ -94,7 +94,12 @@ export const MyIdeas: React.FC<{ user: User }> = ({ user }) => {
       ) : (
         <FlipMove>
           {ideas.map((idea) => (
-            <IdeaRow key={idea.id} idea={idea} uid={user.uid} />
+            <IdeaRow
+              key={idea.id}
+              idea={idea}
+              uid={user.uid}
+              email={user.email}
+            />
           ))}
         </FlipMove>
       )}

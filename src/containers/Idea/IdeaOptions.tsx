@@ -1,4 +1,4 @@
-import { Button, makeStyles, useTheme } from '@material-ui/core';
+import { Button, makeStyles, Tooltip, useTheme } from '@material-ui/core';
 import { CloudOff, Publish, RateReview, StarRate } from '@material-ui/icons';
 import { useBoolean } from 'ahooks';
 import { IdeaOptionsWrapper } from 'components';
@@ -156,13 +156,15 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
           imagePreview={<IdeaImagePreviewSuspender path={idea.logo.path} />}
           textSection={
             <>
-              <span ref={nameRef} title={idea.name} style={ideaNameStyle}>
-                {idea.name}
-              </span>
+              <Tooltip title={idea.name}>
+                <span ref={nameRef} style={ideaNameStyle}>
+                  {idea.name}
+                </span>
+              </Tooltip>
               <br />
-              <span title={idea.problemSolution} style={taglineStyle}>
-                {idea.tagline}
-              </span>
+              <Tooltip title={idea.tagline}>
+                <span style={taglineStyle}>{idea.tagline}</span>
+              </Tooltip>
             </>
           }
           shareOption={
@@ -174,49 +176,49 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
             />
           }
           rateOption={
-            <Button
-              title={ratingTooltip}
-              style={buttonStyle}
-              endIcon={<StarRate style={withStarColor} />}
-              onClick={toggleReviewsOpen}
-              classes={rateOptionsClasses}
-            >
-              {roundedAverage}
-            </Button>
+            <Tooltip placement={'top'} title={ratingTooltip}>
+              <Button
+                style={buttonStyle}
+                endIcon={<StarRate style={withStarColor} />}
+                onClick={toggleReviewsOpen}
+                classes={rateOptionsClasses}
+              >
+                {roundedAverage}
+              </Button>
+            </Tooltip>
           }
           reviewOption={
             isAuthor ? (
               idea.status === 'sprout' ? (
-                <span title={'Unpublish'}>
+                <Tooltip title={'Unpublish'}>
                   <Button style={buttonStyle} onClick={unpublish}>
                     <CloudOff />
                   </Button>
-                </span>
+                </Tooltip>
               ) : (
-                <span title={'Publish'}>
+                <Tooltip title={'Publish'}>
                   <Button style={buttonStyle} onClick={publish}>
                     <Publish />
                   </Button>
-                </span>
-                // <Button
-                //   title={'Preflight check'}
-                //   ref={checkRef}
-                //   style={buttonStyle}
-                //   onClick={() => {
-                //     setCheckMenuOpen.toggle();
-                //   }}
-                // >
-                //   <CheckBoxOutlineBlank />
-                // </Button>
+                </Tooltip>
+                // <Tooltip title={'Preflight check'}>
+                //   <Button
+                //     ref={checkRef}
+                //     style={buttonStyle}
+                //     onClick={() => {
+                //       setCheckMenuOpen.toggle();
+                //     }}
+                //   >
+                //     <CheckBoxOutlineBlank />
+                //   </Button>
+                // </Tooltip>
               )
             ) : (
-              <Button
-                title={'Review'}
-                style={buttonStyle}
-                onClick={toggleReviewOpen}
-              >
-                <RateReview color="primary" />
-              </Button>
+              <Tooltip title={'Review'}>
+                <Button style={buttonStyle} onClick={toggleReviewOpen}>
+                  <RateReview color="primary" />
+                </Button>
+              </Tooltip>
             )
           }
           navigateOption={<NavigationButton style={buttonStyle} />}

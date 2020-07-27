@@ -1,4 +1,4 @@
-import { Button, ButtonProps } from '@material-ui/core';
+import { Button, ButtonProps, Tooltip } from '@material-ui/core';
 import { Share } from '@material-ui/icons';
 import { useBoolean } from 'ahooks';
 import React from 'react';
@@ -23,15 +23,16 @@ export const ShareMenuButton = React.memo<
 
   return (
     <>
-      <Button
-        style={style}
-        title={getShareCountHelperText(shareCount)}
-        ref={buttonRef}
-        onClick={handleClick}
-        endIcon={<Share fontSize="small" color="primary" />}
-      >
-        {shareCount}
-      </Button>
+      <Tooltip placement={'top'} title={getShareCountHelperText(shareCount)}>
+        <Button
+          style={style}
+          ref={buttonRef}
+          onClick={handleClick}
+          endIcon={<Share fontSize="small" color="primary" />}
+        >
+          {shareCount}
+        </Button>
+      </Tooltip>
       <ShareMenu
         anchorEl={buttonRef.current}
         open={menuOpen}

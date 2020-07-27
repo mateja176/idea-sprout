@@ -141,10 +141,10 @@ export const IdeaTabs: React.FC<{
           />
         )}
         <ExportReviewSuspender
+          style={tabChildStyle}
           idea={idea}
           uid={user.uid}
           email={user.email}
-          isAuthor={isAuthor}
           classes={classes}
         />
       </Tabs>

@@ -50,11 +50,7 @@ import {
   useReviewsRef,
   useUsersRef,
 } from 'services';
-import {
-  paypalButtonsHeight,
-  paypalHeightBreakpoint,
-  tabChildStyle,
-} from 'styles';
+import { paypalButtonsHeight, paypalHeightBreakpoint } from 'styles';
 import { convertFirestoreCollection, convertFirestoreDocument } from 'utils';
 
 const id = 'paypal-container';
@@ -80,11 +76,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const ExportReviews: React.FC<
-  { idea: IdeaModel; isAuthor: boolean } & Required<
+  { style: React.CSSProperties; idea: IdeaModel } & Required<
     Pick<User, 'uid' | 'email'>
   > &
     Pick<TabProps, 'classes'>
-> = ({ idea, uid, email, isAuthor, ...props }) => {
+> = ({ style, idea, uid, email, ...props }) => {
+  const isAuthor = idea.author === uid;
+
   const { queueSnackbar } = useActions({ queueSnackbar: createQueueSnackbar });
 
   const reviewsRef = useReviewsRef(idea.id);
@@ -243,7 +241,7 @@ export const ExportReviews: React.FC<
 
   const becomeAPro = (
     <Tooltip title={'Become a Pro'}>
-      <Box style={tabChildStyle} onClick={openUpgradeDialog}>
+      <Box style={style} onClick={openUpgradeDialog}>
         <EmojiEvents color={'secondary'} />
       </Box>
     </Tooltip>
@@ -272,16 +270,13 @@ export const ExportReviews: React.FC<
             fallback={
               placedOrder ? (
                 <Tooltip title={'Membership is being processed'}>
-                  <Box
-                    style={tabChildStyle}
-                    onClick={setInfoDialogOpen.setTrue}
-                  >
+                  <Box style={style} onClick={setInfoDialogOpen.setTrue}>
                     <HourglassEmpty color={'secondary'} />
                   </Box>
                 </Tooltip>
               ) : isAuthor ? (
                 <Tooltip title={'Export reviews'}>
-                  <Box style={tabChildStyle} onClick={openUpgradeDialog}>
+                  <Box style={style} onClick={openUpgradeDialog}>
                     <CloudDownload color={'secondary'} />
                   </Box>
                 </Tooltip>
@@ -292,13 +287,13 @@ export const ExportReviews: React.FC<
           >
             {isAuthor ? (
               <Tooltip title={'Export reviews'}>
-                <Box style={tabChildStyle} onClick={exportReviews}>
+                <Box style={style} onClick={exportReviews}>
                   <CloudDownload color={'secondary'} />
                 </Box>
               </Tooltip>
             ) : (
               <Tooltip title={"You're already a pro"}>
-                <Box style={tabChildStyle}>
+                <Box style={style}>
                   <Beenhere color={'primary'} />
                 </Box>
               </Tooltip>
