@@ -9,7 +9,7 @@ export const ExportReviewSuspender: typeof ExportReviews = (props) => {
   return (
     <React.Suspense
       fallback={
-        <Load>
+        <Load boxFlex={1}>
           <Tab classes={classes} />
         </Load>
       }

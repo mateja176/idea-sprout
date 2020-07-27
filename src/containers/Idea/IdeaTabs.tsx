@@ -113,10 +113,10 @@ export const IdeaTabs: React.FC<{
             </Tooltip>
           }
         />
-        <Tab
-          classes={classes}
-          label={
-            isAuthor ? (
+        {isAuthor ? (
+          <Tab
+            classes={classes}
+            label={
               idea.status === 'sprout' ? (
                 <Tooltip title={'Unpublish'}>
                   <Box style={tabChildStyle} onClick={unpublish}>
@@ -130,14 +130,19 @@ export const IdeaTabs: React.FC<{
                   </Box>
                 </Tooltip>
               )
-            ) : (
-              <React.Suspense
-                fallback={
-                  <Load boxFlex={1}>
-                    <Tab />
-                  </Load>
-                }
-              >
+            }
+          />
+        ) : (
+          <React.Suspense
+            fallback={
+              <Load boxFlex={1}>
+                <Tab classes={classes} />
+              </Load>
+            }
+          >
+            <Tab
+              classes={classes}
+              label={
                 <ReviewButton
                   reviewOpen={reviewOpen}
                   ideaId={idea.id}
@@ -146,10 +151,10 @@ export const IdeaTabs: React.FC<{
                   style={tabChildStyle}
                   onClick={setReviewOpen.setTrue}
                 />
-              </React.Suspense>
-            )
-          }
-        />
+              }
+            />
+          </React.Suspense>
+        )}
         <ExportReviewSuspender
           idea={idea}
           uid={user.uid}
