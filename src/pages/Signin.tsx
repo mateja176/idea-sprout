@@ -61,7 +61,7 @@ export const Signin: React.FC<SigninProps> = () => {
     <PageWrapper>
       <Box display="flex" flexDirection="column" alignItems="center">
         <Box mb={6} display="flex" flexDirection="column" alignItems="center">
-          <Typography variant="h2">Sign in</Typography>
+          <Typography variant="h2">Sign in with</Typography>
 
           <Box ml={2} mt={4}>
             <ButtonGroup color="primary" disabled={loading}>
