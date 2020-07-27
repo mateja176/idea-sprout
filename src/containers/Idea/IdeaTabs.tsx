@@ -1,14 +1,14 @@
 import { Box, Tab, Tabs, Tooltip, Typography } from '@material-ui/core';
-import {
-  CloudOff,
-  Publish,
-  RateReview,
-  Share,
-  StarRate,
-} from '@material-ui/icons';
+import { CloudOff, Publish, Share, StarRate } from '@material-ui/icons';
 import { Skeleton } from '@material-ui/lab';
 import { useBoolean } from 'ahooks';
-import { ReviewDialog, ReviewsDialog, ShareMenu } from 'containers';
+import { Load } from 'components';
+import {
+  ReviewButton,
+  ReviewDialog,
+  ReviewsDialog,
+  ShareMenu,
+} from 'containers';
 import { IdeaModel, User } from 'models';
 import React from 'react';
 import { StorageImage } from 'reactfire';
@@ -131,11 +131,22 @@ export const IdeaTabs: React.FC<{
                 </Tooltip>
               )
             ) : (
-              <Tooltip title={'Review'}>
-                <Box style={tabChildStyle} onClick={setReviewOpen.setTrue}>
-                  <RateReview color="primary" />
-                </Box>
-              </Tooltip>
+              <React.Suspense
+                fallback={
+                  <Load boxFlex={1}>
+                    <Tab />
+                  </Load>
+                }
+              >
+                <ReviewButton
+                  reviewOpen={reviewOpen}
+                  ideaId={idea.id}
+                  uid={user.uid}
+                  reviewCount={idea.ratingCount}
+                  style={tabChildStyle}
+                  onClick={setReviewOpen.setTrue}
+                />
+              </React.Suspense>
             )
           }
         />
