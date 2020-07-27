@@ -1,4 +1,11 @@
-import { List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
+import {
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Tooltip,
+} from '@material-ui/core';
+import { School } from '@material-ui/icons';
 import { Link } from 'components';
 import { Signout } from 'containers';
 import React from 'react';
@@ -40,6 +47,16 @@ export const Nav: React.FC<NavProps> = ({ onClick }) => {
         </Link>
       ))}
       {!!user && <Signout user={user} onClick={onClick} />}
+      <a href={'https://startupsprout.wordpress.com'} target={'__blank'}>
+        <Tooltip title={'Level up your idea'}>
+          <ListItem>
+            <ListItemIcon>
+              <School color={'primary'} />
+            </ListItemIcon>
+            <ListItemText>Academy</ListItemText>
+          </ListItem>
+        </Tooltip>
+      </a>
     </List>
   );
 };
