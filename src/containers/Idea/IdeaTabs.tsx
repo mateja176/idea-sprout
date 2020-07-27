@@ -2,13 +2,7 @@ import { Box, Tab, Tabs, Tooltip, Typography } from '@material-ui/core';
 import { CloudOff, Publish, Share, StarRate } from '@material-ui/icons';
 import { Skeleton } from '@material-ui/lab';
 import { useBoolean } from 'ahooks';
-import { Load } from 'components';
-import {
-  ReviewButton,
-  ReviewDialog,
-  ReviewsDialog,
-  ShareMenu,
-} from 'containers';
+import { ReviewDialog, ReviewsDialog, ShareMenu } from 'containers';
 import { IdeaModel, User } from 'models';
 import React from 'react';
 import { StorageImage } from 'reactfire';
@@ -32,6 +26,7 @@ import {
 import { getRatingTooltip, getShareCountHelperText, roundAverage } from 'utils';
 import { BackToIdeas } from './BackToIdeas';
 import { ExportReviewSuspender } from './Review/ExportReviewSuspender';
+import { ReviewButtonSuspender } from './Review/ReviewButtonSuspender';
 
 const boxShadow = 'rgba(0, 0, 0, 0.2) 0px 5px 8px';
 
@@ -135,27 +130,15 @@ export const IdeaTabs: React.FC<{
             }
           />
         ) : (
-          <React.Suspense
-            fallback={
-              <Load boxFlex={1}>
-                <Tab classes={classes} />
-              </Load>
-            }
-          >
-            <Tab
-              classes={classes}
-              label={
-                <ReviewButton
-                  reviewOpen={reviewOpen}
-                  ideaId={idea.id}
-                  uid={user.uid}
-                  reviewCount={idea.ratingCount}
-                  style={tabChildStyle}
-                  onClick={setReviewOpen.setTrue}
-                />
-              }
-            />
-          </React.Suspense>
+          <ReviewButtonSuspender
+            classes={classes}
+            reviewOpen={reviewOpen}
+            ideaId={idea.id}
+            uid={user.uid}
+            reviewCount={idea.ratingCount}
+            style={tabChildStyle}
+            onClick={setReviewOpen.setTrue}
+          />
         )}
         <ExportReviewSuspender
           idea={idea}
