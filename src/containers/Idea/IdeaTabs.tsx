@@ -61,7 +61,7 @@ export const IdeaTabs: React.FC<{
   const ratingTooltip = getRatingTooltip(idea.ratingCount, idea.ratingCount);
   const roundedAverage = roundAverage(idea.averageRating);
 
-  const shareButtonRef = React.useRef<HTMLDivElement | null>(null);
+  const shareTabRef = React.useRef<HTMLDivElement | null>(null);
 
   const [reviewsOpen, setReviewsOpen] = useBoolean();
 
@@ -89,7 +89,7 @@ export const IdeaTabs: React.FC<{
       <Tabs value={false} variant={'fullWidth'}>
         <BackToIdeas classes={classes} />
         <Tab
-          ref={shareButtonRef}
+          ref={shareTabRef}
           classes={classes}
           label={
             <Tooltip title={shareCountHelperText}>
@@ -198,7 +198,7 @@ export const IdeaTabs: React.FC<{
         </Box>
       </Box>
       <ShareMenu
-        anchorEl={shareButtonRef.current}
+        anchorEl={shareTabRef.current}
         open={shareMenuOpen}
         onClose={setShareMenuOpen.setFalse}
         url={ideaUrl}
