@@ -91,9 +91,10 @@ export const IdeaTabs: React.FC<{
         <Tab
           ref={shareTabRef}
           classes={classes}
+          onClick={setShareMenuOpen.setTrue}
           label={
             <Tooltip title={shareCountHelperText}>
-              <Box style={tabChildStyle} onClick={setShareMenuOpen.setTrue}>
+              <Box style={tabChildStyle}>
                 {shareCount}
                 &nbsp;
                 <Share fontSize={'small'} color={'primary'} />
@@ -103,9 +104,10 @@ export const IdeaTabs: React.FC<{
         />
         <Tab
           classes={classes}
+          onClick={setReviewsOpen.setTrue}
           label={
             <Tooltip title={ratingTooltip}>
-              <Box style={tabChildStyle} onClick={setReviewsOpen.setTrue}>
+              <Box style={tabChildStyle}>
                 {roundedAverage}
                 &nbsp;
                 <StarRate style={withStarColor} />
