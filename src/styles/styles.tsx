@@ -1,3 +1,5 @@
+export const headerZIndex = 1100;
+
 export const iconSize = 24;
 
 export const tabsLogoHeight = 41;

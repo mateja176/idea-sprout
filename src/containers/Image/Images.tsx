@@ -1,5 +1,6 @@
 import { Box } from '@material-ui/core';
 import { FileOptions } from 'containers';
+import { ideaSelector } from 'elements';
 import { IdeaModel, UpdateIdea } from 'models';
 import React from 'react';
 import { Image } from './Image';
@@ -14,6 +15,7 @@ export const Images: React.FC<ImagesProps> = ({ images, isAuthor, update }) => {
     <>
       {images.map((image, i) => (
         <Box
+          id={ideaSelector.image}
           height={'100%'}
           key={`${image.path}${i}`}
           display="flex"

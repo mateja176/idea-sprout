@@ -9,5 +9,6 @@ export * from './Image';
 export * from './SectionEditor';
 export * from './Share';
 export * from './Signout';
+export * from './Tour';
 export * from './Video';
 export * from './YoutubeVideo';

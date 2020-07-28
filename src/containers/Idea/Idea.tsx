@@ -1,7 +1,12 @@
 import { Box } from '@material-ui/core';
-import { SectionEditor } from 'containers';
+import { SectionEditor, Tour } from 'containers';
 import { FileOptions } from 'containers/FileOptions';
-import { problemSolutionTitle, rationaleTitle } from 'elements';
+import {
+  ideaSelector,
+  ideaTourSteps,
+  problemSolutionTitle,
+  rationaleTitle,
+} from 'elements';
 import {
   IdeaModel,
   NameLength,
@@ -66,6 +71,7 @@ export const Idea = React.forwardRef<HTMLDivElement, IdeaProps>(
 
     return (
       <Box flex={1} display={'flex'} flexDirection={'column'} overflow={'auto'}>
+        <Tour steps={ideaTourSteps} />
         <Box display={'flex'} ml={ideaSectionMl}>
           <IdeaImagePreviewSuspender path={idea.logo.path} />
           <Box visibility={isAuthor ? 'visible' : 'hidden'}>
@@ -79,6 +85,7 @@ export const Idea = React.forwardRef<HTMLDivElement, IdeaProps>(
           </Box>
         </Box>
         <SectionEditor
+          id={ideaSelector.name}
           mb={0}
           ref={nameWrapperRef}
           isAuthor={isAuthor}
@@ -89,6 +96,7 @@ export const Idea = React.forwardRef<HTMLDivElement, IdeaProps>(
           blockStyleFn={() => 'MuiTypography-h4'}
         />
         <SectionEditor
+          id={ideaSelector.tagline}
           mt={0}
           mb={2}
           isAuthor={isAuthor}
@@ -103,6 +111,7 @@ export const Idea = React.forwardRef<HTMLDivElement, IdeaProps>(
           update={update}
         />
         <SectionEditor
+          id={ideaSelector.problemSolution}
           isAuthor={isAuthor}
           title={problemSolutionTitle}
           text={idea.problemSolution}
@@ -112,6 +121,7 @@ export const Idea = React.forwardRef<HTMLDivElement, IdeaProps>(
         />
         <Images images={idea.images} isAuthor={isAuthor} update={update} />
         <SectionEditor
+          id={ideaSelector.rationale}
           isAuthor={isAuthor}
           title={rationaleTitle}
           text={idea.rationale}

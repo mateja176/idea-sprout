@@ -1,6 +1,7 @@
 import { Box, useTheme } from '@material-ui/core';
 import { Skeleton } from '@material-ui/lab';
 import { FileOptions, Video, YoutubeVideo } from 'containers';
+import { ideaSelector } from 'elements';
 import { IdeaModel, StorageFile, storagePath, UpdateIdea } from 'models';
 import React from 'react';
 import { mediaBgGreyVariant } from 'styles';
@@ -45,6 +46,7 @@ export const VideoSuspender: React.FC<VideoSuspenderProps> = ({
   return (
     <>
       <Box
+        id={ideaSelector.story}
         bgcolor={theme.palette.grey[mediaBgGreyVariant]}
         display={'flex'}
         justifyContent={'center'}
@@ -56,7 +58,9 @@ export const VideoSuspender: React.FC<VideoSuspenderProps> = ({
             <Video path={path} />
           </React.Suspense>
         ) : (
-          <YoutubeVideo path={path} width={width}>{skeleton}</YoutubeVideo>
+          <YoutubeVideo path={path} width={width}>
+            {skeleton}
+          </YoutubeVideo>
         )}
       </Box>
       {isAuthor && (

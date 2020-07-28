@@ -30,9 +30,9 @@ export const SectionEditorWithRef: React.ForwardRefRenderFunction<
     max: number;
     onSave: (text: string) => void;
     title?: React.ReactNode;
-  } & Pick<IdeaSectionProps, 'mt' | 'mb'>
+  } & Pick<IdeaSectionProps, 'id' | 'mt' | 'mb'>
 > = (
-  { isAuthor, title, text, min, max, onSave, mt, mb, ...props },
+  { id, isAuthor, title, text, min, max, onSave, mt, mb, ...props },
   editorWrapperRef,
 ) => {
   const theme = useTheme();
@@ -117,7 +117,7 @@ export const SectionEditorWithRef: React.ForwardRefRenderFunction<
   }, [theme.palette.primary.main]);
 
   return (
-    <IdeaSection mt={mt} mb={mb}>
+    <IdeaSection id={id} mt={mt} mb={mb}>
       {title}
       <div ref={editorWrapperRef}>
         <div ref={wrapperRef} onClick={focus}>
