@@ -8,8 +8,10 @@ export const interceptGetIdeasError = (
 };
 
 export const clearFirestoreCache = () => {
-  const map = (window as any)._reactFirePreloadedObservables;
-  (Array.from(map.keys()) as string[][]).forEach(
-    (key) => key.includes('firestore') && map.delete(key),
-  );
+  const map = window._reactFirePreloadedObservables;
+  if (map) {
+    Array.from(map.keys()).forEach(
+      (key) => key.includes('firestore') && map.delete(key),
+    );
+  }
 };

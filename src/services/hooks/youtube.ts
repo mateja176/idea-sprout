@@ -1,7 +1,7 @@
 import { useBoolean } from 'ahooks';
 import { useCallback, useMemo } from 'react';
-import { v4 } from 'uuid';
 import { createQueueSnackbar } from 'services/store';
+import { v4 } from 'uuid';
 import { useActions } from './hooks';
 
 const API = 'https://www.youtube.com/iframe_api';
@@ -20,18 +20,20 @@ export const useRenderPlayer = () => {
       setVideoLoading.setTrue();
 
       try {
-        new (window as any).YT.Player(playerId, {
-          videoId,
-          events: {
-            onReady: () => {
-              setVideoLoading.setFalse();
+        if (window.YT) {
+          new window.YT.Player(playerId, {
+            videoId,
+            events: {
+              onReady: () => {
+                setVideoLoading.setFalse();
 
-              if (onReady) {
-                onReady();
-              }
+                if (onReady) {
+                  onReady();
+                }
+              },
             },
-          },
-        });
+          });
+        }
       } catch (e) {
         queueSnackbar({ severity: 'error', message: e.message });
       }
@@ -64,7 +66,7 @@ export const useLoadYoutubeScript = () => {
         script.src = API;
 
         script.addEventListener('load', () => {
-          (window as any).YT.ready(() => {
+          window.YT?.ready(() => {
             if (onLoad) {
               onLoad();
             }

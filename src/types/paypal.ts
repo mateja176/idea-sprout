@@ -1,24 +1,18 @@
 /* eslint-disable camelcase */
 
-export const currency = 'USD';
-
-export type WithValue = { value: number };
+export interface Paypal {
+  Buttons: (config: {
+    createOrder: (_: unknown, actions: Actions) => void;
+    onApprove: (_: unknown, actions: Actions) => void;
+  }) => { render: (selector: string) => void };
+}
 
 export interface Actions {
   order: {
     create: (config: {
-      purchase_units: { description: string; amount: WithValue }[];
+      purchase_units: { description: string; amount: { value: number } }[];
     }) => void;
     capture: () => Promise<Order>;
-  };
-}
-
-export interface WithPaypal {
-  paypal: {
-    Buttons: (config: {
-      createOrder: (_: unknown, actions: Actions) => void;
-      onApprove: (_: unknown, actions: Actions) => void;
-    }) => { render: (selector: string) => void };
   };
 }
 

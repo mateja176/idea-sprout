@@ -37,7 +37,7 @@ export const Auth: React.FC = ({ children }) => {
           Pick<User, 'email' | 'displayName'>
         >);
 
-        (window as any).drift?.identify(uid, {
+        window.drift?.identify(uid, {
           displayName,
           email,
           phoneNumber,

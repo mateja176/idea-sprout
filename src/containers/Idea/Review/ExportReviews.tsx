@@ -31,11 +31,9 @@ import {
   claims,
   FirestoreUser,
   IdeaModel,
-  Order,
   Review,
   ReviewWithAuthor,
   User,
-  WithPaypal,
 } from 'models';
 import React from 'react';
 import { AuthCheck } from 'reactfire';
@@ -51,6 +49,7 @@ import {
   useUsersRef,
 } from 'services';
 import { paypalButtonsHeight, paypalHeightBreakpoint } from 'styles';
+import { paypal } from 'types';
 import { convertFirestoreCollection, convertFirestoreDocument } from 'utils';
 
 const id = 'paypal-container';
@@ -151,7 +150,7 @@ export const ExportReviews: React.FC<
   const [processing, setProcessing] = useBoolean();
 
   const sendEmail = React.useCallback(
-    (order: Order) => {
+    (order: paypal.Order) => {
       setProcessing.setTrue();
       return Email.send({
         Host: env.smtpHost,
@@ -200,7 +199,7 @@ export const ExportReviews: React.FC<
   });
 
   const renderButtons = React.useCallback(() => {
-    ((window as unknown) as WithPaypal).paypal
+    window.paypal
       ?.Buttons({
         createOrder: (_, actions) =>
           actions.order.create({
