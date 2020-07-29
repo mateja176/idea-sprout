@@ -154,5 +154,10 @@ export const ideaTourSteps: Step[] = [
       </Box>
     ),
     target: ideaId.rationale,
+    styles: {
+      spotlight: {
+        transform: 'translateY(85px)',
+      },
+    },
   },
 ];
