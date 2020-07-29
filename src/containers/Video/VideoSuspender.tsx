@@ -58,9 +58,7 @@ export const VideoSuspender: React.FC<VideoSuspenderProps> = ({
             <Video path={path} />
           </React.Suspense>
         ) : (
-          <YoutubeVideo path={path} width={width}>
-            {skeleton}
-          </YoutubeVideo>
+          <YoutubeVideo path={path} width={width} />
         )}
       </Box>
       {isAuthor && (
