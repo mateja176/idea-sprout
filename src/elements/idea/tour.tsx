@@ -58,10 +58,11 @@ export const ideaTourSteps: Step[] = [
         <Box
           mt={2}
           display={'flex'}
-          flexDirection={'column'}
           alignItems={'center'}
+          justifyContent={'space-between'}
+          flexWrap={'wrap'}
         >
-          <Box mb={1}>
+          <Box mb={1} mx={'auto'}>
             <img
               src={appleLogo1977}
               width={logoSize}
@@ -69,7 +70,13 @@ export const ideaTourSteps: Step[] = [
               alt="Apple's logo from 1977"
             />
           </Box>
-          <img src={appleLogo2003} width={logoSize} alt="Apple's latest logo" />
+          <Box mx={'auto'}>
+            <img
+              src={appleLogo2003}
+              width={logoSize}
+              alt="Apple's latest logo"
+            />
+          </Box>
         </Box>
       </Box>
     ),
