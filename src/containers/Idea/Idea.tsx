@@ -80,7 +80,7 @@ export const Idea = React.forwardRef<HTMLDivElement, IdeaProps>(
         bgcolor={theme.palette.background.paper}
       >
         <Tour steps={ideaTourSteps} />
-        <Box id={ideaSelector.logo} display={'flex'} ml={ideaSectionMl}>
+        <Box id={ideaSelector.logo} display={'flex'} mx={ideaSectionMl}>
           <IdeaImagePreviewSuspender path={idea.logo.path} />
           <Box visibility={isAuthor ? 'visible' : 'hidden'}>
             <FileOptions
