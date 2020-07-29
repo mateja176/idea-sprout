@@ -83,3 +83,5 @@ export const privateNestedRoute = {
   },
 };
 export const absolutePrivateRoute = toAbsoluteRec('/')(privateNestedRoute);
+
+export const ideaPath = urljoin(absolutePrivateRoute.ideas.path, ':id');
