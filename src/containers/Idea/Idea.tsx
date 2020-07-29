@@ -1,4 +1,4 @@
-import { Box } from '@material-ui/core';
+import { Box, useTheme } from '@material-ui/core';
 import { SectionEditor, Tour } from 'containers';
 import { FileOptions } from 'containers/FileOptions';
 import {
@@ -30,6 +30,8 @@ export interface IdeaProps {
 
 export const Idea = React.forwardRef<HTMLDivElement, IdeaProps>(
   ({ user, idea, update }, nameWrapperRef) => {
+    const theme = useTheme();
+
     const isAuthor = user.uid === idea.author;
 
     const saveName = React.useCallback(
@@ -70,7 +72,13 @@ export const Idea = React.forwardRef<HTMLDivElement, IdeaProps>(
     );
 
     return (
-      <Box flex={1} display={'flex'} flexDirection={'column'} overflow={'auto'}>
+      <Box
+        flex={1}
+        display={'flex'}
+        flexDirection={'column'}
+        overflow={'auto'}
+        bgcolor={theme.palette.background.paper}
+      >
         <Tour steps={ideaTourSteps} />
         <Box id={ideaSelector.logo} display={'flex'} ml={ideaSectionMl}>
           <IdeaImagePreviewSuspender path={idea.logo.path} />
