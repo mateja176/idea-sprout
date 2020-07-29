@@ -45,7 +45,6 @@ export const ideaTourSteps: Step[] = [
       </Box>
     ),
     target: ideaId.name,
-    placement: 'bottom-start',
   },
   {
     title: 'Logo',
@@ -81,7 +80,6 @@ export const ideaTourSteps: Step[] = [
       </Box>
     ),
     target: ideaId.logo,
-    placement: 'bottom-start',
   },
   {
     title: 'Tagline',
@@ -93,7 +91,6 @@ export const ideaTourSteps: Step[] = [
       </Box>
     ),
     target: ideaId.tagline,
-    placement: 'bottom-start',
   },
   {
     title: 'Story',
@@ -121,7 +118,6 @@ export const ideaTourSteps: Step[] = [
       </Box>
     ),
     target: ideaId.problemSolution,
-    placement: 'bottom-start',
   },
   {
     title: 'Image',
@@ -148,7 +144,6 @@ export const ideaTourSteps: Step[] = [
       </Box>
     ),
     target: ideaId.image,
-    placement: 'bottom-start',
   },
   {
     title: 'Rationale',
@@ -159,6 +154,5 @@ export const ideaTourSteps: Step[] = [
       </Box>
     ),
     target: ideaId.rationale,
-    placement: 'bottom-start',
   },
 ];
