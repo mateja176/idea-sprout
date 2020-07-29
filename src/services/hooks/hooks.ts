@@ -22,17 +22,20 @@ export const useRetry = <A, B>({
   // * state is not an option since the reference changes
   const retryCountRef = useRef(1);
 
-  const retry = (...params: A[]) => (error: Error) => {
-    if (retryCountRef.current <= maxAttempts) {
-      retryCountRef.current += 1;
+  const retry = useCallback(
+    (...params: A[]) => (error: Error) => {
+      if (retryCountRef.current <= maxAttempts) {
+        retryCountRef.current += 1;
 
-      setTimeout(() => {
-        request(...params).catch(retry(...params));
-      }, 1000 * retryCountRef.current);
-    } else {
-      onError(error);
-    }
-  };
+        setTimeout(() => {
+          request(...params).catch(retry(...params));
+        }, 1000 * retryCountRef.current);
+      } else {
+        onError(error);
+      }
+    },
+    [request, maxAttempts, onError],
+  );
 
   return (...params: A[]) => request(...params).catch(retry(...params));
 };
