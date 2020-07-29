@@ -1,5 +1,3 @@
-import { Box } from '@material-ui/core';
-import { Skeleton } from '@material-ui/lab';
 import { StorageFile } from 'models';
 import React from 'react';
 import { useLoadYoutubeScript, useRenderPlayer } from 'services';
@@ -11,18 +9,19 @@ export const YoutubeVideo: React.FC<
 
   const { loadScript } = useLoadYoutubeScript();
 
-  const renderVideo = React.useCallback(() => renderPlayer({ videoId: path }), [
-    path,
-    renderPlayer,
-  ]);
+  const ref = React.useRef<HTMLDivElement | null>(null);
 
   React.useEffect(() => {
-    loadScript(renderVideo);
+    // * this avoids a conflict of interests between the YT script and React
+    // * since YT removes the div replacing it with an iframe
+    // * and when React attempts to remove the div an error is thrown
+    // * hence a div is used which is not managed by React
+    const player = document.createElement('div');
+    player.id = playerId;
+    ref.current?.appendChild(player);
+
+    loadScript(() => renderPlayer({ videoId: path }));
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  return (
-    <Box id={playerId} width={'100%'} maxWidth={width}>
-      <Skeleton variant={'rect'} width={'100%'} height={'100%'} />
-    </Box>
-  );
+  return <div ref={ref} style={{ width: '100%', maxWidth: width }} />;
 };
