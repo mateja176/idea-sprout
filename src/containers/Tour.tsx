@@ -20,18 +20,13 @@ export const Tour: React.FC<Pick<
     }
   }, []);
 
-  const handleTourRan = React.useCallback(
-    ({ action, lifecycle }: CallBackProps) => {
-      if (
-        action === 'stop' ||
-        (action === 'next' && lifecycle === 'complete')
-      ) {
-        setShouldRunTour(false);
-        localStorage.setItem('shouldRunTour', false.toString());
-      }
-    },
-    [],
-  );
+  const handleTourRan = React.useCallback((props: CallBackProps) => {
+    const { action } = props;
+    if (action === 'close' || action === 'reset') {
+      setShouldRunTour(false);
+      localStorage.setItem('shouldRunTour', false.toString());
+    }
+  }, []);
 
   const styles: Styles = React.useMemo(
     () => ({
