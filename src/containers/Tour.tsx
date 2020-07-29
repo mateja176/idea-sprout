@@ -1,12 +1,15 @@
 import { useTheme } from '@material-ui/core';
 import React from 'react';
 import ReactJoyride, { CallBackProps, Styles } from 'react-joyride';
+import { createQueueSnackbar, useActions } from 'services';
 import { headerZIndex } from 'styles';
 
 export const Tour: React.FC<Pick<
   React.ComponentProps<typeof ReactJoyride>,
   'steps'
 >> = ({ steps }) => {
+  const { queueSnackbar } = useActions({ queueSnackbar: createQueueSnackbar });
+
   const [shouldRunTour, setShouldRunTour] = React.useState(false);
 
   const theme = useTheme();
@@ -22,14 +25,22 @@ export const Tour: React.FC<Pick<
     }
   }, []);
 
-  const handleTourRan = React.useCallback((props: CallBackProps) => {
-    const { action } = props;
-    if (action === 'close' || action === 'reset') {
-      ref.current?.parentElement?.scrollTo({ top: 0, behavior: 'smooth' });
-      setShouldRunTour(false);
-      localStorage.setItem('shouldRunTour', false.toString());
-    }
-  }, []);
+  const handleTourRan = React.useCallback(
+    (props: CallBackProps) => {
+      const { action } = props;
+      if (action === 'close' || action === 'reset') {
+        ref.current?.parentElement?.scrollTo({ top: 0, behavior: 'smooth' });
+        setShouldRunTour(false);
+        localStorage.setItem('shouldRunTour', false.toString());
+
+        queueSnackbar({
+          severity: 'success',
+          message: "Now it's your turn. Fingers crossed 🍀",
+        });
+      }
+    },
+    [queueSnackbar],
+  );
 
   const styles: Styles = React.useMemo(
     () => ({
