@@ -1,4 +1,3 @@
-import { FileDimensions } from 'models';
 import {
   SuspenseConfig,
   useCallback,
@@ -140,54 +139,4 @@ export const useTransition = ({ timeoutMs }: SuspenseConfig) => {
   );
 
   return [startTransition, isPending] as const;
-};
-
-export const useComputedHeight = ({ width, height }: FileDimensions) => {
-  const [computedHeight, setComputedHeight] = useState(height);
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (document.body.clientWidth < width) {
-        setComputedHeight((height * document.body.clientWidth) / width);
-      }
-    };
-
-    handleResize();
-
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, [height, width]);
-
-  return computedHeight;
-};
-
-export const useFileDimensions = ({ width, height }: FileDimensions) => {
-  const [dimensions, setDimensions] = useState({ height: 0, width: 0 });
-
-  useEffect(() => {
-    const handleResize = () => {
-      const ratio = Math.min(
-        window.innerWidth / width,
-        window.innerHeight / height,
-      );
-
-      setDimensions({
-        width: width * ratio,
-        height: height * ratio,
-      });
-    };
-
-    window.addEventListener('resize', handleResize);
-
-    handleResize();
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, [width, height]);
-
-  return dimensions;
 };
