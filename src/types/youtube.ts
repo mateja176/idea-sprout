@@ -1,10 +1,14 @@
+import { CSSProperties } from '@material-ui/core/styles/withStyles';
+
+interface Options extends Pick<CSSProperties, 'width' | 'height'> {
+  videoId: string;
+  events: { onReady: () => void };
+}
+
 export interface Player {
-  new (
-    playerId: string,
-    options: { videoId: string; events: { onReady: () => void } },
-  ): Player;
+  new (playerId: string, options: Options): Player;
   playerId: string;
-  options: { videoId: string; events: { onReady: () => void } };
+  options: Options;
 }
 
 export type ready = (onReady: () => void) => void;

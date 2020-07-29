@@ -7,7 +7,7 @@ import { useLoadYoutubeScript, useRenderPlayer } from 'services';
 export const YoutubeVideo: React.FC<
   { path: string } & Pick<StorageFile, 'width'>
 > = ({ path, width }) => {
-  const { renderPlayer, playerId } = useRenderPlayer();
+  const { renderPlayer, playerId } = useRenderPlayer({ height: '100%' });
 
   const { loadScript } = useLoadYoutubeScript();
 

@@ -1,6 +1,7 @@
 import { useBoolean } from 'ahooks';
 import { useCallback, useMemo } from 'react';
 import { createQueueSnackbar } from 'services/store';
+import { youtube } from 'types';
 import { v4 } from 'uuid';
 import { useActions } from './hooks';
 
@@ -8,7 +9,9 @@ const API = 'https://www.youtube.com/iframe_api';
 
 const scriptId = 'youtube-iframe-script';
 
-export const useRenderPlayer = () => {
+export const useRenderPlayer = (
+  options?: Partial<youtube.Player['options']>,
+) => {
   const { queueSnackbar } = useActions({ queueSnackbar: createQueueSnackbar });
 
   const [videoLoading, setVideoLoading] = useBoolean();
@@ -22,6 +25,7 @@ export const useRenderPlayer = () => {
       try {
         if (window.YT) {
           new window.YT.Player(playerId, {
+            ...options,
             videoId,
             events: {
               onReady: () => {
@@ -38,7 +42,7 @@ export const useRenderPlayer = () => {
         queueSnackbar({ severity: 'error', message: e.message });
       }
     },
-    [setVideoLoading, queueSnackbar, playerId],
+    [setVideoLoading, queueSnackbar, playerId, options],
   );
 
   return {
