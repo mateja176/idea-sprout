@@ -5,7 +5,7 @@ import React from 'react';
 import { Step } from 'react-joyride';
 import { getAppleIdea } from 'utils';
 
-const logoSize = 200;
+const logoSize = 150;
 
 export const ideaSelector = {
   name: 'name',
@@ -63,7 +63,6 @@ export const ideaTourSteps: Step[] = [
           <Box mb={1} mx={'auto'}>
             <img
               src={appleLogo1977}
-              width={logoSize}
               height={logoSize}
               alt="Apple's logo from 1977"
             />
@@ -71,7 +70,7 @@ export const ideaTourSteps: Step[] = [
           <Box mx={'auto'}>
             <img
               src={appleLogo2003}
-              width={logoSize}
+              height={logoSize}
               alt="Apple's latest logo"
             />
           </Box>
