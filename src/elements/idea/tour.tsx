@@ -73,7 +73,7 @@ export const ideaTourSteps: Step[] = [
         </Box>
       </Box>
     ),
-    target: ideaId.tagline,
+    target: ideaId.logo,
     placement: 'bottom-start',
   },
   {
