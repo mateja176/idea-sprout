@@ -1,7 +1,6 @@
 import { Box, Typography } from '@material-ui/core';
 import appleLogo1977 from 'img/apple-logo-1977.png';
 import appleLogo2003 from 'img/apple-logo-2003.png';
-import { init, last } from 'ramda';
 import React from 'react';
 import { Step } from 'react-joyride';
 import { getAppleIdea } from 'utils';
@@ -51,8 +50,8 @@ export const ideaTourSteps: Step[] = [
     content: (
       <Box>
         <Typography>
-          The first logo is Apple's logo from 1977 and second logo is Apple's
-          latest logo from 2003. As they say: <strong>Less is more</strong>.
+          The first logo is from 1977 and second logo is from 2003. As they say:{' '}
+          <strong>Less is more</strong>.
         </Typography>
         <Box
           mt={2}
@@ -96,12 +95,10 @@ export const ideaTourSteps: Step[] = [
     title: 'Story',
     content: (
       <Box>
-        A number of movies revolved around how Apple Computers was founded.
-        However, the story of the personal computers is also remarkable, for
-        many prominent people of the time thought it was ridiculous. On the
-        other hand, <strong>Jobs and Wozniak</strong> wanted to make computers
-        small and accessible enough for people to have them in their homes or
-        offices.
+        Many prominent people of the time thought the idea of personal computers
+        was ridiculous. On the other hand, <strong>Jobs and Wozniak</strong>{' '}
+        wanted to make computers small and accessible enough for people to have
+        them in their homes or offices.
       </Box>
     ),
     target: ideaId.story,
@@ -111,10 +108,9 @@ export const ideaTourSteps: Step[] = [
     title: 'Problem-Solution',
     content: (
       <Box>
-        This is a given in today's era, however the problem-solution statement
-        for Apple Computers may look like this:
-        {init(problemSolutionSentences)}.{' '}
-        <strong>{last(problemSolutionSentences)}</strong>
+        The problem-solution statement for Apple Computers may look like this:
+        <br />
+        {problemSolutionSentences}
       </Box>
     ),
     target: ideaId.problemSolution,
