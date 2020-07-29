@@ -11,6 +11,8 @@ export const Tour: React.FC<Pick<
 
   const theme = useTheme();
 
+  const ref = React.useRef<HTMLDivElement | null>(null);
+
   React.useEffect(() => {
     const shouldRunString = localStorage.getItem('shouldRunTour');
     const shouldRun = shouldRunString ? JSON.parse(shouldRunString) : true;
@@ -23,6 +25,7 @@ export const Tour: React.FC<Pick<
   const handleTourRan = React.useCallback((props: CallBackProps) => {
     const { action } = props;
     if (action === 'close' || action === 'reset') {
+      ref.current?.parentElement?.scrollTo({ top: 0, behavior: 'smooth' });
       setShouldRunTour(false);
       localStorage.setItem('shouldRunTour', false.toString());
     }
@@ -48,16 +51,18 @@ export const Tour: React.FC<Pick<
   );
 
   return (
-    <ReactJoyride
-      steps={steps}
-      run={shouldRunTour}
-      continuous
-      showProgress
-      showSkipButton
-      disableOverlayClose
-      spotlightPadding={0}
-      styles={styles}
-      callback={handleTourRan}
-    />
+    <div ref={ref}>
+      <ReactJoyride
+        steps={steps}
+        run={shouldRunTour}
+        continuous
+        showProgress
+        showSkipButton
+        disableOverlayClose
+        spotlightPadding={0}
+        styles={styles}
+        callback={handleTourRan}
+      />
+    </div>
   );
 };
