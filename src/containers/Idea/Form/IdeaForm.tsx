@@ -133,7 +133,10 @@ export const IdeaForm: React.FC<IdeaFormProps> = ({ idea }) => {
             </Box>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails style={{ flexDirection: 'column' }}>
-            <NicheCheck checked={idea.checks.niche} onChange={setCheck('niche')} />
+            <NicheCheck
+              checked={idea.checks.niche}
+              onChange={setCheck('niche')}
+            />
             <ExpectationsCheck
               checked={idea.checks.expectations}
               onChange={setCheck('expectations')}
@@ -196,7 +199,8 @@ export const IdeaForm: React.FC<IdeaFormProps> = ({ idea }) => {
               </p>
               <p>
                 Stories, make your product part of a larger narrative. Take the
-                example of, SpaceX is associated with bringing humans to Mars.
+                example of, SpaceX which is associated with bringing humans to
+                Mars.
               </p>
             </section>
           }
