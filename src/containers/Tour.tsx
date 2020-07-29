@@ -1,7 +1,12 @@
 import { useTheme } from '@material-ui/core';
 import React from 'react';
 import ReactJoyride, { CallBackProps, Styles } from 'react-joyride';
-import { createQueueSnackbar, useActions, useLocalStorage } from 'services';
+import {
+  createQueueSnackbar,
+  useActions,
+  useLocalStorageSet,
+  useLocalStorageSubscribe,
+} from 'services';
 import { headerZIndex } from 'styles';
 
 export const Tour: React.FC<Pick<
@@ -10,34 +15,19 @@ export const Tour: React.FC<Pick<
 >> = ({ steps }) => {
   const { queueSnackbar } = useActions({ queueSnackbar: createQueueSnackbar });
 
-  const localStorage = useLocalStorage();
-
-  const [shouldRunTour, setShouldRunTour] = React.useState(false);
+  const shouldRunTour = useLocalStorageSubscribe('shouldRunTour');
+  const setShouldTourRun = useLocalStorageSet('shouldRunTour');
 
   const theme = useTheme();
 
   const ref = React.useRef<HTMLDivElement | null>(null);
-
-  React.useEffect(() => {
-    const unsubscribe = localStorage.subscribe(
-      'shouldRunTour',
-      (action, value) => {
-        console.log('sub', action, value);
-        if (action === 'set' || action === 'initial') {
-          setShouldRunTour(!!value);
-        }
-      },
-    );
-
-    return unsubscribe;
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleTourRan = React.useCallback(
     (props: CallBackProps) => {
       const { action } = props;
       if (action === 'close' || action === 'reset') {
         ref.current?.parentElement?.scrollTo({ top: 0, behavior: 'smooth' });
-        localStorage.setItem('shouldRunTour', false);
+        setShouldTourRun(false);
 
         queueSnackbar({
           severity: 'success',
@@ -45,7 +35,7 @@ export const Tour: React.FC<Pick<
         });
       }
     },
-    [queueSnackbar, localStorage],
+    [queueSnackbar, setShouldTourRun],
   );
 
   const styles: Styles = React.useMemo(
@@ -71,7 +61,7 @@ export const Tour: React.FC<Pick<
     <div ref={ref}>
       <ReactJoyride
         steps={steps}
-        run={shouldRunTour}
+        run={!!shouldRunTour}
         continuous
         showProgress
         showSkipButton

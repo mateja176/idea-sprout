@@ -8,10 +8,35 @@ import {
 } from 'react';
 import { useDispatch } from 'react-redux';
 import { ActionCreatorsMapObject, bindActionCreators } from 'redux';
-import { Action, AnyThunk, GetBoundThunk, storage } from 'services';
+import {
+  Action,
+  AnyThunk,
+  GetBoundThunk,
+  LocalStorageItems,
+  LocalStorageKey,
+  storage,
+} from 'services';
 
-export const useLocalStorage = () => {
-  return storage;
+export const useLocalStorageSubscribe = (key: LocalStorageKey) => {
+  const [value, setValue] = useState<LocalStorageItems[typeof key] | null>(
+    null,
+  );
+
+  useEffect(() => {
+    const sub = storage.subscribe('shouldRunTour', (_, value) => {
+      setValue(value);
+    });
+
+    return sub;
+  }, []);
+
+  return value;
+};
+
+export const useLocalStorageSet = (key: LocalStorageKey) => {
+  return (value: LocalStorageItems[typeof key]) => {
+    storage.setItem(key, value);
+  };
 };
 
 export const useRetry = <A, B>({
