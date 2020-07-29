@@ -1,18 +1,20 @@
 import {
   AppBar,
   Box,
+  colors,
   Drawer,
   IconButton,
   makeStyles,
   Toolbar,
   Typography,
-  colors,
 } from '@material-ui/core';
 import { ChevronLeft, LibraryAdd, Menu } from '@material-ui/icons';
 import { IdeaSprout, Link, Load } from 'components';
-import { CreateIdeaIcon } from 'containers';
+import { CreateIdeaIcon, IdeaHelp } from 'containers';
+import { WithId } from 'models';
 import React from 'react';
-import { absolutePrivateRoute } from 'utils';
+import { useRouteMatch } from 'react-router-dom';
+import { absolutePrivateRoute, ideaPath } from 'utils';
 import { minNavWidth, Nav, NavSkeleton } from './Nav';
 
 export interface LayoutProps {}
@@ -24,7 +26,20 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const loadIconButton = (
+  <Load variant={'circle'}>
+    <IconButton>
+      <LibraryAdd />
+    </IconButton>
+  </Load>
+);
 export const Layout: React.FC<LayoutProps> = ({ children }) => {
+  const match = useRouteMatch<WithId>({
+    path: ideaPath,
+    sensitive: true,
+    strict: true,
+  });
+
   const classes = useStyles();
 
   const [drawerOpen, setDrawerOpen] = React.useState(false);
@@ -58,15 +73,12 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
               <Typography variant="h6">Idea Sprout</Typography>
             </Link>
           </Box>
-          <React.Suspense
-            fallback={
-              <Load variant={'circle'}>
-                <IconButton>
-                  <LibraryAdd />
-                </IconButton>
-              </Load>
-            }
-          >
+          {match && (
+            <React.Suspense fallback={loadIconButton}>
+              <IdeaHelp id={match.params.id} />
+            </React.Suspense>
+          )}
+          <React.Suspense fallback={loadIconButton}>
             <CreateIdeaIcon />
           </React.Suspense>
         </Toolbar>

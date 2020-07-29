@@ -6,6 +6,7 @@ export * from './Form';
 export * from './Idea';
 export * from './IdeaContainer';
 export * from './IdeaContainerSkeleton';
+export * from './IdeaHelp';
 export * from './IdeaImagePreview';
 export * from './IdeaOptions';
 export * from './IdeaRow';

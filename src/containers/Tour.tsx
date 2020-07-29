@@ -1,7 +1,7 @@
 import { useTheme } from '@material-ui/core';
 import React from 'react';
 import ReactJoyride, { CallBackProps, Styles } from 'react-joyride';
-import { createQueueSnackbar, useActions } from 'services';
+import { createQueueSnackbar, useActions, useLocalStorage } from 'services';
 import { headerZIndex } from 'styles';
 
 export const Tour: React.FC<Pick<
@@ -10,6 +10,8 @@ export const Tour: React.FC<Pick<
 >> = ({ steps }) => {
   const { queueSnackbar } = useActions({ queueSnackbar: createQueueSnackbar });
 
+  const localStorage = useLocalStorage();
+
   const [shouldRunTour, setShouldRunTour] = React.useState(false);
 
   const theme = useTheme();
@@ -17,21 +19,25 @@ export const Tour: React.FC<Pick<
   const ref = React.useRef<HTMLDivElement | null>(null);
 
   React.useEffect(() => {
-    const shouldRunString = localStorage.getItem('shouldRunTour');
-    const shouldRun = shouldRunString ? JSON.parse(shouldRunString) : true;
+    const unsubscribe = localStorage.subscribe(
+      'shouldRunTour',
+      (action, value) => {
+        console.log('sub', action, value);
+        if (action === 'set' || action === 'initial') {
+          setShouldRunTour(!!value);
+        }
+      },
+    );
 
-    if (shouldRun) {
-      setShouldRunTour(shouldRun);
-    }
-  }, []);
+    return unsubscribe;
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleTourRan = React.useCallback(
     (props: CallBackProps) => {
       const { action } = props;
       if (action === 'close' || action === 'reset') {
         ref.current?.parentElement?.scrollTo({ top: 0, behavior: 'smooth' });
-        setShouldRunTour(false);
-        localStorage.setItem('shouldRunTour', false.toString());
+        localStorage.setItem('shouldRunTour', false);
 
         queueSnackbar({
           severity: 'success',
@@ -39,7 +45,7 @@ export const Tour: React.FC<Pick<
         });
       }
     },
-    [queueSnackbar],
+    [queueSnackbar, localStorage],
   );
 
   const styles: Styles = React.useMemo(

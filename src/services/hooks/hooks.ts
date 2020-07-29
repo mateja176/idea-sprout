@@ -8,7 +8,11 @@ import {
 } from 'react';
 import { useDispatch } from 'react-redux';
 import { ActionCreatorsMapObject, bindActionCreators } from 'redux';
-import { Action, AnyThunk, GetBoundThunk } from 'services';
+import { Action, AnyThunk, GetBoundThunk, storage } from 'services';
+
+export const useLocalStorage = () => {
+  return storage;
+};
 
 export const useRetry = <A, B>({
   request,

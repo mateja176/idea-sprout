@@ -6,4 +6,5 @@ export * from './format';
 export * from './history';
 export * from './hooks';
 export * from './services';
+export * from './storage';
 export * from './store';
