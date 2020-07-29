@@ -18,6 +18,7 @@ export const YoutubeVideo: React.FC<
     // * hence a div is used which is not managed by React
     const player = document.createElement('div');
     player.id = playerId;
+    player.style.width = '100%';
     ref.current?.appendChild(player);
 
     loadScript(() => renderPlayer({ videoId: path }));
