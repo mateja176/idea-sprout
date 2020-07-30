@@ -48,7 +48,6 @@ export const storage: LocalStorage = {
     return value ? JSON.parse(value) : null;
   },
   setItem: (key, value) => {
-    console.log('set', key, value, subscribersRef.current[key]);
     subscribersRef.current[key].forEach((callback) => {
       callback('set', value);
     });
@@ -78,7 +77,6 @@ export const storage: LocalStorage = {
       ...subscribersRef.current,
       [key]: [...subscribersRef.current[key], callback],
     };
-    console.log('subscribed', subscribersRef.current);
 
     return () => {
       subscribersRef.current = {
