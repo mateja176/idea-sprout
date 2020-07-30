@@ -9,10 +9,12 @@ const API = 'https://www.youtube.com/iframe_api';
 
 const scriptId = 'youtube-iframe-script';
 
+const actionCreators = { queueSnackbar: createQueueSnackbar };
+
 export const useRenderPlayer = (
   options?: Partial<youtube.Player['options']>,
 ) => {
-  const { queueSnackbar } = useActions({ queueSnackbar: createQueueSnackbar });
+  const { queueSnackbar } = useActions(actionCreators);
 
   const [videoLoading, setVideoLoading] = useBoolean();
 
