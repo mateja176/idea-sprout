@@ -2,12 +2,9 @@ import { IconButton } from '@material-ui/core';
 import { Help } from '@material-ui/icons';
 import { IdeaModel, User } from 'models';
 import React from 'react';
-import { useUser } from 'reactfire';
 import { useFirestoreDoc, useIdeaRef, useLocalStorageSet } from 'services';
 
-export const IdeaHelp = ({ id }: { id: IdeaModel['id'] }) => {
-  const user = useUser<User | null>();
-
+export const IdeaHelp = ({ id, user }: { id: IdeaModel['id']; user: User }) => {
   const idea = useFirestoreDoc<IdeaModel>(useIdeaRef(id));
 
   const setShouldTourRun = useLocalStorageSet('shouldRunTour');

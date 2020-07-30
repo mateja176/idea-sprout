@@ -10,11 +10,10 @@ import {
 } from '@material-ui/core';
 import { ChevronLeft, LibraryAdd, Menu } from '@material-ui/icons';
 import { IdeaSprout, Link, Load } from 'components';
-import { CreateIdeaIcon, IdeaHelp } from 'containers';
-import { WithId } from 'models';
+import { CreateIdeaIcon } from 'containers';
+import { IdeaHelpContainer } from 'containers/Idea/IdeaHelpContainer';
 import React from 'react';
-import { useRouteMatch } from 'react-router-dom';
-import { absolutePrivateRoute, ideaPath } from 'utils';
+import { absolutePrivateRoute } from 'utils';
 import { minNavWidth, Nav, NavSkeleton } from './Nav';
 
 export interface LayoutProps {}
@@ -34,12 +33,6 @@ const loadIconButton = (
   </Load>
 );
 export const Layout: React.FC<LayoutProps> = ({ children }) => {
-  const match = useRouteMatch<WithId>({
-    path: ideaPath,
-    sensitive: true,
-    strict: true,
-  });
-
   const classes = useStyles();
 
   const [drawerOpen, setDrawerOpen] = React.useState(false);
@@ -73,11 +66,9 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
               <Typography variant="h6">Idea Sprout</Typography>
             </Link>
           </Box>
-          {match && (
-            <React.Suspense fallback={loadIconButton}>
-              <IdeaHelp id={match.params.id} />
-            </React.Suspense>
-          )}
+          <React.Suspense fallback={loadIconButton}>
+            <IdeaHelpContainer />
+          </React.Suspense>
           <React.Suspense fallback={loadIconButton}>
             <CreateIdeaIcon />
           </React.Suspense>
