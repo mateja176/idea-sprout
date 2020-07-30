@@ -63,7 +63,7 @@ export const Tour: React.FC<Pick<
     <div ref={ref}>
       <ReactJoyride
         steps={steps}
-        run={!!shouldRunTour}
+        run={shouldRunTour === null || !!shouldRunTour}
         continuous
         showProgress
         showSkipButton
