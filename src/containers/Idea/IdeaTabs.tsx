@@ -10,12 +10,12 @@ import {
   createAddIdea,
   createDeleteIdea,
   useActions,
-  useIdeaTabStyles,
   useIdeaUrl,
   useShareIdea,
   useUpdateWithCount,
 } from 'services';
 import {
+  ideaTabStyle,
   logoBorderRadius,
   tabChildStyle,
   tabsLogoHeight,
@@ -51,8 +51,6 @@ export const IdeaTabs: React.FC<{
 
   const [shareMenuOpen, setShareMenuOpen] = useBoolean();
 
-  const classes = useIdeaTabStyles();
-
   const shareCountHelperText = getShareCountHelperText(shareCount);
 
   const ratingTooltip = getRatingTooltip(idea.ratingCount, idea.ratingCount);
@@ -84,10 +82,10 @@ export const IdeaTabs: React.FC<{
   return (
     <Box boxShadow={showName ? boxShadow : 'none'}>
       <Tabs value={false} variant={'fullWidth'}>
-        <BackToIdeas classes={classes} />
+        <BackToIdeas style={ideaTabStyle} />
         <Tab
           ref={shareTabRef}
-          classes={classes}
+          style={ideaTabStyle}
           onClick={setShareMenuOpen.setTrue}
           label={
             <Tooltip title={shareCountHelperText}>
@@ -100,7 +98,7 @@ export const IdeaTabs: React.FC<{
           }
         />
         <Tab
-          classes={classes}
+          style={ideaTabStyle}
           onClick={setReviewsOpen.setTrue}
           label={
             <Tooltip title={ratingTooltip}>
@@ -114,7 +112,7 @@ export const IdeaTabs: React.FC<{
         />
         {isAuthor ? (
           <Tab
-            classes={classes}
+            style={ideaTabStyle}
             label={
               idea.status === 'sprout' ? (
                 <Tooltip title={'Unpublish'}>
@@ -133,21 +131,19 @@ export const IdeaTabs: React.FC<{
           />
         ) : (
           <ReviewButtonSuspender
-            classes={classes}
             reviewOpen={reviewOpen}
             ideaId={idea.id}
             uid={user.uid}
             reviewCount={idea.ratingCount}
-            style={tabChildStyle}
+            style={ideaTabStyle}
             onClick={setReviewOpen.setTrue}
           />
         )}
         <ExportReviewSuspender
-          style={tabChildStyle}
           idea={idea}
           uid={user.uid}
           email={user.email}
-          classes={classes}
+          style={ideaTabStyle}
         />
       </Tabs>
       <Box height={tabsTitleSectionHeight}>

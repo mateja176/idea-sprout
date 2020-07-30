@@ -6,27 +6,30 @@ import { ReviewButton } from './ReviewButton';
 
 export const ReviewButtonSuspender: React.FC<
   React.ComponentProps<typeof ReviewButton> & TabProps
-> = ({ classes, reviewOpen, reviewCount, ideaId, uid, onClick, ...props }) => (
-  <React.Suspense
-    fallback={
-      <Load boxFlex={1}>
-        <Tab classes={classes} />
-      </Load>
-    }
-  >
-    <Tab
-      {...props}
-      classes={classes}
-      label={
-        <ReviewButton
-          reviewOpen={reviewOpen}
-          ideaId={ideaId}
-          uid={uid}
-          reviewCount={reviewCount}
-          style={tabChildStyle}
-          onClick={onClick}
-        />
+> = ({ reviewOpen, reviewCount, ideaId, uid, onClick, ...props }) => {
+  const { style } = props;
+
+  return (
+    <React.Suspense
+      fallback={
+        <Load boxFlex={1}>
+          <Tab style={style} />
+        </Load>
       }
-    />
-  </React.Suspense>
-);
+    >
+      <Tab
+        {...props}
+        label={
+          <ReviewButton
+            reviewOpen={reviewOpen}
+            ideaId={ideaId}
+            uid={uid}
+            reviewCount={reviewCount}
+            style={tabChildStyle}
+            onClick={onClick}
+          />
+        }
+      />
+    </React.Suspense>
+  );
+};

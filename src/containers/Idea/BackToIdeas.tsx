@@ -6,7 +6,6 @@ import { tabChildStyle } from 'styles';
 import { absolutePrivateRoute } from 'utils';
 
 export const BackToIdeas: React.FC<Omit<TabProps, 'onClick' | 'label'>> = ({
-  classes,
   ...props
 }) => {
   const history = useHistory();
@@ -19,7 +18,6 @@ export const BackToIdeas: React.FC<Omit<TabProps, 'onClick' | 'label'>> = ({
     <Tab
       {...props}
       onClick={handleClick}
-      classes={classes}
       label={
         <Tooltip title={'Back to ideas'}>
           <Box style={tabChildStyle}>

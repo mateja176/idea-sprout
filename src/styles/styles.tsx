@@ -34,6 +34,11 @@ export const shareIconSize = 40;
 
 export const checkWithMessageHeight = 64;
 
+export const ideaTabStyle: React.CSSProperties = {
+  opacity: 1,
+  fontWeight: 'normal',
+};
+
 export const withPointer: React.CSSProperties = {
   cursor: 'pointer',
 };

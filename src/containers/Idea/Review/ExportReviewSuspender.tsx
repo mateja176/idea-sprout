@@ -4,13 +4,13 @@ import React from 'react';
 import { ExportReviews } from './ExportReviews';
 
 export const ExportReviewSuspender: typeof ExportReviews = (props) => {
-  const { classes } = props;
+  const { style } = props;
 
   return (
     <React.Suspense
       fallback={
         <Load boxFlex={1}>
-          <Tab classes={classes} />
+          <Tab style={style} />
         </Load>
       }
     >
