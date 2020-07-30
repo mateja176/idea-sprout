@@ -21,14 +21,16 @@ export interface IdeaContainerProps extends Pick<IdeaModel, 'id'> {
   initialIdea?: IdeaModel;
 }
 
+const actionCreators = {
+  queueSnackbar: createQueueSnackbar,
+  updateIdea: createUpdateIdea,
+};
+
 export const IdeaContainer: React.FC<IdeaContainerProps> = ({
   id,
   initialIdea,
 }) => {
-  const { queueSnackbar, updateIdea } = useActions({
-    queueSnackbar: createQueueSnackbar,
-    updateIdea: createUpdateIdea,
-  });
+  const { queueSnackbar, updateIdea } = useActions(actionCreators);
 
   const user = useSignedInUser();
 

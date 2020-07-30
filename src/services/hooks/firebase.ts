@@ -121,6 +121,11 @@ export const useStorage = () => {
   return firebase.storage();
 };
 
+const reviewSubmitActionCreators = {
+  queueSnackbar: createQueueSnackbar,
+  updateIdea: createUpdateIdea,
+};
+
 export const useReviewSubmit = ({
   idea,
   currentReview,
@@ -128,10 +133,7 @@ export const useReviewSubmit = ({
   idea: IdeaModel;
   currentReview: Review | null;
 }) => {
-  const { queueSnackbar, updateIdea } = useActions({
-    queueSnackbar: createQueueSnackbar,
-    updateIdea: createUpdateIdea,
-  });
+  const { queueSnackbar, updateIdea } = useActions(reviewSubmitActionCreators);
 
   const user = useSignedInUser();
 
@@ -182,8 +184,10 @@ export const useReviewSubmit = ({
   };
 };
 
+const shareIdeaActionCreators = { updateIdea: createUpdateIdea };
+
 export const useShareIdea = (idea: IdeaModel) => {
-  const { updateIdea } = useActions({ updateIdea: createUpdateIdea });
+  const { updateIdea } = useActions(shareIdeaActionCreators);
 
   const user = useSignedInUser();
 
@@ -235,10 +239,12 @@ export const useUpdateWithCount = (id: IdeaModel['id']) => {
   );
 };
 
+const createIdeaActionCreators = { queueSnackbar: createQueueSnackbar };
+
 export const useCreateIdea = () => {
   const user = useSignedInUser();
 
-  const { queueSnackbar } = useActions({ queueSnackbar: createQueueSnackbar });
+  const { queueSnackbar } = useActions(createIdeaActionCreators);
 
   const history = useHistory();
 

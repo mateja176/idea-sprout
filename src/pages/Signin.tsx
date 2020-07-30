@@ -25,8 +25,10 @@ const useButtonStyles = makeStyles(() => ({
   label: { textTransform: 'capitalize' },
 }));
 
+const actionCreators = { queueSnackbar: createQueueSnackbar };
+
 export const Signin: React.FC<SigninProps> = () => {
-  const { queueSnackbar } = useActions({ queueSnackbar: createQueueSnackbar });
+  const { queueSnackbar } = useActions(actionCreators);
 
   const theme = useTheme();
 

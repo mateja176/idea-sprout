@@ -9,6 +9,7 @@ import { CloudUpload, Remove } from '@material-ui/icons';
 import { StorageFile, StoragePath } from 'models';
 import React from 'react';
 import { createQueueSnackbar, useActions, useUpload } from 'services';
+
 export const bottomButtonStyle: React.CSSProperties = {
   borderTop: 'none',
   borderTopLeftRadius: 0,
@@ -20,6 +21,8 @@ export const rightButtonStyle: React.CSSProperties = {
   borderTopLeftRadius: 0,
   borderBottomLeftRadius: 0,
 };
+
+const actionCreators = { queueSnackbar: createQueueSnackbar };
 
 export const FileOptions: React.FC<{
   update: (file: StorageFile) => Promise<void>;
@@ -38,7 +41,7 @@ export const FileOptions: React.FC<{
   variant = 'bottom',
   justify = 'flex-end',
 }) => {
-  const { queueSnackbar } = useActions({ queueSnackbar: createQueueSnackbar });
+  const { queueSnackbar } = useActions(actionCreators);
 
   const inputRef = React.useRef<HTMLInputElement | null>(null);
 

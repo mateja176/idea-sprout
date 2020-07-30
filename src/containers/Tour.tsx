@@ -9,11 +9,13 @@ import {
 } from 'services';
 import { headerZIndex } from 'styles';
 
+const actionCreators = { queueSnackbar: createQueueSnackbar };
+
 export const Tour: React.FC<Pick<
   React.ComponentProps<typeof ReactJoyride>,
   'steps'
 >> = ({ steps }) => {
-  const { queueSnackbar } = useActions({ queueSnackbar: createQueueSnackbar });
+  const { queueSnackbar } = useActions(actionCreators);
 
   const shouldRunTour = useLocalStorageSubscribe('shouldRunTour');
   const setShouldTourRun = useLocalStorageSet('shouldRunTour');

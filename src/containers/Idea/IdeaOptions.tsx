@@ -30,12 +30,14 @@ export interface IdeaOptionsProps extends Pick<User, 'uid'> {
 
 const useStyles = makeStyles(() => ({ withoutMargin: { marginLeft: 0 } }));
 
+const actionCreators = {
+  addIdea: createAddIdea,
+  deleteIdea: createDeleteIdea,
+};
+
 export const IdeaOptions = React.memo<IdeaOptionsProps>(
   ({ uid, idea, ideaUrl, NavigationButton }) => {
-    const { addIdea, deleteIdea } = useActions({
-      addIdea: createAddIdea,
-      deleteIdea: createDeleteIdea,
-    });
+    const { addIdea, deleteIdea } = useActions(actionCreators);
 
     const classes = useStyles();
 

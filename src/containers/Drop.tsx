@@ -26,6 +26,10 @@ export interface DropProps extends DropzoneOptions {
   fileLimit?: number;
 }
 
+const actionCreators = {
+  queueSnackbar: createQueueSnackbar,
+};
+
 const DisplayFile: React.FC<Pick<File, 'name'>> = ({ name }) => (
   <Box mb={2}>
     <TextField
@@ -48,9 +52,7 @@ export const Drop: React.FC<DropProps> = ({
   preloadedFileNames,
   ...props
 }) => {
-  const { queueSnackbar } = useActions({
-    queueSnackbar: createQueueSnackbar,
-  });
+  const { queueSnackbar } = useActions(actionCreators);
 
   const { upload, loading } = useUpload(path);
 

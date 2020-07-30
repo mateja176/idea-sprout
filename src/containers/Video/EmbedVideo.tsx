@@ -1,14 +1,15 @@
 import {
   Box,
   Button,
+  ButtonProps,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-  TextField,
-  ButtonProps,
   makeStyles,
+  TextField,
 } from '@material-ui/core';
+import { Link } from '@material-ui/icons';
 import { Skeleton } from '@material-ui/lab';
 import { useBoolean } from 'ahooks';
 import { useFormik } from 'formik';
@@ -23,7 +24,6 @@ import {
 } from 'services';
 import { inputStyle, mediaBgGreyVariant } from 'styles';
 import * as yup from 'yup';
-import { Link } from '@material-ui/icons';
 
 const type = 'video';
 
@@ -47,13 +47,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const actionCreators = { queueSnackbar: createQueueSnackbar };
+
 export const EmbedVideo: React.FC<
   {
     update: (file: StorageFile) => Promise<void>;
     label?: string;
   } & ButtonProps
 > = ({ update, style, label, ...props }) => {
-  const { queueSnackbar } = useActions({ queueSnackbar: createQueueSnackbar });
+  const { queueSnackbar } = useActions(actionCreators);
 
   const { renderPlayer, playerId } = useRenderPlayer();
 

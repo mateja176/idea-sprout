@@ -1,7 +1,7 @@
 import {
   Badge,
-  Snackbar as MaterialSnackbar,
   makeStyles,
+  Snackbar as MaterialSnackbar,
 } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import { head } from 'ramda';
@@ -25,10 +25,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const actionCreators = { closeSnackbar: createCloseSnackbar };
+
 export const Snackbar: React.FC<SnackbarProps> = () => {
   const classes = useStyles();
 
-  const { closeSnackbar } = useActions({ closeSnackbar: createCloseSnackbar });
+  const { closeSnackbar } = useActions(actionCreators);
 
   const queue = useSelector(selectSnackbarQueue);
 

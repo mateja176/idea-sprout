@@ -23,11 +23,13 @@ export interface SignoutProps {
   onClick: React.MouseEventHandler;
 }
 
+const actionCreators = {
+  reset: createReset,
+  queueSnackbar: createQueueSnackbar,
+};
+
 export const Signout: React.FC<SignoutProps> = ({ user, onClick }) => {
-  const { reset, queueSnackbar } = useActions({
-    reset: createReset,
-    queueSnackbar: createQueueSnackbar,
-  });
+  const { reset, queueSnackbar } = useActions(actionCreators);
 
   const history = useHistory();
 

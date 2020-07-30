@@ -74,6 +74,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const actionCreators = { queueSnackbar: createQueueSnackbar };
+
 export const ExportReviews: React.FC<
   { style: React.CSSProperties; idea: IdeaModel } & Required<
     Pick<User, 'uid' | 'email'>
@@ -82,7 +84,7 @@ export const ExportReviews: React.FC<
 > = ({ style, idea, uid, email, ...props }) => {
   const isAuthor = idea.author === uid;
 
-  const { queueSnackbar } = useActions({ queueSnackbar: createQueueSnackbar });
+  const { queueSnackbar } = useActions(actionCreators);
 
   const reviewsRef = useReviewsRef(idea.id);
 

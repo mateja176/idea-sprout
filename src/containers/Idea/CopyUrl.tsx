@@ -5,8 +5,10 @@ import { createQueueSnackbar, useActions } from 'services';
 
 export interface CopyUrlProps extends ShareButtonProps {}
 
+const actionCreators = { queueSnackbar: createQueueSnackbar };
+
 export const CopyUrl: React.FC<CopyUrlProps> = ({ url, children }) => {
-  const { queueSnackbar } = useActions({ queueSnackbar: createQueueSnackbar });
+  const { queueSnackbar } = useActions(actionCreators);
 
   return (
     <CopyToClipboard

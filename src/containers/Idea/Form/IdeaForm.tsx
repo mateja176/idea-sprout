@@ -44,12 +44,14 @@ export interface IdeaFormProps {
   idea: IdeaModel;
 }
 
+const actionCreators = { queueSnackbar: createQueueSnackbar };
+
 export const IdeaForm: React.FC<IdeaFormProps> = ({ idea }) => {
   const initialValues = getFormIdea(idea);
 
   const history = useHistory();
 
-  const { queueSnackbar } = useActions({ queueSnackbar: createQueueSnackbar });
+  const { queueSnackbar } = useActions(actionCreators);
 
   const ideasRef = useIdeasRef();
   const getIdeaRef = () => (idea.id ? ideasRef.doc(idea.id) : ideasRef.doc());

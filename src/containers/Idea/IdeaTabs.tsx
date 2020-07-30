@@ -32,15 +32,17 @@ const boxShadow = 'rgba(0, 0, 0, 0.2) 0px 5px 8px';
 
 const imageStyle: React.CSSProperties = { borderRadius: logoBorderRadius };
 
+const actionCreators = {
+  addIdea: createAddIdea,
+  deleteIdea: createDeleteIdea,
+};
+
 export const IdeaTabs: React.FC<{
   user: User;
   idea: IdeaModel;
   showName: boolean;
 }> = ({ user, idea, showName }) => {
-  const { addIdea, deleteIdea } = useActions({
-    addIdea: createAddIdea,
-    deleteIdea: createDeleteIdea,
-  });
+  const { addIdea, deleteIdea } = useActions(actionCreators);
 
   const shareCount = Object.keys(idea.sharedBy).length;
 
