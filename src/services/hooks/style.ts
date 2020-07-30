@@ -23,7 +23,7 @@ export const useIdeaOptionsButtonBorder = () => {
 };
 
 export const useIdeaTabStyles = makeStyles(() => ({
-  textColorInherit: {
+  root: {
     opacity: 1,
     fontWeight: 'normal',
   },
