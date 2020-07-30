@@ -1,8 +1,6 @@
 import {
-  Backdrop,
   Box,
   Button,
-  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -38,13 +36,9 @@ import {
 import React from 'react';
 import { AuthCheck } from 'reactfire';
 import {
-  createQueueSnackbar,
-  Email,
   env,
   formatCurrency,
-  useActions,
   useFirestoreDoc,
-  useRetry,
   useReviewsRef,
   useUsersRef,
 } from 'services';
@@ -53,7 +47,6 @@ import {
   paypalHeightBreakpoint,
   tabChildStyle,
 } from 'styles';
-import { paypal } from 'types';
 import { convertFirestoreCollection, convertFirestoreDocument } from 'utils';
 
 const id = 'paypal-container';
@@ -78,15 +71,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const actionCreators = { queueSnackbar: createQueueSnackbar };
-
 export const ExportReviews: React.FC<
   { idea: IdeaModel } & Required<Pick<User, 'uid' | 'email'>> &
     Pick<TabProps, 'classes' | 'style'>
 > = ({ idea, uid, email, ...props }) => {
   const isAuthor = idea.author === uid;
-
-  const { queueSnackbar } = useActions(actionCreators);
 
   const reviewsRef = useReviewsRef(idea.id);
 
@@ -151,57 +140,6 @@ export const ExportReviews: React.FC<
 
   const [scriptLoading, setScriptLoading] = useBoolean();
 
-  const [processing, setProcessing] = useBoolean();
-
-  const sendEmail = React.useCallback(
-    (order: paypal.Order) => {
-      setProcessing.setTrue();
-      return Email.send({
-        Host: env.smtpHost,
-        Username: env.smtpUsername,
-        Password: env.smtpPassword,
-        To: env.smtpTo,
-        From: env.smtpFrom,
-        Subject: 'Pro Membership Order',
-        Body: `- Order placed by: ${email}
-- Order id is: ${order.id}`,
-      })
-        .then(() => userRef.update({ proMembershipOrder: order.id }))
-        .then(() => {
-          setProcessing.setFalse();
-
-          setUpgradeDialogOpen.setFalse();
-
-          queueSnackbar({
-            severity: 'success',
-            message:
-              "You'll receive an email, up to 12 hours from now, stating that your membership is active",
-            autoHideDuration: 10000,
-          });
-        });
-    },
-    [email, queueSnackbar, setUpgradeDialogOpen, setProcessing, userRef],
-  );
-
-  const sendEmailWithRetry = useRetry({
-    request: sendEmail,
-    maxAttempts: 2,
-    onError: (error: Error) => {
-      console.warn('Error while sending order:', error);
-
-      setProcessing.setFalse();
-
-      setUpgradeDialogOpen.setFalse();
-
-      queueSnackbar({
-        severity: 'error',
-        message:
-          'Something went wrong while sending order. Please contact support via chat or startupideasprout@gmail.com',
-        autoHideDuration: 60000,
-      });
-    },
-  });
-
   const renderButtons = React.useCallback(() => {
     window.paypal
       ?.Buttons({
@@ -216,11 +154,10 @@ export const ExportReviews: React.FC<
               },
             ],
           }),
-        onApprove: (_, actions) =>
-          actions.order.capture().then(sendEmailWithRetry),
+        onApprove: (_, actions) => actions.order.capture(),
       })
       .render(`#${id}`);
-  }, [sendEmailWithRetry]);
+  }, []);
 
   const loadScript = React.useCallback(() => {
     setScriptLoading.setTrue();
@@ -317,10 +254,7 @@ export const ExportReviews: React.FC<
         </DialogTitle>
         <DialogContent style={{ overflowY: 'scroll' }}>
           <Box textAlign={'justify'} position={'relative'}>
-            <Backdrop open={processing} className={classes.backdrop}>
-              <CircularProgress variant={'indeterminate'} size={'3.5em'} />
-            </Backdrop>
-            <Box visibility={processing ? 'hidden' : 'visible'}>
+            <Box>
               <Box>
                 {proMembership.proposition}
                 <br />
