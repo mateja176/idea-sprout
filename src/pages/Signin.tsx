@@ -27,6 +27,17 @@ const useButtonStyles = makeStyles(() => ({
 
 const actionCreators = { queueSnackbar: createQueueSnackbar };
 
+const useStyles = makeStyles((theme) => ({
+  quoteMessage: {
+    fontSize: theme.typography.h4.fontSize,
+    opacity: 0.8,
+  },
+  quoteAuthor: {
+    fontSize: theme.typography.h5.fontSize,
+    opacity: 0.8,
+  },
+}));
+
 export const Signin: React.FC<SigninProps> = () => {
   const { queueSnackbar } = useActions(actionCreators);
 
@@ -58,6 +69,18 @@ export const Signin: React.FC<SigninProps> = () => {
   const opacity = loading ? 0.5 : 1;
 
   const xsAndDown = useMediaQuery(theme.breakpoints.down('xs'));
+
+  const classes = useStyles();
+
+  const quoteMessageClasses = React.useMemo(
+    () => ({ root: classes.quoteMessage }),
+    [classes.quoteMessage],
+  );
+
+  const quoteMessageAuthor = React.useMemo(
+    () => ({ root: classes.quoteAuthor }),
+    [classes.quoteAuthor],
+  );
 
   return (
     <PageWrapper>
@@ -103,16 +126,10 @@ export const Signin: React.FC<SigninProps> = () => {
           </Box>
         </Box>
         <Box maxWidth="80vw">
-          <Typography
-            align="center"
-            style={{ opacity: 0.8, fontSize: '2.2rem' }}
-          >
+          <Typography align="center" classes={quoteMessageClasses}>
             “{quote.message}”
           </Typography>
-          <Typography
-            align="center"
-            style={{ opacity: 0.8, fontSize: '1.8rem', fontStyle: 'italic' }}
-          >
+          <Typography align="center" classes={quoteMessageAuthor}>
             {quote.author}
           </Typography>
         </Box>
