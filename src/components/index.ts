@@ -1,3 +1,4 @@
+export * from './AcademyLink';
 export * from './DraggablePaper';
 export * from './icons';
 export * from './Idea';
