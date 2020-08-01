@@ -242,7 +242,7 @@ export const Signin: React.FC<SigninProps> = ({ user, setUserState }) => {
   }, []);
 
   return (
-    <PageWrapper>
+    <PageWrapper mt={0}>
       <Tabs variant={'fullWidth'} value={activeTab} onChange={handleTabChange}>
         <Tab disabled={signingOut} label={'Sign in'} />
         <Tab disabled={signingOut} label={'Register'} />
