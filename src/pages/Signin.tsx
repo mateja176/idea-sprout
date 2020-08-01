@@ -24,7 +24,7 @@ import React from 'react';
 import { useQuery } from 'react-query';
 import { RouteComponentProps } from 'react-router-dom';
 import { FacebookIcon, TwitterIcon } from 'react-share';
-import { createQueueSnackbar, useActions } from 'services';
+import { createQueueSnackbar, useActions, useAuthStateChange } from 'services';
 import { inputStyle, logoWidth } from 'styles';
 import * as yup from 'yup';
 
@@ -139,12 +139,14 @@ export const Signin: React.FC<SigninProps> = ({ user, setEmailVerified }) => {
   );
 
   const createUser = React.useCallback(
-    ({ email, password }: FormValues) =>
-      firebase
+    (formValues: FormValues) => {
+      const { email, password } = formValues;
+      return firebase
         .auth()
         .createUserWithEmailAndPassword(email, password)
-        .then(() => sendVerificationQuery.refetch()),
-    [sendVerificationQuery],
+        .then(() => signInWithEmail(formValues));
+    },
+    [signInWithEmail],
   );
 
   const resetErrors = React.useCallback(() => {
