@@ -1,14 +1,13 @@
 import { Box, Tab, Tabs } from '@material-ui/core';
 import { Load } from 'components';
 import { IdeaContainerSkeleton, IdeasSkeleton } from 'containers';
-import { User } from 'firebase';
-import { LayoutChildrenProps } from 'models';
+import { WithUserState } from 'models';
 import { IdeasSwitch, Signin } from 'pages';
 import React from 'react';
 import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
-import { absolutePrivateRoute, isInitialUser } from 'utils';
+import { absolutePrivateRoute, isUserLoading } from 'utils';
 
-export interface RoutesProps extends LayoutChildrenProps {}
+export interface RoutesProps extends WithUserState {}
 
 const NotFound: React.FC<RouteComponentProps> = () => (
   <Box mt={4} display="flex" justifyContent="center">
@@ -16,25 +15,17 @@ const NotFound: React.FC<RouteComponentProps> = () => (
   </Box>
 );
 
-export const Routes: React.FC<RoutesProps> = ({ user, setEmailVerified }) => {
+export const Routes: React.FC<RoutesProps> = ({ user }) => {
   return (
     <Switch>
-      {user === null || isInitialUser(user) || !(user as User).emailVerified ? (
+      {isUserLoading(user) || user === null || !user.emailVerified ? (
         <Route
           render={(props) => {
             const {
               location: { pathname },
             } = props;
 
-            if (user === null) {
-              return (
-                <Signin
-                  setEmailVerified={setEmailVerified}
-                  user={user}
-                  {...props}
-                />
-              );
-            } else if (isInitialUser(user)) {
+            if (isUserLoading(user)) {
               if (
                 pathname === absolutePrivateRoute.ideas.path ||
                 pathname === '/'
@@ -66,14 +57,10 @@ export const Routes: React.FC<RoutesProps> = ({ user, setEmailVerified }) => {
               } else {
                 return <NotFound {...props} />;
               }
+            } else if (user === null) {
+              return <Signin user={user} {...props} />;
             } else {
-              return (
-                <Signin
-                  setEmailVerified={setEmailVerified}
-                  user={user as User}
-                  {...props}
-                />
-              );
+              return <Signin user={user} {...props} />;
             }
           }}
         />

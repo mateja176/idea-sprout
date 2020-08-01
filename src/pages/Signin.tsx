@@ -24,13 +24,12 @@ import React from 'react';
 import { useQuery } from 'react-query';
 import { RouteComponentProps } from 'react-router-dom';
 import { FacebookIcon, TwitterIcon } from 'react-share';
-import { createQueueSnackbar, useActions, useAuthStateChange } from 'services';
+import { createQueueSnackbar, useActions } from 'services';
 import { inputStyle, logoWidth } from 'styles';
 import * as yup from 'yup';
 
 export interface SigninProps extends RouteComponentProps {
   user: User | null;
-  setEmailVerified: () => void;
 }
 
 const linkStyle: React.CSSProperties = {
@@ -49,7 +48,7 @@ const initialValues = {
 };
 type FormValues = typeof initialValues;
 
-export const Signin: React.FC<SigninProps> = ({ user, setEmailVerified }) => {
+export const Signin: React.FC<SigninProps> = ({ user }) => {
   const { queueSnackbar } = useActions(actionCreators);
 
   const theme = useTheme();
@@ -107,11 +106,6 @@ export const Signin: React.FC<SigninProps> = ({ user, setEmailVerified }) => {
       retry: Infinity,
       retryDelay: () => 2000,
       refetchInterval: 2000,
-      onSuccess: () => {
-        if (user?.emailVerified) {
-          setEmailVerified();
-        }
-      },
     },
   });
 

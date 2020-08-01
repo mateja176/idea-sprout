@@ -1,3 +1,4 @@
+import { WithUserState } from 'models';
 import React from 'react';
 import { hot } from 'react-hot-loader';
 import { Auth } from './Auth';
@@ -8,17 +9,17 @@ import { Snackbar } from './Snackbar';
 
 export interface AppProps {}
 
-const LayoutChildren: React.ComponentProps<typeof Layout>['children'] = (
-  props,
-) => <Routes {...props} />;
+const AuthChildren = ({ user }: WithUserState) => (
+  <Layout user={user}>
+    <Routes user={user} />
+    <Snackbar />
+  </Layout>
+);
 
 const AppComponent: React.FC<AppProps> = () => {
   return (
     <Provider>
-      <Auth>
-        <Layout>{LayoutChildren}</Layout>
-        <Snackbar />
-      </Auth>
+      <Auth>{AuthChildren}</Auth>
     </Provider>
   );
 };

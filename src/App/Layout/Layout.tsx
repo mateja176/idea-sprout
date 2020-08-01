@@ -9,20 +9,15 @@ import {
   Typography,
 } from '@material-ui/core';
 import { ChevronLeft, LibraryAdd, Menu } from '@material-ui/icons';
-import { useBoolean } from 'ahooks';
 import { IdeaSprout, Link, Load } from 'components';
 import { CreateIdeaIcon } from 'containers';
 import { IdeaHelpContainer } from 'containers/Idea/IdeaHelpContainer';
-import { User } from 'firebase';
-import { initialUser, LayoutChildrenProps, User as UserModel } from 'models';
+import { WithUserState } from 'models';
 import React from 'react';
-import { useUser } from 'services';
-import { absolutePrivateRoute, getIsSignedIn } from 'utils';
+import { absolutePrivateRoute, getIsSignedIn, isFirebaseUser } from 'utils';
 import { minNavWidth, Nav, NavSkeleton } from './Nav';
 
-export interface LayoutProps {
-  children: (props: LayoutChildrenProps) => React.ReactNode;
-}
+export interface LayoutProps extends WithUserState {}
 
 const useStyles = makeStyles((theme) => ({
   toolbar: theme.mixins.toolbar,
@@ -38,14 +33,8 @@ const loadIconButton = (
     </IconButton>
   </Load>
 );
-export const Layout = ({ children }: LayoutProps) => {
-  const user = useUser<User | UserModel>({
-    startWithValue: initialUser,
-  });
+export const Layout: React.FC<LayoutProps> = ({ user, children }) => {
   const isSignedIn = getIsSignedIn(user);
-
-  // * component is not rerendered after user.reload() settles
-  const [emailVerified, setEmailVerified] = useBoolean();
 
   const classes = useStyles();
 
@@ -54,16 +43,6 @@ export const Layout = ({ children }: LayoutProps) => {
   const toggleDrawerOpen = () => {
     setDrawerOpen(!drawerOpen);
   };
-
-  const layoutChildren = React.useMemo(
-    () =>
-      children({
-        user,
-        emailVerified,
-        setEmailVerified: setEmailVerified.setTrue,
-      }),
-    [children, user, emailVerified, setEmailVerified],
-  );
 
   return (
     <Box height={'100%'} display={'flex'} flexDirection={'column'}>
@@ -119,7 +98,7 @@ export const Layout = ({ children }: LayoutProps) => {
               <ChevronLeft />
             </IconButton>
           </Box>
-          {user && (
+          {isFirebaseUser(user) && (
             <React.Suspense fallback={<NavSkeleton />}>
               <Nav
                 isSignedIn={isSignedIn}
@@ -130,7 +109,7 @@ export const Layout = ({ children }: LayoutProps) => {
           )}
         </Box>
       </Drawer>
-      {layoutChildren}
+      {children}
     </Box>
   );
 };

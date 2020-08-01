@@ -1,16 +1,22 @@
 import LogRocket from 'logrocket';
-import { initialUser, User } from 'models';
+import { User, UserState, WithUserState } from 'models';
 import React from 'react';
 import { useUser, useUsersRef } from 'services';
 import { DeepNonNullable } from 'utility-types';
+import { isFirebaseUser } from 'utils';
 
-export const Auth: React.FC = ({ children }) => {
+export const Auth = ({
+  children,
+}: {
+  children: (props: WithUserState) => React.ReactNode;
+}) => {
   const usersRef = useUsersRef();
-
-  const user = useUser({ startWithValue: initialUser });
+  const user = useUser<UserState>({
+    startWithValue: 'loading',
+  });
 
   React.useEffect(() => {
-    if (user && user !== initialUser) {
+    if (isFirebaseUser(user)) {
       const {
         // * user is not a POJO
         uid,
@@ -47,5 +53,10 @@ export const Auth: React.FC = ({ children }) => {
     }
   }, [user, usersRef]);
 
-  return <>{children}</>;
+  const authChildren = React.useMemo(() => children({ user }), [
+    user,
+    children,
+  ]);
+
+  return <>{authChildren}</>;
 };
