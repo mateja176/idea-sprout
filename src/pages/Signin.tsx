@@ -101,11 +101,8 @@ export const Signin: React.FC<SigninProps> = () => {
 
   const signInWithEmail = React.useCallback(
     ({ email, password }: FormValues) =>
-      firebase
-        .auth()
-        .signInWithEmailAndPassword(email, password)
-        .then(sendVerification),
-    [sendVerification],
+      firebase.auth().signInWithEmailAndPassword(email, password),
+    [],
   );
 
   const createUser = React.useCallback(
@@ -208,8 +205,12 @@ export const Signin: React.FC<SigninProps> = () => {
   }, [user, history, setReloadingUser]);
 
   React.useEffect(() => {
-    reload();
-  }, [setReloadUserError, reload]);
+    if (reloadUserError) {
+      setTimeout(() => {
+        reload();
+      }, 1000);
+    }
+  }, [reload, reloadUserError]);
 
   return (
     <PageWrapper>
