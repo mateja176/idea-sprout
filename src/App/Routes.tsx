@@ -7,7 +7,9 @@ import React from 'react';
 import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
 import { absolutePrivateRoute, isUserLoading } from 'utils';
 
-export interface RoutesProps extends WithUserState {}
+export interface RoutesProps extends WithUserState {
+  setUserState: () => void;
+}
 
 const NotFound: React.FC<RouteComponentProps> = () => (
   <Box mt={4} display="flex" justifyContent="center">
@@ -15,7 +17,7 @@ const NotFound: React.FC<RouteComponentProps> = () => (
   </Box>
 );
 
-export const Routes: React.FC<RoutesProps> = ({ user }) => {
+export const Routes: React.FC<RoutesProps> = ({ user, setUserState }) => {
   return (
     <Switch>
       {isUserLoading(user) || user === null || !user.emailVerified ? (
@@ -58,9 +60,13 @@ export const Routes: React.FC<RoutesProps> = ({ user }) => {
                 return <NotFound {...props} />;
               }
             } else if (user === null) {
-              return <Signin user={user} {...props} />;
+              return (
+                <Signin setUserState={setUserState} user={user} {...props} />
+              );
             } else {
-              return <Signin user={user} {...props} />;
+              return (
+                <Signin setUserState={setUserState} user={user} {...props} />
+              );
             }
           }}
         />

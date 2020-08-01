@@ -1,4 +1,3 @@
-import { WithUserState } from 'models';
 import React from 'react';
 import { hot } from 'react-hot-loader';
 import { Auth } from './Auth';
@@ -9,9 +8,12 @@ import { Snackbar } from './Snackbar';
 
 export interface AppProps {}
 
-const AuthChildren = ({ user }: WithUserState) => (
+const AuthChildren: React.ComponentProps<typeof Auth>['children'] = ({
+  user,
+  setUserState,
+}) => (
   <Layout user={user}>
-    <Routes user={user} />
+    <Routes user={user} setUserState={setUserState} />
     <Snackbar />
   </Layout>
 );

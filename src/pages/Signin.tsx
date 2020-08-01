@@ -30,6 +30,7 @@ import * as yup from 'yup';
 
 export interface SigninProps extends RouteComponentProps {
   user: User | null;
+  setUserState: () => void;
 }
 
 const linkStyle: React.CSSProperties = {
@@ -48,7 +49,7 @@ const initialValues = {
 };
 type FormValues = typeof initialValues;
 
-export const Signin: React.FC<SigninProps> = ({ user }) => {
+export const Signin: React.FC<SigninProps> = ({ user, setUserState }) => {
   const { queueSnackbar } = useActions(actionCreators);
 
   const theme = useTheme();
@@ -95,8 +96,8 @@ export const Signin: React.FC<SigninProps> = ({ user }) => {
   const [signinOrCreateError, setSigninOrCreateError] = React.useState('');
 
   const reloadUser = React.useCallback(
-    () => (user ? user.reload() : Promise.resolve()),
-    [user],
+    () => (user ? user.reload().then(setUserState) : Promise.resolve()),
+    [user, setUserState],
   );
   useQuery({
     queryKey: 'reloadUser',

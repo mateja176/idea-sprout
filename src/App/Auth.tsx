@@ -1,3 +1,4 @@
+import { useBoolean } from 'ahooks';
 import LogRocket from 'logrocket';
 import { User, UserState, WithUserState } from 'models';
 import React from 'react';
@@ -8,12 +9,15 @@ import { isFirebaseUser } from 'utils';
 export const Auth = ({
   children,
 }: {
-  children: (props: WithUserState) => React.ReactNode;
+  children: (
+    props: WithUserState & { userState: boolean; setUserState: () => void },
+  ) => React.ReactNode;
 }) => {
   const usersRef = useUsersRef();
   const user = useUser<UserState>({
     startWithValue: 'loading',
   });
+  const [userState, setUserState] = useBoolean();
 
   React.useEffect(() => {
     if (isFirebaseUser(user)) {
@@ -53,10 +57,10 @@ export const Auth = ({
     }
   }, [user, usersRef]);
 
-  const authChildren = React.useMemo(() => children({ user }), [
-    user,
-    children,
-  ]);
+  const authChildren = React.useMemo(
+    () => children({ user, userState, setUserState: setUserState.toggle }),
+    [user, children, userState, setUserState],
+  );
 
   return <>{authChildren}</>;
 };
