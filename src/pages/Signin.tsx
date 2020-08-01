@@ -37,6 +37,10 @@ const linkStyle: React.CSSProperties = {
   cursor: 'pointer',
 };
 
+const alignCenterStyle: React.CSSProperties = {
+  textAlign: 'center',
+};
+
 const useButtonStyles = makeStyles(() => ({
   label: { textTransform: 'capitalize' },
 }));
@@ -249,34 +253,36 @@ export const Signin: React.FC<SigninProps> = ({ user, setUserState }) => {
       </Tabs>
       <Box mt={2} display="flex" flexDirection="column" alignItems="center">
         <Box display="flex" flexDirection="column" alignItems="center">
-          <Grow in={!!signinOrCreateError || notVerifiedEmail}>
-            <Box mb={2}>
-              {(() => {
-                switch (true) {
-                  case !!signinOrCreateError:
-                    return (
-                      <Alert
-                        severity={'error'}
-                        onClose={handleCloseSigninError}
-                      >
-                        {signinOrCreateError}
-                      </Alert>
-                    );
-                  case notVerifiedEmail:
-                    return (
-                      <Alert severity={'success'}>
-                        An email has been sent to {user?.email}. In case you
-                        want a different email,{' '}
-                        <Link style={linkStyle} onClick={handleReset}>
-                          reset here
-                        </Link>
-                        .
-                      </Alert>
-                    );
-                }
-              })()}
-            </Box>
-          </Grow>
+          <Box mb={2}>
+            {(() => {
+              switch (true) {
+                case !!signinOrCreateError:
+                  return (
+                    <Alert severity={'error'} onClose={handleCloseSigninError}>
+                      {signinOrCreateError}
+                    </Alert>
+                  );
+                case notVerifiedEmail:
+                  return (
+                    <Alert severity={'success'}>
+                      An email has been sent to {user?.email}. In case you want
+                      a different email,{' '}
+                      <Link style={linkStyle} onClick={handleReset}>
+                        reset here
+                      </Link>
+                      .
+                    </Alert>
+                  );
+                default:
+                  return (
+                    <Alert severity={'info'}>
+                      {activeTab === 0 ? 'Sign in' : 'Register'} to discover,
+                      create and share ideas.
+                    </Alert>
+                  );
+              }
+            })()}
+          </Box>
           <Box mb={3}>
             <form onSubmit={handleSubmit}>
               <TextField
@@ -313,7 +319,7 @@ export const Signin: React.FC<SigninProps> = ({ user, setUserState }) => {
               alignItems={'center'}
             >
               <Box mt={2} mb={2}>
-                <FormHelperText>
+                <FormHelperText style={alignCenterStyle}>
                   Didn't receive email? Resend to {user?.email}.
                 </FormHelperText>
               </Box>
