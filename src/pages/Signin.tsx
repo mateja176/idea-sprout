@@ -144,7 +144,7 @@ export const Signin: React.FC<SigninProps> = ({ user, setEmailVerified }) => {
       return firebase
         .auth()
         .createUserWithEmailAndPassword(email, password)
-        .then(() => signInWithEmail(formValues));
+        .then(() => signInWithEmail(formValues)); // https://stackoverflow.com/questions/37431128/firebase-confirmation-email-not-being-sent
     },
     [signInWithEmail],
   );
