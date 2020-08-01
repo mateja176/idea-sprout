@@ -4,6 +4,7 @@ import {
   ButtonGroup,
   FormHelperText,
   Grow,
+  Link,
   makeStyles,
   Tab,
   Tabs,
@@ -12,22 +13,29 @@ import {
   useMediaQuery,
   useTheme,
 } from '@material-ui/core';
+import { Autorenew } from '@material-ui/icons';
 import { Alert } from '@material-ui/lab';
 import { useBoolean } from 'ahooks';
 import { Google, PageWrapper } from 'components';
 import firebase, { FirebaseError, User } from 'firebase/app';
 import 'firebase/auth';
 import { FormikHelpers, useFormik } from 'formik';
-import { equals } from 'ramda';
 import React from 'react';
 import { useQuery } from 'react-query';
-import { RouteComponentProps, useHistory } from 'react-router-dom';
+import { RouteComponentProps } from 'react-router-dom';
 import { FacebookIcon, TwitterIcon } from 'react-share';
-import { createQueueSnackbar, useActions, useUser } from 'services';
+import { createQueueSnackbar, useActions } from 'services';
 import { inputStyle, logoWidth } from 'styles';
 import * as yup from 'yup';
 
-export interface SigninProps extends RouteComponentProps {}
+export interface SigninProps extends RouteComponentProps {
+  user: User | null;
+  setEmailVerified: () => void;
+}
+
+const linkStyle: React.CSSProperties = {
+  cursor: 'pointer',
+};
 
 const useButtonStyles = makeStyles(() => ({
   label: { textTransform: 'capitalize' },
@@ -41,7 +49,7 @@ const initialValues = {
 };
 type FormValues = typeof initialValues;
 
-export const Signin: React.FC<SigninProps> = () => {
+export const Signin: React.FC<SigninProps> = ({ user, setEmailVerified }) => {
   const { queueSnackbar } = useActions(actionCreators);
 
   const theme = useTheme();
@@ -71,22 +79,21 @@ export const Signin: React.FC<SigninProps> = () => {
 
   const xsAndDown = useMediaQuery(theme.breakpoints.down('xs'));
 
-  const history = useHistory();
-
-  const user = useUser<User>();
-
   const sendVerification = React.useCallback(
-    () =>
-      user?.sendEmailVerification().catch((error: FirebaseError) => {
-        setSendVerificationError(error.message);
-      }),
+    () => (user ? user?.sendEmailVerification() : Promise.resolve()),
     [user],
   );
-
-  const [submitCount, setSubmitCount] = React.useState(0);
+  const sendVerificationQuery = useQuery({
+    queryKey: 'sendVerification',
+    queryFn: sendVerification,
+    config: {
+      enabled: false,
+      retry: Infinity,
+      retryDelay: () => 2000,
+    },
+  });
 
   const [signinOrCreateError, setSigninOrCreateError] = React.useState('');
-  const [sendVerificationError, setSendVerificationError] = React.useState('');
 
   const reloadUser = React.useCallback(
     () => (user ? user.reload() : Promise.resolve()),
@@ -102,7 +109,7 @@ export const Signin: React.FC<SigninProps> = () => {
       refetchInterval: 2000,
       onSuccess: () => {
         if (user?.emailVerified) {
-          history.go(0);
+          setEmailVerified();
         }
       },
     },
@@ -120,8 +127,15 @@ export const Signin: React.FC<SigninProps> = () => {
 
   const signInWithEmail = React.useCallback(
     ({ email, password }: FormValues) =>
-      firebase.auth().signInWithEmailAndPassword(email, password),
-    [],
+      firebase
+        .auth()
+        .signInWithEmailAndPassword(email, password)
+        .then((credential) => {
+          if (!credential.user?.emailVerified) {
+            sendVerificationQuery.refetch();
+          }
+        }),
+    [sendVerificationQuery],
   );
 
   const createUser = React.useCallback(
@@ -129,13 +143,12 @@ export const Signin: React.FC<SigninProps> = () => {
       firebase
         .auth()
         .createUserWithEmailAndPassword(email, password)
-        .then(sendVerification),
-    [sendVerification],
+        .then(() => sendVerificationQuery.refetch()),
+    [sendVerificationQuery],
   );
 
   const resetErrors = React.useCallback(() => {
     setSigninOrCreateError('');
-    setSendVerificationError('');
   }, []);
 
   const onSubmit = React.useCallback(
@@ -143,7 +156,6 @@ export const Signin: React.FC<SigninProps> = () => {
       resetErrors();
       const handleSuccess = () => {
         resetForm();
-        setSubmitCount((count) => count + 1);
       };
       const handleError = (error: FirebaseError) => {
         setSigninOrCreateError(error.message);
@@ -170,7 +182,6 @@ export const Signin: React.FC<SigninProps> = () => {
     touched,
     isSubmitting,
     resetForm,
-    values,
   } = useFormik({
     initialValues,
     onSubmit,
@@ -181,37 +192,63 @@ export const Signin: React.FC<SigninProps> = () => {
     setSigninOrCreateError('');
   }, []);
 
+  const [signingOut, setSigningOut] = useBoolean();
   const handleTabChange: React.ComponentProps<
     typeof Tabs
   >['onChange'] = React.useCallback(
     (e, value) => {
-      setActiveTab(value);
-      resetForm();
-      resetErrors();
-      setSubmitCount(0);
+      if (user) {
+        setSigningOut.setTrue();
+        firebase
+          .auth()
+          .signOut()
+          .then(() => {
+            setActiveTab(value);
+            resetForm();
+            resetErrors();
+          })
+          .finally(setSigningOut.setFalse);
+      } else {
+        setActiveTab(value);
+        resetForm();
+        resetErrors();
+      }
     },
-    [resetForm, resetErrors],
+    [resetForm, resetErrors, user, setSigningOut],
   );
 
-  const successfullySubmitted =
-    submitCount > 0 && equals(values, initialValues);
+  const handleSendVerification = React.useCallback(() => {
+    sendVerificationQuery.refetch();
+  }, [sendVerificationQuery]);
 
-  const [sendingVerification, setSendingVerification] = useBoolean();
+  const notVerifiedEmail = !!user && !user.emailVerified;
 
-  const resendVerification = React.useCallback(() => {
-    setSendingVerification.setTrue();
-    sendVerification()?.finally(setSendingVerification.setFalse);
-  }, [sendVerification, setSendingVerification]);
+  const resendIconRef = React.useRef<SVGSVGElement | null>(null);
+  React.useEffect(() => {
+    const animation = sendVerificationQuery.isLoading
+      ? resendIconRef.current?.animate(
+          [{ transform: 'rotate(0deg)' }, { transform: 'rotate(360deg)' }],
+          { duration: 1000, iterations: Infinity, easing: 'ease-in-out' },
+        )
+      : undefined;
+    return () => {
+      animation?.cancel();
+    };
+  }, [sendVerificationQuery.isLoading]);
+
+  const handleReset = React.useCallback(() => {
+    firebase.auth().signOut();
+  }, []);
 
   return (
     <PageWrapper>
       <Tabs variant={'fullWidth'} value={activeTab} onChange={handleTabChange}>
-        <Tab label={'Sign in'} />
-        <Tab label={'Register'} />
+        <Tab disabled={signingOut} label={'Sign in'} />
+        <Tab disabled={signingOut} label={'Register'} />
       </Tabs>
       <Box mt={2} display="flex" flexDirection="column" alignItems="center">
         <Box display="flex" flexDirection="column" alignItems="center">
-          <Grow in={!!(signinOrCreateError || successfullySubmitted)}>
+          <Grow in={!!signinOrCreateError || notVerifiedEmail}>
             <Box mb={2}>
               {(() => {
                 switch (true) {
@@ -224,11 +261,15 @@ export const Signin: React.FC<SigninProps> = () => {
                         {signinOrCreateError}
                       </Alert>
                     );
-                  case successfullySubmitted:
+                  case notVerifiedEmail:
                     return (
                       <Alert severity={'success'}>
-                        An email has been sent to {user?.email}. To verify your
-                        email click on the link.
+                        An email has been sent to {user?.email}. In case you
+                        want a different email,{' '}
+                        <Link style={linkStyle} onClick={handleReset}>
+                          reset here
+                        </Link>
+                        .
                       </Alert>
                     );
                 }
@@ -264,10 +305,7 @@ export const Signin: React.FC<SigninProps> = () => {
               </Button>
             </form>
           </Box>
-          <Grow
-            mountOnEnter
-            in={!!(sendVerificationError || successfullySubmitted)}
-          >
+          <Grow mountOnEnter unmountOnExit in={notVerifiedEmail}>
             <Box
               display={'flex'}
               flexDirection={'column'}
@@ -275,14 +313,14 @@ export const Signin: React.FC<SigninProps> = () => {
             >
               <Box mt={2} mb={2}>
                 <FormHelperText>
-                  {sendVerificationError ||
-                    `Didn't receive email? Resend to ${user?.email}.`}
+                  Didn't receive email? Resend to {user?.email}.
                 </FormHelperText>
               </Box>
               <Button
-                disabled={isSubmitting || sendingVerification}
+                disabled={sendVerificationQuery.isLoading}
                 variant={'contained'}
-                onClick={resendVerification}
+                onClick={handleSendVerification}
+                startIcon={<Autorenew ref={resendIconRef} />}
               >
                 Resend email
               </Button>

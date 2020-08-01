@@ -9,18 +9,19 @@ import {
   Typography,
 } from '@material-ui/core';
 import { ChevronLeft, LibraryAdd, Menu } from '@material-ui/icons';
+import { useBoolean } from 'ahooks';
 import { IdeaSprout, Link, Load } from 'components';
 import { CreateIdeaIcon } from 'containers';
 import { IdeaHelpContainer } from 'containers/Idea/IdeaHelpContainer';
 import { User } from 'firebase';
-import { initialUser, User as UserModel } from 'models';
+import { initialUser, LayoutChildrenProps, User as UserModel } from 'models';
 import React from 'react';
 import { useUser } from 'services';
 import { absolutePrivateRoute, getIsSignedIn } from 'utils';
 import { minNavWidth, Nav, NavSkeleton } from './Nav';
 
 export interface LayoutProps {
-  children: (props: { user: User | UserModel | null }) => React.ReactNode;
+  children: (props: LayoutChildrenProps) => React.ReactNode;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -43,6 +44,9 @@ export const Layout = ({ children }: LayoutProps) => {
   });
   const isSignedIn = getIsSignedIn(user);
 
+  // * component is not rerendered after user.reload() settles
+  const [emailVerified, setEmailVerified] = useBoolean();
+
   const classes = useStyles();
 
   const [drawerOpen, setDrawerOpen] = React.useState(false);
@@ -51,10 +55,15 @@ export const Layout = ({ children }: LayoutProps) => {
     setDrawerOpen(!drawerOpen);
   };
 
-  const layoutChildren = React.useMemo(() => children({ user }), [
-    children,
-    user,
-  ]);
+  const layoutChildren = React.useMemo(
+    () =>
+      children({
+        user,
+        emailVerified,
+        setEmailVerified: setEmailVerified.setTrue,
+      }),
+    [children, user, emailVerified, setEmailVerified],
+  );
 
   return (
     <Box height={'100%'} display={'flex'} flexDirection={'column'}>

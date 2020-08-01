@@ -1,15 +1,14 @@
 import { Box, Tab, Tabs } from '@material-ui/core';
 import { Load } from 'components';
 import { IdeaContainerSkeleton, IdeasSkeleton } from 'containers';
-import { User, UserInfo } from 'firebase';
+import { User } from 'firebase';
+import { LayoutChildrenProps } from 'models';
 import { IdeasSwitch, Signin } from 'pages';
 import React from 'react';
 import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
 import { absolutePrivateRoute, isInitialUser } from 'utils';
 
-export interface RoutesProps {
-  user: User | UserInfo | null;
-}
+export interface RoutesProps extends LayoutChildrenProps {}
 
 const NotFound: React.FC<RouteComponentProps> = () => (
   <Box mt={4} display="flex" justifyContent="center">
@@ -17,7 +16,7 @@ const NotFound: React.FC<RouteComponentProps> = () => (
   </Box>
 );
 
-export const Routes: React.FC<RoutesProps> = ({ user }) => {
+export const Routes: React.FC<RoutesProps> = ({ user, setEmailVerified }) => {
   return (
     <Switch>
       {user === null || isInitialUser(user) || !(user as User).emailVerified ? (
@@ -28,7 +27,13 @@ export const Routes: React.FC<RoutesProps> = ({ user }) => {
             } = props;
 
             if (user === null) {
-              return <Signin user={user} {...props} />;
+              return (
+                <Signin
+                  setEmailVerified={setEmailVerified}
+                  user={user}
+                  {...props}
+                />
+              );
             } else if (isInitialUser(user)) {
               if (
                 pathname === absolutePrivateRoute.ideas.path ||
@@ -62,7 +67,13 @@ export const Routes: React.FC<RoutesProps> = ({ user }) => {
                 return <NotFound {...props} />;
               }
             } else {
-              return <Signin user={user as User} {...props} />;
+              return (
+                <Signin
+                  setEmailVerified={setEmailVerified}
+                  user={user as User}
+                  {...props}
+                />
+              );
             }
           }}
         />
