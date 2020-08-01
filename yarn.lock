@@ -10000,6 +10000,13 @@ react-proptype-conditional-require@^1.0.4:
   resolved "https://registry.yarnpkg.com/react-proptype-conditional-require/-/react-proptype-conditional-require-1.0.4.tgz#69c2d5741e6df5e08f230f36bbc2944ee1222555"
   integrity sha1-acLVdB5t9eCPIw82u8KUTuEiJVU=
 
+react-query@^2.5.10:
+  version "2.5.10"
+  resolved "https://registry.yarnpkg.com/react-query/-/react-query-2.5.10.tgz#f294b15b7003d8e0597078764ac2907eec47cbb7"
+  integrity sha512-Ehe2G5+DxpEkoMJ5lxZjewfhnaA8j/GuXRUmLyJfLRQymgn0+jRjyr67IKbET2fUNH1KJ3Nq6JEA/aZy9PR2RQ==
+  dependencies:
+    ts-toolbelt "^6.9.4"
+
 react-redux@^7.2.0:
   version "7.2.0"
   resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-7.2.0.tgz#f970f62192b3981642fec46fd0db18a074fe879d"
@@ -11720,6 +11727,11 @@ ts-toolbelt@^6.3.3:
   version "6.9.4"
   resolved "https://registry.yarnpkg.com/ts-toolbelt/-/ts-toolbelt-6.9.4.tgz#cc3a070d99c557c552b4f69e36f13d430c47a760"
   integrity sha512-muRZZqfOTOVvLk5cdnp7YWm6xX+kD/WL2cS/L4zximBRcbQSuMoTbQQ2ZZBVMs1gB0EZw1qThP+HrIQB35OmEw==
+
+ts-toolbelt@^6.9.4:
+  version "6.13.37"
+  resolved "https://registry.yarnpkg.com/ts-toolbelt/-/ts-toolbelt-6.13.37.tgz#3bf7993c973b02371a598348c586e599faea4fe6"
+  integrity sha512-K8P25O7Fx+zHuSBJNQkdwg1OYRA/zerWNltt1EXLoPHQ8kP5ADhJREQgZzi+ka+rHtx0/i/4AdWHJi5V1fdEow==
 
 tslib@1.11.1:
   version "1.11.1"

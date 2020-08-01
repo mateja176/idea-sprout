@@ -20,6 +20,7 @@ import 'firebase/auth';
 import { FormikHelpers, useFormik } from 'formik';
 import { equals } from 'ramda';
 import React from 'react';
+import { useQuery } from 'react-query';
 import { RouteComponentProps, useHistory } from 'react-router-dom';
 import { FacebookIcon, TwitterIcon } from 'react-share';
 import { createQueueSnackbar, useActions, useUser } from 'services';
@@ -87,7 +88,26 @@ export const Signin: React.FC<SigninProps> = () => {
   const [signinOrCreateError, setSigninOrCreateError] = React.useState('');
   const [confirmationError, setConfirmationError] = React.useState('');
   const [sendVerificationError, setSendVerificationError] = React.useState('');
-  const [reloadUserError, setReloadUserError] = React.useState('');
+
+  const reloadUser = React.useCallback(
+    () => (user ? user.reload() : Promise.resolve()),
+    [user],
+  );
+  useQuery({
+    queryKey: 'reloadUser',
+    queryFn: reloadUser,
+    config: {
+      enabled: !!user,
+      retry: Infinity,
+      retryDelay: () => 2000,
+      refetchInterval: 2000,
+      onSuccess: () => {
+        if (user?.emailVerified) {
+          history.go(0);
+        }
+      },
+    },
+  });
 
   const validationSchema = yup
     .object()
@@ -118,7 +138,6 @@ export const Signin: React.FC<SigninProps> = () => {
     setSigninOrCreateError('');
     setConfirmationError('');
     setSendVerificationError('');
-    setReloadUserError('');
   }, []);
 
   const onSubmit = React.useCallback(
@@ -185,32 +204,6 @@ export const Signin: React.FC<SigninProps> = () => {
     setSendingVerification.setTrue();
     sendVerification()?.finally(setSendingVerification.setFalse);
   }, [sendVerification, setSendingVerification]);
-
-  const [reloadingUser, setReloadingUser] = useBoolean();
-
-  const reload = React.useCallback(() => {
-    setReloadingUser.setTrue();
-    user
-      ?.reload()
-      .then(() => {
-        setConfirmationError(
-          `Visit inbox of ${user?.email}, find the verification email and click on the link. If you can't find the email, check the spam folder or resend the verification email.`,
-        );
-        history.go(0);
-      })
-      .catch((error: FirebaseError) => {
-        setReloadUserError(error.message);
-      })
-      .finally(setReloadingUser.setFalse);
-  }, [user, history, setReloadingUser]);
-
-  React.useEffect(() => {
-    if (reloadUserError) {
-      setTimeout(() => {
-        reload();
-      }, 1000);
-    }
-  }, [reload, reloadUserError]);
 
   return (
     <PageWrapper>
@@ -294,20 +287,6 @@ export const Signin: React.FC<SigninProps> = () => {
               flexDirection={'column'}
               alignItems={'center'}
             >
-              <Box mb={2}>
-                <FormHelperText>
-                  Have you confirmed your email by clicking on the link?
-                </FormHelperText>
-              </Box>
-              <Button
-                disabled={reloadingUser || !!reloadUserError}
-                variant={'contained'}
-                color={'secondary'}
-                onClick={reload}
-              >
-                Yes
-              </Button>
-
               <Box mt={2} mb={2}>
                 <FormHelperText>
                   {sendVerificationError ||
