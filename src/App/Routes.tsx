@@ -1,28 +1,17 @@
 import { Box, Tab, Tabs } from '@material-ui/core';
 import { Load } from 'components';
 import { IdeaContainerSkeleton, IdeasSkeleton } from 'containers';
-import { User } from 'firebase';
-import { initialUser } from 'models';
 import { IdeasSwitch, Signin } from 'pages';
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import { useUser } from 'services';
-import { absolutePrivateRoute, absolutePublicRoute } from 'utils';
+import { absolutePrivateRoute } from 'utils';
 
-export interface RoutesProps {}
-
-function isFirebaseUser(user: User | typeof initialUser): user is User {
-  return !!user.uid;
+export interface RoutesProps {
+  isSignedIn: boolean;
+  isLoading: boolean;
 }
 
-export const Routes: React.FC<RoutesProps> = () => {
-  const user = useUser<User | typeof initialUser>({
-    startWithValue: initialUser,
-  });
-  const uid = user?.uid;
-  const isLoading = uid === initialUser.uid;
-  const isSignedIn = user && isFirebaseUser(user) && user.emailVerified;
-
+export const Routes: React.FC<RoutesProps> = ({ isSignedIn, isLoading }) => {
   return (
     <Switch>
       {!isSignedIn && (
@@ -67,14 +56,6 @@ export const Routes: React.FC<RoutesProps> = () => {
             } else {
               return <Signin {...props} />;
             }
-          }}
-        />
-      )}
-      {isSignedIn && (
-        <Route
-          path={absolutePublicRoute.signin.path}
-          render={() => {
-            return <Redirect to={absolutePrivateRoute.ideas.path} />;
           }}
         />
       )}

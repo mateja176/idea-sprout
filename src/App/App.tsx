@@ -8,14 +8,16 @@ import { Snackbar } from './Snackbar';
 
 export interface AppProps {}
 
+const LayoutChildren: React.ComponentProps<typeof Layout>['children'] = (
+  props,
+) => <Routes {...props} />;
+
 const AppComponent: React.FC<AppProps> = () => {
   return (
     <Provider>
       <Auth>
-        <Layout>
-          <Routes />
-          <Snackbar />
-        </Layout>
+        <Layout>{LayoutChildren}</Layout>
+        <Snackbar />
       </Auth>
     </Provider>
   );

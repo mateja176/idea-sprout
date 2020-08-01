@@ -1,15 +1,17 @@
 import { List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import { AcademyLink, Link } from 'components';
 import { Signout } from 'containers';
+import { User } from 'models';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { useUser } from 'services';
 import {
   absolutePrivateNavigationRoutes,
   absolutePublicNavigationRoutes,
 } from 'utils';
 
 export interface NavProps {
+  isSignedIn: boolean;
+  user: User;
   onClick: React.MouseEventHandler;
 }
 
@@ -19,10 +21,7 @@ export const withNavWidth: React.CSSProperties = {
   minWidth: minNavWidth,
 };
 
-export const Nav: React.FC<NavProps> = ({ onClick }) => {
-  const user = useUser();
-  const isSignedIn = !!user;
-
+export const Nav: React.FC<NavProps> = ({ isSignedIn, user, onClick }) => {
   const routes = isSignedIn
     ? absolutePrivateNavigationRoutes
     : absolutePublicNavigationRoutes;
@@ -40,7 +39,7 @@ export const Nav: React.FC<NavProps> = ({ onClick }) => {
         </Link>
       ))}
       {!!user && <Signout user={user} onClick={onClick} />}
-      {user && <AcademyLink />}
+      {isSignedIn && <AcademyLink />}
     </List>
   );
 };

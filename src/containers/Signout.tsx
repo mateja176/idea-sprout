@@ -16,7 +16,6 @@ import {
   useActions,
   useAuth,
 } from 'services';
-import { absolutePublicRoute } from 'utils';
 
 export interface SignoutProps {
   user: User;
@@ -51,7 +50,7 @@ export const Signout: React.FC<SignoutProps> = ({ user, onClick }) => {
             .then(() => {
               onClick(e);
 
-              history.replace(absolutePublicRoute.signin.path);
+              history.replace('/');
 
               reset();
 

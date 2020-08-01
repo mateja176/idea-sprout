@@ -12,11 +12,19 @@ import { ChevronLeft, LibraryAdd, Menu } from '@material-ui/icons';
 import { IdeaSprout, Link, Load } from 'components';
 import { CreateIdeaIcon } from 'containers';
 import { IdeaHelpContainer } from 'containers/Idea/IdeaHelpContainer';
+import { User } from 'firebase';
+import { initialUser } from 'models';
 import React from 'react';
-import { absolutePrivateRoute } from 'utils';
+import { useUser } from 'services';
+import { absolutePrivateRoute, isFirebaseUser } from 'utils';
 import { minNavWidth, Nav, NavSkeleton } from './Nav';
 
-export interface LayoutProps {}
+export interface LayoutProps {
+  children: (props: {
+    isLoading: boolean;
+    isSignedIn: boolean;
+  }) => React.ReactNode;
+}
 
 const useStyles = makeStyles((theme) => ({
   toolbar: theme.mixins.toolbar,
@@ -32,7 +40,14 @@ const loadIconButton = (
     </IconButton>
   </Load>
 );
-export const Layout: React.FC<LayoutProps> = ({ children }) => {
+export const Layout = ({ children }: LayoutProps) => {
+  const user = useUser<User | typeof initialUser>({
+    startWithValue: initialUser,
+  });
+  const uid = user?.uid;
+  const isLoading = uid === initialUser.uid;
+  const isSignedIn = !!user && isFirebaseUser(user) && user.emailVerified;
+
   const classes = useStyles();
 
   const [drawerOpen, setDrawerOpen] = React.useState(false);
@@ -41,11 +56,16 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
     setDrawerOpen(!drawerOpen);
   };
 
+  const layoutChildren = React.useMemo(
+    () => children({ isLoading, isSignedIn }),
+    [children, isLoading, isSignedIn],
+  );
+
   return (
     <Box height={'100%'} display={'flex'} flexDirection={'column'}>
       <AppBar position="static">
         <Toolbar>
-          <Box mr={2}>
+          <Box mr={2} visibility={isSignedIn ? 'visible' : 'hidden'}>
             <IconButton onClick={toggleDrawerOpen} edge="start" color="inherit">
               <Menu />
             </IconButton>
@@ -95,12 +115,18 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
               <ChevronLeft />
             </IconButton>
           </Box>
-          <React.Suspense fallback={<NavSkeleton />}>
-            <Nav onClick={toggleDrawerOpen} />
-          </React.Suspense>
+          {user && (
+            <React.Suspense fallback={<NavSkeleton />}>
+              <Nav
+                isSignedIn={isSignedIn}
+                user={user}
+                onClick={toggleDrawerOpen}
+              />
+            </React.Suspense>
+          )}
         </Box>
       </Drawer>
-      {children}
+      {layoutChildren}
     </Box>
   );
 };
