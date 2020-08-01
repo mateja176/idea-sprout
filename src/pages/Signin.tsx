@@ -152,9 +152,13 @@ export const Signin: React.FC<SigninProps> = ({ user, setEmailVerified }) => {
   }, []);
 
   const onSubmit = React.useCallback(
-    (formValues: FormValues, { resetForm }: FormikHelpers<FormValues>) => {
+    (
+      formValues: FormValues,
+      { resetForm, setTouched }: FormikHelpers<FormValues>,
+    ) => {
       resetErrors();
       const handleSuccess = () => {
+        setTouched({});
         resetForm();
       };
       const handleError = (error: FirebaseError) => {
