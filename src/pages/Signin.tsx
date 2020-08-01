@@ -86,7 +86,6 @@ export const Signin: React.FC<SigninProps> = () => {
   const [submitCount, setSubmitCount] = React.useState(0);
 
   const [signinOrCreateError, setSigninOrCreateError] = React.useState('');
-  const [confirmationError, setConfirmationError] = React.useState('');
   const [sendVerificationError, setSendVerificationError] = React.useState('');
 
   const reloadUser = React.useCallback(
@@ -136,7 +135,6 @@ export const Signin: React.FC<SigninProps> = () => {
 
   const resetErrors = React.useCallback(() => {
     setSigninOrCreateError('');
-    setConfirmationError('');
     setSendVerificationError('');
   }, []);
 
@@ -213,15 +211,7 @@ export const Signin: React.FC<SigninProps> = () => {
       </Tabs>
       <Box mt={2} display="flex" flexDirection="column" alignItems="center">
         <Box display="flex" flexDirection="column" alignItems="center">
-          <Grow
-            in={
-              !!(
-                signinOrCreateError ||
-                successfullySubmitted ||
-                confirmationError
-              )
-            }
-          >
+          <Grow in={!!(signinOrCreateError || successfullySubmitted)}>
             <Box mb={2}>
               {(() => {
                 switch (true) {
@@ -233,10 +223,6 @@ export const Signin: React.FC<SigninProps> = () => {
                       >
                         {signinOrCreateError}
                       </Alert>
-                    );
-                  case !!confirmationError:
-                    return (
-                      <Alert severity={'error'}>{confirmationError}</Alert>
                     );
                   case successfullySubmitted:
                     return (
