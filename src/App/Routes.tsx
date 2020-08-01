@@ -1,6 +1,7 @@
 import { Box, Tab, Tabs } from '@material-ui/core';
 import { Load } from 'components';
 import { IdeaContainerSkeleton, IdeasSkeleton } from 'containers';
+import { User } from 'firebase';
 import { initialUser } from 'models';
 import { IdeasSwitch, Signin } from 'pages';
 import React from 'react';
@@ -10,12 +11,17 @@ import { absolutePrivateRoute, absolutePublicRoute } from 'utils';
 
 export interface RoutesProps {}
 
+function isFirebaseUser(user: User | typeof initialUser): user is User {
+  return !!user.uid;
+}
+
 export const Routes: React.FC<RoutesProps> = () => {
-  const uid = useUser({
+  const user = useUser<User | typeof initialUser>({
     startWithValue: initialUser,
-  })?.uid;
+  });
+  const uid = user?.uid;
   const isLoading = uid === initialUser.uid;
-  const isSignedIn = !!uid;
+  const isSignedIn = user && isFirebaseUser(user) && user.emailVerified;
 
   return (
     <Switch>

@@ -31,8 +31,8 @@ export const useAuth = () => {
   return useFirebaseAuth();
 };
 
-export const useUser = (options?: ReactFireOptions<User | null>) =>
-  useFirebaseUser<User | null>(firebase.auth(), options);
+export const useUser = <U = User>(options?: ReactFireOptions<U | null>) =>
+  useFirebaseUser<U | null>(firebase.auth(), options);
 
 export const useSignedInUser = (options?: ReactFireOptions<User>) =>
   useFirebaseUser<User>(firebase.auth(), options);
