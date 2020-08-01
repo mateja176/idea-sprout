@@ -33,7 +33,10 @@ export const Routes: React.FC<RoutesProps> = () => {
             } = props;
 
             if (isLoading) {
-              if (pathname === absolutePrivateRoute.ideas.path) {
+              if (
+                pathname === absolutePrivateRoute.ideas.path ||
+                pathname === '/'
+              ) {
                 return (
                   <Box
                     flex={1}
