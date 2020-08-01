@@ -1,27 +1,35 @@
 import { Box, Tab, Tabs } from '@material-ui/core';
 import { Load } from 'components';
 import { IdeaContainerSkeleton, IdeasSkeleton } from 'containers';
+import { User, UserInfo } from 'firebase';
 import { IdeasSwitch, Signin } from 'pages';
 import React from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
-import { absolutePrivateRoute } from 'utils';
+import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
+import { absolutePrivateRoute, isInitialUser } from 'utils';
 
 export interface RoutesProps {
-  isSignedIn: boolean;
-  isLoading: boolean;
+  user: User | UserInfo | null;
 }
 
-export const Routes: React.FC<RoutesProps> = ({ isSignedIn, isLoading }) => {
+const NotFound: React.FC<RouteComponentProps> = () => (
+  <Box mt={4} display="flex" justifyContent="center">
+    Not Found
+  </Box>
+);
+
+export const Routes: React.FC<RoutesProps> = ({ user }) => {
   return (
     <Switch>
-      {!isSignedIn && (
+      {user === null || isInitialUser(user) || !(user as User).emailVerified ? (
         <Route
           render={(props) => {
             const {
               location: { pathname },
             } = props;
 
-            if (isLoading) {
+            if (user === null) {
+              return <Signin user={user} {...props} />;
+            } else if (isInitialUser(user)) {
               if (
                 pathname === absolutePrivateRoute.ideas.path ||
                 pathname === '/'
@@ -51,27 +59,21 @@ export const Routes: React.FC<RoutesProps> = ({ isSignedIn, isLoading }) => {
               ) {
                 return <IdeaContainerSkeleton />;
               } else {
-                return <Signin {...props} />;
+                return <NotFound {...props} />;
               }
             } else {
-              return <Signin {...props} />;
+              return <Signin user={user as User} {...props} />;
             }
           }}
         />
-      )}
+      ) : null}
       <Route
         exact
         path={absolutePrivateRoute.root.path}
         render={() => <Redirect to={absolutePrivateRoute.ideas.path} />}
       />
       <Route path={absolutePrivateRoute.ideas.path} component={IdeasSwitch} />
-      <Route
-        render={() => (
-          <Box mt={4} display="flex" justifyContent="center">
-            Not Found
-          </Box>
-        )}
-      />
+      <Route component={NotFound} />
     </Switch>
   );
 };

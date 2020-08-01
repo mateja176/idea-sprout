@@ -13,17 +13,14 @@ import { IdeaSprout, Link, Load } from 'components';
 import { CreateIdeaIcon } from 'containers';
 import { IdeaHelpContainer } from 'containers/Idea/IdeaHelpContainer';
 import { User } from 'firebase';
-import { initialUser } from 'models';
+import { initialUser, User as UserModel } from 'models';
 import React from 'react';
 import { useUser } from 'services';
-import { absolutePrivateRoute, isFirebaseUser } from 'utils';
+import { absolutePrivateRoute, getIsSignedIn } from 'utils';
 import { minNavWidth, Nav, NavSkeleton } from './Nav';
 
 export interface LayoutProps {
-  children: (props: {
-    isLoading: boolean;
-    isSignedIn: boolean;
-  }) => React.ReactNode;
+  children: (props: { user: User | UserModel | null }) => React.ReactNode;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -41,12 +38,10 @@ const loadIconButton = (
   </Load>
 );
 export const Layout = ({ children }: LayoutProps) => {
-  const user = useUser<User | typeof initialUser>({
+  const user = useUser<User | UserModel>({
     startWithValue: initialUser,
   });
-  const uid = user?.uid;
-  const isLoading = uid === initialUser.uid;
-  const isSignedIn = !!user && isFirebaseUser(user) && user.emailVerified;
+  const isSignedIn = getIsSignedIn(user);
 
   const classes = useStyles();
 
@@ -56,10 +51,10 @@ export const Layout = ({ children }: LayoutProps) => {
     setDrawerOpen(!drawerOpen);
   };
 
-  const layoutChildren = React.useMemo(
-    () => children({ isLoading, isSignedIn }),
-    [children, isLoading, isSignedIn],
-  );
+  const layoutChildren = React.useMemo(() => children({ user }), [
+    children,
+    user,
+  ]);
 
   return (
     <Box height={'100%'} display={'flex'} flexDirection={'column'}>
