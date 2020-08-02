@@ -4,6 +4,6 @@ export interface Config {
     secret: string;
     order_api: string;
     oauth_api: string;
+    amount: string;
   };
-  amount: string;
 }

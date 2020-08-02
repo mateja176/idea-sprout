@@ -80,10 +80,10 @@ export const upgradeToPro = functions.https.onCall(async (data, context) => {
 
   // 5. Validate the transaction details are as expected
   const amount = details.purchase_units[0].amount.value;
-  if (Number(amount) < Number(config.amount)) {
+  if (Number(amount) < Number(config.paypal.amount)) {
     throw new functions.https.HttpsError(
       'permission-denied',
-      `The amount your specified "${amount}" does not match the required "${config.amount}"`,
+      `The amount your specified "${amount}" does not match the required "${config.paypal.amount}"`,
     );
   }
 
