@@ -108,7 +108,7 @@ export const upgradeToPro = functions.https.onCall(async (data, context) => {
     });
   }
 
-  const orderRef = ordersRef.doc(orderId);
+  const orderRef = ordersRef.doc(uid);
 
   await orderRef.set({ orderId });
 });
