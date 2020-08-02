@@ -38,8 +38,10 @@ import {
 import React from 'react';
 import { AuthCheck } from 'reactfire';
 import {
+  createQueueSnackbar,
   env,
   formatCurrency,
+  useActions,
   useReviewsRef,
   useUpgradeToPro,
   useUsersRef,
@@ -74,10 +76,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const actionCreators = { queueSnackbar: createQueueSnackbar };
+
 export const ExportReviews: React.FC<
   { idea: IdeaModel } & Required<Pick<User, 'uid' | 'email'>> &
     Pick<TabProps, 'classes' | 'style'>
 > = ({ idea, uid, email, ...props }) => {
+  const { queueSnackbar } = useActions(actionCreators);
+
   const upgradeToPro = useUpgradeToPro();
 
   const isAuthor = idea.author === uid;
@@ -202,13 +208,19 @@ export const ExportReviews: React.FC<
               ),
             )
             .then(() => {
+              queueSnackbar({
+                severity: 'info',
+                message:
+                  'To use your new powers, please sign out and sign in again.',
+                autoHideDuration: 600000,
+              });
               setApproving.setFalse();
               setUpgradeDialogOpen.setFalse();
             });
         },
       })
       .render(`#${id}`);
-  }, [upgradeToPro, setApproving, setUpgradeDialogOpen]);
+  }, [upgradeToPro, setApproving, setUpgradeDialogOpen, queueSnackbar]);
 
   const loadScript = React.useCallback(() => {
     setScriptLoading.setTrue();
