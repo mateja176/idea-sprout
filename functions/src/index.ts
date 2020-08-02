@@ -47,6 +47,17 @@ export const upgradeToPro = functions.https.onCall(async (data, context) => {
     );
   }
 
+  const ordersRef = admin.firestore().collection('orders');
+
+  const orders = await ordersRef.where('orderId', '==', orderId).get();
+
+  if (orders.size > 0) {
+    throw new functions.https.HttpsError(
+      'already-exists',
+      'The order already exists',
+    );
+  }
+
   // * verify order
 
   const config = functions.config() as interfaces.Config;
@@ -97,7 +108,7 @@ export const upgradeToPro = functions.https.onCall(async (data, context) => {
     });
   }
 
-  const orderRef = admin.firestore().collection('orders').doc(uid);
+  const orderRef = ordersRef.doc(orderId);
 
   await orderRef.set({ orderId });
 });
