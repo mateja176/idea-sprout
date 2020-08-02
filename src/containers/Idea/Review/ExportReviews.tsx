@@ -22,6 +22,7 @@ import {
 import { Skeleton } from '@material-ui/lab';
 import { useBoolean } from 'ahooks';
 import { proMembership, proMembershipDiscount } from 'elements';
+import firebase from 'firebase/app';
 import { parseAsync } from 'json2csv';
 import { kebabCase } from 'lodash';
 import {
@@ -34,12 +35,19 @@ import {
 } from 'models';
 import React from 'react';
 import { AuthCheck } from 'reactfire';
-import { env, formatCurrency, useReviewsRef, useUsersRef } from 'services';
+import {
+  env,
+  formatCurrency,
+  useReviewsRef,
+  useUpgradeToPro,
+  useUsersRef,
+} from 'services';
 import {
   paypalButtonsHeight,
   paypalHeightBreakpoint,
   tabChildStyle,
 } from 'styles';
+import { paypal } from 'types';
 import { convertFirestoreCollection, convertFirestoreDocument } from 'utils';
 
 const id = 'paypal-container';
@@ -64,6 +72,8 @@ export const ExportReviews: React.FC<
   { idea: IdeaModel } & Required<Pick<User, 'uid' | 'email'>> &
     Pick<TabProps, 'classes' | 'style'>
 > = ({ idea, uid, email, ...props }) => {
+  const upgradeToPro = useUpgradeToPro();
+
   const isAuthor = idea.author === uid;
 
   const reviewsRef = useReviewsRef(idea.id);
@@ -139,10 +149,32 @@ export const ExportReviews: React.FC<
               },
             ],
           }),
-        onApprove: (_, actions) => actions.order.capture(),
+        onApprove: (_, actions) =>
+          actions.order
+            .capture()
+            .catch(
+              () =>
+                new Promise<paypal.Order>((resolve) => {
+                  setTimeout(() => {
+                    actions.order.capture().then(resolve);
+                  }, 2000);
+                }),
+            )
+            .then(({ id }) =>
+              upgradeToPro({ orderId: id }).catch(
+                () =>
+                  new Promise<firebase.functions.HttpsCallableResult>(
+                    (resolve) => {
+                      setTimeout(() => {
+                        upgradeToPro({ orderId: id }).then(resolve);
+                      }, 2000);
+                    },
+                  ),
+              ),
+            ),
       })
       .render(`#${id}`);
-  }, []);
+  }, [upgradeToPro]);
 
   const loadScript = React.useCallback(() => {
     setScriptLoading.setTrue();

@@ -2,6 +2,7 @@ import { useBoolean } from 'ahooks';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
+import 'firebase/functions';
 import 'firebase/storage';
 import { IdeaModel, Review, User, WithId } from 'models';
 import qs from 'qs';
@@ -12,6 +13,7 @@ import {
   useAuth as useFirebaseAuth,
   useFirestoreCollection as useFirebaseFirestoreCollection,
   useFirestoreDoc as useFirebaseFirestoreDoc,
+  useFunctions as useFirebaseFunctions,
   useStorageDownloadURL as useFirebaseStorageDownloadUrl,
   useUser as useFirebaseUser,
 } from 'reactfire';
@@ -255,4 +257,14 @@ export const useCreateIdea = () => {
     create,
     loading,
   };
+};
+
+export const useFunctions = () => useFirebaseFunctions();
+export const useUpgradeToPro = () => {
+  const functions = useFunctions();
+  return useMemo<
+    (params: {
+      orderId: string;
+    }) => Promise<firebase.functions.HttpsCallableResult>
+  >(() => functions.httpsCallable('upgradeToPro'), [functions]);
 };
