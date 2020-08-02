@@ -18,7 +18,6 @@ import {
   CloudDownload,
   EmojiEvents,
   ExpandMore,
-  HourglassEmpty,
 } from '@material-ui/icons';
 import { Skeleton } from '@material-ui/lab';
 import { useBoolean } from 'ahooks';
@@ -35,13 +34,7 @@ import {
 } from 'models';
 import React from 'react';
 import { AuthCheck } from 'reactfire';
-import {
-  env,
-  formatCurrency,
-  useFirestoreDoc,
-  useReviewsRef,
-  useUsersRef,
-} from 'services';
+import { env, formatCurrency, useReviewsRef, useUsersRef } from 'services';
 import {
   paypalButtonsHeight,
   paypalHeightBreakpoint,
@@ -76,10 +69,6 @@ export const ExportReviews: React.FC<
   const reviewsRef = useReviewsRef(idea.id);
 
   const usersRef = useUsersRef();
-
-  const userRef = React.useMemo(() => usersRef.doc(uid), [usersRef, uid]);
-
-  const user = useFirestoreDoc<FirestoreUser>(userRef);
 
   const classes = useStyles();
 
@@ -193,8 +182,6 @@ export const ExportReviews: React.FC<
 
   const [infoDialogOpen, setInfoDialogOpen] = useBoolean();
 
-  const placedOrder = !!user?.proMembershipOrder;
-
   return (
     <>
       <Tab
@@ -204,16 +191,7 @@ export const ExportReviews: React.FC<
           <AuthCheck
             requiredClaims={claims.pro}
             fallback={
-              placedOrder ? (
-                <Tooltip title={'Membership is being processed'}>
-                  <Box
-                    style={tabChildStyle}
-                    onClick={setInfoDialogOpen.setTrue}
-                  >
-                    <HourglassEmpty color={'secondary'} />
-                  </Box>
-                </Tooltip>
-              ) : isAuthor ? (
+              isAuthor ? (
                 <Tooltip title={'Export reviews'}>
                   <Box style={tabChildStyle} onClick={openUpgradeDialog}>
                     <CloudDownload color={'secondary'} />
