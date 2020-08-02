@@ -92,6 +92,10 @@ export const initialRawIdea: RawIdea = {
 
 export type RawIdea = Omit<IdeaModel, 'id'>;
 
+export type CreationIdea = Omit<RawIdea, 'createdAt'> & {
+  createdAt: firebase.firestore.FieldValue;
+};
+
 export type FormIdea = Omit<
   IdeaModel,
   'id' | 'author' | 'createdAt' | 'checks' | 'status' | 'sharedBy'

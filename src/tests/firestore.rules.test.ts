@@ -6,7 +6,7 @@ import {
   initializeAdminApp,
   initializeTestApp,
 } from '@firebase/testing';
-import { RawIdea, RawReview } from 'models';
+import { CreationIdea, RawReview } from 'models';
 import { firestoreCollections, getInitialIdea } from 'utils';
 
 const projectId = 'idea-sprout';
@@ -23,13 +23,13 @@ const getAdminFirestore = () =>
     projectId,
   }).firestore();
 
-const mySeed: RawIdea = {
+const mySeed: CreationIdea = {
   ...getInitialIdea(myAuth.uid),
-  createdAt: firestore.Timestamp.now(),
+  createdAt: firestore.FieldValue.serverTimestamp(),
 };
-const mySprout: RawIdea = { ...mySeed, status: 'sprout' };
-const theirSprout: RawIdea = { ...mySprout, author: theirId };
-const theirSeed: RawIdea = { ...mySeed, author: theirId };
+const mySprout: CreationIdea = { ...mySeed, status: 'sprout' };
+const theirSprout: CreationIdea = { ...mySprout, author: theirId };
+const theirSeed: CreationIdea = { ...mySeed, author: theirId };
 
 const seedDb = () => {
   const db = getAdminFirestore();

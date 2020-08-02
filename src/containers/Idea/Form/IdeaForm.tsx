@@ -14,11 +14,11 @@ import { Drop } from 'containers';
 import firebase from 'firebase/app';
 import { useFormik } from 'formik';
 import {
+  CreationIdea,
   creationIdeaSchema,
   IdeaModel,
   ProblemSolutionLength,
   RationaleLength,
-  RawIdea,
 } from 'models';
 import qs from 'qs';
 import React from 'react';
@@ -79,11 +79,11 @@ export const IdeaForm: React.FC<IdeaFormProps> = ({ idea }) => {
     initialValues,
     onSubmit: (formValues) => {
       const { id, ...rawIdea } = idea;
-      const newIdea: RawIdea = {
+      const newIdea: CreationIdea = {
         ...rawIdea,
         author: user.uid,
         ...formValues,
-        createdAt: firebase.firestore.Timestamp.now(),
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       };
 
       return (
