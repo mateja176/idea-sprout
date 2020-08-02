@@ -49,9 +49,9 @@ export const upgradeToPro = functions.https.onCall(async (data, context) => {
 
   const ordersRef = admin.firestore().collection('orders');
 
-  const orders = await ordersRef.where('orderId', '==', orderId).get();
+  const order = await ordersRef.doc(orderId).get();
 
-  if (orders.size > 0) {
+  if (order.exists) {
     throw new functions.https.HttpsError(
       'already-exists',
       'The order already exists',
@@ -108,7 +108,10 @@ export const upgradeToPro = functions.https.onCall(async (data, context) => {
     });
   }
 
-  const orderRef = ordersRef.doc(uid);
+  const orderRef = ordersRef.doc(orderId);
 
-  await orderRef.set({ orderId });
+  await orderRef.set({
+    userId: uid,
+    createdAt: admin.firestore.FieldValue.serverTimestamp(),
+  });
 });

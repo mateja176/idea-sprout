@@ -15,6 +15,10 @@ export const firestoreCollections = {
     path: 'counts',
     collections: {},
   },
+  orders: {
+    path: 'orders',
+    collections: {},
+  },
 };
 
 export const convertFirestoreDocument = <T extends WithId>(
