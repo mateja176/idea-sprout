@@ -65,10 +65,6 @@ const useStyles = makeStyles((theme) => ({
       height: paypalButtonsHeight[168],
     },
   },
-  backdrop: {
-    // * covers paypal buttons
-    zIndex: 1000,
-  },
 }));
 
 export const ExportReviews: React.FC<
