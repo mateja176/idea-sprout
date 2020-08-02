@@ -89,13 +89,32 @@ export const ExportReviews: React.FC<
 
     reviewsRef
       .get()
+      .catch(
+        () =>
+          new Promise<firebase.firestore.QuerySnapshot>((resolve) => {
+            setTimeout(() => {
+              reviewsRef.get().then(resolve);
+            }, 2000);
+          }),
+      )
       .then((collection) => convertFirestoreCollection<Review>(collection))
       .then((reviews) =>
         Promise.all(
-          reviews.map(({ id, rating, feedback }) =>
-            usersRef
-              .doc(id)
+          reviews.map(({ id, rating, feedback }) => {
+            const userRef = usersRef.doc(id);
+
+            return userRef
               .get()
+              .catch(
+                () =>
+                  new Promise<firebase.firestore.DocumentSnapshot>(
+                    (resolve) => {
+                      setTimeout(() => {
+                        userRef.get().then(resolve);
+                      }, 2000);
+                    },
+                  ),
+              )
               .then((doc) => convertFirestoreDocument<FirestoreUser>(doc))
               .then(({ displayName, email }) => {
                 const [firstName, lastName] = displayName?.split(' ') || [];
@@ -106,8 +125,8 @@ export const ExportReviews: React.FC<
                   lastName,
                   email,
                 } as ReviewWithAuthor;
-              }),
-          ),
+              });
+          }),
         ),
       )
       .then((reviews) => parseAsync(reviews))
