@@ -228,5 +228,9 @@ service cloud.firestore {
       allow read: if isSignedIn() && (request.auth.uid == userId || request.auth.token.isPro);
       allow write: if isSignedIn() && request.auth.uid == userId;
     }
+
+    match /orders/{id} {
+      allow read: if isSignedIn() && request.auth.uid == id;
+    }
   }
 }
