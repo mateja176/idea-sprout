@@ -61,6 +61,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "postinstall": "yarn --cwd functions install --ignore-engines",
     "predeploy": "yarn build",
     "deploy": "firebase deploy"
   },
