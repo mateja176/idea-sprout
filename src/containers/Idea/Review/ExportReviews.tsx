@@ -13,6 +13,7 @@ import {
   makeStyles,
   Tab,
   TabProps,
+  TextField,
   Tooltip,
 } from '@material-ui/core';
 import {
@@ -21,22 +22,24 @@ import {
   EmojiEvents,
   ExpandMore,
 } from '@material-ui/icons';
-import { Skeleton } from '@material-ui/lab';
+import { Alert, Skeleton } from '@material-ui/lab';
 import { useBoolean } from 'ahooks';
+import { AuthCheck } from 'containers';
 import { proMembership, proMembershipDiscount } from 'elements';
-import firebase from 'firebase/app';
+import firebase, { FirebaseError, User } from 'firebase/app';
+import { useFormik } from 'formik';
 import { parseAsync } from 'json2csv';
 import { kebabCase } from 'lodash';
 import {
   claims,
   FirestoreUser,
   IdeaModel,
+  passwordSchema,
+  ProviderId,
   Review,
   ReviewWithAuthor,
-  User,
 } from 'models';
 import React from 'react';
-import { AuthCheck } from 'reactfire';
 import {
   createQueueSnackbar,
   env,
@@ -47,16 +50,27 @@ import {
   useUsersRef,
 } from 'services';
 import {
+  inputStyle,
   paypalButtonsHeight,
   paypalHeightBreakpoint,
   tabChildStyle,
 } from 'styles';
 import { paypal } from 'types';
 import { convertFirestoreCollection, convertFirestoreDocument } from 'utils';
+import * as yup from 'yup';
 
 const id = 'paypal-container';
 
 const scriptId = 'paypal-script';
+
+const initialValues = {
+  password: '',
+};
+type FormValues = typeof initialValues;
+
+const validationSchema = yup.object().required().shape<FormValues>({
+  password: passwordSchema,
+});
 
 const useStyles = makeStyles((theme) => ({
   paypalButtonsHeight: {
@@ -79,14 +93,13 @@ const useStyles = makeStyles((theme) => ({
 const actionCreators = { queueSnackbar: createQueueSnackbar };
 
 export const ExportReviews: React.FC<
-  { idea: IdeaModel } & Required<Pick<User, 'uid' | 'email'>> &
-    Pick<TabProps, 'classes' | 'style'>
-> = ({ idea, uid, email, ...props }) => {
+  { idea: IdeaModel; user: User } & Pick<TabProps, 'classes' | 'style'>
+> = ({ idea, user, ...props }) => {
   const { queueSnackbar } = useActions(actionCreators);
 
   const upgradeToPro = useUpgradeToPro();
 
-  const isAuthor = idea.author === uid;
+  const isAuthor = idea.author === user.uid;
 
   const reviewsRef = useReviewsRef(idea.id);
 
@@ -168,6 +181,55 @@ export const ExportReviews: React.FC<
 
   const [approving, setApproving] = useBoolean();
 
+  const close = React.useCallback(() => {
+    queueSnackbar({
+      severity: 'success',
+      message: 'Welcome to the pros!',
+    });
+    setApproving.setFalse();
+    setUpgradeDialogOpen.setFalse();
+  }, [queueSnackbar, setApproving, setUpgradeDialogOpen]);
+
+  const [passwordDialogOpen, setPasswordDialogOpen] = useBoolean();
+  const [passwordError, setPasswordError] = React.useState('');
+
+  const {
+    handleSubmit,
+    getFieldProps,
+    touched,
+    errors,
+    isSubmitting,
+  } = useFormik({
+    initialValues,
+    validationSchema,
+    onSubmit: ({ password }, { resetForm }) => {
+      const reauthenticate = (password: string) => {
+        if (user.email) {
+          const credential = firebase.auth.EmailAuthProvider.credential(
+            user.email,
+            password,
+          );
+          return user
+            .reauthenticateAndRetrieveDataWithCredential(credential)
+            .then(() => {
+              setPasswordDialogOpen.setFalse();
+              close();
+            })
+            .catch((error: FirebaseError) => {
+              resetForm();
+              setPasswordError(error.message);
+            });
+        } else {
+          console.error(
+            'The providerId is "password" but the user has no email.',
+          );
+        }
+      };
+
+      return reauthenticate(password);
+    },
+  });
+
   const renderButtons = React.useCallback(() => {
     window.paypal
       ?.Buttons({
@@ -196,31 +258,54 @@ export const ExportReviews: React.FC<
                 }),
             )
             .then(({ id }) =>
-              upgradeToPro({ orderId: id }).catch(
-                () =>
-                  new Promise<firebase.functions.HttpsCallableResult>(
-                    (resolve) => {
+              upgradeToPro({ orderId: id })
+                .catch(
+                  () =>
+                    new Promise<firebase.functions.HttpsCallableResult>(
+                      (resolve) => {
+                        setTimeout(() => {
+                          upgradeToPro({ orderId: id }).then(resolve);
+                        }, 2000);
+                      },
+                    ),
+                )
+                .then(() => {
+                  const [provider] = user.providerData;
+                  if (provider) {
+                    const providerId = provider.providerId as ProviderId;
+                    if (providerId === 'password') {
+                      setPasswordDialogOpen.setTrue();
+                    } else {
+                      const CurrentProvider = [
+                        firebase.auth.GoogleAuthProvider,
+                        firebase.auth.FacebookAuthProvider,
+                        firebase.auth.TwitterAuthProvider,
+                      ].find((provider) => provider.PROVIDER_ID === providerId);
+                      if (CurrentProvider) {
+                        return user
+                          .reauthenticateWithPopup(new CurrentProvider())
+                          .then(close);
+                      } else {
+                        console.error('Unknown provider id', providerId);
+                      }
+                    }
+                  } else {
+                    console.error('No provider found for user', user);
+                  }
+                })
+                .catch(
+                  () =>
+                    new Promise<void>((resolve) => {
                       setTimeout(() => {
-                        upgradeToPro({ orderId: id }).then(resolve);
+                        user.reload().then(resolve);
                       }, 2000);
-                    },
-                  ),
-              ),
-            )
-            .then(() => {
-              queueSnackbar({
-                severity: 'info',
-                message:
-                  'To use your new powers, please sign out and sign in again.',
-                autoHideDuration: 600000,
-              });
-              setApproving.setFalse();
-              setUpgradeDialogOpen.setFalse();
-            });
+                    }),
+                ),
+            );
         },
       })
       .render(`#${id}`);
-  }, [upgradeToPro, setApproving, setUpgradeDialogOpen, queueSnackbar]);
+  }, [upgradeToPro, user, close, setPasswordDialogOpen, setApproving]);
 
   const loadScript = React.useCallback(() => {
     setScriptLoading.setTrue();
@@ -330,6 +415,29 @@ export const ExportReviews: React.FC<
               </div>
             </Box>
           </Box>
+          <Dialog open={passwordDialogOpen}>
+            <DialogContent>
+              <Box mb={2}>
+                <Alert severity={passwordError ? 'error' : 'info'}>
+                  {passwordError ? passwordError : "Confirm that it's you"}
+                </Alert>
+              </Box>
+              <form onSubmit={handleSubmit}>
+                <TextField
+                  {...getFieldProps('password')}
+                  type={'password'}
+                  label={'Password'}
+                  error={touched.password && !!errors.password}
+                  helperText={(touched.password || '') && errors.password}
+                  variant={'outlined'}
+                  style={inputStyle}
+                />
+                <Button disabled={isSubmitting} type={'submit'}>
+                  Confirm
+                </Button>
+              </form>
+            </DialogContent>
+          </Dialog>
         </DialogContent>
         <DialogActions>
           <Button onClick={setUpgradeDialogOpen.setFalse}>Close</Button>

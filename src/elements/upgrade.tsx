@@ -19,12 +19,9 @@ const proMembershipProposition = (
 const proMembershipInfo = (
   <Box>
     <Box>
-      In order for your newly found privileges to take effect, it is required to{' '}
-      <i>
-        sign out (by clicking on the sign out button in the menu to the left)
-        and sign in again
-      </i>
-      , after which you can use the app to its full extent.
+      As a security measure, you will be prompted to enter your password if you
+      signed up with an email or password. Otherwise you will be asked to
+      reauthenticate with Google, Facebook or Twitter.
     </Box>
     <br />
     <Box>

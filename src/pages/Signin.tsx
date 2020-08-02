@@ -20,6 +20,7 @@ import { Google, PageWrapper } from 'components';
 import firebase, { FirebaseError, User } from 'firebase/app';
 import 'firebase/auth';
 import { FormikHelpers, useFormik } from 'formik';
+import { passwordSchema } from 'models';
 import React from 'react';
 import { useQuery } from 'react-query';
 import { RouteComponentProps } from 'react-router-dom';
@@ -114,13 +115,10 @@ export const Signin: React.FC<SigninProps> = ({ user, setUserState }) => {
     },
   });
 
-  const validationSchema = yup
-    .object()
-    .required()
-    .shape<FormValues>({
-      email: yup.string().required().email(),
-      password: yup.string().required().min(6),
-    });
+  const validationSchema = yup.object().required().shape<FormValues>({
+    email: yup.string().required().email(),
+    password: passwordSchema,
+  });
 
   const [activeTab, setActiveTab] = React.useState(0);
 

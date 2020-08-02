@@ -3,7 +3,8 @@ import { CloudOff, Publish, Share, StarRate } from '@material-ui/icons';
 import { Skeleton } from '@material-ui/lab';
 import { useBoolean } from 'ahooks';
 import { ReviewDialog, ReviewsDialog, ShareMenu } from 'containers';
-import { IdeaModel, User } from 'models';
+import { User } from 'firebase/app';
+import { IdeaModel } from 'models';
 import React from 'react';
 import { StorageImage } from 'reactfire';
 import {
@@ -139,12 +140,7 @@ export const IdeaTabs: React.FC<
             onClick={setReviewOpen.setTrue}
           />
         )}
-        <ExportReviewSuspender
-          idea={idea}
-          uid={user.uid}
-          email={user.email}
-          style={ideaTabStyle}
-        />
+        <ExportReviewSuspender idea={idea} user={user} style={ideaTabStyle} />
       </Tabs>
       <Box height={tabsTitleSectionHeight}>
         <Box

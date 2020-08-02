@@ -36,8 +36,8 @@ export const useAuth = () => {
 export const useUser = <U = User>(options?: ReactFireOptions<U | null>) =>
   useFirebaseUser<U | null>(firebase.auth(), options);
 
-export const useSignedInUser = (options?: ReactFireOptions<User>) =>
-  useFirebaseUser<User>(firebase.auth(), options);
+export const useSignedInUser = (options?: ReactFireOptions<firebase.User>) =>
+  useFirebaseUser<firebase.User>(firebase.auth(), options);
 
 export const useUsersRef = () =>
   useMemo(

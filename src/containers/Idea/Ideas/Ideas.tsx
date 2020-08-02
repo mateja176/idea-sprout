@@ -1,6 +1,7 @@
 import { Box, Typography } from '@material-ui/core';
 import { IdeaRow, IdeasSkeleton } from 'containers';
-import { IdeaFilter, User, WithCount } from 'models';
+import { User } from 'firebase/app';
+import { IdeaFilter, WithCount } from 'models';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AutoSizer, InfiniteLoader, List } from 'react-virtualized';
@@ -111,12 +112,7 @@ export const Ideas = ({ user }: IdeasProps) => {
               &nbsp; from {idea.startIndex + 1} to {idea.stopIndex + 1}
             </Box>
           ) : (
-            <IdeaRow
-              key={idea.id}
-              idea={idea}
-              uid={user.uid}
-              email={user.email}
-            />
+            <IdeaRow key={idea.id} idea={idea} user={user} />
           )}
         </Box>
       );

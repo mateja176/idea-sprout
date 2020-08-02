@@ -7,7 +7,8 @@ import {
   ListItemText,
 } from '@material-ui/core';
 import { Edit, LibraryAdd, Publish, Share } from '@material-ui/icons';
-import { IdeaModel, User } from 'models';
+import { User } from 'firebase/app';
+import { IdeaModel } from 'models';
 import React from 'react';
 import FlipMove from 'react-flip-move';
 import { useSelector } from 'react-redux';
@@ -19,7 +20,7 @@ import {
 } from 'services';
 import { IdeaRow } from '../IdeaRow';
 
-export const MyEmptyIdeas = ({ user }: { user: User }) => {
+export const MyEmptyIdeas = () => {
   const { create, loading } = useCreateIdea();
 
   return (
@@ -90,16 +91,11 @@ export const MyIdeas: React.FC<{ user: User }> = ({ user }) => {
   return (
     <Box flex={1} display={'flex'} flexDirection={'column'} overflow={'auto'}>
       {ideas.length <= 0 ? (
-        <MyEmptyIdeas user={user} />
+        <MyEmptyIdeas />
       ) : (
         <FlipMove>
           {ideas.map((idea) => (
-            <IdeaRow
-              key={idea.id}
-              idea={idea}
-              uid={user.uid}
-              email={user.email}
-            />
+            <IdeaRow key={idea.id} idea={idea} user={user} />
           ))}
         </FlipMove>
       )}

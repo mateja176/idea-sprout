@@ -18,4 +18,6 @@ export const claims = {
   pro: {
     isPro: true,
   },
-};
+} as const;
+
+export type Claims = Partial<typeof claims[keyof typeof claims]>;
