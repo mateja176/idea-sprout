@@ -294,7 +294,7 @@ export const ExportReviews: React.FC<
             <Backdrop open={approving} className={classes.backdrop}>
               <CircularProgress variant={'indeterminate'} size={'3.5em'} />
             </Backdrop>
-            <Box visibility={approving ? 'hidden' : 'visible'}>
+            <Box>
               <Box>
                 {proMembership.proposition}
                 <br />
