@@ -19,12 +19,12 @@ const proMembershipProposition = (
 const proMembershipInfo = (
   <Box>
     <Box>
-      Bear in mind that, because of the <i>high demand</i>, the activation of
-      your pro membership may last <i>up to 12 hours</i>. You will be notified
-      promptly when your membership is activated. After you receive the email,
-      in order for your newly found privileges to take effect immediately, it is
-      required to <i>sign out and sign in again</i>, after which you can use the
-      app to its full extent.
+      In order for your newly found privileges to take effect, it is required to{' '}
+      <i>
+        sign out (by clicking on the sign out button in the menu to the left)
+        and sign in again
+      </i>
+      , after which you can use the app to its full extent.
     </Box>
     <br />
     <Box>
