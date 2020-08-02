@@ -74,7 +74,7 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({
       overflow={'auto'}
       onScroll={handleScroll}
     >
-      <IdeaTabs user={user} idea={idea} showName={showName} />
+      <IdeaTabs user={user} idea={idea} showName={showName} update={update} />
       <Idea user={user} idea={idea} update={update} />
     </Box>
   ) : (

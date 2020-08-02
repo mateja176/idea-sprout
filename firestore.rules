@@ -164,15 +164,6 @@ function isReviewType() {
     && isFeedbackValid();
 }
 
-function isCountType() {
-  return request.resource.data.keys().hasOnly(['count'])
-    && request.resource.data.count is int;
-}
-
-function incrementingCount() {
-  return (request.resource.data.count == resource.data.count + 1) || (request.resource.data.count == resource.data.count - 1);
-}
-
 service cloud.firestore {
   match /databases/{database}/documents {
     match /{document=**} {
@@ -219,8 +210,6 @@ service cloud.firestore {
 
     match /counts/ideas {
       allow read: if isSignedIn();
-      // ? is there a way to check what the other operation contained in the batch is
-      allow write: if isSignedIn() && request.resource.data.count >= 0 && isCountType() && incrementingCount();
     }
 
     match /users/{userId} {

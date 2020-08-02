@@ -12,7 +12,6 @@ import {
   useActions,
   useIdeaUrl,
   useShareIdea,
-  useUpdateWithCount,
 } from 'services';
 import {
   ideaTabStyle,
@@ -25,6 +24,7 @@ import {
 } from 'styles';
 import { getRatingTooltip, getShareCountHelperText, roundAverage } from 'utils';
 import { BackToIdeas } from './BackToIdeas';
+import { IdeaProps } from './Idea';
 import { ExportReviewSuspender } from './Review/ExportReviewSuspender';
 import { ReviewButtonSuspender } from './Review/ReviewButtonSuspender';
 
@@ -37,11 +37,13 @@ const actionCreators = {
   deleteIdea: createDeleteIdea,
 };
 
-export const IdeaTabs: React.FC<{
-  user: User;
-  idea: IdeaModel;
-  showName: boolean;
-}> = ({ user, idea, showName }) => {
+export const IdeaTabs: React.FC<
+  {
+    user: User;
+    idea: IdeaModel;
+    showName: boolean;
+  } & Pick<IdeaProps, 'update'>
+> = ({ user, idea, showName, update }) => {
   const { addIdea, deleteIdea } = useActions(actionCreators);
 
   const shareCount = Object.keys(idea.sharedBy).length;
@@ -62,20 +64,18 @@ export const IdeaTabs: React.FC<{
 
   const isAuthor = user.uid === idea.author;
 
-  const updateWithCount = useUpdateWithCount(idea.id);
-
   const publish = React.useCallback(() => {
     const withStatus = { status: 'sprout' } as const;
-    updateWithCount({ count: 1, ...withStatus }).then(() => {
+    update(withStatus).then(() => {
       addIdea({ ...idea, ...withStatus });
     });
-  }, [updateWithCount, addIdea, idea]);
+  }, [update, addIdea, idea]);
 
   const unpublish = React.useCallback(() => {
-    updateWithCount({ count: -1, status: 'seed' }).then(() => {
+    update({ status: 'seed' }).then(() => {
       deleteIdea({ id: idea.id });
     });
-  }, [updateWithCount, deleteIdea, idea.id]);
+  }, [update, deleteIdea, idea.id]);
 
   const [reviewOpen, setReviewOpen] = useBoolean();
 

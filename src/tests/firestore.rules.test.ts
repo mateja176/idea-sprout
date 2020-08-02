@@ -340,40 +340,6 @@ describe('Firestore rules', () => {
     );
   });
 
-  test('user can only increment idea count by one', async () => {
-    const db = getFirestore(myAuth);
-
-    await getAdminFirestore()
-      .collection(firestoreCollections.counts.path)
-      .doc(firestoreCollections.ideas.path)
-      .set({ count: 1 });
-
-    await assertFails(
-      db
-        .collection(firestoreCollections.counts.path)
-        .doc(firestoreCollections.ideas.path)
-        .update({ count: firestore.FieldValue.increment(2) }),
-    );
-    await assertFails(
-      db
-        .collection(firestoreCollections.counts.path)
-        .doc(firestoreCollections.ideas.path)
-        .update({ count: firestore.FieldValue.increment(-2) }),
-    );
-    await assertSucceeds(
-      db
-        .collection(firestoreCollections.counts.path)
-        .doc(firestoreCollections.ideas.path)
-        .update({ count: firestore.FieldValue.increment(1) }),
-    );
-    await assertSucceeds(
-      db
-        .collection(firestoreCollections.counts.path)
-        .doc(firestoreCollections.ideas.path)
-        .update({ count: firestore.FieldValue.increment(-1) }),
-    );
-  });
-
   test("user can increase any idea's share count by 1 only once", async () => {
     const [mySprout, , theirSprout] = await seedDb();
 

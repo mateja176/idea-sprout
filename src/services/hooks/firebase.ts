@@ -3,9 +3,9 @@ import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/storage';
-import { IdeaModel, RawIdea, Review, User, WithCount, WithId } from 'models';
+import { IdeaModel, Review, User, WithId } from 'models';
 import qs from 'qs';
-import { useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
   ReactFireOptions,
@@ -216,27 +216,6 @@ export const useStorageDownloadUrl: typeof useFirebaseStorageDownloadUrl = (
   options,
 ) => {
   return useFirebaseStorageDownloadUrl(path, options);
-};
-
-export const useUpdateWithCount = (id: IdeaModel['id']) => {
-  const ideasRef = useIdeasRef();
-
-  const ideasCountRef = useIdeasCountRef();
-
-  return useCallback(
-    ({ count, ...partialIdea }: WithCount & Partial<RawIdea>) => {
-      const ideaRef = ideasRef.doc(id);
-      return firebase
-        .firestore()
-        .batch()
-        .update(ideaRef, partialIdea)
-        .update(ideasCountRef, {
-          count: firebase.firestore.FieldValue.increment(count),
-        })
-        .commit();
-    },
-    [id, ideasRef, ideasCountRef],
-  );
 };
 
 const createIdeaActionCreators = { queueSnackbar: createQueueSnackbar };

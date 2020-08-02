@@ -11,8 +11,8 @@ import {
   createDeleteIdea,
   useActions,
   useIdeaOptionButtonStyle,
+  useIdeaRef,
   useShareIdea,
-  useUpdateWithCount,
 } from 'services';
 import { ideaNameStyle, withStarColor } from 'styles';
 import urljoin from 'url-join';
@@ -47,13 +47,11 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
 
     // const checkRef = React.useRef<HTMLButtonElement | null>(null);
 
-    // const ideaRef = useIdeasRef().doc(idea.id);
+    const ideaRef = useIdeaRef(idea.id);
 
     const buttonStyle = useIdeaOptionButtonStyle();
 
     const shareIdea = useShareIdea(idea);
-
-    const updateWithCount = useUpdateWithCount(idea.id);
 
     const [reviewOpen, setReviewOpen] = useBoolean();
     const toggleReviewOpen = React.useCallback(() => {
@@ -67,16 +65,16 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
 
     const publish = React.useCallback(() => {
       const withStatus = { status: 'sprout' } as const;
-      updateWithCount({ count: 1, ...withStatus }).then(() => {
+      ideaRef.update(withStatus).then(() => {
         addIdea({ ...idea, ...withStatus });
       });
-    }, [updateWithCount, addIdea, idea]);
+    }, [ideaRef, addIdea, idea]);
 
     const unpublish = React.useCallback(() => {
-      updateWithCount({ count: -1, status: 'seed' }).then(() => {
+      ideaRef.update({ status: 'seed' }).then(() => {
         deleteIdea({ id: idea.id });
       });
-    }, [updateWithCount, deleteIdea, idea.id]);
+    }, [ideaRef, deleteIdea, idea.id]);
 
     // const setCheck: SetCheck = React.useCallback(
     //   (name) => (_, value) => {
