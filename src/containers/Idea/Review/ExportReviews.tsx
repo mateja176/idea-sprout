@@ -201,11 +201,14 @@ export const ExportReviews: React.FC<
                   ),
               ),
             )
-            .then(setApproving.setFalse);
+            .then(() => {
+              setApproving.setFalse();
+              setUpgradeDialogOpen.setFalse();
+            });
         },
       })
       .render(`#${id}`);
-  }, [upgradeToPro, setApproving]);
+  }, [upgradeToPro, setApproving, setUpgradeDialogOpen]);
 
   const loadScript = React.useCallback(() => {
     setScriptLoading.setTrue();
@@ -242,8 +245,6 @@ export const ExportReviews: React.FC<
       loadScript();
     }
   }, [renderButtons, loadScript]);
-
-  const [infoDialogOpen, setInfoDialogOpen] = useBoolean();
 
   return (
     <>
@@ -320,12 +321,6 @@ export const ExportReviews: React.FC<
         </DialogContent>
         <DialogActions>
           <Button onClick={setUpgradeDialogOpen.setFalse}>Close</Button>
-        </DialogActions>
-      </Dialog>
-      <Dialog open={infoDialogOpen} onClose={setInfoDialogOpen.setFalse}>
-        <DialogContent>{proMembership.info}</DialogContent>
-        <DialogActions>
-          <Button onClick={setInfoDialogOpen.setFalse}>Close</Button>
         </DialogActions>
       </Dialog>
     </>
