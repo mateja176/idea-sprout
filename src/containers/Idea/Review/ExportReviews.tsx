@@ -1,6 +1,8 @@
 import {
+  Backdrop,
   Box,
   Button,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -65,6 +67,10 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up(paypalHeightBreakpoint[600])]: {
       height: paypalButtonsHeight[168],
     },
+  },
+  backdrop: {
+    // * covers paypal buttons
+    zIndex: 1000,
   },
 }));
 
@@ -154,6 +160,8 @@ export const ExportReviews: React.FC<
 
   const [scriptLoading, setScriptLoading] = useBoolean();
 
+  const [approving, setApproving] = useBoolean();
+
   const renderButtons = React.useCallback(() => {
     window.paypal
       ?.Buttons({
@@ -168,8 +176,10 @@ export const ExportReviews: React.FC<
               },
             ],
           }),
-        onApprove: (_, actions) =>
-          actions.order
+        onApprove: (_, actions) => {
+          setApproving.setTrue();
+
+          return actions.order
             .capture()
             .catch(
               () =>
@@ -190,10 +200,12 @@ export const ExportReviews: React.FC<
                     },
                   ),
               ),
-            ),
+            )
+            .then(setApproving.setFalse);
+        },
       })
       .render(`#${id}`);
-  }, [upgradeToPro]);
+  }, [upgradeToPro, setApproving]);
 
   const loadScript = React.useCallback(() => {
     setScriptLoading.setTrue();
@@ -279,7 +291,10 @@ export const ExportReviews: React.FC<
         </DialogTitle>
         <DialogContent style={{ overflowY: 'scroll' }}>
           <Box textAlign={'justify'} position={'relative'}>
-            <Box>
+            <Backdrop open={approving} className={classes.backdrop}>
+              <CircularProgress variant={'indeterminate'} size={'3.5em'} />
+            </Backdrop>
+            <Box visibility={approving ? 'hidden' : 'visible'}>
               <Box>
                 {proMembership.proposition}
                 <br />
