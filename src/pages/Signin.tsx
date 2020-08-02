@@ -246,12 +246,17 @@ export const Signin: React.FC<SigninProps> = ({ user, setUserState }) => {
   }, []);
 
   return (
-    <PageWrapper mt={0}>
+    <>
       <Tabs variant={'fullWidth'} value={activeTab} onChange={handleTabChange}>
         <Tab disabled={signingOut} label={'Sign in'} />
         <Tab disabled={signingOut} label={'Register'} />
       </Tabs>
-      <Box mt={2} display="flex" flexDirection="column" alignItems="center">
+      <PageWrapper
+        mt={2}
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+      >
         <Box display="flex" flexDirection="column" alignItems="center">
           <Box mb={2}>
             {(() => {
@@ -373,7 +378,7 @@ export const Signin: React.FC<SigninProps> = ({ user, setUserState }) => {
             </ButtonGroup>
           </Box>
         </Box>
-      </Box>
-    </PageWrapper>
+      </PageWrapper>
+    </>
   );
 };
