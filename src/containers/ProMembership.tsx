@@ -8,6 +8,12 @@ import { tabChildStyle } from 'styles';
 
 const days30 = 30 * 1000 * 60 * 60 * 24;
 
+const countDownButtonStyle: React.CSSProperties = {
+  ...tabChildStyle,
+  display: 'flex',
+  alignItems: 'center',
+};
+
 interface WithUpgrade {
   upgrade: ButtonProps['onClick'];
 }
@@ -33,8 +39,8 @@ const ProMembershipButton: React.FC<
   return minutesLeftOnMembership > 0 ? (
     daysLeftOnMembership > 1 ? (
       <Tooltip title={`You're a pro for the next ${days} days.`}>
-        <Box style={tabChildStyle}>
-          {days} <Beenhere color={'secondary'} />
+        <Box style={countDownButtonStyle}>
+          {days} <Beenhere fontSize={'small'} color={'secondary'} />
         </Box>
       </Tooltip>
     ) : hoursLeftOnMembership > 0 ? (
