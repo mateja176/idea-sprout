@@ -7,21 +7,13 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  ExpansionPanel,
-  ExpansionPanelDetails,
-  ExpansionPanelSummary,
   makeStyles,
   Tab,
   TabProps,
   TextField,
   Tooltip,
 } from '@material-ui/core';
-import {
-  Beenhere,
-  CloudDownload,
-  EmojiEvents,
-  ExpandMore,
-} from '@material-ui/icons';
+import { Beenhere, CloudDownload, EmojiEvents } from '@material-ui/icons';
 import { Alert, Skeleton } from '@material-ui/lab';
 import { useBoolean } from 'ahooks';
 import { AuthCheck, ProMembership } from 'containers';
@@ -408,14 +400,7 @@ export const ExportReviews: React.FC<
                 <br />
                 {proMembershipDiscount.proposition}
                 <br />
-                <ExpansionPanel>
-                  <ExpansionPanelSummary expandIcon={<ExpandMore />}>
-                    Important note
-                  </ExpansionPanelSummary>
-                  <ExpansionPanelDetails>
-                    {proMembership.info}
-                  </ExpansionPanelDetails>
-                </ExpansionPanel>
+                {proMembership.info}
               </Box>
               <br />
               <div id={id} className={classes.paypalButtonsHeight}>
