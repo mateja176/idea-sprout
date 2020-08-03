@@ -11,7 +11,6 @@ import { useContext, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
   ReactFireOptions,
-  useAuth as useFirebaseAuth,
   useFirestoreCollection as useFirebaseFirestoreCollection,
   useFirestoreDoc as useFirebaseFirestoreDoc,
   useFunctions as useFirebaseFunctions,
@@ -28,10 +27,6 @@ import {
   hasOnlyId,
 } from 'utils';
 import { useActions } from './hooks';
-
-export const useAuth = () => {
-  return useFirebaseAuth();
-};
 
 export const useUser = <U = User>(options?: ReactFireOptions<U | null>) =>
   useFirebaseUser<U | null>(firebase.auth(), options);
