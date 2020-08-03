@@ -23,9 +23,7 @@ import { ReviewDialog, ReviewsDialog } from './Review';
 export interface IdeaOptionsProps extends Pick<User, 'uid'> {
   idea: IdeaModel;
   ideaUrl: string;
-  NavigationButton: (props: {
-    style: React.CSSProperties;
-  }) => React.ReactElement;
+  navigationButton: React.ReactNode;
 }
 
 const useStyles = makeStyles(() => ({ withoutMargin: { marginLeft: 0 } }));
@@ -36,7 +34,7 @@ const actionCreators = {
 };
 
 export const IdeaOptions = React.memo<IdeaOptionsProps>(
-  ({ uid, idea, ideaUrl, NavigationButton }) => {
+  ({ uid, idea, ideaUrl, navigationButton }) => {
     const { addIdea, deleteIdea } = useActions(actionCreators);
 
     const classes = useStyles();
@@ -221,7 +219,7 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
               </Tooltip>
             )
           }
-          navigateOption={<NavigationButton style={buttonStyle} />}
+          navigateOption={navigationButton}
         />
         <ReviewsDialog
           id={idea.id}

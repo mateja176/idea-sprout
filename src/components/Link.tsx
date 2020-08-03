@@ -9,15 +9,19 @@ export interface LinkProps
 
 export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
   ({ style, ...props }, ref) => {
+    const linkStyle: React.CSSProperties = React.useMemo(
+      () => ({
+        color: 'inherit',
+        textDecoration: 'none',
+        ...style,
+      }),
+      [style],
+    );
     return (
       <MaterialLink
         ref={ref}
         {...props}
-        style={{
-          ...style,
-          color: style?.color ?? 'inherit',
-          textDecoration: style?.textDecoration ?? 'none',
-        }}
+        style={linkStyle}
         component={NavLink}
       />
     );

@@ -27,6 +27,11 @@ import * as yup from 'yup';
 
 const type = 'video';
 
+const dialogContentStyle: React.CSSProperties = {
+  display: 'flex',
+  flexDirection: 'column',
+};
+
 const initialValues = {
   link: '',
 };
@@ -142,7 +147,7 @@ export const EmbedVideo: React.FC<
         onEntered={handleEntered}
       >
         <DialogTitle>Embed {type}</DialogTitle>
-        <DialogContent style={{ display: 'flex', flexDirection: 'column' }}>
+        <DialogContent style={dialogContentStyle}>
           <form onSubmit={handleSubmit}>
             <TextField
               {...getFieldProps('link')}

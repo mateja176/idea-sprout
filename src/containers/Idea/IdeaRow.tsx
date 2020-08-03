@@ -4,7 +4,7 @@ import { User } from 'firebase/app';
 import 'firebase/firestore';
 import { IdeaModel } from 'models';
 import React from 'react';
-import { useIdeaUrl } from 'services';
+import { useIdeaOptionButtonStyle, useIdeaUrl } from 'services';
 import { ExportReviewSuspender } from './Review';
 
 export interface IdeaRowProps {
@@ -30,24 +30,17 @@ export const IdeaRow = React.memo(
 
     const classes = useStyles();
 
-    const NavigationButton = React.useCallback(
-      ({
-        style,
-      }: Pick<React.ComponentProps<typeof ExportReviewSuspender>, 'style'>) => (
-        <ExportReviewSuspender
-          style={{
-            ...style,
-            height: '100%',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-          classes={classes}
-          idea={idea}
-          user={user}
-        />
-      ),
-      [idea, user, classes],
+    const buttonStyle = useIdeaOptionButtonStyle();
+
+    const exportReviewStyle: React.CSSProperties = React.useMemo(
+      () => ({
+        ...buttonStyle,
+        height: '100%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }),
+      [buttonStyle],
     );
 
     return (
@@ -56,7 +49,14 @@ export const IdeaRow = React.memo(
           uid={user.uid}
           idea={idea}
           ideaUrl={ideaUrl}
-          NavigationButton={NavigationButton}
+          navigationButton={
+            <ExportReviewSuspender
+              style={exportReviewStyle}
+              classes={classes}
+              idea={idea}
+              user={user}
+            />
+          }
         />
       </div>
     );

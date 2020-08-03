@@ -20,6 +20,11 @@ export const Reviews: React.FC<Pick<IdeaModel, 'id'>> = ({ id }) => {
 
   const reviews = useFirestoreCollection<Review>(reviewsRef);
 
+  const dividerStyle: React.CSSProperties = React.useMemo(
+    () => ({ backgroundColor: theme.palette.grey['500'] }),
+    [theme],
+  );
+
   return (
     <Box>
       {reviews.map(({ id, rating, feedback }, i, a) => (
@@ -32,9 +37,7 @@ export const Reviews: React.FC<Pick<IdeaModel, 'id'>> = ({ id }) => {
             {reviewFeedbackHeading}
             <Typography style={feedbackWrapperStyle}>{feedback}</Typography>
           </ReviewSection>
-          {i < a.length - 1 && (
-            <Divider style={{ backgroundColor: theme.palette.grey['500'] }} />
-          )}
+          {i < a.length - 1 && <Divider style={dividerStyle} />}
         </Box>
       ))}
     </Box>

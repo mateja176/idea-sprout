@@ -24,12 +24,17 @@ export const VideoSuspender: React.FC<VideoSuspenderProps> = ({
     [update],
   );
 
+  const skeletonStyle: React.CSSProperties = React.useMemo(
+    () => ({ maxWidth: width }),
+    [width],
+  );
+
   const skeleton = (
     <Skeleton
       variant={'rect'}
       height={'100%'}
       width={'100%'}
-      style={{ maxWidth: width }}
+      style={skeletonStyle}
     />
   );
 

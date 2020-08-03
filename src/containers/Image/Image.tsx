@@ -11,6 +11,8 @@ export interface ImageProps
   isLast?: boolean;
 }
 
+const imageStyle: React.CSSProperties = { maxWidth: '100%' };
+
 export const Image: React.FC<ImageProps> = ({
   onClick,
   path,
@@ -19,6 +21,11 @@ export const Image: React.FC<ImageProps> = ({
   isLast = false,
 }) => {
   const theme = useTheme();
+
+  const skeletonStyle: React.CSSProperties = React.useMemo(
+    () => ({ maxWidth: width }),
+    [width],
+  );
 
   return (
     <Box
@@ -36,14 +43,14 @@ export const Image: React.FC<ImageProps> = ({
             variant={'rect'}
             height={'100%'}
             width={'100%'}
-            style={{ maxWidth: width }}
+            style={skeletonStyle}
           />
         }
       >
         <StorageImage
           storagePath={path}
           height={'100%'}
-          style={{ maxWidth: '100%' }}
+          style={imageStyle}
           onClick={onClick}
         />
       </React.Suspense>

@@ -59,6 +59,10 @@ const scriptId = 'paypal-script';
 
 const dialogContentStyle: React.CSSProperties = { overflowY: 'auto' };
 
+const originalPriceStyle: React.CSSProperties = {
+  textDecoration: 'line-through',
+};
+
 const initialValues = {
   password: '',
 };
@@ -405,7 +409,7 @@ export const ExportReviews: React.FC<
       <Dialog open={upgradeDialogOpen} fullScreen onEntered={handleEntered}>
         <DialogTitle>
           Become a Pro:{' '}
-          <span style={{ textDecoration: 'line-through' }}>
+          <span style={originalPriceStyle}>
             {formatCurrency(proMembership.amount.value)}
           </span>{' '}
           <span>{formatCurrency(proMembershipDiscount.amount.value)}</span>

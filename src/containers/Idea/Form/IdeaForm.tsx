@@ -44,6 +44,11 @@ export interface IdeaFormProps {
   idea: IdeaModel;
 }
 
+const exampleLinkStyle: React.CSSProperties = { textDecoration: 'underline' };
+const withItalic: React.CSSProperties = { fontStyle: 'italic' };
+const noteStyle: React.CSSProperties = { opacity: 0.8 };
+const panelDetailsStyle: React.CSSProperties = { flexDirection: 'column' };
+
 const actionCreators = { queueSnackbar: createQueueSnackbar };
 
 export const IdeaForm: React.FC<IdeaFormProps> = ({ idea }) => {
@@ -134,7 +139,7 @@ export const IdeaForm: React.FC<IdeaFormProps> = ({ idea }) => {
               </Box>
             </Box>
           </ExpansionPanelSummary>
-          <ExpansionPanelDetails style={{ flexDirection: 'column' }}>
+          <ExpansionPanelDetails style={panelDetailsStyle}>
             <NicheCheck
               checked={idea.checks.niche}
               onChange={setCheck('niche')}
@@ -145,12 +150,12 @@ export const IdeaForm: React.FC<IdeaFormProps> = ({ idea }) => {
             />
           </ExpansionPanelDetails>
         </ExpansionPanel>
-        <Box my={3} style={{ opacity: 0.8 }}>
-          <Typography style={{ fontStyle: 'italic' }}>
+        <Box my={3} style={noteStyle}>
+          <Typography style={withItalic}>
             Note that you can <strong>refine</strong> all the values{' '}
             <strong>later</strong>, before publishing your idea.
           </Typography>
-          <Typography style={{ fontStyle: 'italic' }}>
+          <Typography style={withItalic}>
             Feeling <strong>overwhelmed</strong>? Or <strong>not sure</strong>{' '}
             how to proceed exactly?&nbsp;
             {/* TODO turn into collapsible */}
@@ -158,7 +163,7 @@ export const IdeaForm: React.FC<IdeaFormProps> = ({ idea }) => {
             <Link
               to="dF6lqaZgkEWWj9qWNuiy"
               target="__blank"
-              style={{ textDecoration: 'underline' }}
+              style={exampleLinkStyle}
             >
               this example.
             </Link>

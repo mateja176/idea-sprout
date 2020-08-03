@@ -44,6 +44,10 @@ export interface ReviewFormProps extends Pick<User, 'uid'> {
 export const ratingSectionMb = 2;
 export const shareSectionMt = 4;
 
+const badgeStyle: React.CSSProperties = {
+  marginRight: 10,
+};
+
 export const ReviewForm: React.FC<ReviewFormProps> = ({
   uid,
   idea,
@@ -122,9 +126,7 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
             ? `${FeedbackLength.min} < ${values.feedback.length}`
             : null
         }
-        style={{
-          marginRight: 10,
-        }}
+        style={badgeStyle}
       >
         <MultilineTextField
           {...getFieldProps('feedback')}

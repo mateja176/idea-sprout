@@ -27,17 +27,18 @@ export const IdeaOptionsWrapper = ({
     e.stopPropagation();
   }, []);
 
+  const listItemStyle: React.CSSProperties = React.useMemo(
+    () => ({
+      ...ideaListItemStyle,
+      display: 'flex',
+      width: '100%',
+      ...style,
+    }),
+    [style],
+  );
+
   return (
-    <ListItem
-      button
-      {...props}
-      style={{
-        ...ideaListItemStyle,
-        display: 'flex',
-        width: '100%',
-        ...style,
-      }}
-    >
+    <ListItem button {...props} style={listItemStyle}>
       <Box mr={1}>{imagePreview}</Box>
       <Box mr={1} style={textSectionStyle}>
         {textSection}

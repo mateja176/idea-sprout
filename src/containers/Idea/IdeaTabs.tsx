@@ -80,6 +80,14 @@ export const IdeaTabs: React.FC<
 
   const [reviewOpen, setReviewOpen] = useBoolean();
 
+  const titleSectionStyle: React.CSSProperties = React.useMemo(
+    () => ({
+      opacity: showName ? 1 : 0,
+      transition: 'height 300ms ease-in-out, opacity 300ms ease-in-out',
+    }),
+    [showName],
+  );
+
   return (
     <Box boxShadow={showName ? boxShadow : 'none'}>
       <Tabs value={false} variant={'fullWidth'}>
@@ -150,10 +158,7 @@ export const IdeaTabs: React.FC<
           alignItems={'center'}
           height={showName ? tabsLogoHeight : 0}
           overflow={'hidden'}
-          style={{
-            opacity: showName ? 1 : 0,
-            transition: 'height 300ms ease-in-out, opacity 300ms ease-in-out',
-          }}
+          style={titleSectionStyle}
         >
           <Typography variant={'h4'}>{idea.name}</Typography>
           <Box ml={2}>

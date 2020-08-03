@@ -10,15 +10,22 @@ export const Load: React.FC<LoaderProps> = ({
   boxFlex,
   children,
   ...props
-}) => (
-  <Box position="relative" display={'inline-block'} flex={boxFlex}>
-    <Skeleton
-      variant="rect"
-      width={'100%'}
-      height={'100%'}
-      {...props}
-      style={{ position: 'absolute', ...props.style }}
-    />
-    <Box visibility={'hidden'}>{children}</Box>
-  </Box>
-);
+}) => {
+  const style: React.CSSProperties = React.useMemo(
+    () => ({ position: 'absolute', ...props.style }),
+    [props.style],
+  );
+
+  return (
+    <Box position="relative" display={'inline-block'} flex={boxFlex}>
+      <Skeleton
+        variant="rect"
+        width={'100%'}
+        height={'100%'}
+        {...props}
+        style={style}
+      />
+      <Box visibility={'hidden'}>{children}</Box>
+    </Box>
+  );
+};

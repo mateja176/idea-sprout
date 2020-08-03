@@ -10,6 +10,8 @@ import { StorageFile, StoragePath } from 'models';
 import React from 'react';
 import { createQueueSnackbar, useActions, useUpload } from 'services';
 
+const inputStyle: React.CSSProperties = { display: 'none' };
+
 export const bottomButtonStyle: React.CSSProperties = {
   borderTop: 'none',
   borderTopLeftRadius: 0,
@@ -77,7 +79,7 @@ export const FileOptions: React.FC<{
         ref={inputRef}
         type={'file'}
         accept={`${type}/*`}
-        style={{ display: 'none' }}
+        style={inputStyle}
         onChange={(e) => {
           const newFile = e.target.files?.[0];
           if (newFile) {
