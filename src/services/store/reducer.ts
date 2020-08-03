@@ -11,7 +11,12 @@ const combinedReducer = combineReducers(reducers);
 export const createReset = createAction('reset')();
 export type CreateReset = typeof createReset;
 export type ResetAction = ReturnType<CreateReset>;
-export const initialState = combinedReducer(undefined, createReset() as any);
+export const initialState = combinedReducer(
+  undefined,
+  // * the reducer handles unknown actions by returning the current state
+  // * which is the initial state at the very beginning the lifecycle
+  (createReset() as unknown) as CombinedAction,
+);
 export const reducer: ReduxReducer<State, Action> = (state, action) =>
   action.type === getType(createReset)
     ? initialState

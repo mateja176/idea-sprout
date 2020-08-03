@@ -108,9 +108,7 @@ export const useFirestoreDoc = <T extends WithId>(
   ref: firebase.firestore.DocumentReference,
   options?: ReactFireOptions<T>,
 ): T | null => {
-  const doc = (useFirebaseFirestoreDoc(ref, options) as unknown) as
-    | firebase.firestore.DocumentSnapshot<Omit<T, 'id'>>
-    | T;
+  const doc = useFirebaseFirestoreDoc(ref, options);
 
   return useMemo(() => {
     const convertedDoc = convertFirestoreDocument<T>(doc);
@@ -123,10 +121,7 @@ export const useFirestoreCollection = <T extends WithId>(
   query: firebase.firestore.Query,
   options?: ReactFireOptions<T[]>,
 ) => {
-  const snapshot = (useFirebaseFirestoreCollection<Omit<T, 'id'>>(
-    query,
-    options,
-  ) as unknown) as firebase.firestore.QuerySnapshot<Omit<T, 'id'>> | T[];
+  const snapshot = useFirebaseFirestoreCollection<T>(query, options);
 
   return convertFirestoreCollection<T>(snapshot);
 };
