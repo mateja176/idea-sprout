@@ -3,7 +3,7 @@ import 'firebase/auth';
 import * as yup from 'yup';
 import { WithId } from './models';
 
-export type User = firebase.UserInfo;
+export type User = firebase.User;
 
 export type UserState = 'loading' | firebase.User | null;
 export interface WithUserState {
