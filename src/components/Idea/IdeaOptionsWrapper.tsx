@@ -1,4 +1,4 @@
-import { Box, ListItem, ListItemProps } from '@material-ui/core';
+import { Box, ListItem } from '@material-ui/core';
 import React from 'react';
 import { useIdeaOptionsButtonBorder } from 'services';
 import { ideaListItemStyle, textSectionStyle } from 'styles';
@@ -13,7 +13,7 @@ export const IdeaOptionsWrapper = ({
   navigateOption,
   style,
   ...props
-}: Omit<ListItemProps, 'button' | 'children'> & {
+}: Omit<React.ComponentProps<typeof ListItem>, 'button' | 'children'> & {
   imagePreview: React.ReactNode;
   textSection: React.ReactNode;
   shareOption: React.ReactNode;
@@ -29,7 +29,7 @@ export const IdeaOptionsWrapper = ({
 
   return (
     <ListItem
-      button={true as any}
+      button
       {...props}
       style={{
         ...ideaListItemStyle,
