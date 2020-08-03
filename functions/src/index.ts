@@ -97,13 +97,23 @@ export const upgradeToPro = functions.https.onCall(async (data, context) => {
       `The amount your specified "${amount}" does not match the required "${config.paypal.amount}"`,
     );
   }
+  if (
+    1000 * 60 * 60 * 60 * 24 * 30 -
+      (Date.now() - new Date(details.create_time).getTime()) <=
+    0
+  ) {
+    throw new functions.https.HttpsError(
+      'deadline-exceeded',
+      'The order expired',
+    );
+  }
 
   // * upgrade
 
-  const orderRef = ordersRef.doc(orderId);
+  const orderRef = ordersRef.doc(uid);
 
   await orderRef.set({
-    userId: uid,
+    orderId,
     createdAt: admin.firestore.FieldValue.serverTimestamp(),
   });
 });
