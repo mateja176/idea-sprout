@@ -9,6 +9,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import { ChevronLeft, LibraryAdd, Menu } from '@material-ui/icons';
+import { useBoolean } from 'ahooks';
 import { IdeaSprout, Link, Load } from 'components';
 import { CreateIdeaIcon } from 'containers';
 import { IdeaHelpContainer } from 'containers/Idea/IdeaHelpContainer';
@@ -38,11 +39,7 @@ export const Layout: React.FC<LayoutProps> = ({ user, children }) => {
 
   const classes = useStyles();
 
-  const [drawerOpen, setDrawerOpen] = React.useState(false);
-
-  const toggleDrawerOpen = () => {
-    setDrawerOpen(!drawerOpen);
-  };
+  const [drawerOpen, setDrawerOpen] = useBoolean();
 
   const drawerClasses = React.useMemo(
     () => ({
@@ -56,7 +53,11 @@ export const Layout: React.FC<LayoutProps> = ({ user, children }) => {
       <AppBar position="static">
         <Toolbar>
           <Box mr={2} visibility={isSignedIn ? 'visible' : 'hidden'}>
-            <IconButton onClick={toggleDrawerOpen} edge="start" color="inherit">
+            <IconButton
+              onClick={setDrawerOpen.setTrue}
+              edge="start"
+              color="inherit"
+            >
               <Menu />
             </IconButton>
           </Box>
@@ -87,7 +88,7 @@ export const Layout: React.FC<LayoutProps> = ({ user, children }) => {
       <Drawer
         anchor="left"
         open={drawerOpen}
-        onClose={toggleDrawerOpen}
+        onClose={setDrawerOpen.setFalse}
         classes={drawerClasses}
       >
         <Box className={classes.toolbar}>
@@ -99,7 +100,7 @@ export const Layout: React.FC<LayoutProps> = ({ user, children }) => {
             pr={1}
             boxShadow="0px -1px 0px #ccc inset"
           >
-            <IconButton onClick={toggleDrawerOpen}>
+            <IconButton onClick={setDrawerOpen.setFalse}>
               <ChevronLeft />
             </IconButton>
           </Box>
@@ -108,7 +109,7 @@ export const Layout: React.FC<LayoutProps> = ({ user, children }) => {
               <Nav
                 isSignedIn={isSignedIn}
                 user={user}
-                onClick={toggleDrawerOpen}
+                onClick={setDrawerOpen.setFalse}
               />
             </React.Suspense>
           )}

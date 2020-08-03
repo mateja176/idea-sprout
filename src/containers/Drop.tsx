@@ -13,6 +13,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import { ArrowDownward, Info } from '@material-ui/icons';
+import { useBoolean } from 'ahooks';
 import { StorageFile, StoragePath } from 'models';
 import React from 'react';
 import { DropzoneOptions, useDropzone } from 'react-dropzone';
@@ -80,10 +81,10 @@ export const Drop: React.FC<DropProps> = ({
     ...props,
   });
 
-  const [isDialogOpen, setIsDialogOpen] = React.useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useBoolean();
   const toggleIsDialogOpen: React.MouseEventHandler = (e) => {
     e.stopPropagation();
-    setIsDialogOpen(!isDialogOpen);
+    setIsDialogOpen.toggle();
   };
 
   return (
