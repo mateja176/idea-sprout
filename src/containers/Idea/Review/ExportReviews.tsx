@@ -55,6 +55,8 @@ const id = 'paypal-container';
 
 const scriptId = 'paypal-script';
 
+const dialogContentStyle: React.CSSProperties = { overflowY: 'auto' };
+
 const initialValues = {
   password: '',
 };
@@ -389,7 +391,7 @@ export const ExportReviews: React.FC<
           </span>{' '}
           <span>{formatCurrency(proMembershipDiscount.amount.value)}</span>
         </DialogTitle>
-        <DialogContent style={{ overflowY: 'scroll' }}>
+        <DialogContent style={dialogContentStyle}>
           <Box textAlign={'justify'} position={'relative'}>
             <Backdrop open={approving} className={classes.backdrop}>
               <CircularProgress variant={'indeterminate'} size={'3.5em'} />
