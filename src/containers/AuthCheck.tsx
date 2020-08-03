@@ -23,19 +23,18 @@ export const AuthCheck: React.FC<
     const unsubscribe = firebase.auth().onIdTokenChanged((user) => {
       if (user) {
         const getTokenResult = () =>
-          user.getIdTokenResult().then((result) => {
-            setClaims(result.claims);
-          });
-        getTokenResult()
-          .catch(
+          user.getIdTokenResult().catch(
             () =>
-              new Promise((resolve) => {
+              new Promise<firebase.auth.IdTokenResult>((resolve) => {
                 setTimeout(() => {
                   getTokenResult().then(resolve);
                 }, 2000);
               }),
-          )
-          .then(setLoading.setFalse);
+          );
+        getTokenResult().then((result) => {
+          setClaims(result.claims);
+          setLoading.setFalse();
+        });
       }
     });
 
