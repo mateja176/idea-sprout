@@ -4,7 +4,7 @@ export * from './env';
 export * from './firebase';
 export * from './idea';
 export * from './models';
-export * from './payments';
 export * from './quotes';
 export * from './review';
 export * from './routes';
+export * from './upgrade';
