@@ -17,7 +17,7 @@ import {
 
 export type AnyThunk = (
   ...params: any[]
-) => ThunkAction<Promise<any>, State, void, Action>;
+) => ThunkAction<Promise<Action>, State, void, Action>;
 
 export type GetBoundThunk<T extends AnyThunk> = (
   ...params: Parameters<T>

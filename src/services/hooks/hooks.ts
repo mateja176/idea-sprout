@@ -108,7 +108,10 @@ export const useThunkActions = <
 ) => {
   const dispatch = useDispatch();
 
-  return bindActionCreators(thunkActionCreators as any, dispatch) as {
+  // * the thunk middleware intercepts thunk actions (functions)
+  // * invokes the functions and returns the promise of an action
+  // * a bound thunk is just a function which returns a thunk action
+  return (bindActionCreators(thunkActionCreators, dispatch) as unknown) as {
     [key in keyof ThunkActionCreators]: GetBoundThunk<ThunkActionCreators[key]>;
   };
 };
