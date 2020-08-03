@@ -1,5 +1,12 @@
 import { FirebaseError } from 'firebase/app';
-import { IdeaModel, IdeaSprout, IdeasState, User, WithId } from 'models';
+import {
+  IdeaFilter,
+  IdeaModel,
+  IdeaSprout,
+  IdeasState,
+  User,
+  WithId,
+} from 'models';
 import { pipe, range } from 'ramda';
 import { IndexRange } from 'react-virtualized';
 import { createSelector } from 'reselect';
@@ -10,7 +17,6 @@ import {
   getType,
 } from 'typesafe-actions';
 import { isIdea } from 'utils';
-import { FetchIdeasOptions } from '../thunks';
 
 export const initialIdeasState: IdeasState = {
   ideas: [],
@@ -59,15 +65,18 @@ export const createDeleteIdea = createAction(
 export type CreateDeleteIdea = typeof createDeleteIdea;
 export type DeleteIdeaAction = ReturnType<CreateDeleteIdea>;
 
+export interface FetchIdeasOptions
+  extends IdeaFilter<keyof IdeaModel>,
+    IndexRange {
+  orderByField?: keyof IdeaModel;
+  directionStr?: firebase.firestore.OrderByDirection;
+}
+
 export const fetchIdeasAsync = createAsyncAction(
   'ideas/fetch/request',
   'ideas/fetch/success',
   'ideas/fetch/failure',
-)<
-  FetchIdeasOptions<keyof IdeaModel>,
-  UpdateIdeasAction['payload'],
-  FirebaseError
->();
+)<FetchIdeasOptions, UpdateIdeasAction['payload'], FirebaseError>();
 export type FetchIdeasAsync = typeof fetchIdeasAsync;
 export type FetchIdeasRequest = ReturnType<FetchIdeasAsync['request']>;
 export type FetchIdeasSuccess = ReturnType<FetchIdeasAsync['success']>;

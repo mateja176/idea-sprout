@@ -8,14 +8,7 @@ import {
 } from 'react';
 import { useDispatch } from 'react-redux';
 import { ActionCreatorsMapObject, bindActionCreators } from 'redux';
-import {
-  Action,
-  AnyThunk,
-  GetBoundThunk,
-  LocalStorageItems,
-  LocalStorageKey,
-  storage,
-} from 'services';
+import { Action, LocalStorageItems, LocalStorageKey, storage } from 'services';
 
 export const useLocalStorageSubscribe = (key: LocalStorageKey) => {
   const [value, setValue] = useState<LocalStorageItems[typeof key] | null>(
@@ -99,21 +92,6 @@ export const useDeferredValue = <Value>(
   }, [timeoutMs, value]);
 
   return deferredValue;
-};
-
-export const useThunkActions = <
-  ThunkActionCreators extends Record<string, AnyThunk>
->(
-  thunkActionCreators: ThunkActionCreators,
-) => {
-  const dispatch = useDispatch();
-
-  // * the thunk middleware intercepts thunk actions (functions)
-  // * invokes the functions and returns the promise of an action
-  // * a bound thunk is just a function which returns a thunk action
-  return (bindActionCreators(thunkActionCreators, dispatch) as unknown) as {
-    [key in keyof ThunkActionCreators]: GetBoundThunk<ThunkActionCreators[key]>;
-  };
 };
 
 export const useValueWithFallback: typeof useDeferredValue = (
