@@ -19,15 +19,16 @@ const proMembershipProposition = (
 const proMembershipInfo = (
   <Box>
     <Box>
-      As a security measure, you will be <i>prompted to enter your password</i>{' '}
-      if you signed up with an email or password. Otherwise you will be asked to
-      <i>reauthenticate with Google, Facebook or Twitter</i>.
+      As a security measure, you will be{' '}
+      <strong>prompted to enter your password</strong> if you signed up with an
+      email or password. Otherwise you will be asked to{' '}
+      <strong>reauthenticate with Google, Facebook or Twitter</strong>.
     </Box>
     <br />
     <Box>
       The pro membership lasts for one month unless you renew it during the
-      following <i>30 days</i>. If you have any questions or concerns, feel free
-      to send a message in the chat or write us an email at{' '}
+      following <strong>30 days</strong>. If you have any questions or concerns,
+      feel free to send a message in the chat or write us an email at{' '}
       <i>startupideasprout@gmail.com</i>
     </Box>
   </Box>
