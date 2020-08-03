@@ -25,5 +25,9 @@ export const providerIds = [
 
 export type ProviderIds = typeof providerIds;
 export type ProviderId = ProviderIds[number];
+export type Provider =
+  | typeof firebase.auth.GoogleAuthProvider
+  | typeof firebase.auth.FacebookAuthProvider
+  | typeof firebase.auth.TwitterAuthProvider;
 
 export const passwordSchema = yup.string().required().min(6);

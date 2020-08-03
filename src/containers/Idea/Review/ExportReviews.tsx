@@ -27,6 +27,8 @@ import {
   FirestoreUser,
   IdeaModel,
   passwordSchema,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  Provider,
   ProviderId,
   Review,
   ReviewWithAuthor,
@@ -103,37 +105,42 @@ export const ExportReviews: React.FC<
 
   const [loading, setLoading] = useBoolean();
 
-  const exportReviews = React.useCallback(() => {
-    setLoading.setTrue();
-
-    reviewsRef
-      .get()
-      .catch(
+  const getReviews = React.useCallback(
+    () =>
+      reviewsRef.get().catch(
         () =>
           new Promise<firebase.firestore.QuerySnapshot>((resolve) => {
             setTimeout(() => {
-              reviewsRef.get().then(resolve);
+              getReviews().then(resolve);
             }, 2000);
           }),
-      )
+      ),
+    [reviewsRef],
+  );
+
+  const exportReviews = React.useCallback(() => {
+    setLoading.setTrue();
+
+    getReviews()
       .then((collection) => convertFirestoreCollection<Review>(collection))
       .then((reviews) =>
         Promise.all(
           reviews.map(({ id, rating, feedback }) => {
             const userRef = usersRef.doc(id);
 
-            return userRef
-              .get()
-              .catch(
+            const getUser = () =>
+              userRef.get().catch(
                 () =>
                   new Promise<firebase.firestore.DocumentSnapshot>(
                     (resolve) => {
                       setTimeout(() => {
-                        userRef.get().then(resolve);
+                        getUser().then(resolve);
                       }, 2000);
                     },
                   ),
-              )
+              );
+
+            return getUser()
               .then((doc) => convertFirestoreDocument<FirestoreUser>(doc))
               .then(({ displayName, email }) => {
                 const [firstName, lastName] = displayName?.split(' ') || [];
@@ -167,7 +174,7 @@ export const ExportReviews: React.FC<
       .finally(() => {
         setLoading.setFalse();
       });
-  }, [reviewsRef, usersRef, idea, setLoading]);
+  }, [usersRef, idea, setLoading, getReviews]);
 
   const [upgradeDialogOpen, setUpgradeDialogOpen] = useBoolean(false);
 
@@ -224,6 +231,32 @@ export const ExportReviews: React.FC<
     },
   });
 
+  const upgrade: typeof upgradeToPro = React.useCallback(
+    ({ orderId: id }) =>
+      upgradeToPro({ orderId: id }).catch(
+        () =>
+          new Promise<firebase.functions.HttpsCallableResult>((resolve) => {
+            setTimeout(() => {
+              upgrade({ orderId: id }).then(resolve);
+            }, 2000);
+          }),
+      ),
+    [upgradeToPro],
+  );
+
+  const reauthenticateWithPopup = React.useCallback(
+    (Provider: Provider) =>
+      user.reauthenticateWithPopup(new Provider()).catch(
+        () =>
+          new Promise<firebase.auth.UserCredential>((resolve) => {
+            setTimeout(() => {
+              reauthenticateWithPopup(Provider).then(resolve);
+            }, 2000);
+          }),
+      ),
+    [user],
+  );
+
   const renderButtons = React.useCallback(() => {
     window.paypal
       ?.Buttons({
@@ -241,65 +274,51 @@ export const ExportReviews: React.FC<
         onApprove: (_, actions) => {
           setApproving.setTrue();
 
-          return actions.order
-            .capture()
-            .catch(
+          const capture = () =>
+            actions.order.capture().catch(
               () =>
                 new Promise<paypal.Order>((resolve) => {
                   setTimeout(() => {
-                    actions.order.capture().then(resolve);
+                    capture().then(resolve);
                   }, 2000);
                 }),
-            )
-            .then(({ id }) =>
-              upgradeToPro({ orderId: id })
-                .catch(
-                  () =>
-                    new Promise<firebase.functions.HttpsCallableResult>(
-                      (resolve) => {
-                        setTimeout(() => {
-                          upgradeToPro({ orderId: id }).then(resolve);
-                        }, 2000);
-                      },
-                    ),
-                )
-                .then(() => {
-                  const [provider] = user.providerData;
-                  if (provider) {
-                    const providerId = provider.providerId as ProviderId;
-                    if (providerId === 'password') {
-                      setPasswordDialogOpen.setTrue();
-                    } else {
-                      const CurrentProvider = [
-                        firebase.auth.GoogleAuthProvider,
-                        firebase.auth.FacebookAuthProvider,
-                        firebase.auth.TwitterAuthProvider,
-                      ].find((provider) => provider.PROVIDER_ID === providerId);
-                      if (CurrentProvider) {
-                        return user
-                          .reauthenticateWithPopup(new CurrentProvider())
-                          .then(close);
-                      } else {
-                        console.error('Unknown provider id', providerId);
-                      }
-                    }
-                  } else {
-                    console.error('No provider found for user', user);
-                  }
-                })
-                .catch(
-                  () =>
-                    new Promise<void>((resolve) => {
-                      setTimeout(() => {
-                        user.reload().then(resolve);
-                      }, 2000);
-                    }),
-                ),
             );
+
+          return capture().then(({ id }) =>
+            upgrade({ orderId: id }).then(() => {
+              const [provider] = user.providerData;
+              if (provider) {
+                const providerId = provider.providerId as ProviderId;
+                if (providerId === 'password') {
+                  setPasswordDialogOpen.setTrue();
+                } else {
+                  const CurrentProvider = [
+                    firebase.auth.GoogleAuthProvider,
+                    firebase.auth.FacebookAuthProvider,
+                    firebase.auth.TwitterAuthProvider,
+                  ].find((provider) => provider.PROVIDER_ID === providerId);
+                  if (CurrentProvider) {
+                    return reauthenticateWithPopup(CurrentProvider).then(close);
+                  } else {
+                    console.error('Unknown provider id', providerId);
+                  }
+                }
+              } else {
+                console.error('No provider found for user', user);
+              }
+            }),
+          );
         },
       })
       .render(`#${id}`);
-  }, [upgradeToPro, user, close, setPasswordDialogOpen, setApproving]);
+  }, [
+    upgrade,
+    user,
+    close,
+    setPasswordDialogOpen,
+    setApproving,
+    reauthenticateWithPopup,
+  ]);
 
   const loadScript = React.useCallback(() => {
     setScriptLoading.setTrue();
