@@ -1,12 +1,12 @@
 import { Box } from '@material-ui/core';
 import { useBoolean } from 'ahooks';
 import { Idea } from 'containers';
+import { SnackbarContext } from 'context';
 import 'firebase/firestore';
 import { IdeaModel, IdeaSprout } from 'models';
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 import {
-  createQueueSnackbar,
   createUpdateIdea,
   useActions,
   useFirestoreDoc,
@@ -22,7 +22,6 @@ export interface IdeaContainerProps extends Pick<IdeaModel, 'id'> {
 }
 
 const actionCreators = {
-  queueSnackbar: createQueueSnackbar,
   updateIdea: createUpdateIdea,
 };
 
@@ -30,7 +29,9 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({
   id,
   initialIdea,
 }) => {
-  const { queueSnackbar, updateIdea } = useActions(actionCreators);
+  const { updateIdea } = useActions(actionCreators);
+
+  const { queueSnackbar } = React.useContext(SnackbarContext);
 
   const user = useSignedInUser();
 

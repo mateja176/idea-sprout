@@ -4,15 +4,10 @@ import {
   Snackbar as MaterialSnackbar,
 } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
+import { SnackbarContext } from 'context';
 import { head } from 'ramda';
 import React from 'react';
-import { useSelector } from 'react-redux';
-import {
-  createCloseSnackbar,
-  selectSnackbarQueue,
-  useActions,
-  useValueWithFallback,
-} from 'services';
+import { useValueWithFallback } from 'services';
 
 export interface SnackbarProps {}
 
@@ -25,14 +20,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const actionCreators = { closeSnackbar: createCloseSnackbar };
-
 export const Snackbar: React.FC<SnackbarProps> = () => {
+  const { queue, closeSnackbar } = React.useContext(SnackbarContext);
+
   const classes = useStyles();
-
-  const { closeSnackbar } = useActions(actionCreators);
-
-  const queue = useSelector(selectSnackbarQueue);
 
   const first = head(queue);
 

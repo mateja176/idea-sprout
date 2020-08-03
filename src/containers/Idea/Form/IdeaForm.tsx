@@ -12,6 +12,7 @@ import { ExpandMore, Info } from '@material-ui/icons';
 import { Link, MultilineTextField, PageWrapper } from 'components';
 import { Drop } from 'containers';
 import { DropProps } from 'containers/Drop';
+import { SnackbarContext } from 'context';
 import firebase from 'firebase/app';
 import { useFormik } from 'formik';
 import {
@@ -24,12 +25,7 @@ import {
 import qs from 'qs';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import {
-  createQueueSnackbar,
-  useActions,
-  useIdeasRef,
-  useSignedInUser,
-} from 'services';
+import { useIdeasRef, useSignedInUser } from 'services';
 import { inputStyle, textareaStyle } from 'styles';
 import {
   absolutePrivateRoute,
@@ -50,14 +46,12 @@ const withItalic: React.CSSProperties = { fontStyle: 'italic' };
 const noteStyle: React.CSSProperties = { opacity: 0.8 };
 const panelDetailsStyle: React.CSSProperties = { flexDirection: 'column' };
 
-const actionCreators = { queueSnackbar: createQueueSnackbar };
-
 export const IdeaForm: React.FC<IdeaFormProps> = ({ idea }) => {
   const initialValues = getFormIdea(idea);
 
   const history = useHistory();
 
-  const { queueSnackbar } = useActions(actionCreators);
+  const { queueSnackbar } = React.useContext(SnackbarContext);
 
   const ideasRef = useIdeasRef();
   const getIdeaRef = () => (idea.id ? ideasRef.doc(idea.id) : ideasRef.doc());

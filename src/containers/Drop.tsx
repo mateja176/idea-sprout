@@ -14,10 +14,11 @@ import {
 } from '@material-ui/core';
 import { ArrowDownward, Info } from '@material-ui/icons';
 import { useBoolean } from 'ahooks';
+import { SnackbarContext } from 'context';
 import { StorageFile, StoragePath } from 'models';
 import React from 'react';
 import { DropzoneOptions, useDropzone } from 'react-dropzone';
-import { createQueueSnackbar, useActions, useUpload } from 'services';
+import { useUpload } from 'services';
 
 export interface DropProps extends DropzoneOptions {
   heading: string;
@@ -30,10 +31,6 @@ export interface DropProps extends DropzoneOptions {
 
 const inputProps: TextFieldProps['InputProps'] = {
   readOnly: true,
-};
-
-const actionCreators = {
-  queueSnackbar: createQueueSnackbar,
 };
 
 const DisplayFile: React.FC<Pick<File, 'name'>> = ({ name }) => (
@@ -51,7 +48,7 @@ export const Drop: React.FC<DropProps> = ({
   preloadedFileNames,
   ...props
 }) => {
-  const { queueSnackbar } = useActions(actionCreators);
+  const { queueSnackbar } = React.useContext(SnackbarContext);
 
   const { upload, loading } = useUpload(path);
 

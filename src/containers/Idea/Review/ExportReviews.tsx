@@ -17,6 +17,7 @@ import { Beenhere, CloudDownload, EmojiEvents } from '@material-ui/icons';
 import { Alert, Skeleton } from '@material-ui/lab';
 import { useBoolean } from 'ahooks';
 import { AuthCheck, ProMembership } from 'containers';
+import { SnackbarContext } from 'context';
 import { proMembership, proMembershipDiscount } from 'elements';
 import firebase, { FirebaseError, User } from 'firebase/app';
 import { useFormik } from 'formik';
@@ -35,10 +36,8 @@ import {
 } from 'models';
 import React from 'react';
 import {
-  createQueueSnackbar,
   env,
   formatCurrency,
-  useActions,
   useReviewsRef,
   useUpgradeToPro,
   useUsersRef,
@@ -90,12 +89,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const actionCreators = { queueSnackbar: createQueueSnackbar };
-
 export const ExportReviews: React.FC<
   { idea: IdeaModel; user: User } & Pick<TabProps, 'classes' | 'style'>
 > = ({ idea, user, ...props }) => {
-  const { queueSnackbar } = useActions(actionCreators);
+  const { queueSnackbar } = React.useContext(SnackbarContext);
 
   const upgradeToPro = useUpgradeToPro();
 

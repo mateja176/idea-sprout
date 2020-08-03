@@ -1,9 +1,8 @@
 import { combineReducers, Reducer as ReduxReducer } from 'redux';
 import { createAction, getType } from 'typesafe-actions';
-import { ideasSlice, snackbar } from './slices';
+import { ideasSlice } from './slices';
 
 const reducers = {
-  snackbar,
   ideasSlice,
 };
 

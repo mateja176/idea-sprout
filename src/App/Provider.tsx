@@ -1,5 +1,11 @@
+import {
+  initialSnackbarContext,
+  ISnackbarContext,
+  SnackbarContext,
+} from 'context';
 import LogRocket from 'logrocket';
 import setupLogRocketReact from 'logrocket-react';
+import { init } from 'ramda';
 import React from 'react';
 import { Provider as ReduxProvider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
@@ -29,11 +35,34 @@ export const Provider: React.FC<ProviderProps> = ({ children }) => {
     }
   }, []);
 
+  const [snackbarQueue, setSnackbarQueue] = React.useState(
+    initialSnackbarContext.queue,
+  );
+
+  const snackbarContext: ISnackbarContext = React.useMemo(
+    () => ({
+      queue: snackbarQueue,
+      queueSnackbar: (snackbar) =>
+        setSnackbarQueue((queue) =>
+          queue.concat({
+            ...snackbar,
+            autoHideDuration: 5000,
+          }),
+        ),
+      closeSnackbar: () => setSnackbarQueue((queue) => init(queue)),
+    }),
+    [snackbarQueue],
+  );
+
   return (
     <ReduxProvider store={store}>
       <BrowserRouter>
         <FirebaseAppProvider firebaseConfig={firebaseConfig}>
-          <ThemeProvider>{children}</ThemeProvider>
+          <ThemeProvider>
+            <SnackbarContext.Provider value={snackbarContext}>
+              {children}
+            </SnackbarContext.Provider>
+          </ThemeProvider>
         </FirebaseAppProvider>
       </BrowserRouter>
     </ReduxProvider>

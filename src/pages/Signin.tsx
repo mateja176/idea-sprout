@@ -17,6 +17,7 @@ import { Autorenew } from '@material-ui/icons';
 import { Alert } from '@material-ui/lab';
 import { useBoolean } from 'ahooks';
 import { Google, PageWrapper } from 'components';
+import { SnackbarContext } from 'context';
 import firebase, { FirebaseError, User } from 'firebase/app';
 import 'firebase/auth';
 import { FormikHelpers, useFormik } from 'formik';
@@ -25,7 +26,6 @@ import React from 'react';
 import { useQuery } from 'react-query';
 import { RouteComponentProps } from 'react-router-dom';
 import { FacebookIcon, TwitterIcon } from 'react-share';
-import { createQueueSnackbar, useActions } from 'services';
 import { inputStyle, logoWidth } from 'styles';
 import * as yup from 'yup';
 
@@ -46,8 +46,6 @@ const useButtonStyles = makeStyles(() => ({
   label: { textTransform: 'capitalize' },
 }));
 
-const actionCreators = { queueSnackbar: createQueueSnackbar };
-
 const initialValues = {
   email: '',
   password: '',
@@ -55,7 +53,8 @@ const initialValues = {
 type FormValues = typeof initialValues;
 
 export const Signin: React.FC<SigninProps> = ({ user, setUserState }) => {
-  const { queueSnackbar } = useActions(actionCreators);
+  const { queueSnackbar } = React.useContext(SnackbarContext);
+  (window as any).queueSnackbar = queueSnackbar;
 
   const theme = useTheme();
 

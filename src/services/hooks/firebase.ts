@@ -1,4 +1,5 @@
 import { useBoolean } from 'ahooks';
+import { SnackbarContext } from 'context';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
@@ -6,7 +7,7 @@ import 'firebase/functions';
 import 'firebase/storage';
 import { IdeaModel, Order, Review, User, WithId } from 'models';
 import qs from 'qs';
-import { useMemo } from 'react';
+import { useContext, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
   ReactFireOptions,
@@ -17,7 +18,6 @@ import {
   useStorageDownloadURL as useFirebaseStorageDownloadUrl,
   useUser as useFirebaseUser,
 } from 'reactfire';
-import { createQueueSnackbar } from 'services';
 import { createUpdateIdea } from 'services/store';
 import {
   absolutePrivateRoute,
@@ -131,7 +131,6 @@ export const useStorage = () => {
 };
 
 const reviewSubmitActionCreators = {
-  queueSnackbar: createQueueSnackbar,
   updateIdea: createUpdateIdea,
 };
 
@@ -142,7 +141,8 @@ export const useReviewSubmit = ({
   idea: IdeaModel;
   currentReview: Review | null;
 }) => {
-  const { queueSnackbar, updateIdea } = useActions(reviewSubmitActionCreators);
+  const { updateIdea } = useActions(reviewSubmitActionCreators);
+  const { queueSnackbar } = useContext(SnackbarContext);
 
   const user = useSignedInUser();
 
@@ -227,12 +227,10 @@ export const useStorageDownloadUrl: typeof useFirebaseStorageDownloadUrl = (
   return useFirebaseStorageDownloadUrl(path, options);
 };
 
-const createIdeaActionCreators = { queueSnackbar: createQueueSnackbar };
-
 export const useCreateIdea = () => {
   const user = useSignedInUser();
 
-  const { queueSnackbar } = useActions(createIdeaActionCreators);
+  const { queueSnackbar } = useContext(SnackbarContext);
 
   const history = useHistory();
 

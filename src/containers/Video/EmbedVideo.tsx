@@ -12,16 +12,12 @@ import {
 import { Link } from '@material-ui/icons';
 import { Skeleton } from '@material-ui/lab';
 import { useBoolean } from 'ahooks';
+import { SnackbarContext } from 'context';
 import { useFormik } from 'formik';
 import { StorageFile } from 'models';
 import qs from 'qs';
 import React from 'react';
-import {
-  createQueueSnackbar,
-  useActions,
-  useLoadYoutubeScript,
-  useRenderPlayer,
-} from 'services';
+import { useLoadYoutubeScript, useRenderPlayer } from 'services';
 import { inputStyle, mediaBgGreyVariant } from 'styles';
 import * as yup from 'yup';
 
@@ -52,15 +48,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const actionCreators = { queueSnackbar: createQueueSnackbar };
-
 export const EmbedVideo: React.FC<
   {
     update: (file: StorageFile) => Promise<void>;
     label?: string;
   } & ButtonProps
 > = ({ update, style, label, ...props }) => {
-  const { queueSnackbar } = useActions(actionCreators);
+  const { queueSnackbar } = React.useContext(SnackbarContext);
 
   const { renderPlayer, playerId } = useRenderPlayer();
 

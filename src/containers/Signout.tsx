@@ -6,12 +6,12 @@ import {
 } from '@material-ui/core';
 import { ExitToApp } from '@material-ui/icons';
 import { useBoolean } from 'ahooks';
+import { SnackbarContext } from 'context';
 import { User } from 'models';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import {
   clearFirestoreCache,
-  createQueueSnackbar,
   createReset,
   useActions,
   useAuth,
@@ -24,11 +24,12 @@ export interface SignoutProps {
 
 const actionCreators = {
   reset: createReset,
-  queueSnackbar: createQueueSnackbar,
 };
 
 export const Signout: React.FC<SignoutProps> = ({ user, onClick }) => {
-  const { reset, queueSnackbar } = useActions(actionCreators);
+  const { reset } = useActions(actionCreators);
+
+  const { queueSnackbar } = React.useContext(SnackbarContext);
 
   const history = useHistory();
 

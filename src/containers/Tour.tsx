@@ -1,21 +1,15 @@
 import { useTheme } from '@material-ui/core';
+import { SnackbarContext } from 'context';
 import React from 'react';
 import ReactJoyride, { CallBackProps, Styles } from 'react-joyride';
-import {
-  createQueueSnackbar,
-  useActions,
-  useLocalStorageSet,
-  useLocalStorageSubscribe,
-} from 'services';
+import { useLocalStorageSet, useLocalStorageSubscribe } from 'services';
 import { headerZIndex } from 'styles';
-
-const actionCreators = { queueSnackbar: createQueueSnackbar };
 
 export const Tour: React.FC<Pick<
   React.ComponentProps<typeof ReactJoyride>,
   'steps'
 >> = ({ steps }) => {
-  const { queueSnackbar } = useActions(actionCreators);
+  const { queueSnackbar } = React.useContext(SnackbarContext);
 
   const shouldRunTour = useLocalStorageSubscribe('shouldRunTour');
   const setShouldTourRun = useLocalStorageSet('shouldRunTour');

@@ -1,20 +1,17 @@
 import { useBoolean } from 'ahooks';
-import { useCallback, useMemo } from 'react';
-import { createQueueSnackbar } from 'services/store';
+import { SnackbarContext } from 'context';
+import { useCallback, useContext, useMemo } from 'react';
 import { youtube } from 'types';
 import { v4 } from 'uuid';
-import { useActions } from './hooks';
 
 const API = 'https://www.youtube.com/iframe_api';
 
 const scriptId = 'youtube-iframe-script';
 
-const actionCreators = { queueSnackbar: createQueueSnackbar };
-
 export const useRenderPlayer = (
   options?: Partial<youtube.Player['options']>,
 ) => {
-  const { queueSnackbar } = useActions(actionCreators);
+  const { queueSnackbar } = useContext(SnackbarContext);
 
   const [videoLoading, setVideoLoading] = useBoolean();
 
