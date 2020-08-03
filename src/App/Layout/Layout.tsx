@@ -77,9 +77,11 @@ export const Layout: React.FC<LayoutProps> = ({ user, children }) => {
               <Typography variant="h6">Idea Sprout</Typography>
             </Link>
           </Box>
-          <React.Suspense fallback={loadIconButton}>
-            <IdeaHelpContainer />
-          </React.Suspense>
+          <Box mr={1}>
+            <React.Suspense fallback={loadIconButton}>
+              <IdeaHelpContainer />
+            </React.Suspense>
+          </Box>
           <React.Suspense fallback={loadIconButton}>
             <CreateIdeaIcon />
           </React.Suspense>
