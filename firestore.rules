@@ -214,12 +214,12 @@ service cloud.firestore {
 
     match /users/{userId} {
       // if the user who is performing the request has an idea which has been reviewed by the requested users
-      allow read: if isSignedIn() && (request.auth.uid == userId || request.auth.token.isPro);
+      allow read: if isSignedIn() && (request.auth.uid == userId || request.auth.token.isPro || (exists(/databases/$(database)/documents/orders/$(request.auth.uid)) && (1000 * 60 * 60 * 60 * 24 * 30) - (request.time - get(/databases/$(database)/documents/orders/$(request.auth.uid)).createdAt) > 0));
       allow write: if isSignedIn() && request.auth.uid == userId;
     }
 
-    match /orders/{orderId} {
-      allow read: if isSignedIn() && request.auth.uid == resource.data.userId;
+    match /orders/{uid} {
+      allow read: if isSignedIn() && request.auth.uid == uid;
     }
   }
 }

@@ -2,9 +2,8 @@ import { Box, ButtonProps, Tooltip } from '@material-ui/core';
 import { Beenhere, EmojiEvents } from '@material-ui/icons';
 import { User } from 'firebase';
 import { Order } from 'models';
-import { head } from 'ramda';
 import React from 'react';
-import { useFirestoreCollection, useOrdersRef } from 'services';
+import { useFirestoreDoc, useOrderRef } from 'services';
 import { tabChildStyle } from 'styles';
 
 const days30 = 30 * 1000 * 60 * 60 * 24;
@@ -65,18 +64,13 @@ const ProMembershipButton: React.FC<
 export const ProMembership: React.FC<
   Pick<User, 'uid'> & WithUpgrade & WithBecomeAProp
 > = ({ uid, upgrade, becomeAPro }) => {
-  const ordersRef = useOrdersRef();
-  const sortedOrdersRef = React.useMemo(
-    () => ordersRef.where('userId', '==', uid).orderBy('createdAt', 'desc'),
-    [uid, ordersRef],
-  );
-  const orders = useFirestoreCollection<Order>(sortedOrdersRef);
-  const newestOrder = head(orders);
+  const orderRef = useOrderRef(uid);
+  const order = useFirestoreDoc<Order>(orderRef);
 
-  if (newestOrder) {
+  if (order) {
     return (
       <ProMembershipButton
-        order={newestOrder}
+        order={order}
         upgrade={upgrade}
         becomeAPro={becomeAPro}
       />
