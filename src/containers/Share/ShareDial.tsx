@@ -6,6 +6,7 @@ import {
   SpeedDialActionProps,
   SpeedDialProps,
 } from '@material-ui/lab';
+import { useBoolean } from 'ahooks';
 import { shareOptions } from 'components';
 import React from 'react';
 import { FacebookShareButton } from 'react-share';
@@ -50,14 +51,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const Share: React.FC<ShareProps> = ({ url, shareCount, i = 1 }) => {
-  const [isOver, setIsOver] = React.useState(false);
-  const toggleIsOver = () => {
-    setIsOver(!isOver);
-  };
+  const [isOver, setIsOver] = useBoolean();
 
   const classes = useStyles({ i, isOver });
 
-  const [shareOptionsOpen, setShareOptionsOpen] = React.useState(false);
+  const [shareOptionsOpen, setShareOptionsOpen] = useBoolean();
 
   const badgeClasses: BadgeProps['classes'] = React.useMemo(
     () => ({
@@ -74,6 +72,18 @@ export const Share: React.FC<ShareProps> = ({ url, shareCount, i = 1 }) => {
     [classes],
   );
 
+  const handleMouseEnter: SpeedDialProps['onMouseEnter'] = React.useCallback(() => {
+    setShareOptionsOpen.setTrue();
+
+    setIsOver.setTrue();
+  }, [setShareOptionsOpen, setIsOver]);
+
+  const handleMouseLeave: SpeedDialProps['onMouseLeave'] = React.useCallback(() => {
+    setShareOptionsOpen.setFalse();
+
+    setIsOver.setFalse();
+  }, [setShareOptionsOpen, setIsOver]);
+
   return (
     <Tooltip placement="top" title={getShareCountHelperText(shareCount)}>
       <Badge badgeContent={shareCount} classes={badgeClasses} showZero>
@@ -82,16 +92,8 @@ export const Share: React.FC<ShareProps> = ({ url, shareCount, i = 1 }) => {
           icon={<ShareIcon fontSize="small" />}
           open={shareOptionsOpen}
           direction="down"
-          onMouseEnter={() => {
-            setShareOptionsOpen(true);
-
-            toggleIsOver();
-          }}
-          onMouseLeave={() => {
-            setShareOptionsOpen(false);
-
-            toggleIsOver();
-          }}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
           FabProps={fabProps}
           classes={speedDialClasses}
         >

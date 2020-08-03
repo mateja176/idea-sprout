@@ -66,6 +66,27 @@ export const FileOptions: React.FC<{
     [buttonStyle],
   );
 
+  const handleChange: React.ChangeEventHandler<HTMLInputElement> = React.useCallback(
+    (e) => {
+      const newFile = e.target.files?.[0];
+      if (newFile) {
+        upload([newFile])
+          .then(([{ path, width, height }]) => {
+            const newStorageFile: StorageFile = { path, width, height };
+
+            update(newStorageFile);
+          })
+          .catch((error: Error) => {
+            queueSnackbar({
+              severity: 'error',
+              message: error.message,
+            });
+          });
+      }
+    },
+    [queueSnackbar, update, upload],
+  );
+
   return (
     <Box
       mx={variant === 'bottom' ? 2 : 0}
@@ -80,23 +101,7 @@ export const FileOptions: React.FC<{
         type={'file'}
         accept={`${type}/*`}
         style={inputStyle}
-        onChange={(e) => {
-          const newFile = e.target.files?.[0];
-          if (newFile) {
-            upload([newFile])
-              .then(([{ path, width, height }]) => {
-                const newStorageFile: StorageFile = { path, width, height };
-
-                update(newStorageFile);
-              })
-              .catch((error: Error) => {
-                queueSnackbar({
-                  severity: 'error',
-                  message: error.message,
-                });
-              });
-          }
-        }}
+        onChange={handleChange}
       />
       <ButtonGroup
         color={'primary'}

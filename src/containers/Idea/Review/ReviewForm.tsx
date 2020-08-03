@@ -12,6 +12,7 @@ import { ratingLabel } from 'elements';
 import 'firebase/firestore';
 import { useFormik } from 'formik';
 import {
+  CheckProps,
   createReviewSchema,
   CreationReview,
   FeedbackLength,
@@ -113,6 +114,13 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
     [initialValues, values],
   );
 
+  const doNotShare: CheckProps['onChange'] = React.useCallback(
+    (e, value) => {
+      setDoNotShareOrWarn(value === true || doNotShareWarning);
+    },
+    [setDoNotShareOrWarn],
+  );
+
   return (
     <form onSubmit={handleSubmit}>
       <Box mb={ratingSectionMb}>
@@ -161,9 +169,7 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
             </Box>
           }
           checked={doNotShareOrWarn === true}
-          onChange={(e, value) => {
-            setDoNotShareOrWarn(value === true || doNotShareWarning);
-          }}
+          onChange={doNotShare}
           name="doNotShare"
           errorMessage={
             typeof doNotShareOrWarn === 'string' ? doNotShareOrWarn : ''

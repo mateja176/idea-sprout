@@ -124,6 +124,11 @@ export const EmbedVideo: React.FC<
     validationSchema,
   });
 
+  const linkHelperText = React.useMemo(
+    () => (touched.link || '') && errors.link,
+    [touched, errors],
+  );
+
   return (
     <>
       {label ? (
@@ -153,7 +158,7 @@ export const EmbedVideo: React.FC<
               {...getFieldProps('link')}
               label={`Link to ${type}`}
               error={!!errors.link}
-              helperText={(touched.link || '') && errors.link}
+              helperText={linkHelperText}
               style={inputStyle}
             />
             <Box mt={1}>

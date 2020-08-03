@@ -36,36 +36,37 @@ export const Signout: React.FC<SignoutProps> = ({ user, onClick }) => {
 
   const auth = useAuth();
 
+  const handleSignout: React.MouseEventHandler = React.useCallback(
+    (e) => {
+      setLoading.setTrue();
+
+      auth
+        .signOut()
+        // * the operation resolves even if the client is offline
+        .then(() => {
+          onClick(e);
+
+          history.replace('/');
+
+          reset();
+
+          clearFirestoreCache();
+
+          queueSnackbar({
+            message: 'Successfully signed out',
+            severity: 'success',
+          });
+        })
+        .finally(() => {
+          setLoading.setFalse();
+        });
+    },
+    [auth, setLoading, history, queueSnackbar, reset, onClick],
+  );
+
   return user ? (
     <Tooltip title={`Sign out of ${user.email}`}>
-      <ListItem
-        disabled={loading}
-        button
-        onClick={(e) => {
-          setLoading.setTrue();
-
-          auth
-            .signOut()
-            // * the operation resolves even if the client is offline
-            .then(() => {
-              onClick(e);
-
-              history.replace('/');
-
-              reset();
-
-              clearFirestoreCache();
-
-              queueSnackbar({
-                message: 'Successfully signed out',
-                severity: 'success',
-              });
-            })
-            .finally(() => {
-              setLoading.setFalse();
-            });
-        }}
-      >
+      <ListItem disabled={loading} button onClick={handleSignout}>
         <ListItemIcon>
           <ExitToApp />
         </ListItemIcon>

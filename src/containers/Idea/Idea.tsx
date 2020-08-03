@@ -1,6 +1,7 @@
 import { Box, useTheme } from '@material-ui/core';
 import { SectionEditor, Tour } from 'containers';
 import { FileOptions } from 'containers/FileOptions';
+import { EditorProps } from 'draft-js';
 import {
   ideaSelector,
   ideaTourSteps,
@@ -27,6 +28,8 @@ export interface IdeaProps {
   idea: IdeaModel;
   update: UpdateIdea;
 }
+
+const blockStyleFn: EditorProps['blockStyleFn'] = () => 'MuiTypography-h4';
 
 export const Idea = React.forwardRef<HTMLDivElement, IdeaProps>(
   ({ user, idea, update }, nameWrapperRef) => {
@@ -101,7 +104,7 @@ export const Idea = React.forwardRef<HTMLDivElement, IdeaProps>(
           max={NameLength.max}
           text={idea.name}
           onSave={saveName}
-          blockStyleFn={() => 'MuiTypography-h4'}
+          blockStyleFn={blockStyleFn}
         />
         <SectionEditor
           id={ideaSelector.tagline}

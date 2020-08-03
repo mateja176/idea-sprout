@@ -63,22 +63,25 @@ export const Signin: React.FC<SigninProps> = ({ user, setUserState }) => {
 
   const buttonClasses = useButtonStyles();
 
-  const signIn = (provider: firebase.auth.AuthProvider) => {
-    setLoading.setTrue();
+  const signIn = React.useCallback(
+    (provider: firebase.auth.AuthProvider) => {
+      setLoading.setTrue();
 
-    return firebase
-      .auth()
-      .signInWithPopup(provider)
-      .catch((error: firebase.FirebaseError) => {
-        queueSnackbar({
-          severity: 'error',
-          message: error.message,
+      return firebase
+        .auth()
+        .signInWithPopup(provider)
+        .catch((error: firebase.FirebaseError) => {
+          queueSnackbar({
+            severity: 'error',
+            message: error.message,
+          });
+        })
+        .finally(() => {
+          setLoading.setFalse();
         });
-      })
-      .finally(() => {
-        setLoading.setFalse();
-      });
-  };
+    },
+    [setLoading, queueSnackbar],
+  );
 
   const opacity = loading ? 0.5 : 1;
 
@@ -243,6 +246,29 @@ export const Signin: React.FC<SigninProps> = ({ user, setUserState }) => {
     firebase.auth().signOut();
   }, []);
 
+  const emailHelperText = React.useMemo(
+    () => (touched.email || '') && errors.email,
+    [touched, errors],
+  );
+
+  const passwordHelperText = React.useMemo(
+    () => (touched.password || '') && errors.password,
+    [touched, errors],
+  );
+
+  const handleGoogleSignin: React.MouseEventHandler = React.useCallback(() => {
+    // auth provider constructors do not yet exist on the auth object returned form useAuth
+    signIn(new firebase.auth.GoogleAuthProvider());
+  }, [signIn]);
+
+  const handleFacebookSignin: React.MouseEventHandler = React.useCallback(() => {
+    signIn(new firebase.auth.FacebookAuthProvider());
+  }, [signIn]);
+
+  const handleTwitterSignin: React.MouseEventHandler = React.useCallback(() => {
+    signIn(new firebase.auth.TwitterAuthProvider());
+  }, [signIn]);
+
   return (
     <>
       <Tabs variant={'fullWidth'} value={activeTab} onChange={handleTabChange}>
@@ -292,7 +318,7 @@ export const Signin: React.FC<SigninProps> = ({ user, setUserState }) => {
                 {...getFieldProps('email')}
                 label={'Email'}
                 error={touched.email && !!errors.email}
-                helperText={(touched.email || '') && errors.email}
+                helperText={emailHelperText}
                 variant={'outlined'}
                 style={inputStyle}
               />
@@ -301,7 +327,7 @@ export const Signin: React.FC<SigninProps> = ({ user, setUserState }) => {
                 type={'password'}
                 label={'Password'}
                 error={touched.password && !!errors.password}
-                helperText={(touched.password || '') && errors.password}
+                helperText={passwordHelperText}
                 variant={'outlined'}
                 style={inputStyle}
               />
@@ -342,19 +368,14 @@ export const Signin: React.FC<SigninProps> = ({ user, setUserState }) => {
           <Box ml={2}>
             <ButtonGroup color="primary" disabled={loading}>
               <Button
-                onClick={() => {
-                  // auth provider constructors do not yet exist on the auth object returned form useAuth
-                  signIn(new firebase.auth.GoogleAuthProvider());
-                }}
+                onClick={handleGoogleSignin}
                 classes={buttonClasses}
                 startIcon={<Google opacity={opacity} />}
               >
                 {!xsAndDown && 'Google'}
               </Button>
               <Button
-                onClick={() => {
-                  signIn(new firebase.auth.FacebookAuthProvider());
-                }}
+                onClick={handleFacebookSignin}
                 classes={buttonClasses}
                 startIcon={
                   <FacebookIcon round size={logoWidth} opacity={opacity} />
@@ -363,9 +384,7 @@ export const Signin: React.FC<SigninProps> = ({ user, setUserState }) => {
                 {!xsAndDown && 'Facebook'}
               </Button>
               <Button
-                onClick={() => {
-                  signIn(new firebase.auth.TwitterAuthProvider());
-                }}
+                onClick={handleTwitterSignin}
                 classes={buttonClasses}
                 startIcon={
                   <TwitterIcon round size={logoWidth} opacity={opacity} />

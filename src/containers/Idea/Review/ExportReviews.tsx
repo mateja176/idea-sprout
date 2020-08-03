@@ -360,6 +360,11 @@ export const ExportReviews: React.FC<
     }
   }, [renderButtons, loadScript]);
 
+  const passwordHelperText = React.useMemo(
+    () => (touched.password || '') && errors.password,
+    [touched, errors],
+  );
+
   return (
     <>
       <Tab
@@ -448,7 +453,7 @@ export const ExportReviews: React.FC<
                   type={'password'}
                   label={'Password'}
                   error={touched.password && !!errors.password}
-                  helperText={(touched.password || '') && errors.password}
+                  helperText={passwordHelperText}
                   variant={'outlined'}
                   style={inputStyle}
                 />

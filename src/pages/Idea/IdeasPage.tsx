@@ -18,6 +18,18 @@ export const IdeasPage: React.FC<IdeasPageProps> = () => {
 
   const showMyIdeas = (query.author && query.author) === user.uid;
 
+  const handleDiscover: React.MouseEventHandler = React.useCallback(() => {
+    history.push({
+      search: qs.stringify({}),
+    });
+  }, [history]);
+
+  const handleYourIdeasClick: React.MouseEventHandler = React.useCallback(() => {
+    history.push({
+      search: qs.stringify({ author: user.uid }),
+    });
+  }, [history, user.uid]);
+
   return (
     <Box flex={1} display={'flex'} flexDirection={'column'} overflow={'auto'}>
       <Tabs
@@ -33,11 +45,7 @@ export const IdeasPage: React.FC<IdeasPageProps> = () => {
               &nbsp; Discover
             </Box>
           }
-          onClick={() => {
-            history.push({
-              search: qs.stringify({}),
-            });
-          }}
+          onClick={handleDiscover}
         />
         <Tab
           label={
@@ -46,11 +54,7 @@ export const IdeasPage: React.FC<IdeasPageProps> = () => {
               &nbsp; Your Ideas
             </Box>
           }
-          onClick={() => {
-            history.push({
-              search: qs.stringify({ author: user.uid }),
-            });
-          }}
+          onClick={handleYourIdeasClick}
         />
       </Tabs>
       <Box flex={1} display={'flex'} flexDirection={'column'} overflow={'auto'}>

@@ -21,6 +21,19 @@ const initialFocusStyle = {
   borderRadius: '4px',
 };
 
+const keyBindingFn: EditorProps['keyBindingFn'] = (e) => {
+  switch (e.key) {
+    case 'Enter':
+      return 'save';
+
+    case 'Escape':
+      return 'cancel';
+
+    default:
+      return getDefaultKeyBinding(e);
+  }
+};
+
 export const SectionEditorWithRef: React.ForwardRefRenderFunction<
   HTMLDivElement,
   Omit<EditorProps, 'editorState' | 'onChange'> & {
@@ -78,12 +91,12 @@ export const SectionEditorWithRef: React.ForwardRefRenderFunction<
     }
   }, []);
 
-  const cancel = () => {
+  const cancel = React.useCallback(() => {
     setEditorState(
       EditorState.createWithContent(ContentState.createFromText(text)),
     );
     setEditingState('blur');
-  };
+  }, [setEditorState, setEditingState, text]);
 
   React.useEffect(() => {
     switch (editingState) {
@@ -116,6 +129,84 @@ export const SectionEditorWithRef: React.ForwardRefRenderFunction<
     );
   }, [theme.palette.primary.main]);
 
+  const handleKeyCommand: EditorProps['handleKeyCommand'] = React.useCallback(
+    (command) => {
+      switch (command) {
+        case 'save':
+          setEditingState('blur');
+          return 'handled';
+
+        case 'cancel':
+          cancel();
+          return 'handled';
+
+        default:
+          return 'not-handled';
+      }
+    },
+    [setEditingState, cancel],
+  );
+
+  const handleFocus: EditorProps['onFocus'] = React.useCallback(
+    (e) => {
+      animateFocus();
+      setEditingState('focus');
+      if (props.onFocus) {
+        props.onFocus(e);
+      }
+    },
+    [animateFocus, setEditingState, props],
+  );
+
+  const handleBlur: EditorProps['onBlur'] = React.useCallback(
+    (e) => {
+      if (isTooShort) {
+        setEditingState('tooShort');
+      } else if (isTooLong) {
+        setEditingState('tooLong');
+      } else if (editorStateText === text) {
+        setEditingState('off');
+      } else {
+        setEditingState('off');
+        onSave(editorStateText);
+      }
+      if (props.onBlur) {
+        props.onBlur(e);
+      }
+    },
+    [
+      setEditingState,
+      onSave,
+      props,
+      editorStateText,
+      isTooLong,
+      isTooShort,
+      text,
+    ],
+  );
+
+  const handleMouseDown: React.MouseEventHandler<HTMLDivElement> = React.useCallback(
+    (e) => {
+      e.preventDefault();
+
+      if (editing) {
+        cancel();
+      } else {
+        animateFocus();
+        setEditingState('focus');
+        setEditorState(EditorState.moveFocusToEnd(editorState));
+      }
+    },
+    [
+      cancel,
+      animateFocus,
+      setEditingState,
+      setEditorState,
+      editing,
+      editorState,
+    ],
+  );
+
   return (
     <IdeaSection id={id} mt={mt} mb={mb}>
       {title}
@@ -127,73 +218,16 @@ export const SectionEditorWithRef: React.ForwardRefRenderFunction<
             onChange={setEditorState}
             readOnly={!isAuthor}
             {...props}
-            keyBindingFn={(e) => {
-              switch (e.key) {
-                case 'Enter':
-                  return 'save';
-
-                case 'Escape':
-                  return 'cancel';
-
-                default:
-                  return getDefaultKeyBinding(e);
-              }
-            }}
-            handleKeyCommand={(command) => {
-              switch (command) {
-                case 'save':
-                  setEditingState('blur');
-                  return 'handled';
-
-                case 'cancel':
-                  cancel();
-                  return 'handled';
-
-                default:
-                  return 'not-handled';
-              }
-            }}
-            onFocus={(e) => {
-              animateFocus();
-              setEditingState('focus');
-              if (props.onFocus) {
-                props.onFocus(e);
-              }
-            }}
-            onBlur={(e) => {
-              if (isTooShort) {
-                setEditingState('tooShort');
-              } else if (isTooLong) {
-                setEditingState('tooLong');
-              } else if (editorStateText === text) {
-                setEditingState('off');
-              } else {
-                setEditingState('off');
-                onSave(editorStateText);
-              }
-              if (props.onBlur) {
-                props.onBlur(e);
-              }
-            }}
+            keyBindingFn={keyBindingFn}
+            handleKeyCommand={handleKeyCommand}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
           />
         </div>
       </div>
       <Box my={1} display={'flex'} alignItems={'center'}>
         {isAuthor && (
-          <Box
-            mr={1}
-            onMouseDown={(e) => {
-              e.preventDefault();
-
-              if (editing) {
-                cancel();
-              } else {
-                animateFocus();
-                setEditingState('focus');
-                setEditorState(EditorState.moveFocusToEnd(editorState));
-              }
-            }}
-          >
+          <Box mr={1} onMouseDown={handleMouseDown}>
             <Chip
               icon={editing ? <Cancel /> : <Edit />}
               label={

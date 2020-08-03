@@ -11,6 +11,7 @@ import {
 import { ExpandMore, Info } from '@material-ui/icons';
 import { Link, MultilineTextField, PageWrapper } from 'components';
 import { Drop } from 'containers';
+import { DropProps } from 'containers/Drop';
 import firebase from 'firebase/app';
 import { useFormik } from 'formik';
 import {
@@ -125,6 +126,29 @@ export const IdeaForm: React.FC<IdeaFormProps> = ({ idea }) => {
     getIdeaRef().update({ checks: { ...idea.checks, [name]: value } });
   };
 
+  const handleVideoUpload: DropProps['onUploadSuccess'] = React.useCallback(
+    ([file]) => {
+      setFieldValue('story.path', file.path);
+      setFieldValue('story.width', file.width);
+      setFieldValue('story.height', file.height);
+    },
+    [setFieldValue],
+  );
+
+  const handleImageUpload: DropProps['onUploadSuccess'] = React.useCallback(
+    (files) => {
+      files.forEach((file, i) => {
+        setFieldValue(`images[${i}].path`, file.path);
+        setFieldValue(`images[${i}].width`, file.width);
+        setFieldValue(`images[${i}].height`, file.height);
+      });
+    },
+    [setFieldValue],
+  );
+
+  const rationaleHelperText =
+    (touched.rationale && errors.rationale) || rationaleText;
+
   return (
     <PageWrapper>
       <form onSubmit={handleSubmit}>
@@ -212,11 +236,7 @@ export const IdeaForm: React.FC<IdeaFormProps> = ({ idea }) => {
             </section>
           }
           path="videos"
-          onUploadSuccess={([file]) => {
-            setFieldValue('story.path', file.path);
-            setFieldValue('story.width', file.width);
-            setFieldValue('story.height', file.height);
-          }}
+          onUploadSuccess={handleVideoUpload}
           accept="video/*"
           // 50MB
           maxSize={52428800}
@@ -263,13 +283,7 @@ export const IdeaForm: React.FC<IdeaFormProps> = ({ idea }) => {
               </section>
             }
             path="images"
-            onUploadSuccess={(files) => {
-              files.forEach((file, i) => {
-                setFieldValue(`images[${i}].path`, file.path);
-                setFieldValue(`images[${i}].width`, file.width);
-                setFieldValue(`images[${i}].height`, file.height);
-              });
-            }}
+            onUploadSuccess={handleImageUpload}
             accept="image/*"
             // 5MB
             maxSize={5242880}
@@ -286,7 +300,7 @@ export const IdeaForm: React.FC<IdeaFormProps> = ({ idea }) => {
           rows={6}
           fullWidth
           error={touched.rationale && !!errors.rationale}
-          helperText={(touched.rationale && errors.rationale) || rationaleText}
+          helperText={rationaleHelperText}
         />
         <Box mt={10} mb={15}>
           <Button

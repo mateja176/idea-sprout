@@ -15,6 +15,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import { Info } from '@material-ui/icons';
+import { useBoolean } from 'ahooks';
 import { CheckProps } from 'models';
 import React from 'react';
 
@@ -29,14 +30,19 @@ export const Check: React.FC<CheckProps> = ({
   disabled,
   height = 'auto',
 }) => {
-  const [isDialogOpen, setIsDialogOpen] = React.useState(false);
-  const toggleIsDialogOpen = () => {
-    setIsDialogOpen(!isDialogOpen);
-  };
+  const [isDialogOpen, setIsDialogOpen] = useBoolean();
 
   const hasError = !!errorMessage;
 
   const formControlStyle: React.CSSProperties = { height, display: 'block' };
+
+  const handleInfoClick: React.MouseEventHandler = React.useCallback(
+    (e) => {
+      e.stopPropagation();
+      setIsDialogOpen.setTrue();
+    },
+    [setIsDialogOpen],
+  );
 
   return (
     <FormControl disabled={disabled} error={hasError} style={formControlStyle}>
@@ -47,22 +53,19 @@ export const Check: React.FC<CheckProps> = ({
             <Tooltip title={disabled ? '' : 'Opens dialog with more info'}>
               <IconButton
                 disabled={disabled}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  toggleIsDialogOpen();
-                }}
+                onClick={handleInfoClick}
                 color="primary"
               >
                 <Info />
               </IconButton>
             </Tooltip>
-            <Dialog onClose={toggleIsDialogOpen} open={isDialogOpen}>
+            <Dialog onClose={setIsDialogOpen.setFalse} open={isDialogOpen}>
               <DialogTitle>{label}</DialogTitle>
               <DialogContent>
                 <DialogContentText>{description}</DialogContentText>
               </DialogContent>
               <DialogActions>
-                <Button onClick={toggleIsDialogOpen}>Clear</Button>
+                <Button onClick={setIsDialogOpen.setFalse}>Clear</Button>
               </DialogActions>
             </Dialog>
           </Box>

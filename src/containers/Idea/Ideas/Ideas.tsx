@@ -1,7 +1,7 @@
 import { Box, Typography } from '@material-ui/core';
 import { IdeaRow, IdeasSkeleton } from 'containers';
 import { User } from 'firebase/app';
-import { IdeaFilter, WithCount } from 'models';
+import { IdeaBatchError, IdeaFilter, WithCount } from 'models';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AutoSizer, InfiniteLoader, List } from 'react-virtualized';
@@ -9,6 +9,7 @@ import { useFirestoreDocData } from 'reactfire';
 import {
   createPromisedAction,
   fetchIdeasAsync,
+  FetchIdeasAsync,
   selectIdeas,
   useActions,
   useIdeasCountRef,
@@ -41,6 +42,31 @@ const NoRowsRenderer = () => (
     <IdeasSkeleton />
   </Box>
 );
+
+const RowError: React.FC<{
+  error: IdeaBatchError;
+  fetchIdeas: FetchIdeasAsync['request'];
+}> = ({ error, fetchIdeas }) => {
+  const handleLinkClick: React.MouseEventHandler = React.useCallback(() => {
+    const fetchOptions = {
+      startIndex: error.startIndex,
+      stopIndex: error.stopIndex,
+      fieldPath: error.fieldPath,
+      opStr: error.opStr,
+      value: error.value,
+    };
+    fetchIdeas(fetchOptions);
+  }, [error, fetchIdeas]);
+
+  return (
+    <Box display="flex" alignItems="center" height="100%" mx={2}>
+      <Typography style={linkButtonStyle} onClick={handleLinkClick}>
+        Refetch ideas
+      </Typography>
+      &nbsp; from {error.startIndex + 1} to {error.stopIndex + 1}
+    </Box>
+  );
+};
 
 export const Ideas = ({ user }: IdeasProps) => {
   const ideas = useSelector(selectIdeas);
@@ -93,24 +119,7 @@ export const Ideas = ({ user }: IdeasProps) => {
           {!idea ? null : idea === 'loading' ? (
             <IdeaOptionsSkeleton />
           ) : idea instanceof Error ? (
-            <Box display="flex" alignItems="center" height="100%" mx={2}>
-              <Typography
-                style={linkButtonStyle}
-                onClick={() => {
-                  const fetchOptions = {
-                    startIndex: idea.startIndex,
-                    stopIndex: idea.stopIndex,
-                    fieldPath: idea.fieldPath,
-                    opStr: idea.opStr,
-                    value: idea.value,
-                  };
-                  fetchIdeas(fetchOptions);
-                }}
-              >
-                Refetch ideas
-              </Typography>
-              &nbsp; from {idea.startIndex + 1} to {idea.stopIndex + 1}
-            </Box>
+            <RowError error={idea} fetchIdeas={fetchIdeas} />
           ) : (
             <IdeaRow key={idea.id} idea={idea} user={user} />
           )}

@@ -11,6 +11,15 @@ export interface ImagesProps extends Pick<IdeaModel, 'images'> {
 }
 
 export const Images: React.FC<ImagesProps> = ({ images, isAuthor, update }) => {
+  const handleUpdate: React.ComponentProps<
+    typeof FileOptions
+  >['update'] = React.useCallback(
+    (newImage) =>
+      update({
+        images: [newImage],
+      }),
+    [update],
+  );
   return (
     <>
       {images.map((image, i) => (
@@ -30,11 +39,7 @@ export const Images: React.FC<ImagesProps> = ({ images, isAuthor, update }) => {
           storagePath={'images'}
           // * FileOptions is outside because of the '100%' height constraint
           // * images restricted to 1 for the time being
-          update={(newImage) =>
-            update({
-              images: [newImage],
-            })
-          }
+          update={handleUpdate}
         />
       )}
     </>
