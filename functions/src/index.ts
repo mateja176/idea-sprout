@@ -100,14 +100,6 @@ export const upgradeToPro = functions.https.onCall(async (data, context) => {
 
   // * upgrade
 
-  const user = await admin.auth().getUser(uid);
-
-  if (!user.customClaims?.isPro) {
-    await admin.auth().setCustomUserClaims(uid, {
-      isPro: true,
-    });
-  }
-
   const orderRef = ordersRef.doc(orderId);
 
   await orderRef.set({
