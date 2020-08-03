@@ -50,7 +50,7 @@ const ProMembershipButton: React.FC<
         title={`You're a pro for the next ${minutes} minutes. To stay a pro, renew your membership.`}
       >
         <Box style={tabChildStyle} onClick={upgrade}>
-          Renew membership <EmojiEvents color={'secondary'} />
+          <EmojiEvents color={'secondary'} />
         </Box>
       </Tooltip>
     ) : (
