@@ -44,6 +44,13 @@ export const Layout: React.FC<LayoutProps> = ({ user, children }) => {
     setDrawerOpen(!drawerOpen);
   };
 
+  const drawerClasses = React.useMemo(
+    () => ({
+      paper: classes.paper,
+    }),
+    [classes],
+  );
+
   return (
     <Box height={'100%'} display={'flex'} flexDirection={'column'}>
       <AppBar position="static">
@@ -81,9 +88,7 @@ export const Layout: React.FC<LayoutProps> = ({ user, children }) => {
         anchor="left"
         open={drawerOpen}
         onClose={toggleDrawerOpen}
-        classes={{
-          paper: classes.paper,
-        }}
+        classes={drawerClasses}
       >
         <Box className={classes.toolbar}>
           <Box

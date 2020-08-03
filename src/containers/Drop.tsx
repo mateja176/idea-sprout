@@ -8,6 +8,7 @@ import {
   DialogTitle,
   IconButton,
   TextField,
+  TextFieldProps,
   Tooltip,
   Typography,
 } from '@material-ui/core';
@@ -26,20 +27,17 @@ export interface DropProps extends DropzoneOptions {
   fileLimit?: number;
 }
 
+const inputProps: TextFieldProps['InputProps'] = {
+  readOnly: true,
+};
+
 const actionCreators = {
   queueSnackbar: createQueueSnackbar,
 };
 
 const DisplayFile: React.FC<Pick<File, 'name'>> = ({ name }) => (
   <Box mb={2}>
-    <TextField
-      key={name}
-      label="File"
-      value={name}
-      InputProps={{
-        readOnly: true,
-      }}
-    />
+    <TextField key={name} label="File" value={name} InputProps={inputProps} />
   </Box>
 );
 

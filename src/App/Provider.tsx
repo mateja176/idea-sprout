@@ -1,3 +1,5 @@
+import firebase from 'firebase/app';
+import 'firebase/functions';
 import LogRocket from 'logrocket';
 import setupLogRocketReact from 'logrocket-react';
 import React from 'react';
@@ -17,6 +19,12 @@ const firebaseConfig = {
   appId: env.firebaseAppId,
   measurementId: env.firebaseMeasurementId,
 };
+
+firebase.initializeApp(firebaseConfig);
+
+firebase.functions().useFunctionsEmulator('http://localhost:5001');
+
+(window as any).firebase = firebase;
 
 export interface ProviderProps {}
 

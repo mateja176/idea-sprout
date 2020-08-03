@@ -1,6 +1,11 @@
-import { Badge, makeStyles, Tooltip } from '@material-ui/core';
+import { Badge, BadgeProps, makeStyles, Tooltip } from '@material-ui/core';
 import { Share as ShareIcon } from '@material-ui/icons';
-import { SpeedDial, SpeedDialAction } from '@material-ui/lab';
+import {
+  SpeedDial,
+  SpeedDialAction,
+  SpeedDialActionProps,
+  SpeedDialProps,
+} from '@material-ui/lab';
 import { shareOptions } from 'components';
 import React from 'react';
 import { FacebookShareButton } from 'react-share';
@@ -11,6 +16,10 @@ interface StyleProps {
   i: number;
   isOver: boolean;
 }
+
+const fabProps: SpeedDialProps['FabProps'] = {
+  size: 'small',
+};
 
 export interface ShareProps
   extends Pick<React.ComponentProps<typeof FacebookShareButton>, 'url'>,
@@ -50,15 +59,24 @@ export const Share: React.FC<ShareProps> = ({ url, shareCount, i = 1 }) => {
 
   const [shareOptionsOpen, setShareOptionsOpen] = React.useState(false);
 
+  const badgeClasses: BadgeProps['classes'] = React.useMemo(
+    () => ({
+      badge: classes.badge,
+    }),
+    [classes.badge],
+  );
+  const speedDialClasses: SpeedDialActionProps['classes'] = React.useMemo(
+    () => ({
+      root: classes.root,
+      fab: classes.fab,
+      actions: classes.actions,
+    }),
+    [classes],
+  );
+
   return (
     <Tooltip placement="top" title={getShareCountHelperText(shareCount)}>
-      <Badge
-        badgeContent={shareCount}
-        classes={{
-          badge: classes.badge,
-        }}
-        showZero
-      >
+      <Badge badgeContent={shareCount} classes={badgeClasses} showZero>
         <SpeedDial
           ariaLabel="Share options"
           icon={<ShareIcon fontSize="small" />}
@@ -74,14 +92,8 @@ export const Share: React.FC<ShareProps> = ({ url, shareCount, i = 1 }) => {
 
             toggleIsOver();
           }}
-          FabProps={{
-            size: 'small',
-          }}
-          classes={{
-            root: classes.root,
-            fab: classes.fab,
-            actions: classes.actions,
-          }}
+          FabProps={fabProps}
+          classes={speedDialClasses}
         >
           {shareOptions.map((config) => (
             <SpeedDialAction

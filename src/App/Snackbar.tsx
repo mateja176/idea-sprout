@@ -17,7 +17,7 @@ import {
 export interface SnackbarProps {}
 
 const useStyles = makeStyles((theme) => ({
-  paper: {
+  root: {
     maxWidth: '50vw',
     [theme.breakpoints.down('sm')]: {
       maxWidth: '90vw',
@@ -48,11 +48,7 @@ export const Snackbar: React.FC<SnackbarProps> = () => {
 
   return (
     <MaterialSnackbar open={!!first}>
-      <Badge
-        badgeContent={queue.length}
-        color="primary"
-        classes={{ root: classes.paper }}
-      >
+      <Badge badgeContent={queue.length} color="primary" classes={classes}>
         <Alert severity={firstWithFallback?.severity} onClose={closeSnackbar}>
           {firstWithFallback?.message}
         </Alert>
