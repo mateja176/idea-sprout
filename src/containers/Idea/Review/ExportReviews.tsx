@@ -24,7 +24,7 @@ import {
 } from '@material-ui/icons';
 import { Alert, Skeleton } from '@material-ui/lab';
 import { useBoolean } from 'ahooks';
-import { AuthCheck } from 'containers';
+import { AuthCheck, ProMembership } from 'containers';
 import { proMembership, proMembershipDiscount } from 'elements';
 import firebase, { FirebaseError, User } from 'firebase/app';
 import { useFormik } from 'formik';
@@ -359,7 +359,17 @@ export const ExportReviews: React.FC<
                   </Box>
                 </Tooltip>
               ) : (
-                becomeAPro
+                <React.Suspense
+                  fallback={
+                    <Skeleton variant={'rect'} width={'100%'} height={'100%'} />
+                  }
+                >
+                  <ProMembership
+                    uid={user.uid}
+                    upgrade={openUpgradeDialog}
+                    becomeAPro={becomeAPro}
+                  />
+                </React.Suspense>
               )
             }
           >
@@ -370,7 +380,7 @@ export const ExportReviews: React.FC<
                 </Box>
               </Tooltip>
             ) : (
-              <Tooltip title={"You're already a pro"}>
+              <Tooltip title={"You're lifetime a pro"}>
                 <Box style={tabChildStyle}>
                   <Beenhere color={'primary'} />
                 </Box>

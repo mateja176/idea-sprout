@@ -7,6 +7,7 @@ export * from './ErrorBoundary';
 export * from './FileOptions';
 export * from './Idea';
 export * from './Image';
+export * from './ProMembership';
 export * from './SectionEditor';
 export * from './Share';
 export * from './Signout';

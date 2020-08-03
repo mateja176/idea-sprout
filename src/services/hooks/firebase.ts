@@ -4,7 +4,7 @@ import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/functions';
 import 'firebase/storage';
-import { IdeaModel, Review, User, WithId } from 'models';
+import { IdeaModel, Order, Review, User, WithId } from 'models';
 import qs from 'qs';
 import { useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
@@ -90,6 +90,18 @@ export const useReviewRef = (id: IdeaModel['id'], uid: User['uid']) => {
   const reviewsRef = useReviewsRef(id);
 
   return useMemo(() => reviewsRef.doc(uid), [uid, reviewsRef]);
+};
+
+export const useOrdersRef = () =>
+  useMemo(
+    () => firebase.firestore().collection(firestoreCollections.orders.path),
+    [],
+  );
+
+export const useOrderRef = (id: Order['id']) => {
+  const ordersRef = useOrdersRef();
+
+  return useMemo(() => ordersRef.doc(id), [id, ordersRef]);
 };
 
 export const useFirestoreDoc = <T extends WithId>(
