@@ -5,8 +5,7 @@ import { User } from 'models';
 import React from 'react';
 import { useBooleanWithFallback } from 'services';
 import { withEllipsis } from 'styles';
-import { ReviewForm, ReviewFormProps } from './ReviewForm';
-import { ReviewFormSkeleton } from './ReviewFormSkeleton';
+import { ReviewForm, ReviewFormProps, ReviewFormSkeleton } from './Form';
 
 export interface ReviewDialogProps
   extends ReviewFormProps,

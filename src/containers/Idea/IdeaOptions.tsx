@@ -17,7 +17,7 @@ import {
 import { ideaNameStyle, withStarColor } from 'styles';
 import urljoin from 'url-join';
 import { absolutePrivateRoute, getRatingTooltip, roundAverage } from 'utils';
-import { IdeaImagePreviewSuspender } from './IdeaImagePreviewSuspender';
+import { IdeaImagePreviewSuspender } from './ImagePreview';
 import { ReviewDialog, ReviewsDialog } from './Review';
 
 export interface IdeaOptionsProps extends Pick<User, 'uid'> {

@@ -21,7 +21,7 @@ import React from 'react';
 import { ideaMarginBottom, ideaSectionMl } from 'styles';
 import { Images } from '../Image';
 import { VideoSuspender } from '../Video';
-import { IdeaImagePreviewSuspender } from './IdeaImagePreviewSuspender';
+import { IdeaImagePreviewSuspender } from './ImagePreview';
 
 export interface IdeaProps {
   user: User;

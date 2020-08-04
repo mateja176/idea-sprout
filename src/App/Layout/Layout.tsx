@@ -11,8 +11,7 @@ import {
 import { ChevronLeft, LibraryAdd, Menu } from '@material-ui/icons';
 import { useBoolean } from 'ahooks';
 import { IdeaSprout, Link, Load } from 'components';
-import { CreateIdeaIcon } from 'containers';
-import { IdeaHelpContainer } from 'containers/Idea/IdeaHelpContainer';
+import { CreateIdeaIcon, IdeaHelpContainer } from 'containers';
 import { WithUserState } from 'models';
 import React from 'react';
 import { absolutePrivateRoute, getIsSignedIn, isFirebaseUser } from 'utils';

@@ -26,8 +26,7 @@ import {
 import { getRatingTooltip, getShareCountHelperText, roundAverage } from 'utils';
 import { BackToIdeas } from './BackToIdeas';
 import { IdeaProps } from './Idea';
-import { ExportReviewSuspender } from './Review/ExportReviewSuspender';
-import { ReviewButtonSuspender } from './Review/ReviewButtonSuspender';
+import { ExportReviewSuspender, ReviewButtonSuspender } from './Review';
 
 const boxShadow = 'rgba(0, 0, 0, 0.2) 0px 5px 8px';
 
