@@ -54,7 +54,6 @@ type FormValues = typeof initialValues;
 
 export const Signin: React.FC<SigninProps> = ({ user, setUserState }) => {
   const { queueSnackbar } = React.useContext(SnackbarContext);
-  (window as any).queueSnackbar = queueSnackbar;
 
   const theme = useTheme();
 
