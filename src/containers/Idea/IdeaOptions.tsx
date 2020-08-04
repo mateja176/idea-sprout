@@ -180,6 +180,7 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
                 endIcon={<StarRate style={withStarColor} />}
                 onClick={toggleReviewsOpen}
                 classes={rateOptionsClasses}
+                aria-label={'Rate'}
               >
                 {roundedAverage}
               </Button>
@@ -189,13 +190,21 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
             isAuthor ? (
               idea.status === 'sprout' ? (
                 <Tooltip title={'Unpublish'}>
-                  <Button style={buttonStyle} onClick={unpublish}>
+                  <Button
+                    style={buttonStyle}
+                    onClick={unpublish}
+                    aria-label={'Unpublish'}
+                  >
                     <CloudOff />
                   </Button>
                 </Tooltip>
               ) : (
                 <Tooltip title={'Publish'}>
-                  <Button style={buttonStyle} onClick={publish}>
+                  <Button
+                    style={buttonStyle}
+                    onClick={publish}
+                    aria-label={'Publish'}
+                  >
                     <Publish />
                   </Button>
                 </Tooltip>
@@ -206,6 +215,7 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
                 //     onClick={() => {
                 //       setCheckMenuOpen.toggle();
                 //     }}
+                //     aria-label={'Preflight check'}
                 //   >
                 //     <CheckBoxOutlineBlank />
                 //   </Button>
@@ -213,7 +223,11 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
               )
             ) : (
               <Tooltip title={'Review'}>
-                <Button style={buttonStyle} onClick={toggleReviewOpen}>
+                <Button
+                  style={buttonStyle}
+                  onClick={toggleReviewOpen}
+                  aria-label={'Review'}
+                >
                   <RateReview color="primary" />
                 </Button>
               </Tooltip>

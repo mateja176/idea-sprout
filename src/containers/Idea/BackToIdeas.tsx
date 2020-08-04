@@ -25,6 +25,7 @@ export const BackToIdeas: React.FC<Omit<TabProps, 'onClick' | 'label'>> = ({
           </Box>
         </Tooltip>
       }
+      aria-label={'Back to ideas'}
     />
   );
 };

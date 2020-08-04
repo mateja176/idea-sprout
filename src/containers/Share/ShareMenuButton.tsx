@@ -29,6 +29,7 @@ export const ShareMenuButton = React.memo<
           ref={buttonRef}
           onClick={handleClick}
           endIcon={<Share fontSize="small" color="primary" />}
+          aria-label={'Share'}
         >
           {shareCount}
         </Button>

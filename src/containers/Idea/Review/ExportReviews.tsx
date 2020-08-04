@@ -391,6 +391,7 @@ export const ExportReviews: React.FC<
                 </React.Suspense>
               )
             }
+            aria-label={'Export Reviews'}
           >
             {isAuthor ? (
               <Tooltip title={'Export reviews'}>

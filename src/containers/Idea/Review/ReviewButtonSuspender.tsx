@@ -29,6 +29,7 @@ export const ReviewButtonSuspender: React.FC<
             onClick={onClick}
           />
         }
+        aria-label={'Review'}
       />
     </React.Suspense>
   );

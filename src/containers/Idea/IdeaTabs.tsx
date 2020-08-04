@@ -105,6 +105,7 @@ export const IdeaTabs: React.FC<
               </Box>
             </Tooltip>
           }
+          aria-label={'Share'}
         />
         <Tab
           style={ideaTabStyle}
@@ -118,6 +119,7 @@ export const IdeaTabs: React.FC<
               </Box>
             </Tooltip>
           }
+          aria-label={'Rate'}
         />
         {isAuthor ? (
           <Tab
@@ -137,6 +139,7 @@ export const IdeaTabs: React.FC<
                 </Tooltip>
               )
             }
+            aria-label={'Publish or unpublish'}
           />
         ) : (
           <ReviewButtonSuspender

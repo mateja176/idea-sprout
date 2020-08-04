@@ -370,6 +370,7 @@ export const Signin: React.FC<SigninProps> = ({ user, setUserState }) => {
                 onClick={handleGoogleSignin}
                 classes={buttonClasses}
                 startIcon={<Google opacity={opacity} />}
+                arial-label={'Google'}
               >
                 {!xsAndDown && 'Google'}
               </Button>
@@ -379,6 +380,7 @@ export const Signin: React.FC<SigninProps> = ({ user, setUserState }) => {
                 startIcon={
                   <FacebookIcon round size={logoWidth} opacity={opacity} />
                 }
+                arial-label={'Facebook'}
               >
                 {!xsAndDown && 'Facebook'}
               </Button>
@@ -388,6 +390,7 @@ export const Signin: React.FC<SigninProps> = ({ user, setUserState }) => {
                 startIcon={
                   <TwitterIcon round size={logoWidth} opacity={opacity} />
                 }
+                arial-label={'Twitter'}
               >
                 {!xsAndDown && 'Twitter'}
               </Button>

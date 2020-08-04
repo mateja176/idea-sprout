@@ -14,7 +14,7 @@ export const IdeaHelp = ({ id, user }: { id: IdeaModel['id']; user: User }) => {
   }, [setShouldTourRun]);
 
   return idea?.author === user?.uid ? (
-    <IconButton color={'inherit'} onClick={handleHelpClick}>
+    <IconButton color={'inherit'} onClick={handleHelpClick} aria-label={'Help'}>
       <Help />
     </IconButton>
   ) : null;

@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
 
 const loadIconButton = (
   <Load variant={'circle'}>
-    <IconButton>
+    <IconButton aria-label={'Create idea'}>
       <LibraryAdd />
     </IconButton>
   </Load>
@@ -57,6 +57,7 @@ export const Layout: React.FC<LayoutProps> = ({ user, children }) => {
               onClick={setDrawerOpen.setTrue}
               edge="start"
               color="inherit"
+              aria-label={'Menu'}
             >
               <Menu />
             </IconButton>
@@ -102,7 +103,10 @@ export const Layout: React.FC<LayoutProps> = ({ user, children }) => {
             pr={1}
             boxShadow="0px -1px 0px #ccc inset"
           >
-            <IconButton onClick={setDrawerOpen.setFalse}>
+            <IconButton
+              onClick={setDrawerOpen.setFalse}
+              aria-label={'Close menu'}
+            >
               <ChevronLeft />
             </IconButton>
           </Box>
