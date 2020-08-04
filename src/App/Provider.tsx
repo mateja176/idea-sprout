@@ -46,7 +46,7 @@ export const Provider: React.FC<ProviderProps> = ({ children }) => {
         setSnackbarQueue((queue) =>
           queue.concat({
             ...snackbar,
-            autoHideDuration: 5000,
+            autoHideDuration: snackbar.autoHideDuration ?? 5000,
           }),
         ),
       closeSnackbar: () => setSnackbarQueue((queue) => init(queue)),
