@@ -41,6 +41,7 @@
     "reselect": "^4.0.0",
     "rxfire": "^3.13.0",
     "rxjs": "^6.5.5",
+    "source-map-explorer": "^2.4.2",
     "typesafe-actions": "^5.1.0",
     "typescript": "~3.7.2",
     "url-join": "^4.0.1",
@@ -54,7 +55,8 @@
     "eject": "react-scripts eject",
     "postinstall": "yarn --cwd functions install --ignore-engines",
     "predeploy": "yarn build",
-    "deploy": "firebase deploy"
+    "deploy": "firebase deploy",
+    "analyze": "source-map-explorer 'build/static/js/*.js'"
   },
   "eslintConfig": {
     "extends": "react-app"
