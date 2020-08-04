@@ -22,7 +22,7 @@ import { proMembership, proMembershipDiscount } from 'elements';
 import firebase, { FirebaseError, User } from 'firebase/app';
 import { useFormik } from 'formik';
 import { parseAsync } from 'json2csv';
-import { kebabCase } from 'lodash';
+import kebabCase from 'lodash/kebabCase';
 import {
   claims,
   FirestoreUser,
