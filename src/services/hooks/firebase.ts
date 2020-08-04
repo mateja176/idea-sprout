@@ -31,7 +31,7 @@ import { useActions } from './hooks';
 export const useUser = <U = User>(options?: ReactFireOptions<U | null>) =>
   useFirebaseUser<U | null>(firebase.auth(), options);
 
-export const useLoadingUser = () =>
+export const useUserState = () =>
   useFirebaseUser<'loading' | User | null>(firebase.auth(), {
     startWithValue: 'loading',
   });

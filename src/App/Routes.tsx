@@ -7,10 +7,6 @@ import React from 'react';
 import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
 import { absolutePrivateRoute, isUserLoading } from 'utils';
 
-export interface RoutesProps extends WithUserState {
-  setUserState: () => void;
-}
-
 const NotFound: React.FC<RouteComponentProps> = () => (
   <Box mt={4} display="flex" justifyContent="center">
     Not Found
@@ -21,7 +17,7 @@ const RedirectToIdeas: React.FC<RouteComponentProps> = () => (
   <Redirect to={absolutePrivateRoute.ideas.path} />
 );
 
-export const Routes: React.FC<RoutesProps> = ({ user, setUserState }) => {
+export const Routes: React.FC<WithUserState> = ({ user }) => {
   const RenderSignin = React.useCallback(
     (props: RouteComponentProps) => {
       const {
@@ -58,12 +54,12 @@ export const Routes: React.FC<RoutesProps> = ({ user, setUserState }) => {
           return <NotFound {...props} />;
         }
       } else if (user === null) {
-        return <Signin setUserState={setUserState} user={user} {...props} />;
+        return <Signin user={user} {...props} />;
       } else {
-        return <Signin setUserState={setUserState} user={user} {...props} />;
+        return <Signin user={user} {...props} />;
       }
     },
-    [user, setUserState],
+    [user],
   );
 
   return (

@@ -31,7 +31,6 @@ import * as yup from 'yup';
 
 export interface SigninProps extends RouteComponentProps {
   user: User | null;
-  setUserState: () => void;
 }
 
 const linkStyle: React.CSSProperties = {
@@ -52,7 +51,7 @@ const initialValues = {
 };
 type FormValues = typeof initialValues;
 
-export const Signin: React.FC<SigninProps> = ({ user, setUserState }) => {
+export const Signin: React.FC<SigninProps> = ({ user }) => {
   const { queueSnackbar } = React.useContext(SnackbarContext);
 
   const theme = useTheme();
@@ -102,8 +101,18 @@ export const Signin: React.FC<SigninProps> = ({ user, setUserState }) => {
   const [signinOrCreateError, setSigninOrCreateError] = React.useState('');
 
   const reloadUser = React.useCallback(
-    () => (user ? user.reload().then(setUserState) : Promise.resolve()),
-    [user, setUserState],
+    () =>
+      user
+        ? user.reload().then(() => {
+            if (user.emailVerified) {
+              queueSnackbar({
+                severity: 'success',
+                message: 'Discover ideas or create and publish your own',
+              });
+            }
+          })
+        : Promise.resolve(),
+    [user, queueSnackbar],
   );
   useQuery({
     queryKey: 'reloadUser',
