@@ -1,5 +1,5 @@
 import { Box } from '@material-ui/core';
-import { Skeleton, SkeletonProps } from '@material-ui/lab';
+import Skeleton, { SkeletonProps } from '@material-ui/lab/Skeleton';
 import React from 'react';
 
 export interface LoaderProps extends SkeletonProps {

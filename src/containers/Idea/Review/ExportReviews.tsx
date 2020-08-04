@@ -14,7 +14,8 @@ import {
   Tooltip,
 } from '@material-ui/core';
 import { Beenhere, CloudDownload, EmojiEvents } from '@material-ui/icons';
-import { Alert, Skeleton } from '@material-ui/lab';
+import Alert from '@material-ui/lab/Alert';
+import Skeleton from '@material-ui/lab/Skeleton';
 import { useBoolean } from 'ahooks';
 import { AuthCheck, ProMembership } from 'containers';
 import { SnackbarContext } from 'context';

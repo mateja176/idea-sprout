@@ -1,11 +1,9 @@
 import { Badge, BadgeProps, makeStyles, Tooltip } from '@material-ui/core';
 import { Share as ShareIcon } from '@material-ui/icons';
-import {
-  SpeedDial,
-  SpeedDialAction,
+import SpeedDial, { SpeedDialProps } from '@material-ui/lab/SpeedDial';
+import SpeedDialAction, {
   SpeedDialActionProps,
-  SpeedDialProps,
-} from '@material-ui/lab';
+} from '@material-ui/lab/SpeedDialAction';
 import { useBoolean } from 'ahooks';
 import { shareOptions } from 'components';
 import React from 'react';
