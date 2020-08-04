@@ -4,7 +4,9 @@ import { User } from 'firebase/app';
 import { IdeaBatchError, IdeaFilter, WithCount } from 'models';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AutoSizer, InfiniteLoader, List } from 'react-virtualized';
+import { AutoSizer } from 'react-virtualized/dist/commonjs/AutoSizer';
+import { InfiniteLoader } from 'react-virtualized/dist/commonjs/InfiniteLoader';
+import { List } from 'react-virtualized/dist/commonjs/List';
 import { useFirestoreDocData } from 'reactfire';
 import {
   createPromisedAction,
