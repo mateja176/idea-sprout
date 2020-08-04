@@ -1,8 +1,7 @@
-import {
-  Box,
-  CircularProgress,
+import Box from '@material-ui/core/Box';
+import CircularProgress, {
   CircularProgressProps,
-} from '@material-ui/core';
+} from '@material-ui/core/CircularProgress';
 import React from 'react';
 
 export interface LoadingProps extends CircularProgressProps {}

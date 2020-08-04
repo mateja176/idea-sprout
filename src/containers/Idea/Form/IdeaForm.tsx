@@ -1,14 +1,13 @@
-import {
-  Box,
-  Button,
-  ExpansionPanel,
-  ExpansionPanelDetails,
-  ExpansionPanelSummary,
-  TextField,
-  Tooltip,
-  Typography,
-} from '@material-ui/core';
-import { ExpandMore, Info } from '@material-ui/icons';
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import TextField from '@material-ui/core/TextField';
+import Tooltip from '@material-ui/core/Tooltip';
+import Typography from '@material-ui/core/Typography';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+import Info from '@material-ui/icons/Info';
 import { Link, MultilineTextField, PageWrapper } from 'components';
 import { Drop } from 'containers';
 import { DropProps } from 'containers/Drop';

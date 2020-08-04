@@ -1,4 +1,4 @@
-import { Box } from '@material-ui/core';
+import Box from '@material-ui/core/Box';
 import { FileOptions } from 'containers';
 import { ideaSelector } from 'elements';
 import { IdeaModel, UpdateIdea } from 'models';

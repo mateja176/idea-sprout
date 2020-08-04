@@ -1,5 +1,7 @@
-import { Box, Tab, TabProps, Tooltip } from '@material-ui/core';
-import { KeyboardArrowLeft } from '@material-ui/icons';
+import Box from '@material-ui/core/Box';
+import Tab, { TabProps } from '@material-ui/core/Tab';
+import Tooltip from '@material-ui/core/Tooltip';
+import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { tabChildStyle } from 'styles';

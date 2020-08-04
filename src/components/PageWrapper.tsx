@@ -1,4 +1,4 @@
-import { Box, BoxProps } from '@material-ui/core';
+import Box, { BoxProps } from '@material-ui/core/Box';
 import React from 'react';
 import { pageMargin } from 'styles';
 

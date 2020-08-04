@@ -1,5 +1,8 @@
-import { Box, Tab, Tabs } from '@material-ui/core';
-import { Person, Search } from '@material-ui/icons';
+import Box from '@material-ui/core/Box';
+import Tab from '@material-ui/core/Tab';
+import Tabs from '@material-ui/core/Tabs';
+import Person from '@material-ui/icons/Person';
+import Search from '@material-ui/icons/Search';
 import { Ideas, IdeasSkeleton, MyIdeas } from 'containers';
 import { MyIdeasSkeleton } from 'containers/Idea/Ideas/MyIdeasSkeleton';
 import qs from 'qs';

@@ -1,4 +1,4 @@
-import { SnackbarProps } from '@material-ui/core';
+import { SnackbarProps } from '@material-ui/core/Snackbar';
 import { AlertProps } from '@material-ui/lab/Alert';
 
 export interface ISnackbar

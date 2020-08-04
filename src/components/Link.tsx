@@ -1,4 +1,4 @@
-import { Link as MaterialLink } from '@material-ui/core';
+import MaterialLink from '@material-ui/core/Link';
 import React from 'react';
 import { NavLink, NavLinkProps } from 'react-router-dom';
 

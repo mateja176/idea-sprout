@@ -1,12 +1,13 @@
-import {
-  Box,
-  Button,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-} from '@material-ui/core';
-import { Edit, LibraryAdd, Publish, Share } from '@material-ui/icons';
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import Edit from '@material-ui/icons/Edit';
+import LibraryAdd from '@material-ui/icons/LibraryAdd';
+import Publish from '@material-ui/icons/Publish';
+import Share from '@material-ui/icons/Share';
 import { User } from 'firebase/app';
 import { IdeaModel } from 'models';
 import React from 'react';

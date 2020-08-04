@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 import { IdeaOptions } from 'containers';
 import { User } from 'firebase/app';
 import 'firebase/firestore';

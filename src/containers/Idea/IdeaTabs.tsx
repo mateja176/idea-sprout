@@ -1,5 +1,12 @@
-import { Box, Tab, Tabs, Tooltip, Typography } from '@material-ui/core';
-import { CloudOff, Publish, Share, StarRate } from '@material-ui/icons';
+import Box from '@material-ui/core/Box';
+import Tab from '@material-ui/core/Tab';
+import Tabs from '@material-ui/core/Tabs';
+import Tooltip from '@material-ui/core/Tooltip';
+import Typography from '@material-ui/core/Typography';
+import CloudOff from '@material-ui/icons/CloudOff';
+import Publish from '@material-ui/icons/Publish';
+import Share from '@material-ui/icons/Share';
+import StarRate from '@material-ui/icons/StarRate';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { useBoolean } from 'ahooks';
 import { ReviewDialog, ReviewsDialog, ShareMenu } from 'containers';

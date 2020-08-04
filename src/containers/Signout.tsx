@@ -1,10 +1,8 @@
-import {
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Tooltip,
-} from '@material-ui/core';
-import { ExitToApp } from '@material-ui/icons';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import Tooltip from '@material-ui/core/Tooltip';
+import ExitToApp from '@material-ui/icons/ExitToApp';
 import { useBoolean } from 'ahooks';
 import { SnackbarContext } from 'context';
 import firebase from 'firebase/app';

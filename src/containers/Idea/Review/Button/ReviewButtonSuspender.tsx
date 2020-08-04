@@ -1,4 +1,4 @@
-import { Tab, TabProps } from '@material-ui/core';
+import Tab, { TabProps } from '@material-ui/core/Tab';
 import { Load } from 'components';
 import React from 'react';
 import { tabChildStyle } from 'styles';

@@ -1,4 +1,5 @@
-import { Box, List } from '@material-ui/core';
+import Box from '@material-ui/core/Box';
+import List from '@material-ui/core/List';
 import { range } from 'ramda';
 import React from 'react';
 import { ideaListStyle } from 'styles';

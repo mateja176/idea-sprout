@@ -1,4 +1,4 @@
-import { Box } from '@material-ui/core';
+import Box from '@material-ui/core/Box';
 import { useBoolean } from 'ahooks';
 import { Idea } from 'containers';
 import { SnackbarContext } from 'context';

@@ -1,4 +1,7 @@
-import { Box, Divider, Typography, useTheme } from '@material-ui/core';
+import Box from '@material-ui/core/Box';
+import Divider from '@material-ui/core/Divider';
+import useTheme from '@material-ui/core/styles/useTheme';
+import Typography from '@material-ui/core/Typography';
 import Rating from '@material-ui/lab/Rating';
 import { ReviewSection } from 'components';
 import { reviewFeedbackHeading, reviewRatingHeading } from 'elements';

@@ -1,5 +1,11 @@
-import { Button, makeStyles, Tooltip, useTheme } from '@material-ui/core';
-import { CloudOff, Publish, RateReview, StarRate } from '@material-ui/icons';
+import Button from '@material-ui/core/Button';
+import makeStyles from '@material-ui/core/styles/makeStyles';
+import useTheme from '@material-ui/core/styles/useTheme';
+import Tooltip from '@material-ui/core/Tooltip';
+import CloudOff from '@material-ui/icons/CloudOff';
+import Publish from '@material-ui/icons/Publish';
+import RateReview from '@material-ui/icons/RateReview';
+import StarRate from '@material-ui/icons/StarRate';
 import { useBoolean } from 'ahooks';
 import { IdeaOptionsWrapper } from 'components';
 import { ShareMenuButton } from 'containers';

@@ -1,4 +1,5 @@
-import { Box, useTheme } from '@material-ui/core';
+import Box from '@material-ui/core/Box';
+import useTheme from '@material-ui/core/styles/useTheme';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { StorageFile } from 'models';
 import React from 'react';

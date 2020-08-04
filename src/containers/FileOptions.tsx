@@ -1,11 +1,9 @@
-import {
-  Box,
-  Button,
-  ButtonGroup,
-  ButtonProps,
-  CircularProgress,
-} from '@material-ui/core';
-import { CloudUpload, Remove } from '@material-ui/icons';
+import Box from '@material-ui/core/Box';
+import Button, { ButtonProps } from '@material-ui/core/Button';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import CloudUpload from '@material-ui/icons/CloudUpload';
+import Remove from '@material-ui/icons/Remove';
 import { SnackbarContext } from 'context';
 import { StorageFile, StoragePath } from 'models';
 import React from 'react';

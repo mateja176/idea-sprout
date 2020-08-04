@@ -1,4 +1,6 @@
-import { Box, ButtonProps, Tooltip } from '@material-ui/core';
+import Box from '@material-ui/core/Box';
+import { ButtonProps } from '@material-ui/core/Button';
+import Tooltip from '@material-ui/core/Tooltip';
 import React from 'react';
 import { shareOptions } from './share';
 

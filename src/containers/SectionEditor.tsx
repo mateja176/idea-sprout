@@ -1,5 +1,9 @@
-import { Box, Chip, FormHelperText, useTheme } from '@material-ui/core';
-import { Cancel, Edit } from '@material-ui/icons';
+import Box from '@material-ui/core/Box';
+import Chip from '@material-ui/core/Chip';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import useTheme from '@material-ui/core/styles/useTheme';
+import Cancel from '@material-ui/icons/Cancel';
+import Edit from '@material-ui/icons/Edit';
 import { IdeaSection, IdeaSectionProps } from 'components';
 import {
   ContentState,

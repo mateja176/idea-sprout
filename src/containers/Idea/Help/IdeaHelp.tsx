@@ -1,5 +1,5 @@
-import { IconButton } from '@material-ui/core';
-import { Help } from '@material-ui/icons';
+import IconButton from '@material-ui/core/IconButton';
+import Help from '@material-ui/icons/Help';
 import { IdeaModel, User } from 'models';
 import React from 'react';
 import { useFirestoreDoc, useIdeaRef, useLocalStorageSet } from 'services';

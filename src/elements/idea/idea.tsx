@@ -1,4 +1,4 @@
-import { Typography } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
 import { headingIds } from 'models';
 import React from 'react';
 

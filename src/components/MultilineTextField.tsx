@@ -1,4 +1,4 @@
-import { TextField, TextFieldProps } from '@material-ui/core';
+import TextField, { TextFieldProps } from '@material-ui/core/TextField';
 import React from 'react';
 
 export type MultilineTextFieldProps = Omit<

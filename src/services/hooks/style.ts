@@ -1,4 +1,4 @@
-import { useTheme } from '@material-ui/core';
+import useTheme from '@material-ui/core/styles/useTheme';
 import { useMemo } from 'react';
 
 export const useIdeaOptionButtonStyle = () => {

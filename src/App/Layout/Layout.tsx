@@ -1,14 +1,14 @@
-import {
-  AppBar,
-  Box,
-  colors,
-  Drawer,
-  IconButton,
-  makeStyles,
-  Toolbar,
-  Typography,
-} from '@material-ui/core';
-import { ChevronLeft, LibraryAdd, Menu } from '@material-ui/icons';
+import AppBar from '@material-ui/core/AppBar';
+import Box from '@material-ui/core/Box';
+import teal from '@material-ui/core/colors/teal';
+import Drawer from '@material-ui/core/Drawer';
+import IconButton from '@material-ui/core/IconButton';
+import makeStyles from '@material-ui/core/styles/makeStyles';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import ChevronLeft from '@material-ui/icons/ChevronLeft';
+import LibraryAdd from '@material-ui/icons/LibraryAdd';
+import Menu from '@material-ui/icons/Menu';
 import { useBoolean } from 'ahooks';
 import { IdeaSprout, Link, Load } from 'components';
 import { CreateIdeaIcon, IdeaHelpContainer } from 'containers';
@@ -64,12 +64,12 @@ export const Layout: React.FC<LayoutProps> = ({ user, children }) => {
           <Box flex={1} display={'flex'}>
             <Box
               mr={1}
-              bgcolor={colors.teal[50]}
+              bgcolor={teal[50]}
               width={'2em'}
               height={'2em'}
               borderRadius={'50%'}
               boxSizing={'initial'}
-              border={`3px solid${colors.teal[50]}`}
+              border={`3px solid${teal[50]}`}
             >
               <IdeaSprout width={'100%'} height={'100%'} />
             </Box>

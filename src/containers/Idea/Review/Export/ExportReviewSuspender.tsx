@@ -1,4 +1,4 @@
-import { Tab } from '@material-ui/core';
+import Tab from '@material-ui/core/Tab';
 import { Load } from 'components';
 import React from 'react';
 import { ExportReviews } from './ExportReviews';

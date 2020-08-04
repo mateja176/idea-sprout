@@ -1,4 +1,5 @@
-import { Box, Typography } from '@material-ui/core';
+import Box from '@material-ui/core/Box';
+import Typography from '@material-ui/core/Typography';
 import { IdeaRow, IdeasSkeleton } from 'containers';
 import { User } from 'firebase/app';
 import { IdeaBatchError, IdeaFilter, WithCount } from 'models';

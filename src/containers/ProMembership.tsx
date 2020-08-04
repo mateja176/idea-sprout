@@ -1,5 +1,8 @@
-import { Box, ButtonProps, Tooltip } from '@material-ui/core';
-import { Beenhere, EmojiEvents } from '@material-ui/icons';
+import Box from '@material-ui/core/Box';
+import { ButtonProps } from '@material-ui/core/Button';
+import Tooltip from '@material-ui/core/Tooltip';
+import Beenhere from '@material-ui/icons/Beenhere';
+import EmojiEvents from '@material-ui/icons/EmojiEvents';
 import { User } from 'firebase';
 import { Order } from 'models';
 import React from 'react';

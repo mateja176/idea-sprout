@@ -1,4 +1,4 @@
-import { Box } from '@material-ui/core';
+import Box from '@material-ui/core/Box';
 import { Check } from 'containers';
 import { CheckProps } from 'models';
 import React from 'react';
@@ -33,5 +33,6 @@ export const ExpectationsCheck: React.FC<ExpectationsCheckProps> = ({
     }
     checked={checked}
     onChange={onChange}
+    disabled={false}
   />
 );

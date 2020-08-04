@@ -1,11 +1,9 @@
-import {
-  Link,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Tooltip,
-} from '@material-ui/core';
-import { School } from '@material-ui/icons';
+import Link from '@material-ui/core/Link';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import Tooltip from '@material-ui/core/Tooltip';
+import School from '@material-ui/icons/School';
 import React from 'react';
 
 export const linkStyle: React.CSSProperties = {

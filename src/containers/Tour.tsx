@@ -1,4 +1,4 @@
-import { useTheme } from '@material-ui/core';
+import useTheme from '@material-ui/core/styles/useTheme';
 import { SnackbarContext } from 'context';
 import React from 'react';
 import ReactJoyride, { CallBackProps, Styles } from 'react-joyride';

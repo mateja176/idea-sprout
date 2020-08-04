@@ -1,19 +1,18 @@
-import {
-  Backdrop,
-  Box,
-  Button,
-  CircularProgress,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  makeStyles,
-  Tab,
-  TabProps,
-  TextField,
-  Tooltip,
-} from '@material-ui/core';
-import { Beenhere, CloudDownload, EmojiEvents } from '@material-ui/icons';
+import Backdrop from '@material-ui/core/Backdrop';
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import makeStyles from '@material-ui/core/styles/makeStyles';
+import Tab, { TabProps } from '@material-ui/core/Tab';
+import TextField from '@material-ui/core/TextField';
+import Tooltip from '@material-ui/core/Tooltip';
+import Beenhere from '@material-ui/icons/Beenhere';
+import CloudDownload from '@material-ui/icons/CloudDownload';
+import EmojiEvents from '@material-ui/icons/EmojiEvents';
 import Alert from '@material-ui/lab/Alert';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { useBoolean } from 'ahooks';

@@ -1,18 +1,16 @@
-import {
-  Box,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  IconButton,
-  TextField,
-  TextFieldProps,
-  Tooltip,
-  Typography,
-} from '@material-ui/core';
-import { ArrowDownward, Info } from '@material-ui/icons';
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import IconButton from '@material-ui/core/IconButton';
+import TextField, { TextFieldProps } from '@material-ui/core/TextField';
+import Tooltip from '@material-ui/core/Tooltip';
+import Typography from '@material-ui/core/Typography';
+import ArrowDownward from '@material-ui/icons/ArrowDownward';
+import Info from '@material-ui/icons/Info';
 import { useBoolean } from 'ahooks';
 import { SnackbarContext } from 'context';
 import { StorageFile, StoragePath } from 'models';

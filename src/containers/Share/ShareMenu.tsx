@@ -1,4 +1,4 @@
-import { Menu, MenuProps } from '@material-ui/core';
+import Menu, { MenuProps } from '@material-ui/core/Menu';
 import { shareOptions } from 'components';
 import React from 'react';
 import { ShareMenuItem } from './ShareMenuItem';

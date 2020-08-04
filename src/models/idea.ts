@@ -1,4 +1,5 @@
-import { CheckboxProps, FormControlProps } from '@material-ui/core';
+import { CheckboxProps } from '@material-ui/core/Checkbox';
+import { FormControlProps } from '@material-ui/core/FormControl';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import { IndexRange } from 'react-virtualized';

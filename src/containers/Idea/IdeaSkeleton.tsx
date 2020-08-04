@@ -1,5 +1,7 @@
-import { Box, Chip, Typography } from '@material-ui/core';
-import { Edit } from '@material-ui/icons';
+import Box from '@material-ui/core/Box';
+import Chip from '@material-ui/core/Chip';
+import Typography from '@material-ui/core/Typography';
+import Edit from '@material-ui/icons/Edit';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { IdeaPreviewWrapper, IdeaSection, Load } from 'components';
 import { problemSolutionTitle, rationaleTitle } from 'elements';

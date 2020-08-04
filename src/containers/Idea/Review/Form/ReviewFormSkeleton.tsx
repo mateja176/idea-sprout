@@ -1,4 +1,7 @@
-import { Box, Button, DialogActions, Typography } from '@material-ui/core';
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import DialogActions from '@material-ui/core/DialogActions';
+import Typography from '@material-ui/core/Typography';
 import Rating from '@material-ui/lab/Rating';
 import {
   Load,

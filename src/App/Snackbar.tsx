@@ -1,8 +1,6 @@
-import {
-  Badge,
-  makeStyles,
-  Snackbar as MaterialSnackbar,
-} from '@material-ui/core';
+import Badge from '@material-ui/core/Badge';
+import MaterialSnackbar from '@material-ui/core/Snackbar';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 import Alert from '@material-ui/lab/Alert';
 import { SnackbarContext } from 'context';
 import { head } from 'ramda';

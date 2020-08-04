@@ -1,5 +1,6 @@
-import { Button, ButtonProps, Tooltip } from '@material-ui/core';
-import { Share } from '@material-ui/icons';
+import Button, { ButtonProps } from '@material-ui/core/Button';
+import Tooltip from '@material-ui/core/Tooltip';
+import Share from '@material-ui/icons/Share';
 import { useBoolean } from 'ahooks';
 import React from 'react';
 import { FacebookShareButton } from 'react-share';

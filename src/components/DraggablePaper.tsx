@@ -1,4 +1,4 @@
-import { Paper, PaperProps } from '@material-ui/core';
+import Paper, { PaperProps } from '@material-ui/core/Paper';
 import React from 'react';
 import Draggable from 'react-draggable';
 

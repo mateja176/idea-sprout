@@ -1,4 +1,4 @@
-import { Box } from '@material-ui/core';
+import Box from '@material-ui/core/Box';
 import Skeleton, { SkeletonProps } from '@material-ui/lab/Skeleton';
 import React from 'react';
 

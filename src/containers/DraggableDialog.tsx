@@ -1,13 +1,10 @@
-import {
-  Box,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogProps,
-  DialogTitle,
-  makeStyles,
-} from '@material-ui/core';
-import { DragIndicator } from '@material-ui/icons';
+import Box from '@material-ui/core/Box';
+import Dialog, { DialogProps } from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import makeStyles from '@material-ui/core/styles/makeStyles';
+import DragIndicator from '@material-ui/icons/DragIndicator';
 import { DraggablePaper } from 'components';
 import React from 'react';
 import { modalMaxWidth } from 'styles';

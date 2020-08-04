@@ -1,5 +1,7 @@
-import { Badge, BadgeProps, makeStyles, Tooltip } from '@material-ui/core';
-import { Share as ShareIcon } from '@material-ui/icons';
+import Badge, { BadgeProps } from '@material-ui/core/Badge';
+import makeStyles from '@material-ui/core/styles/makeStyles';
+import Tooltip from '@material-ui/core/Tooltip';
+import ShareIcon from '@material-ui/icons/Share';
 import SpeedDial, { SpeedDialProps } from '@material-ui/lab/SpeedDial';
 import SpeedDialAction, {
   SpeedDialActionProps,

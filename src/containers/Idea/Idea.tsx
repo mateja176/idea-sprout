@@ -1,4 +1,5 @@
-import { Box, useTheme } from '@material-ui/core';
+import Box from '@material-ui/core/Box';
+import useTheme from '@material-ui/core/styles/useTheme';
 import { SectionEditor, Tour } from 'containers';
 import { FileOptions } from 'containers/FileOptions';
 import { EditorProps } from 'draft-js';

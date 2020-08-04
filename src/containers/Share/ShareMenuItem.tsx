@@ -1,4 +1,7 @@
-import { Box, ListItemIcon, ListItemText, MenuItem } from '@material-ui/core';
+import Box from '@material-ui/core/Box';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import MenuItem from '@material-ui/core/MenuItem';
 import { ShareConfig } from 'components';
 import React from 'react';
 import { shareIconSize } from 'styles';

@@ -1,4 +1,5 @@
-import { Menu, MenuItem, MenuProps } from '@material-ui/core';
+import Menu, { MenuProps } from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import { IdeaModel, SetCheck } from 'models';
 import React from 'react';
 import { useBooleanWithFallback } from 'services';

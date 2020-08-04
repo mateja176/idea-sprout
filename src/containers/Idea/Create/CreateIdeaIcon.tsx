@@ -1,5 +1,6 @@
-import { IconButton, Tooltip } from '@material-ui/core';
-import { LibraryAdd } from '@material-ui/icons';
+import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
+import LibraryAdd from '@material-ui/icons/LibraryAdd';
 import React from 'react';
 import { useCreateIdea, useUser } from 'services';
 
