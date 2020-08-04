@@ -10,7 +10,7 @@ import {
   TextField,
 } from '@material-ui/core';
 import { Link } from '@material-ui/icons';
-import { Skeleton } from '@material-ui/lab';
+import Skeleton from '@material-ui/lab/Skeleton';
 import { useBoolean } from 'ahooks';
 import { SnackbarContext } from 'context';
 import { useFormik } from 'formik';

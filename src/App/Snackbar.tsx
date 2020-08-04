@@ -3,7 +3,7 @@ import {
   makeStyles,
   Snackbar as MaterialSnackbar,
 } from '@material-ui/core';
-import { Alert } from '@material-ui/lab';
+import Alert from '@material-ui/lab/Alert';
 import { SnackbarContext } from 'context';
 import { head } from 'ramda';
 import React from 'react';

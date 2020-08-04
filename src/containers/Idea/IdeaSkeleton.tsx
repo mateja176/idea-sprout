@@ -1,6 +1,6 @@
 import { Box, Chip, Typography } from '@material-ui/core';
 import { Edit } from '@material-ui/icons';
-import { Skeleton } from '@material-ui/lab';
+import Skeleton from '@material-ui/lab/Skeleton';
 import { IdeaPreviewWrapper, IdeaSection, Load } from 'components';
 import { problemSolutionTitle, rationaleTitle } from 'elements';
 import React from 'react';

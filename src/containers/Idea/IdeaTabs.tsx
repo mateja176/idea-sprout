@@ -1,6 +1,6 @@
 import { Box, Tab, Tabs, Tooltip, Typography } from '@material-ui/core';
 import { CloudOff, Publish, Share, StarRate } from '@material-ui/icons';
-import { Skeleton } from '@material-ui/lab';
+import Skeleton from '@material-ui/lab/Skeleton';
 import { useBoolean } from 'ahooks';
 import { ReviewDialog, ReviewsDialog, ShareMenu } from 'containers';
 import { User } from 'firebase/app';

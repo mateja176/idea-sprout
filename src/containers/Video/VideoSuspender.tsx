@@ -1,5 +1,5 @@
 import { Box, useTheme } from '@material-ui/core';
-import { Skeleton } from '@material-ui/lab';
+import Skeleton from '@material-ui/lab/Skeleton';
 import { FileOptions, Video, YoutubeVideo } from 'containers';
 import { ideaSelector } from 'elements';
 import { IdeaModel, StorageFile, storagePath, UpdateIdea } from 'models';

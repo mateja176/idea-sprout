@@ -5,7 +5,7 @@ import {
   ListItemIcon,
   ListItemText,
 } from '@material-ui/core';
-import { Skeleton } from '@material-ui/lab';
+import Skeleton from '@material-ui/lab/Skeleton';
 import { range } from 'ramda';
 import React from 'react';
 import { absolutePrivateNavigationRoutes } from 'utils';

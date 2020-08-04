@@ -14,7 +14,7 @@ import {
   useTheme,
 } from '@material-ui/core';
 import { Autorenew } from '@material-ui/icons';
-import { Alert } from '@material-ui/lab';
+import Alert from '@material-ui/lab/Alert';
 import { useBoolean } from 'ahooks';
 import { Google, PageWrapper } from 'components';
 import { SnackbarContext } from 'context';

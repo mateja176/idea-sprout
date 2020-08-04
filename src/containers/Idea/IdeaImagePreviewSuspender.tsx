@@ -1,7 +1,7 @@
+import Skeleton from '@material-ui/lab/Skeleton';
+import { IdeaPreviewWrapper } from 'components';
 import React from 'react';
 import { IdeaImagePreview } from './IdeaImagePreview';
-import { IdeaPreviewWrapper } from 'components';
-import { Skeleton } from '@material-ui/lab';
 
 export const IdeaImagePreviewSuspender: React.FC<React.ComponentProps<
   typeof IdeaImagePreview

@@ -1,5 +1,5 @@
 import { Box } from '@material-ui/core';
-import { Skeleton } from '@material-ui/lab';
+import Skeleton from '@material-ui/lab/Skeleton';
 import { useBoolean } from 'ahooks';
 import { IdeaPreviewWrapper } from 'components';
 import { StorageFile } from 'models';

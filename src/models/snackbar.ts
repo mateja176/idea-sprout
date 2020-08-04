@@ -1,5 +1,5 @@
 import { SnackbarProps } from '@material-ui/core';
-import { AlertProps } from '@material-ui/lab';
+import { AlertProps } from '@material-ui/lab/Alert';
 
 export interface ISnackbar
   extends Pick<SnackbarProps, 'message' | 'autoHideDuration'>,
