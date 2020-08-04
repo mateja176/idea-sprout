@@ -378,7 +378,7 @@ export const Signin: React.FC<SigninProps> = ({ user }) => {
                 onClick={handleGoogleSignin}
                 classes={buttonClasses}
                 startIcon={<Google opacity={opacity} />}
-                arial-label={'Google'}
+                aria-label={'Google'}
               >
                 {!xsAndDown && 'Google'}
               </Button>
@@ -388,7 +388,7 @@ export const Signin: React.FC<SigninProps> = ({ user }) => {
                 startIcon={
                   <FacebookIcon round size={logoWidth} opacity={opacity} />
                 }
-                arial-label={'Facebook'}
+                aria-label={'Facebook'}
               >
                 {!xsAndDown && 'Facebook'}
               </Button>
@@ -398,7 +398,7 @@ export const Signin: React.FC<SigninProps> = ({ user }) => {
                 startIcon={
                   <TwitterIcon round size={logoWidth} opacity={opacity} />
                 }
-                arial-label={'Twitter'}
+                aria-label={'Twitter'}
               >
                 {!xsAndDown && 'Twitter'}
               </Button>
