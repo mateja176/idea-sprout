@@ -28,7 +28,7 @@ export interface ProviderProps {}
 
 export const Provider: React.FC<ProviderProps> = ({ children }) => {
   React.useEffect(() => {
-    if (env.logRocketId) {
+    if (process.env.NODE_ENV === 'production' && env.logRocketId) {
       LogRocket.init(env.logRocketId);
 
       setupLogRocketReact(LogRocket);
