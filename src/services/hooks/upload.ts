@@ -1,13 +1,14 @@
 import { useBoolean } from 'ahooks';
 import firebase from 'firebase/app';
 import { StorageFile, StoragePath } from 'models';
+import { useStorage } from 'reactfire';
 import {
   getFileData,
   getImageDimensions,
   getVideoDimensionsAndValidate,
 } from 'services';
 import urljoin from 'url-join';
-import { useSignedInUser, useStorage } from './firebase';
+import { useSignedInUser } from './firebase';
 
 export const useUpload = (path: StoragePath) => {
   const user = useSignedInUser();

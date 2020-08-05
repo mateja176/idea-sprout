@@ -4,13 +4,13 @@ import Tabs from '@material-ui/core/Tabs';
 import { Load, NotFound } from 'components';
 import { IdeaContainerSkeleton, IdeasSkeleton } from 'containers';
 import React from 'react';
-import { RouteComponentProps } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { absolutePrivateRoute } from 'utils';
 
-export const RoutesSkeleton: React.FC<RouteComponentProps> = (props) => {
-  const {
-    location: { pathname },
-  } = props;
+export const RoutesSkeleton: React.FC = () => {
+  const location = useLocation();
+  const { pathname } = location;
+
   if (pathname === absolutePrivateRoute.ideas.path || pathname === '/') {
     return (
       <Box flex={1} display={'flex'} flexDirection={'column'} overflow={'auto'}>
@@ -30,6 +30,6 @@ export const RoutesSkeleton: React.FC<RouteComponentProps> = (props) => {
   ) {
     return <IdeaContainerSkeleton />;
   } else {
-    return <NotFound {...props} />;
+    return <NotFound {...location} />;
   }
 };

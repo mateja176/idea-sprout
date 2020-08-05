@@ -1,16 +1,13 @@
 import { useBoolean } from 'ahooks';
 import { SnackbarContext } from 'context';
 import firebase from 'firebase/app';
-import 'firebase/auth';
-import 'firebase/firestore';
-import 'firebase/functions';
-import 'firebase/storage';
-import { IdeaModel, Order, Review, User, WithId } from 'models';
+import { CreationIdea, IdeaModel, Order, Review, User, WithId } from 'models';
 import qs from 'qs';
 import { useContext, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
   ReactFireOptions,
+  useFirestore,
   useFirestoreCollection as useFirebaseFirestoreCollection,
   useFirestoreDoc as useFirebaseFirestoreDoc,
   useFunctions as useFirebaseFunctions,
@@ -29,21 +26,23 @@ import {
 import { useActions } from './hooks';
 
 export const useUser = <U = User>(options?: ReactFireOptions<U | null>) =>
-  useFirebaseUser<U | null>(firebase.auth(), options);
+  useFirebaseUser<U | null>(undefined, options);
 
 export const useUserState = () =>
-  useFirebaseUser<'loading' | User | null>(firebase.auth(), {
+  useFirebaseUser<'loading' | User | null>(undefined, {
     startWithValue: 'loading',
   });
 
 export const useSignedInUser = (options?: ReactFireOptions<firebase.User>) =>
-  useFirebaseUser<firebase.User>(firebase.auth(), options);
+  useFirebaseUser<firebase.User>(undefined, options);
 
-export const useUsersRef = () =>
-  useMemo(
-    () => firebase.firestore().collection(firestoreCollections.users.path),
-    [],
-  );
+export const useUsersRef = () => {
+  const firestore = useFirestore();
+
+  return useMemo(() => firestore.collection(firestoreCollections.users.path), [
+    firestore,
+  ]);
+};
 
 export const useUserRef = (uid: User['uid']) => {
   const usersRef = useUsersRef();
@@ -51,10 +50,11 @@ export const useUserRef = (uid: User['uid']) => {
 };
 
 export const useCountsRef = () => {
-  return useMemo(
-    () => firebase.firestore().collection(firestoreCollections.counts.path),
-    [],
-  );
+  const firestore = useFirestore();
+
+  return useMemo(() => firestore.collection(firestoreCollections.counts.path), [
+    firestore,
+  ]);
 };
 
 export const useIdeasCountRef = () => {
@@ -65,10 +65,11 @@ export const useIdeasCountRef = () => {
 };
 
 export const useIdeasRef = () => {
-  return useMemo(
-    () => firebase.firestore().collection(firestoreCollections.ideas.path),
-    [],
-  );
+  const firestore = useFirestore();
+
+  return useMemo(() => firestore.collection(firestoreCollections.ideas.path), [
+    firestore,
+  ]);
 };
 
 export const useIdeaRef = (id: IdeaModel['id']) => {
@@ -92,11 +93,13 @@ export const useReviewRef = (id: IdeaModel['id'], uid: User['uid']) => {
   return useMemo(() => reviewsRef.doc(uid), [uid, reviewsRef]);
 };
 
-export const useOrdersRef = () =>
-  useMemo(
-    () => firebase.firestore().collection(firestoreCollections.orders.path),
-    [],
-  );
+export const useOrdersRef = () => {
+  const firestore = useFirestore();
+
+  return useMemo(() => firestore.collection(firestoreCollections.orders.path), [
+    firestore,
+  ]);
+};
 
 export const useOrderRef = (id: Order['id']) => {
   const ordersRef = useOrdersRef();
@@ -126,10 +129,6 @@ export const useFirestoreCollection = <T extends WithId>(
   return convertFirestoreCollection<T>(snapshot);
 };
 
-export const useStorage = () => {
-  return firebase.storage();
-};
-
 const reviewSubmitActionCreators = {
   updateIdea: createUpdateIdea,
 };
@@ -141,7 +140,10 @@ export const useReviewSubmit = ({
   idea: IdeaModel;
   currentReview: Review | null;
 }) => {
+  const firestore = useFirestore();
+
   const { updateIdea } = useActions(reviewSubmitActionCreators);
+
   const { queueSnackbar } = useContext(SnackbarContext);
 
   const user = useSignedInUser();
@@ -162,8 +164,7 @@ export const useReviewSubmit = ({
 
     const averageIncrement = average - idea.averageRating;
 
-    return firebase
-      .firestore()
+    return firestore
       .batch()
       .set(reviewsRef.doc(user.uid), {
         rating,
@@ -244,10 +245,14 @@ export const useCreateIdea = () => {
       pathname: absolutePrivateRoute.ideas.path,
       search: qs.stringify({ author: user.uid }),
     });
+    const newIdea: CreationIdea = {
+      ...getInitialIdea(user.uid),
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    };
     // * the promise is not rejected even if the client is offline
     // * the promise is pending until it resolves or the tab is closed
     return ideasRef
-      .add(getInitialIdea(user.uid))
+      .add(newIdea)
       .finally(setLoading.setFalse)
       .then(() => {
         queueSnackbar({

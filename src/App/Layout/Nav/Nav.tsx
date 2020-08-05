@@ -13,6 +13,7 @@ import {
   absolutePublicNavigationRoutes,
   getIsSignedIn,
 } from 'utils';
+import { NavItemSkeleton } from './NavSkeleton';
 
 export interface NavProps {
   onClick: React.MouseEventHandler;
@@ -46,7 +47,11 @@ export const Nav: React.FC<NavProps> = ({ onClick }) => {
           </ListItem>
         </Link>
       ))}
-      {!!user && <Signout user={user} onClick={onClick} />}
+      {!!user && (
+        <React.Suspense fallback={NavItemSkeleton}>
+          <Signout user={user} onClick={onClick} />
+        </React.Suspense>
+      )}
       {isSignedIn && <AcademyLink />}
     </List>
   );

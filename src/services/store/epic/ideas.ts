@@ -1,5 +1,4 @@
 import firebase, { FirebaseError } from 'firebase/app';
-import 'firebase/firestore';
 import { IdeaSprout } from 'models';
 import { findLast } from 'ramda';
 import { Epic, ofType } from 'redux-observable';
@@ -43,6 +42,14 @@ export const fetch: Epic<
           map(selectIdeas),
           map(findLast(isIdea)),
           first(), // * avoids multiple requests
+          concatMap((lastIdea) => {
+            const firestorePromise =
+              firebase.firestore === undefined
+                ? import('firebase/firestore').then(() => lastIdea)
+                : Promise.resolve(lastIdea);
+
+            return firestorePromise;
+          }),
           mergeMap((lastIdea) =>
             defer(() =>
               firebase

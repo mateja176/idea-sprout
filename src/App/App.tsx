@@ -11,7 +11,7 @@ const AppComponent: React.FC<AppProps> = () => {
   return (
     <Provider>
       <Layout>
-        <React.Suspense fallback={RoutesSkeleton}>
+        <React.Suspense fallback={<RoutesSkeleton />}>
           <Routes />
         </React.Suspense>
         <Snackbar />

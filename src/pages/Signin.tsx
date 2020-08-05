@@ -17,7 +17,6 @@ import { useBoolean } from 'ahooks';
 import { Google, PageWrapper } from 'components';
 import { SnackbarContext } from 'context';
 import firebase, { FirebaseError, User } from 'firebase/app';
-import 'firebase/auth';
 import { FormikHelpers, useFormik } from 'formik';
 import { passwordSchema } from 'models';
 import React from 'react';
@@ -28,6 +27,7 @@ import * as yup from 'yup';
 
 export interface SigninProps {
   user: User | null;
+  auth: firebase.auth.Auth;
 }
 
 const linkStyle: React.CSSProperties = {
@@ -48,7 +48,7 @@ const initialValues = {
 };
 type FormValues = typeof initialValues;
 
-export const Signin: React.FC<SigninProps> = ({ user }) => {
+export const Signin: React.FC<SigninProps> = ({ user, auth }) => {
   const { queueSnackbar } = React.useContext(SnackbarContext);
 
   const theme = useTheme();
@@ -61,8 +61,7 @@ export const Signin: React.FC<SigninProps> = ({ user }) => {
     (provider: firebase.auth.AuthProvider) => {
       setLoading.setTrue();
 
-      return firebase
-        .auth()
+      return auth
         .signInWithPopup(provider)
         .catch((error: firebase.FirebaseError) => {
           queueSnackbar({
@@ -74,7 +73,7 @@ export const Signin: React.FC<SigninProps> = ({ user }) => {
           setLoading.setFalse();
         });
     },
-    [setLoading, queueSnackbar],
+    [setLoading, queueSnackbar, auth],
   );
 
   const opacity = loading ? 0.5 : 1;
@@ -131,26 +130,22 @@ export const Signin: React.FC<SigninProps> = ({ user }) => {
 
   const signInWithEmail = React.useCallback(
     ({ email, password }: FormValues) =>
-      firebase
-        .auth()
-        .signInWithEmailAndPassword(email, password)
-        .then((credential) => {
-          if (!credential.user?.emailVerified) {
-            sendVerificationQuery.refetch();
-          }
-        }),
-    [sendVerificationQuery],
+      auth.signInWithEmailAndPassword(email, password).then((credential) => {
+        if (!credential.user?.emailVerified) {
+          sendVerificationQuery.refetch();
+        }
+      }),
+    [sendVerificationQuery, auth],
   );
 
   const createUser = React.useCallback(
     (formValues: FormValues) => {
       const { email, password } = formValues;
-      return firebase
-        .auth()
+      return auth
         .createUserWithEmailAndPassword(email, password)
         .then(() => signInWithEmail(formValues)); // https://stackoverflow.com/questions/37431128/firebase-confirmation-email-not-being-sent
     },
-    [signInWithEmail],
+    [signInWithEmail, auth],
   );
 
   const resetErrors = React.useCallback(() => {
@@ -209,8 +204,7 @@ export const Signin: React.FC<SigninProps> = ({ user }) => {
     (e, value) => {
       if (user) {
         setSigningOut.setTrue();
-        firebase
-          .auth()
+        auth
           .signOut()
           .then(() => {
             setActiveTab(value);
@@ -224,7 +218,7 @@ export const Signin: React.FC<SigninProps> = ({ user }) => {
         resetErrors();
       }
     },
-    [resetForm, resetErrors, user, setSigningOut],
+    [resetForm, resetErrors, user, setSigningOut, auth],
   );
 
   const handleSendVerification = React.useCallback(() => {
@@ -247,8 +241,8 @@ export const Signin: React.FC<SigninProps> = ({ user }) => {
   }, [sendVerificationQuery.isLoading]);
 
   const handleReset = React.useCallback(() => {
-    firebase.auth().signOut();
-  }, []);
+    auth.signOut();
+  }, [auth]);
 
   const emailHelperText = React.useMemo(
     () => (touched.email || '') && errors.email,

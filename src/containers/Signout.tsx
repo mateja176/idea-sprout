@@ -5,11 +5,10 @@ import Tooltip from '@material-ui/core/Tooltip';
 import ExitToApp from '@material-ui/icons/ExitToApp';
 import { useBoolean } from 'ahooks';
 import { SnackbarContext } from 'context';
-import firebase from 'firebase/app';
-import 'firebase/auth';
 import { User } from 'models';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import { useAuth } from 'reactfire';
 import { clearFirestoreCache, createReset, useActions } from 'services';
 
 export interface SignoutProps {
@@ -22,6 +21,8 @@ const actionCreators = {
 };
 
 export const Signout: React.FC<SignoutProps> = ({ user, onClick }) => {
+  const auth = useAuth();
+
   const { reset } = useActions(actionCreators);
 
   const { queueSnackbar } = React.useContext(SnackbarContext);
@@ -34,8 +35,7 @@ export const Signout: React.FC<SignoutProps> = ({ user, onClick }) => {
     (e) => {
       setLoading.setTrue();
 
-      firebase
-        .auth()
+      auth
         .signOut()
         // * the operation resolves even if the client is offline
         .then(() => {
@@ -56,7 +56,7 @@ export const Signout: React.FC<SignoutProps> = ({ user, onClick }) => {
           setLoading.setFalse();
         });
     },
-    [setLoading, history, queueSnackbar, reset, onClick],
+    [setLoading, history, queueSnackbar, reset, onClick, auth],
   );
 
   return user ? (

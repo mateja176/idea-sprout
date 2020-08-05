@@ -3,6 +3,7 @@ import { SnackbarContext } from 'context';
 import { IdeasSwitch, Signin } from 'pages';
 import React from 'react';
 import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
+import { useAuth as useFirebaseAuth } from 'reactfire';
 import { useAuth } from 'services';
 import { absolutePrivateRoute, isUserLoading } from 'utils';
 import { RoutesSkeleton } from './RoutesSkeleton';
@@ -16,10 +17,12 @@ export const Routes: React.FC = () => {
 
   const user = useAuth();
 
+  const auth = useFirebaseAuth();
+
   if (isUserLoading(user)) {
-    return <Route component={RoutesSkeleton} />;
+    return <RoutesSkeleton />;
   } else if (user === null || !user.emailVerified) {
-    return <Signin user={user} />;
+    return <Signin user={user} auth={auth} />;
   } else {
     return (
       <Switch>

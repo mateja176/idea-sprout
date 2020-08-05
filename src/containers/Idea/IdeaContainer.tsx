@@ -2,7 +2,6 @@ import Box from '@material-ui/core/Box';
 import { useBoolean } from 'ahooks';
 import { Idea } from 'containers';
 import { SnackbarContext } from 'context';
-import 'firebase/firestore';
 import { IdeaModel, IdeaSprout } from 'models';
 import React from 'react';
 import { Redirect } from 'react-router-dom';

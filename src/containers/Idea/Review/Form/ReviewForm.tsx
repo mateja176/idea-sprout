@@ -7,7 +7,6 @@ import Rating from '@material-ui/lab/Rating';
 import { MultilineTextField, ShareOptions, SharePrompt } from 'components';
 import { Check } from 'containers';
 import { ratingLabel } from 'elements';
-import 'firebase/firestore';
 import { useFormik } from 'formik';
 import {
   CheckProps,

@@ -160,3 +160,5 @@ export const headingIds = {
   problemSolution: 'problem-solution',
   rationale: 'rationale',
 };
+
+export type UpdateStorageFile = (file: StorageFile) => Promise<void>;

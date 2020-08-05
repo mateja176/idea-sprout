@@ -1,6 +1,5 @@
 import { DialogProps } from '@material-ui/core/Dialog';
 import { DraggableDialog } from 'containers';
-import 'firebase/firestore';
 import { User } from 'models';
 import React from 'react';
 import { useBooleanWithFallback } from 'services';

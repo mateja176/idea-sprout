@@ -1,4 +1,3 @@
-import 'firebase/firestore';
 import { IdeaModel, WithId } from 'models';
 import React from 'react';
 import { Redirect } from 'react-router-dom';

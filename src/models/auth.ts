@@ -1,5 +1,4 @@
 import firebase from 'firebase/app';
-import 'firebase/auth';
 import * as yup from 'yup';
 import { WithId } from './models';
 

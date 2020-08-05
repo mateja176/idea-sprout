@@ -1,9 +1,8 @@
 import { useBoolean } from 'ahooks';
 import firebase from 'firebase/app';
-import 'firebase/auth';
 import { Claims } from 'models';
 import React from 'react';
-import { AuthCheck as FirebaseAuthCheck } from 'reactfire';
+import { AuthCheck as FirebaseAuthCheck, useAuth } from 'reactfire';
 
 export const AuthCheck: React.FC<
   Omit<
@@ -13,6 +12,8 @@ export const AuthCheck: React.FC<
     requiredClaims: Claims;
   }
 > = ({ requiredClaims, fallback, children }) => {
+  const auth = useAuth();
+
   const [claims, setClaims] = React.useState<Claims>({});
 
   const [loading, setLoading] = useBoolean();
@@ -20,7 +21,7 @@ export const AuthCheck: React.FC<
   React.useEffect(() => {
     setLoading.setTrue();
 
-    const unsubscribe = firebase.auth().onIdTokenChanged((user) => {
+    const unsubscribe = auth.onIdTokenChanged((user) => {
       if (user) {
         const getTokenResult = () =>
           user.getIdTokenResult().catch(
@@ -39,7 +40,7 @@ export const AuthCheck: React.FC<
     });
 
     return unsubscribe;
-  }, [setLoading]);
+  }, [setLoading, auth]);
 
   const checkPassed = React.useMemo(() => {
     return Object.entries(requiredClaims).every(
