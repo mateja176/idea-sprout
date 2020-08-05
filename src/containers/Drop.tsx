@@ -11,7 +11,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
 import Info from '@material-ui/icons/Info';
-import { useBoolean } from 'ahooks';
+import useBoolean from 'ahooks/es/useBoolean';
 import { SnackbarContext } from 'context';
 import { StorageFile, StoragePath } from 'models';
 import React from 'react';

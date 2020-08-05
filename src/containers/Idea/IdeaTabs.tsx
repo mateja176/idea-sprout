@@ -8,7 +8,7 @@ import Publish from '@material-ui/icons/Publish';
 import Share from '@material-ui/icons/Share';
 import StarRate from '@material-ui/icons/StarRate';
 import Skeleton from '@material-ui/lab/Skeleton';
-import { useBoolean } from 'ahooks';
+import useBoolean from 'ahooks/es/useBoolean';
 import { ReviewDialog, ReviewsDialog, ShareMenu } from 'containers';
 import { User } from 'firebase/app';
 import { IdeaModel } from 'models';

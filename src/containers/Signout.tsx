@@ -3,7 +3,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Tooltip from '@material-ui/core/Tooltip';
 import ExitToApp from '@material-ui/icons/ExitToApp';
-import { useBoolean } from 'ahooks';
+import useBoolean from 'ahooks/es/useBoolean';
 import { SnackbarContext } from 'context';
 import { User } from 'models';
 import React from 'react';

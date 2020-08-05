@@ -8,7 +8,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import LibraryAdd from '@material-ui/icons/LibraryAdd';
-import { useBoolean } from 'ahooks';
+import useBoolean from 'ahooks/es/useBoolean';
 import { IdeaSprout, Link, Load } from 'components';
 import { CreateIdeaIcon, IdeaHelpContainer, MenuButton } from 'containers';
 import React from 'react';

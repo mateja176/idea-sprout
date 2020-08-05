@@ -1,6 +1,6 @@
 import Box from '@material-ui/core/Box';
 import Skeleton from '@material-ui/lab/Skeleton';
-import { useBoolean } from 'ahooks';
+import useBoolean from 'ahooks/es/useBoolean';
 import { IdeaPreviewWrapper } from 'components';
 import { StorageFile } from 'models';
 import React from 'react';

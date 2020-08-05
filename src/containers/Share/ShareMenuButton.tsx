@@ -1,7 +1,7 @@
 import Button, { ButtonProps } from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
 import Share from '@material-ui/icons/Share';
-import { useBoolean } from 'ahooks';
+import useBoolean from 'ahooks/es/useBoolean';
 import React from 'react';
 import FacebookShareButton from 'react-share/es/FacebookShareButton';
 import { getShareCountHelperText } from 'utils';

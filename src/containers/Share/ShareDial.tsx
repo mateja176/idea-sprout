@@ -6,7 +6,7 @@ import SpeedDial, { SpeedDialProps } from '@material-ui/lab/SpeedDial';
 import SpeedDialAction, {
   SpeedDialActionProps,
 } from '@material-ui/lab/SpeedDialAction';
-import { useBoolean } from 'ahooks';
+import useBoolean from 'ahooks/es/useBoolean';
 import { shareOptions } from 'components';
 import React from 'react';
 import FacebookShareButton from 'react-share/es/FacebookShareButton';

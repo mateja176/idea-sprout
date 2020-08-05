@@ -1,5 +1,5 @@
 import Box from '@material-ui/core/Box';
-import { useBoolean } from 'ahooks';
+import useBoolean from 'ahooks/es/useBoolean';
 import { Idea } from 'containers';
 import { SnackbarContext } from 'context';
 import { IdeaModel, IdeaSprout } from 'models';

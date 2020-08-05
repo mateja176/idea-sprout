@@ -13,7 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Autorenew from '@material-ui/icons/Autorenew';
 import Alert from '@material-ui/lab/Alert';
-import { useBoolean } from 'ahooks';
+import useBoolean from 'ahooks/es/useBoolean';
 import { Google, PageWrapper } from 'components';
 import { SnackbarContext } from 'context';
 import firebase, { FirebaseError, User } from 'firebase/app';
