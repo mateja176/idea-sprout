@@ -18,7 +18,7 @@ import {
   Review,
   User,
 } from 'models';
-import { equals } from 'ramda';
+import equals from 'ramda/es/equals';
 import React from 'react';
 import {
   useFirestoreDoc,

@@ -1,4 +1,4 @@
-import { isNil } from 'ramda';
+import isNil from 'ramda/es/isNil';
 
 export function assertRequired<O extends {}>(
   object: O,

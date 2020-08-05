@@ -5,7 +5,7 @@ import {
 } from 'context';
 import LogRocket from 'logrocket';
 import setupLogRocketReact from 'logrocket-react';
-import { init } from 'ramda';
+import init from 'ramda/es/init';
 import React from 'react';
 import { Provider as ReduxProvider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';

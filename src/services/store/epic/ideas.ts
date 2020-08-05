@@ -1,6 +1,6 @@
 import firebase, { FirebaseError } from 'firebase/app';
 import { IdeaSprout } from 'models';
-import { findLast } from 'ramda';
+import findLast from 'ramda/es/findLast';
 import { Epic, ofType } from 'redux-observable';
 import { defer, of } from 'rxjs';
 import { catchError, concatMap, first, map, mergeMap } from 'rxjs/operators';
