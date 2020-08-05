@@ -22,12 +22,11 @@ import { FormikHelpers, useFormik } from 'formik';
 import { passwordSchema } from 'models';
 import React from 'react';
 import { useQuery } from 'react-query';
-import { RouteComponentProps } from 'react-router-dom';
 import { FacebookIcon, TwitterIcon } from 'react-share';
 import { inputStyle, logoWidth } from 'styles';
 import * as yup from 'yup';
 
-export interface SigninProps extends RouteComponentProps {
+export interface SigninProps {
   user: User | null;
 }
 
