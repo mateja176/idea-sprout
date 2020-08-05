@@ -302,7 +302,7 @@ export const Signin: React.FC<SigninProps> = ({ user }) => {
                       An email has been sent to {user?.email}. In case you want
                       a different email,{' '}
                       <Link style={linkStyle} onClick={handleReset}>
-                        reset here
+                        resend here
                       </Link>
                       .
                     </Alert>
