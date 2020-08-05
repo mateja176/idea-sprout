@@ -21,7 +21,7 @@ import { SnackbarContext } from 'context';
 import { proMembership, proMembershipDiscount } from 'elements';
 import firebase, { FirebaseError, User } from 'firebase/app';
 import { useFormik } from 'formik';
-import { parseAsync } from 'json2csv';
+import jsonexport from 'jsonexport/dist';
 import kebabCase from 'lodash/kebabCase';
 import {
   claims,
@@ -156,7 +156,7 @@ export const ExportReviews: React.FC<
           }),
         ),
       )
-      .then((reviews) => parseAsync(reviews))
+      .then((reviews) => jsonexport(reviews))
       .then((csv) => {
         const blob = new Blob([csv], { type: 'text/csv' });
         const url = URL.createObjectURL(blob);
