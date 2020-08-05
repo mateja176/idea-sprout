@@ -6,5 +6,6 @@ export * from './Link';
 export * from './Load';
 export * from './Loading';
 export * from './MultilineTextField';
+export * from './NotFound';
 export * from './PageWrapper';
 export * from './share';
