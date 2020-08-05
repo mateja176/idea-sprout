@@ -9,7 +9,7 @@ import SpeedDialAction, {
 import { useBoolean } from 'ahooks';
 import { shareOptions } from 'components';
 import React from 'react';
-import { FacebookShareButton } from 'react-share';
+import FacebookShareButton from 'react-share/es/FacebookShareButton';
 import { shareIconSize, speedDialZIndex } from 'styles';
 import { getShareCountHelperText } from 'utils';
 

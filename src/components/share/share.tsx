@@ -1,17 +1,15 @@
 import { ShareButtonProps, ShareIconProps } from 'models';
 import React from 'react';
-import {
-  FacebookIcon,
-  FacebookShareButton,
-  LinkedinIcon,
-  LinkedinShareButton,
-  TwitterIcon,
-  TwitterShareButton,
-  ViberIcon,
-  ViberShareButton,
-  WhatsappIcon,
-  WhatsappShareButton,
-} from 'react-share';
+import FacebookIcon from 'react-share/es/FacebookIcon';
+import FacebookShareButton from 'react-share/es/FacebookShareButton';
+import LinkedinIcon from 'react-share/es/LinkedinIcon';
+import LinkedinShareButton from 'react-share/es/LinkedinShareButton';
+import TwitterIcon from 'react-share/es/TwitterIcon';
+import TwitterShareButton from 'react-share/es/TwitterShareButton';
+import ViberIcon from 'react-share/es/ViberIcon';
+import ViberShareButton from 'react-share/es/ViberShareButton';
+import WhatsappIcon from 'react-share/es/WhatsappIcon';
+import WhatsappShareButton from 'react-share/es/WhatsappShareButton';
 
 export interface ShareConfig {
   label: string;

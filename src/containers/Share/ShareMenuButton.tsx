@@ -3,7 +3,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Share from '@material-ui/icons/Share';
 import { useBoolean } from 'ahooks';
 import React from 'react';
-import { FacebookShareButton } from 'react-share';
+import FacebookShareButton from 'react-share/es/FacebookShareButton';
 import { getShareCountHelperText } from 'utils';
 import { ShareMenu } from './ShareMenu';
 

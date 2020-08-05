@@ -21,7 +21,8 @@ import { FormikHelpers, useFormik } from 'formik';
 import { passwordSchema } from 'models';
 import React from 'react';
 import { useQuery } from 'react-query';
-import { FacebookIcon, TwitterIcon } from 'react-share';
+import FacebookIcon from 'react-share/es/FacebookIcon';
+import TwitterIcon from 'react-share/es/TwitterIcon';
 import { inputStyle, logoWidth } from 'styles';
 import * as yup from 'yup';
 

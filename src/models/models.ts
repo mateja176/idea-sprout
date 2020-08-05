@@ -1,4 +1,5 @@
-import { FacebookIcon, FacebookShareButton } from 'react-share';
+import FacebookIcon from 'react-share/es/FacebookIcon';
+import FacebookShareButton from 'react-share/es/FacebookShareButton';
 
 export interface WithId {
   id: string;
