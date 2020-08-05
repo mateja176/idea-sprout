@@ -55,8 +55,8 @@ export const Provider: React.FC<ProviderProps> = ({ children }) => {
   );
 
   return (
-    <ReduxProvider store={store}>
-      <BrowserRouter>
+    <BrowserRouter>
+      <ReduxProvider store={store}>
         <FirebaseAppProvider firebaseConfig={firebaseConfig}>
           <ThemeProvider>
             <SnackbarContext.Provider value={snackbarContext}>
@@ -64,7 +64,7 @@ export const Provider: React.FC<ProviderProps> = ({ children }) => {
             </SnackbarContext.Provider>
           </ThemeProvider>
         </FirebaseAppProvider>
-      </BrowserRouter>
-    </ReduxProvider>
+      </ReduxProvider>
+    </BrowserRouter>
   );
 };
