@@ -13,8 +13,8 @@ export const UploadButton: React.FC<
     update: UpdateStorageFile;
     storagePath: StoragePath;
     label?: string;
-  } & Pick<ButtonProps, 'style'>
-> = ({ storagePath, update, style, label }) => {
+  } & ButtonProps
+> = ({ storagePath, update, label, ...props }) => {
   const { queueSnackbar } = React.useContext(SnackbarContext);
 
   const { upload, loading } = useUpload(storagePath);
@@ -59,7 +59,7 @@ export const UploadButton: React.FC<
       />
       {label ? (
         <Button
-          style={style}
+          {...props}
           onClick={handleClick}
           startIcon={
             loading ? <CircularProgress size={'1em'} /> : <CloudUpload />
@@ -68,7 +68,7 @@ export const UploadButton: React.FC<
           {loading ? `Uploading ${type}` : label}
         </Button>
       ) : (
-        <Button style={style} onClick={handleClick}>
+        <Button {...props} onClick={handleClick}>
           {loading ? (
             <CircularProgress size={'1em'} />
           ) : (
