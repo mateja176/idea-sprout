@@ -1,8 +1,9 @@
 import { NotFound } from 'components';
-import { WithUserState } from 'models';
+import { SnackbarContext } from 'context';
 import { IdeasSwitch, Signin } from 'pages';
 import React from 'react';
 import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
+import { useAuth, useUserState } from 'services';
 import { absolutePrivateRoute, isUserLoading } from 'utils';
 import { RoutesSkeleton } from './RoutesSkeleton';
 
@@ -10,22 +11,25 @@ const RedirectToIdeas: React.FC<RouteComponentProps> = () => (
   <Redirect to={absolutePrivateRoute.ideas.path} />
 );
 
-export const Routes: React.FC<WithUserState> = ({ user }) => {
-  const RenderSignin = React.useCallback(
-    (props: RouteComponentProps) => {
-      if (isUserLoading(user)) {
-        return <RoutesSkeleton {...props} />;
-      } else {
-        return <Signin user={user} {...props} />;
-      }
-    },
-    [user],
-  );
+const SigninComponent = (props: RouteComponentProps) => {
+  const user = useUserState();
+
+  if (isUserLoading(user)) {
+    return <RoutesSkeleton {...props} />;
+  } else {
+    return <Signin user={user} {...props} />;
+  }
+};
+
+export const Routes: React.FC = () => {
+  React.useContext(SnackbarContext); // * user.reload() does not trigger a re-render
+
+  const user = useAuth();
 
   return (
     <Switch>
       {isUserLoading(user) || user === null || !user.emailVerified ? (
-        <Route render={RenderSignin} />
+        <Route component={SigninComponent} />
       ) : null}
       <Route
         exact

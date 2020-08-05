@@ -8,16 +8,14 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import LibraryAdd from '@material-ui/icons/LibraryAdd';
-import Menu from '@material-ui/icons/Menu';
 import { useBoolean } from 'ahooks';
 import { IdeaSprout, Link, Load } from 'components';
-import { CreateIdeaIcon, IdeaHelpContainer } from 'containers';
-import { WithUserState } from 'models';
+import { CreateIdeaIcon, IdeaHelpContainer, MenuButton } from 'containers';
 import React from 'react';
-import { absolutePrivateRoute, getIsSignedIn, isFirebaseUser } from 'utils';
+import { absolutePrivateRoute } from 'utils';
 import { minNavWidth, Nav, NavSkeleton } from './Nav';
 
-export interface LayoutProps extends WithUserState {}
+export interface LayoutProps {}
 
 const useStyles = makeStyles((theme) => ({
   toolbar: theme.mixins.toolbar,
@@ -33,9 +31,7 @@ const loadIconButton = (
     </IconButton>
   </Load>
 );
-export const Layout: React.FC<LayoutProps> = ({ user, children }) => {
-  const isSignedIn = getIsSignedIn(user);
-
+export const Layout: React.FC<LayoutProps> = ({ children }) => {
   const classes = useStyles();
 
   const [drawerOpen, setDrawerOpen] = useBoolean();
@@ -51,15 +47,10 @@ export const Layout: React.FC<LayoutProps> = ({ user, children }) => {
     <Box height={'100%'} display={'flex'} flexDirection={'column'}>
       <AppBar position="static">
         <Toolbar>
-          <Box mr={2} visibility={isSignedIn ? 'visible' : 'hidden'}>
-            <IconButton
-              onClick={setDrawerOpen.setTrue}
-              edge="start"
-              color="inherit"
-              aria-label={'Menu'}
-            >
-              <Menu />
-            </IconButton>
+          <Box mr={2}>
+            <React.Suspense fallback={loadIconButton}>
+              <MenuButton onClick={setDrawerOpen.setTrue} />
+            </React.Suspense>
           </Box>
           <Box flex={1} display={'flex'}>
             <Box
@@ -109,15 +100,9 @@ export const Layout: React.FC<LayoutProps> = ({ user, children }) => {
               <ChevronLeft />
             </IconButton>
           </Box>
-          {isFirebaseUser(user) && (
-            <React.Suspense fallback={<NavSkeleton />}>
-              <Nav
-                isSignedIn={isSignedIn}
-                user={user}
-                onClick={setDrawerOpen.setFalse}
-              />
-            </React.Suspense>
-          )}
+          <React.Suspense fallback={<NavSkeleton />}>
+            <Nav onClick={setDrawerOpen.setFalse} />
+          </React.Suspense>
         </Box>
       </Drawer>
       {children}
