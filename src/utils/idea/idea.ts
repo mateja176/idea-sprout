@@ -1,11 +1,10 @@
 import { convertToRaw, EditorState } from 'draft-js';
-import firebase from 'firebase/app';
 import {
   FormIdea,
   IdeaModel,
   IdeaSprout,
   IdeasState,
-  initialRawIdea,
+  InitialIdea,
   RawIdea,
   StorageFile,
 } from 'models';
@@ -62,10 +61,14 @@ export const problemSolutionText = `What do all successful businesses have in co
 
 export const rationaleText = `Win over the hearts of customers with your story. Win over the minds of customers with common logic.`;
 
-export const getInitialIdea = (author: IdeaModel['author']): RawIdea => ({
-  ...initialRawIdea,
-  author,
-  createdAt: firebase.firestore.Timestamp.now(),
+const initialIdea: InitialIdea = {
+  author: '',
+  checks: {
+    expectations: true,
+    niche: true,
+  },
+  averageRating: 0,
+  ratingCount: 0,
   sharedBy: {},
   status: 'seed',
   name: 'Idea Seed',
@@ -89,29 +92,19 @@ export const getInitialIdea = (author: IdeaModel['author']): RawIdea => ({
     },
   ],
   rationale: rationaleText,
+};
+
+export const getInitialIdea = (author: IdeaModel['author']) => ({
+  ...initialIdea,
+  author,
 });
 
-export const getAppleIdea = (author: IdeaModel['author']): RawIdea => ({
-  ...initialRawIdea,
+export const getAppleIdea = (author: IdeaModel['author']) => ({
+  ...initialIdea,
   author,
-  createdAt: firebase.firestore.Timestamp.now(),
-  sharedBy: {},
-  status: 'seed',
   name: 'Apple Computers',
   problemSolution:
     'Computers are an invaluable source of information, they save precious time and help us connect with other people. Computers make our lives better.',
-  story: {
-    path: 'videos/placeholder-story.mp4',
-    width: 1920,
-    height: 1080,
-  },
-  images: [
-    {
-      path: 'images/placeholder-image.png',
-      width: 1920,
-      height: 1080,
-    },
-  ],
   rationale:
     'Computers enable us to write messages, talk to friends and family, watch videos, share images, learn and teach others, manage finances, buy online, manage calendars, look up addresses, translate text, play games and many more things',
 });

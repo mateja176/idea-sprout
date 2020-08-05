@@ -1,7 +1,6 @@
 import { CheckboxProps } from '@material-ui/core/Checkbox';
 import { FormControlProps } from '@material-ui/core/FormControl';
 import firebase from 'firebase/app';
-import 'firebase/firestore';
 import { IndexRange } from 'react-virtualized';
 import * as yup from 'yup';
 import { User } from './auth';
@@ -70,26 +69,7 @@ export interface IdeaModel extends WithId, WithAuthor {
   ratingCount: number;
 }
 
-export const initialRawIdea: RawIdea = {
-  author: '',
-  createdAt: firebase.firestore.Timestamp.now(),
-  sharedBy: {},
-  status: 'seed',
-  checks: {
-    niche: true,
-    expectations: true,
-  },
-
-  name: '',
-  logo: { path: '', width: 0, height: 0 },
-  tagline: '',
-  story: { path: '', width: 0, height: 0 },
-  problemSolution: '',
-  images: [],
-  rationale: '',
-  averageRating: 0,
-  ratingCount: 0,
-};
+export type InitialIdea = Omit<RawIdea, 'createdAt'>;
 
 export type RawIdea = Omit<IdeaModel, 'id'>;
 
