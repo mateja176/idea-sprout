@@ -30,7 +30,7 @@ export const useAuth = () => {
           phoneNumber,
           providerId,
           photoURL,
-        } as User,
+        },
         { merge: true },
       );
 
