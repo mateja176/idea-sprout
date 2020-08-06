@@ -132,8 +132,10 @@ export const Signin: React.FC<SigninProps> = ({ user, auth }) => {
   const signInWithEmail = React.useCallback(
     ({ email, password }: FormValues) =>
       auth.signInWithEmailAndPassword(email, password).then((credential) => {
-        if (!credential.user?.emailVerified) {
-          sendVerificationQuery.refetch();
+        if (credential.user?.emailVerified) {
+          return Promise.resolve();
+        } else {
+          return sendVerificationQuery.refetch();
         }
       }),
     [sendVerificationQuery, auth],
@@ -144,7 +146,7 @@ export const Signin: React.FC<SigninProps> = ({ user, auth }) => {
       const { email, password } = formValues;
       return auth
         .createUserWithEmailAndPassword(email, password)
-        .then(() => signInWithEmail(formValues)); // https://stackoverflow.com/questions/37431128/firebase-confirmation-email-not-being-sent
+        .then(() => signInWithEmail(formValues));
     },
     [signInWithEmail, auth],
   );
