@@ -9,14 +9,23 @@ admin.initializeApp();
 export const adjustIdeaCount = functions.firestore
   .document('ideas/{ideaId}')
   .onUpdate(async (handler) => {
-    const data = handler.after.data();
+    const dataBefore = handler.before.data();
+    const dataAfter = handler.after.data();
     const ideasCountRef = admin.firestore().doc('counts/ideas');
-    if (data && 'status' in data) {
-      if (data.status === 'sprout') {
+    if (
+      dataBefore &&
+      'status' in dataBefore &&
+      dataAfter &&
+      'status' in dataAfter
+    ) {
+      if (dataBefore.status === 'seed' && dataAfter.status === 'sprout') {
         return ideasCountRef.update({
           count: admin.firestore.FieldValue.increment(1),
         });
-      } else if (data.status === 'seed') {
+      } else if (
+        dataBefore.status === 'sprout' &&
+        dataAfter.status === 'seed'
+      ) {
         return ideasCountRef.update({
           count: admin.firestore.FieldValue.increment(-1),
         });
