@@ -115,8 +115,9 @@ function isPartialIdeaType() {
 
 function canShare() {
   return isSharedByType()
+    && !(request.auth.uid in resource.data.sharedBy)
     && request.resource.data.sharedBy[request.auth.uid] == true
-    && request.resource.data.sharedBy.keys().size() == 1;
+    && (request.resource.data.sharedBy.keys().size() - resource.data.sharedBy.keys().size()) == 1;
 }
 
 function willBeAuthor() {
