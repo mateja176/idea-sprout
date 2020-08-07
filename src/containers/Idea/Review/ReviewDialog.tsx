@@ -4,7 +4,6 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { DraggableDialog } from 'containers';
 import { User } from 'models';
 import React from 'react';
-import { useBooleanWithFallback } from 'services';
 import { withEllipsis } from 'styles';
 import { ReviewForm, ReviewFormProps, ReviewFormSkeleton } from './Form';
 
@@ -19,8 +18,6 @@ export const ReviewDialog = React.memo<ReviewDialogProps>(
       idea: { name },
       onClose,
     } = props;
-    const openWithFallback = useBooleanWithFallback(open, { timeoutMs: 500 });
-
     const handleClose = React.useCallback(() => {
       onClose();
     }, [onClose]);
@@ -41,11 +38,9 @@ export const ReviewDialog = React.memo<ReviewDialogProps>(
         fullScreen={xsDown}
         disabled={xsDown}
       >
-        {openWithFallback && (
-          <React.Suspense fallback={<ReviewFormSkeleton />}>
-            <ReviewForm {...props} />
-          </React.Suspense>
-        )}
+        <React.Suspense fallback={<ReviewFormSkeleton />}>
+          <ReviewForm {...props} />
+        </React.Suspense>
       </DraggableDialog>
     );
   },
