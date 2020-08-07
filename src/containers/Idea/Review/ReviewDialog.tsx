@@ -1,4 +1,6 @@
 import { DialogProps } from '@material-ui/core/Dialog';
+import { Theme } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { DraggableDialog } from 'containers';
 import { User } from 'models';
 import React from 'react';
@@ -23,6 +25,10 @@ export const ReviewDialog = React.memo<ReviewDialogProps>(
       onClose();
     }, [onClose]);
 
+    const xsDown = useMediaQuery((theme: Theme) =>
+      theme.breakpoints.down('xs'),
+    );
+
     return (
       <DraggableDialog
         open={open}
@@ -32,6 +38,8 @@ export const ReviewDialog = React.memo<ReviewDialogProps>(
             Review:&nbsp;<i style={withEllipsis}>{name}</i>
           </>
         }
+        fullScreen={xsDown}
+        disabled={xsDown}
       >
         {openWithFallback && (
           <React.Suspense fallback={<ReviewFormSkeleton />}>

@@ -4,8 +4,8 @@ import ButtonGroup from '@material-ui/core/ButtonGroup';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Grow from '@material-ui/core/Grow';
 import Link from '@material-ui/core/Link';
+import { Theme } from '@material-ui/core/styles';
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import useTheme from '@material-ui/core/styles/useTheme';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
 import TextField from '@material-ui/core/TextField';
@@ -68,8 +68,6 @@ export const Signin: React.FC<SigninProps> = ({ user, auth }) => {
 
   const { queueSnackbar } = React.useContext(SnackbarContext);
 
-  const theme = useTheme();
-
   const [loading, setLoading] = useBoolean();
 
   const buttonClasses = useButtonStyles();
@@ -96,7 +94,9 @@ export const Signin: React.FC<SigninProps> = ({ user, auth }) => {
 
   const opacity = loading ? 0.5 : 1;
 
-  const xsAndDown = useMediaQuery(theme.breakpoints.down('xs'));
+  const xsAndDown = useMediaQuery((theme: Theme) =>
+    theme.breakpoints.down('xs'),
+  );
 
   const sendVerification = React.useCallback(
     () => (user ? user?.sendEmailVerification() : Promise.resolve()),

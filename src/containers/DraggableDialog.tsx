@@ -3,15 +3,15 @@ import Dialog, { DialogProps } from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import { PaperProps } from '@material-ui/core/Paper';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import DragIndicator from '@material-ui/icons/DragIndicator';
 import { DraggablePaper } from 'components';
 import React from 'react';
 import { modalMaxWidth } from 'styles';
 
-interface WithMinWidth {}
-
-export interface DraggableDialogProps extends DialogProps, WithMinWidth {
+export interface DraggableDialogProps extends DialogProps {
+  disabled: boolean;
   dialogTitle: React.ReactNode;
   actions?: React.ReactNode;
 }
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const DraggableDialog = React.memo<DraggableDialogProps>(
-  ({ dialogTitle, children, actions, ...props }) => {
+  ({ disabled, dialogTitle, children, actions, ...props }) => {
     const classes = useStyles();
 
     const root = React.useMemo(
@@ -41,18 +41,25 @@ export const DraggableDialog = React.memo<DraggableDialogProps>(
 
     const { scroll } = props;
 
+    const Draggable = React.useCallback(
+      (props: PaperProps) => <DraggablePaper {...props} disabled={disabled} />,
+      [disabled],
+    );
+
     return (
       <Dialog // TODO replace modal with custom implementation since elements outside of the dialog cannot be interacted with
         {...props}
         hideBackdrop
-        PaperComponent={DraggablePaper}
+        PaperComponent={Draggable}
       >
         <DialogTitle style={titleStyle}>
           <Box display="flex" alignItems="center">
             {dialogTitle}
-            <Box ml="auto" id={dragHandleId}>
-              <DragIndicator color="action" />
-            </Box>
+            {!disabled && (
+              <Box ml="auto" id={dragHandleId}>
+                <DragIndicator color="action" />
+              </Box>
+            )}
           </Box>
         </DialogTitle>
         <DialogContent classes={root} dividers={scroll === 'paper'}>
