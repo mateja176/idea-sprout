@@ -19,7 +19,6 @@ import {
   Review,
   User,
 } from 'models';
-import equals from 'ramda/es/equals';
 import React from 'react';
 import {
   useFirestoreDoc,
@@ -92,7 +91,6 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
     errors,
     touched,
     values,
-    isValid,
     submitForm,
   } = useFormik({
     validationSchema: createReviewSchema,
@@ -104,14 +102,11 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
         );
       } else {
         setDoNotShareOrWarn(doNotShareWarning);
+
+        return Promise.resolve(); // * in order to toggle isSubmitting
       }
     },
   });
-
-  const areValuesEqualToInitial = React.useMemo(
-    () => equals(initialValues)(values),
-    [initialValues, values],
-  );
 
   const doNotShare: CheckProps['onChange'] = React.useCallback(
     (e, value) => {
@@ -183,16 +178,7 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>
-        <Button
-          onClick={submitForm}
-          type="submit"
-          disabled={
-            isSubmitting ||
-            !isValid ||
-            areValuesEqualToInitial ||
-            !hasSharedOrDeclined
-          }
-        >
+        <Button onClick={submitForm} type="submit" disabled={isSubmitting}>
           Submit
         </Button>
       </DialogActions>
