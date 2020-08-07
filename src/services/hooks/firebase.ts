@@ -145,8 +145,6 @@ export const useReviewSubmit = ({
   idea: IdeaModel;
   currentReview: Review | null;
 }) => {
-  const firestore = useFirestore();
-
   const { updateIdea } = useActions(reviewSubmitActionCreators);
 
   const { queueSnackbar } = useContext(SnackbarContext);
@@ -154,8 +152,6 @@ export const useReviewSubmit = ({
   const user = useSignedInUser();
 
   const reviewsRef = useReviewsRef(idea.id);
-
-  const ideaRef = useIdeaRef(idea.id);
 
   return ({ rating, feedback }: Pick<Review, 'rating' | 'feedback'>) => {
     const countIncrement = Number(!currentReview);
@@ -168,31 +164,12 @@ export const useReviewSubmit = ({
         idea.ratingCount
       : (idea.averageRating * idea.ratingCount + rating) / count;
 
-    const averageIncrement = average - idea.averageRating;
-
-    const batch = firestore.batch();
-
-    if (!currentReview) {
-      batch.update(ideaRef, {
-        averageRating: firebase.firestore.FieldValue.increment(
-          averageIncrement,
-        ),
-        ratingCount: firebase.firestore.FieldValue.increment(1),
-      } as RatingUpdate);
-    } else if (currentReview.rating !== rating) {
-      batch.update(ideaRef, {
-        averageRating: firebase.firestore.FieldValue.increment(
-          averageIncrement,
-        ),
-      } as RatingUpdate);
-    }
-
-    return batch
-      .set(reviewsRef.doc(user.uid), {
+    return reviewsRef
+      .doc(user.uid)
+      .set({
         rating,
         feedback,
       })
-      .commit()
       .then(() => {
         updateIdea({
           id: idea.id,
