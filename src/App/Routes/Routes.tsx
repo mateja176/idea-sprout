@@ -4,7 +4,7 @@ import { IdeasSwitch, Signin } from 'pages';
 import React from 'react';
 import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
 import { useAuth as useFirebaseAuth } from 'reactfire';
-import { useAuth } from 'services';
+import { useUserState } from 'services';
 import { absolutePrivateRoute, isUserLoading } from 'utils';
 import { RoutesSkeleton } from './RoutesSkeleton';
 
@@ -15,7 +15,7 @@ const RedirectToIdeas: React.FC<RouteComponentProps> = () => (
 export const Routes: React.FC = () => {
   React.useContext(SnackbarContext); // * user.reload() does not trigger a re-render
 
-  const user = useAuth();
+  const user = useUserState();
 
   const auth = useFirebaseAuth();
 

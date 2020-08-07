@@ -1,3 +1,5 @@
+import firebase from 'firebase/app';
+
 export const interceptGetIdeasError = (
   snapshot: firebase.firestore.QuerySnapshot,
 ) => {
@@ -15,3 +17,8 @@ export const clearFirestoreCache = () => {
     );
   }
 };
+
+export const withFirestore = <Param>(param: Param) =>
+  firebase.firestore === undefined
+    ? import('firebase/firestore').then(() => param)
+    : Promise.resolve(param);

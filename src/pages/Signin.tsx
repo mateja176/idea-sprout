@@ -23,6 +23,7 @@ import React from 'react';
 import { useQuery } from 'react-query';
 import FacebookIcon from 'react-share/es/FacebookIcon';
 import TwitterIcon from 'react-share/es/TwitterIcon';
+import { createSaveUser, useActions } from 'services';
 import { inputStyle, logoWidth } from 'styles';
 import * as yup from 'yup';
 
@@ -49,7 +50,19 @@ const initialValues = {
 };
 type FormValues = typeof initialValues;
 
+const actionCreators = { saveUser: createSaveUser.request };
+
 export const Signin: React.FC<SigninProps> = ({ user, auth }) => {
+  const { saveUser } = useActions(actionCreators);
+  const saveUserCredential = React.useCallback(
+    (credential: firebase.auth.UserCredential) => {
+      if (credential.user) {
+        saveUser(credential.user);
+      }
+    },
+    [saveUser],
+  );
+
   const { queueSnackbar } = React.useContext(SnackbarContext);
 
   const theme = useTheme();
@@ -64,6 +77,7 @@ export const Signin: React.FC<SigninProps> = ({ user, auth }) => {
 
       return auth
         .signInWithPopup(provider)
+        .then(saveUserCredential)
         .catch((error: firebase.FirebaseError) => {
           queueSnackbar({
             severity: 'error',
@@ -74,7 +88,7 @@ export const Signin: React.FC<SigninProps> = ({ user, auth }) => {
           setLoading.setFalse();
         });
     },
-    [setLoading, queueSnackbar, auth],
+    [setLoading, queueSnackbar, auth, saveUserCredential],
   );
 
   const opacity = loading ? 0.5 : 1;
@@ -131,14 +145,17 @@ export const Signin: React.FC<SigninProps> = ({ user, auth }) => {
 
   const signInWithEmail = React.useCallback(
     ({ email, password }: FormValues) =>
-      auth.signInWithEmailAndPassword(email, password).then((credential) => {
-        if (credential.user?.emailVerified) {
-          return Promise.resolve();
-        } else {
-          return sendVerificationQuery.refetch();
-        }
-      }),
-    [sendVerificationQuery, auth],
+      auth
+        .signInWithEmailAndPassword(email, password)
+        .then((credential) => {
+          if (credential.user?.emailVerified) {
+            return credential;
+          } else {
+            return sendVerificationQuery.refetch().then(() => credential);
+          }
+        })
+        .then(saveUserCredential),
+    [sendVerificationQuery, auth, saveUserCredential],
   );
 
   const createUser = React.useCallback(

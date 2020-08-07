@@ -8,7 +8,12 @@ import {
 } from 'react';
 import { useDispatch } from 'react-redux';
 import { ActionCreatorsMapObject, bindActionCreators } from 'redux';
-import { Action, LocalStorageItems, LocalStorageKey, storage } from 'services';
+import {
+  EffectAction,
+  LocalStorageItems,
+  LocalStorageKey,
+  storage,
+} from 'services';
 
 export const useLocalStorageSubscribe = (key: LocalStorageKey) => {
   const [value, setValue] = useState<LocalStorageItems[typeof key] | null>(
@@ -63,14 +68,18 @@ export const useRetry = <A, B>({
 };
 
 export const useActions = <
-  ActionCreators extends ActionCreatorsMapObject<Action>
+  ActionCreators extends ActionCreatorsMapObject<EffectAction>
 >(
   actionCreators: ActionCreators,
 ) => {
   const dispatch = useDispatch();
 
   return useMemo(
-    () => bindActionCreators<Action, ActionCreators>(actionCreators, dispatch),
+    () =>
+      bindActionCreators<EffectAction, ActionCreators>(
+        actionCreators,
+        dispatch,
+      ),
     [actionCreators, dispatch],
   );
 };

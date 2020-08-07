@@ -5,7 +5,7 @@ import { Epic, ofType } from 'redux-observable';
 import { defer, of } from 'rxjs';
 import { catchError, concatMap, first, map, mergeMap } from 'rxjs/operators';
 import { Action, State } from 'services';
-import { interceptGetIdeasError } from 'services/firebase';
+import { interceptGetIdeasError, withFirestore } from 'services/firebase';
 import { getType } from 'typesafe-actions';
 import { convertFirestoreDocument, firestoreCollections, isIdea } from 'utils';
 import {
@@ -43,12 +43,7 @@ export const fetch: Epic<
           map(findLast(isIdea)),
           first(), // * avoids multiple requests
           concatMap((lastIdea) => {
-            const firestorePromise =
-              firebase.firestore === undefined
-                ? import('firebase/firestore').then(() => lastIdea)
-                : Promise.resolve(lastIdea);
-
-            return firestorePromise;
+            return withFirestore(lastIdea);
           }),
           mergeMap((lastIdea) =>
             defer(() =>

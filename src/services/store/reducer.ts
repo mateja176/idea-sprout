@@ -1,6 +1,6 @@
 import { combineReducers, Reducer as ReduxReducer } from 'redux';
 import { createAction, getType } from 'typesafe-actions';
-import { ideasSlice } from './slices';
+import { AuthAction, ideasSlice } from './slices';
 
 const reducers = {
   ideasSlice,
@@ -28,3 +28,4 @@ export type State = ReturnType<Reducer>;
 export type CombinedAction = Parameters<Reducer>[1];
 
 export type Action = CombinedAction | ResetAction;
+export type EffectAction = Action | AuthAction;
