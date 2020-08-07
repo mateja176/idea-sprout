@@ -58,14 +58,8 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
     const shareIdea = useShareIdea(idea);
 
     const [reviewOpen, setReviewOpen] = useBoolean();
-    const toggleReviewOpen = React.useCallback(() => {
-      setReviewOpen.toggle();
-    }, [setReviewOpen]);
 
     const [reviewsOpen, setReviewsOpen] = useBoolean();
-    const toggleReviewsOpen = React.useCallback(() => {
-      setReviewsOpen.toggle();
-    }, [setReviewsOpen]);
 
     const publish = React.useCallback(() => {
       const withStatus = { status: 'sprout' } as const;
@@ -184,7 +178,7 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
               <Button
                 style={buttonStyle}
                 endIcon={<StarRate style={withStarColor} />}
-                onClick={toggleReviewsOpen}
+                onClick={setReviewsOpen.setTrue}
                 classes={rateOptionsClasses}
                 aria-label={'Rate'}
               >
@@ -231,7 +225,7 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
               <Tooltip title={'Review'}>
                 <Button
                   style={buttonStyle}
-                  onClick={toggleReviewOpen}
+                  onClick={setReviewOpen.setTrue}
                   aria-label={'Review'}
                 >
                   <RateReview color="primary" />
@@ -246,14 +240,14 @@ export const IdeaOptions = React.memo<IdeaOptionsProps>(
           name={idea.name}
           count={idea.ratingCount}
           open={reviewsOpen}
-          onClose={toggleReviewsOpen}
+          onClose={setReviewsOpen.setFalse}
         />
         <ReviewDialog
           uid={uid}
           idea={idea}
           ideaUrl={ideaUrl}
           open={reviewOpen}
-          onClose={toggleReviewOpen}
+          onClose={setReviewOpen.setFalse}
         />
         {/* {!passedPreflightChecks && (
           <CheckMenu
