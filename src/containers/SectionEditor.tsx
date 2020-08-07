@@ -38,7 +38,7 @@ const keyBindingFn: EditorProps['keyBindingFn'] = (e) => {
   }
 };
 
-export const SectionEditorWithRef: React.ForwardRefRenderFunction<
+export const SectionEditorWithRef: React.RefForwardingComponent<
   HTMLDivElement,
   Omit<EditorProps, 'editorState' | 'onChange'> & {
     isAuthor: boolean;
