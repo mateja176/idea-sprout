@@ -133,6 +133,11 @@ const reviewSubmitActionCreators = {
   updateIdea: createUpdateIdea,
 };
 
+type RatingUpdate = Record<
+  Extract<keyof IdeaModel, 'averageRating' | 'ratingCount'>,
+  firebase.firestore.FieldValue
+>;
+
 export const useReviewSubmit = ({
   idea,
   currentReview,
@@ -153,7 +158,8 @@ export const useReviewSubmit = ({
   const ideaRef = useIdeaRef(idea.id);
 
   return ({ rating, feedback }: Pick<Review, 'rating' | 'feedback'>) => {
-    const count = currentReview ? idea.ratingCount : idea.ratingCount + 1;
+    const countIncrement = Number(!currentReview);
+    const count = idea.ratingCount + countIncrement;
 
     const average = currentReview
       ? (idea.ratingCount * idea.averageRating -
@@ -164,18 +170,28 @@ export const useReviewSubmit = ({
 
     const averageIncrement = average - idea.averageRating;
 
-    return firestore
-      .batch()
-      .set(reviewsRef.doc(user.uid), {
-        rating,
-        feedback,
-      })
-      .update(ideaRef, {
+    const batch = firestore.batch();
+
+    if (!currentReview) {
+      batch.update(ideaRef, {
         averageRating: firebase.firestore.FieldValue.increment(
           averageIncrement,
         ),
         ratingCount: firebase.firestore.FieldValue.increment(1),
-      } as { [key in Extract<keyof IdeaModel, 'averageRating' | 'ratingCount'>]: firebase.firestore.FieldValue })
+      } as RatingUpdate);
+    } else if (currentReview.rating !== rating) {
+      batch.update(ideaRef, {
+        averageRating: firebase.firestore.FieldValue.increment(
+          averageIncrement,
+        ),
+      } as RatingUpdate);
+    }
+
+    return batch
+      .set(reviewsRef.doc(user.uid), {
+        rating,
+        feedback,
+      })
       .commit()
       .then(() => {
         updateIdea({

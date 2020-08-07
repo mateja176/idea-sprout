@@ -149,8 +149,7 @@ function canCreateReview() {
 }
 
 function canUpdateReview() {
-  return onlyUpdatingRating() &&
-    request.resource.data.ratingCount == resource.data.ratingCount;
+  return request.resource.data.diff(resource.data).changedKeys().hasOnly(['averageRating']);
 }
 
 function isRatingValid() {
