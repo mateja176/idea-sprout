@@ -7,6 +7,10 @@ import { useSelector } from 'react-redux';
 import { selectEmailVerified, useUserState } from 'services';
 import { getIsSignedIn } from 'utils';
 
+const buttonStyle: React.CSSProperties = {
+  marginLeft: 0,
+};
+
 export const MenuButton: React.FC<Pick<ButtonProps, 'onClick'>> = ({
   onClick,
 }) => {
@@ -22,6 +26,7 @@ export const MenuButton: React.FC<Pick<ButtonProps, 'onClick'>> = ({
         edge="start"
         color="inherit"
         aria-label={'Menu'}
+        style={buttonStyle}
       >
         <Menu />
       </IconButton>
