@@ -4,10 +4,10 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import { AcademyLink, Link } from 'components';
 import { Signout } from 'containers';
-import { SnackbarContext } from 'context';
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
-import { useUserState } from 'services';
+import { selectEmailVerified, useUserState } from 'services';
 import {
   absolutePrivateNavigationRoutes,
   absolutePublicNavigationRoutes,
@@ -26,7 +26,7 @@ export const withNavWidth: React.CSSProperties = {
 };
 
 export const Nav: React.FC<NavProps> = ({ onClick }) => {
-  React.useContext(SnackbarContext); // * user.reload() does not trigger a re-render
+  useSelector(selectEmailVerified); // * user.reload() does not trigger a re-render
 
   const user = useUserState();
   const isSignedIn = getIsSignedIn(user);

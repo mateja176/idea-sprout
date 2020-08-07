@@ -1,10 +1,10 @@
 import { NotFound } from 'components';
-import { SnackbarContext } from 'context';
 import { IdeasSwitch, Signin } from 'pages';
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
 import { useAuth as useFirebaseAuth } from 'reactfire';
-import { useUserState } from 'services';
+import { selectEmailVerified, useUserState } from 'services';
 import { absolutePrivateRoute, isUserLoading } from 'utils';
 import { RoutesSkeleton } from './RoutesSkeleton';
 
@@ -13,7 +13,7 @@ const RedirectToIdeas: React.FC<RouteComponentProps> = () => (
 );
 
 export const Routes: React.FC = () => {
-  React.useContext(SnackbarContext); // * user.reload() does not trigger a re-render
+  useSelector(selectEmailVerified); // * user.reload() does not trigger a re-render
 
   const user = useUserState();
 

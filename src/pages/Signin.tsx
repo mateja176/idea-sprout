@@ -23,7 +23,7 @@ import React from 'react';
 import { useQuery } from 'react-query';
 import FacebookIcon from 'react-share/es/FacebookIcon';
 import TwitterIcon from 'react-share/es/TwitterIcon';
-import { createSaveUser, useActions } from 'services';
+import { createSaveUser, createSetEmailVerified, useActions } from 'services';
 import { inputStyle, logoWidth } from 'styles';
 import * as yup from 'yup';
 
@@ -50,10 +50,13 @@ const initialValues = {
 };
 type FormValues = typeof initialValues;
 
-const actionCreators = { saveUser: createSaveUser.request };
+const actionCreators = {
+  saveUser: createSaveUser.request,
+  setEmailVerified: createSetEmailVerified,
+};
 
 export const Signin: React.FC<SigninProps> = ({ user, auth }) => {
-  const { saveUser } = useActions(actionCreators);
+  const { saveUser, setEmailVerified } = useActions(actionCreators);
   const saveUserCredential = React.useCallback(
     (credential: firebase.auth.UserCredential) => {
       if (credential.user) {
@@ -116,6 +119,8 @@ export const Signin: React.FC<SigninProps> = ({ user, auth }) => {
       user
         ? user.reload().then(() => {
             if (user.emailVerified) {
+              setEmailVerified(true);
+
               queueSnackbar({
                 severity: 'success',
                 message: 'Discover ideas or create and publish your own',
@@ -123,7 +128,7 @@ export const Signin: React.FC<SigninProps> = ({ user, auth }) => {
             }
           })
         : Promise.resolve(),
-    [user, queueSnackbar],
+    [user, queueSnackbar, setEmailVerified],
   );
   useQuery({
     queryKey: 'reloadUser',

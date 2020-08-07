@@ -6,12 +6,12 @@ import { concatMap, delay, map, mergeMap, retryWhen } from 'rxjs/operators';
 import { withFirestore } from 'services/firebase';
 import { getType } from 'typesafe-actions';
 import { firestoreCollections } from 'utils';
-import { EffectAction, State } from '../reducer';
+import { Action, State } from '../reducer';
 import { createSaveUser, SaveUserAction, SaveUserRequest } from '../slices';
 
-export const saveUser: Epic<EffectAction, SaveUserAction, State> = (action$) =>
+export const saveUser: Epic<Action, SaveUserAction, State> = (action$) =>
   action$.pipe(
-    ofType<EffectAction, SaveUserRequest>(getType(createSaveUser.request)),
+    ofType<Action, SaveUserRequest>(getType(createSaveUser.request)),
     concatMap(({ payload }) => withFirestore(payload)),
     mergeMap(
       ({ uid, email, displayName, phoneNumber, providerId, photoURL }) => {
