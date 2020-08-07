@@ -70,8 +70,8 @@ export const adjustIdeaRating = functions.firestore
       });
     } else {
       const newAverage =
-        idea.averageRating * idea.ratingCount +
-        dataAfter.rating / (idea.ratingCount + 1);
+        (idea.averageRating * idea.ratingCount + dataAfter.rating) /
+        (idea.ratingCount + 1);
       await ideaRef.update({
         ratingCount: admin.firestore.FieldValue.increment(1),
         averageRating: admin.firestore.FieldValue.increment(
