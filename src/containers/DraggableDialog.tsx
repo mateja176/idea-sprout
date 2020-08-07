@@ -1,17 +1,15 @@
 import Box from '@material-ui/core/Box';
-import Dialog, { DialogProps } from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { PaperProps } from '@material-ui/core/Paper';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import DragIndicator from '@material-ui/icons/DragIndicator';
-import { DraggablePaper } from 'components';
 import React from 'react';
 import { modalMaxWidth } from 'styles';
+import { EmptyDraggableDialog } from './EmptyDraggableDialog';
 
-export interface DraggableDialogProps extends DialogProps {
-  disabled: boolean;
+export interface DraggableDialogProps
+  extends React.ComponentProps<typeof EmptyDraggableDialog> {
   dialogTitle: React.ReactNode;
   actions?: React.ReactNode;
 }
@@ -41,17 +39,8 @@ export const DraggableDialog = React.memo<DraggableDialogProps>(
 
     const { scroll } = props;
 
-    const Draggable = React.useCallback(
-      (props: PaperProps) => <DraggablePaper {...props} disabled={disabled} />,
-      [disabled],
-    );
-
     return (
-      <Dialog // TODO replace modal with custom implementation since elements outside of the dialog cannot be interacted with
-        {...props}
-        hideBackdrop
-        PaperComponent={Draggable}
-      >
+      <EmptyDraggableDialog {...props} disabled={disabled}>
         <DialogTitle style={titleStyle}>
           <Box display="flex" alignItems="center">
             {dialogTitle}
@@ -66,7 +55,7 @@ export const DraggableDialog = React.memo<DraggableDialogProps>(
           {children}
         </DialogContent>
         {actions && <DialogActions>{actions}</DialogActions>}
-      </Dialog>
+      </EmptyDraggableDialog>
     );
   },
 );
