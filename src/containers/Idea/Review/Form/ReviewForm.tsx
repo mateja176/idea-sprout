@@ -2,6 +2,7 @@ import Badge from '@material-ui/core/Badge';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
 import Typography from '@material-ui/core/Typography';
 import Rating from '@material-ui/lab/Rating';
 import { MultilineTextField, ShareOptions, SharePrompt } from 'components';
@@ -92,6 +93,7 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
     touched,
     values,
     isValid,
+    submitForm,
   } = useFormik({
     validationSchema: createReviewSchema,
     initialValues,
@@ -119,65 +121,70 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
   );
 
   return (
-    <form onSubmit={handleSubmit}>
-      <Box mb={ratingSectionMb}>
-        {ratingLabel}
-        <Rating {...getFieldProps('rating')} precision={1} />
-      </Box>
-      <Badge
-        color={'secondary'}
-        badgeContent={
-          values.feedback.length < FeedbackLength.min
-            ? `${FeedbackLength.min} < ${values.feedback.length}`
-            : null
-        }
-        style={badgeStyle}
-      >
-        <MultilineTextField
-          {...getFieldProps('feedback')}
-          required
-          rows={feedbackFieldRows}
-          label={'Feedback'}
-          error={touched.feedback && !!errors.feedback}
-          helperText={feedbackHelperText}
-        />
-      </Badge>
-      <Box mt={shareSectionMt}>
-        <Typography>
-          <SharePrompt name={idea.name} sharedByCount={shareCount} />
-        </Typography>
-        <ShareOptions
-          ideaUrl={ideaUrl}
-          shareIdea={shareIdea}
-          disabled={doNotShareOrWarn === true}
-        />
-        <Check
-          label="Do not share*"
-          description={
-            <Box>
-              <Box>
-                It's not required, however sharing the idea with a friend or
-                friends who may be interested in it, helps the idea grow.
-              </Box>
-              <Box>
-                Ideas which are not shared are like plants which are not
-                watered, eventually they shrivel and die.
-              </Box>
-            </Box>
-          }
-          checked={doNotShareOrWarn === true}
-          onChange={doNotShare}
-          name="doNotShare"
-          errorMessage={
-            typeof doNotShareOrWarn === 'string' ? doNotShareOrWarn : ''
-          }
-          disabled={hasShared}
-          height={checkWithMessageHeight}
-        />
-      </Box>
+    <>
+      <DialogContent>
+        <form onSubmit={handleSubmit}>
+          <Box mb={ratingSectionMb}>
+            {ratingLabel}
+            <Rating {...getFieldProps('rating')} precision={1} />
+          </Box>
+          <Badge
+            color={'secondary'}
+            badgeContent={
+              values.feedback.length < FeedbackLength.min
+                ? `${FeedbackLength.min} < ${values.feedback.length}`
+                : null
+            }
+            style={badgeStyle}
+          >
+            <MultilineTextField
+              {...getFieldProps('feedback')}
+              required
+              rows={feedbackFieldRows}
+              label={'Feedback'}
+              error={touched.feedback && !!errors.feedback}
+              helperText={feedbackHelperText}
+            />
+          </Badge>
+          <Box mt={shareSectionMt}>
+            <Typography>
+              <SharePrompt name={idea.name} sharedByCount={shareCount} />
+            </Typography>
+            <ShareOptions
+              ideaUrl={ideaUrl}
+              shareIdea={shareIdea}
+              disabled={doNotShareOrWarn === true}
+            />
+            <Check
+              label="Do not share*"
+              description={
+                <Box>
+                  <Box>
+                    It's not required, however sharing the idea with a friend or
+                    friends who may be interested in it, helps the idea grow.
+                  </Box>
+                  <Box>
+                    Ideas which are not shared are like plants which are not
+                    watered, eventually they shrivel and die.
+                  </Box>
+                </Box>
+              }
+              checked={doNotShareOrWarn === true}
+              onChange={doNotShare}
+              name="doNotShare"
+              errorMessage={
+                typeof doNotShareOrWarn === 'string' ? doNotShareOrWarn : ''
+              }
+              disabled={hasShared}
+              height={checkWithMessageHeight}
+            />
+          </Box>
+        </form>
+      </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>
         <Button
+          onClick={submitForm}
           type="submit"
           disabled={
             isSubmitting ||
@@ -189,6 +196,6 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
           Submit
         </Button>
       </DialogActions>
-    </form>
+    </>
   );
 };

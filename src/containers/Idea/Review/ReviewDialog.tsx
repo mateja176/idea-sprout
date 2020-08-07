@@ -1,7 +1,9 @@
+import Box from '@material-ui/core/Box';
 import { DialogProps } from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import { Theme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { DraggableDialog } from 'containers';
+import { EmptyDraggableDialog } from 'containers/EmptyDraggableDialog';
 import { User } from 'models';
 import React from 'react';
 import { withEllipsis } from 'styles';
@@ -14,34 +16,28 @@ export interface ReviewDialogProps
 
 export const ReviewDialog = React.memo<ReviewDialogProps>(
   ({ open, ...props }) => {
-    const {
-      idea: { name },
-      onClose,
-    } = props;
-    const handleClose = React.useCallback(() => {
-      onClose();
-    }, [onClose]);
+    const { onClose, idea } = props;
 
     const xsDown = useMediaQuery((theme: Theme) =>
       theme.breakpoints.down('xs'),
     );
 
     return (
-      <DraggableDialog
+      <EmptyDraggableDialog
         open={open}
-        onClose={handleClose}
-        dialogTitle={
-          <>
-            Review:&nbsp;<i style={withEllipsis}>{name}</i>
-          </>
-        }
+        onClose={onClose}
         fullScreen={xsDown}
         disabled={xsDown}
       >
+        <DialogTitle>
+          <Box display={'flex'} alignItems={'center'}>
+            Review:&nbsp;<i style={withEllipsis}>{idea.name}</i>
+          </Box>
+        </DialogTitle>
         <React.Suspense fallback={<ReviewFormSkeleton />}>
           <ReviewForm {...props} />
         </React.Suspense>
-      </DraggableDialog>
+      </EmptyDraggableDialog>
     );
   },
 );
