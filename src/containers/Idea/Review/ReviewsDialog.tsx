@@ -7,7 +7,6 @@ import { DraggableDialog } from 'containers';
 import { IdeaModel, Rating } from 'models';
 import range from 'ramda/es/range';
 import React from 'react';
-import { useBooleanWithFallback } from 'services';
 import { withEllipsis } from 'styles';
 import { Reviews } from './Reviews';
 import { ReviewSkeleton } from './ReviewSkeleton';
@@ -21,8 +20,6 @@ export interface ReviewsProps
 
 export const ReviewsDialog = React.memo<ReviewsProps>(
   ({ id, name, count, open, onClose }) => {
-    const openWithFallback = useBooleanWithFallback(open, { timeoutMs: 500 });
-
     const xsDown = useMediaQuery((theme: Theme) =>
       theme.breakpoints.down('xs'),
     );
@@ -49,15 +46,13 @@ export const ReviewsDialog = React.memo<ReviewsProps>(
             </Box>
           </>
         ) : (
-          openWithFallback && (
-            <React.Suspense
-              fallback={range(0, count).map((i) => (
-                <ReviewSkeleton key={i} />
-              ))}
-            >
-              <Reviews id={id} />
-            </React.Suspense>
-          )
+          <React.Suspense
+            fallback={range(0, count).map((i) => (
+              <ReviewSkeleton key={i} />
+            ))}
+          >
+            <Reviews id={id} />
+          </React.Suspense>
         )}
       </DraggableDialog>
     );
