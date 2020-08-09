@@ -29,7 +29,7 @@ import {
   getRatingTooltip,
   getShareCountHelperText,
   roundAverage,
-} from 'utils/idea';
+} from 'utils/idea/idea';
 import { BackToIdeas } from './BackToIdeas';
 import { IdeaProps } from './Idea';
 import {

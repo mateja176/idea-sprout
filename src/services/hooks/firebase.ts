@@ -25,7 +25,7 @@ import {
   firestoreCollections,
   hasOnlyId,
 } from 'utils/firebase';
-import { getInitialIdea } from 'utils/idea';
+import { getInitialIdea } from 'utils/idea/idea';
 import { absolutePrivateRoute } from 'utils/routes';
 import { useActions } from './hooks';
 

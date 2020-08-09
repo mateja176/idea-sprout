@@ -8,7 +8,7 @@ import { interceptGetIdeasError, withFirestore } from 'services/firebase';
 import { Action, State } from 'services/store';
 import { getType } from 'typesafe-actions';
 import { convertFirestoreDocument, firestoreCollections } from 'utils/firebase';
-import { isIdea } from 'utils/idea';
+import { isIdea } from 'utils/idea/idea';
 import {
   fetchIdeasAsync,
   FetchIdeasFailure,

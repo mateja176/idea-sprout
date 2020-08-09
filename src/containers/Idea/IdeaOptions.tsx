@@ -23,7 +23,7 @@ import { createAddIdea, createDeleteIdea } from 'services/store';
 import { ideaNameStyle } from 'styles/idea';
 import { withStarColor } from 'styles/styles';
 import urljoin from 'url-join';
-import { getRatingTooltip, roundAverage } from 'utils/idea';
+import { getRatingTooltip, roundAverage } from 'utils/idea/idea';
 import { absolutePrivateRoute } from 'utils/routes';
 import { IdeaImagePreviewSuspender } from './ImagePreview';
 import { ReviewDialog, ReviewsDialog } from './Review';

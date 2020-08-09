@@ -35,7 +35,7 @@ import {
   getFormIdea,
   problemSolutionText,
   rationaleText,
-} from 'utils/idea';
+} from 'utils/idea/idea';
 import { absolutePrivateRoute } from 'utils/routes';
 import { ExpectationsCheck, NicheCheck } from '../Check';
 
