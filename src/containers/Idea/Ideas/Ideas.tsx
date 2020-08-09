@@ -12,7 +12,7 @@ import { List } from 'react-virtualized/dist/commonjs/List';
 import { useFirestoreDocData } from 'reactfire';
 import { useIdeasCountRef } from 'services/hooks/firebase';
 import { useActions } from 'services/hooks/hooks';
-import { createPromisedAction } from 'services/store/middleware';
+import { createPromisedAction } from 'services/store/middleware/promisedAction';
 import {
   fetchIdeasAsync,
   FetchIdeasAsync,
