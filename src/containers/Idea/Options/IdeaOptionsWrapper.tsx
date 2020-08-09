@@ -3,7 +3,7 @@ import ListItem from '@material-ui/core/ListItem';
 import React from 'react';
 import { useIdeaOptionsButtonBorder } from 'services/hooks';
 import { ideaListItemStyle, textSectionStyle } from 'styles/idea';
-import { IdeaPreviewWrapper } from './IdeaPreviewWrapper';
+import { IdeaPreviewWrapper } from '../../../components/Idea/IdeaPreviewWrapper';
 
 export const IdeaOptionsWrapper = ({
   imagePreview,
