@@ -14,7 +14,7 @@ import { useSignedInUser } from 'services/hooks/firebase';
 
 export interface IdeasPageProps extends RouteComponentProps {}
 
-export const IdeasPage: React.FC<IdeasPageProps> = () => {
+const IdeasPage: React.FC<IdeasPageProps> = () => {
   const history = useHistory();
 
   const user = useSignedInUser();
@@ -76,3 +76,5 @@ export const IdeasPage: React.FC<IdeasPageProps> = () => {
     </Box>
   );
 };
+
+export default IdeasPage;

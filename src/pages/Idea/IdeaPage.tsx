@@ -11,7 +11,7 @@ export interface IdeaPageProps
     { idea: IdeaModel } | null
   > {}
 
-export const IdeaPage: React.FC<IdeaPageProps> = ({
+const IdeaPage: React.FC<IdeaPageProps> = ({
   match: {
     params: { id },
   },
@@ -23,3 +23,5 @@ export const IdeaPage: React.FC<IdeaPageProps> = ({
     </Suspense>
   );
 };
+
+export default IdeaPage;
