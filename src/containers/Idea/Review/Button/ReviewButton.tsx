@@ -5,7 +5,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import RateReview from '@material-ui/icons/RateReview';
 import { IdeaModel, User } from 'models';
 import React from 'react';
-import { useFirestoreDoc, useReviewRef } from 'services';
+import { useFirestoreDoc, useReviewRef } from 'services/hooks';
 
 const useStyles = makeStyles((theme) => ({
   tooltip: {

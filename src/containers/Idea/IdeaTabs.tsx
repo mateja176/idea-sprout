@@ -14,13 +14,8 @@ import { User } from 'firebase/app';
 import { IdeaModel } from 'models';
 import React from 'react';
 import { StorageImage } from 'reactfire';
-import {
-  createAddIdea,
-  createDeleteIdea,
-  useActions,
-  useIdeaUrl,
-  useShareIdea,
-} from 'services';
+import { useActions, useIdeaUrl, useShareIdea } from 'services/hooks';
+import { createAddIdea, createDeleteIdea } from 'services/store';
 import {
   ideaTabStyle,
   logoBorderRadius,

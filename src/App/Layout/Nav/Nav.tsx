@@ -7,7 +7,8 @@ import { Signout } from 'containers/Signout';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
-import { selectEmailVerified, useUserState } from 'services';
+import { useUserState } from 'services/hooks';
+import { selectEmailVerified } from 'services/store';
 import {
   absolutePrivateNavigationRoutes,
   absolutePublicNavigationRoutes,

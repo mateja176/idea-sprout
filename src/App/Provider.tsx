@@ -10,7 +10,8 @@ import React from 'react';
 import { Provider as ReduxProvider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { FirebaseAppProvider } from 'reactfire';
-import { env, store } from 'services';
+import { env } from 'services/env';
+import { store } from 'services/store';
 import { ThemeProvider } from './ThemeProvider';
 
 const firebaseConfig = {

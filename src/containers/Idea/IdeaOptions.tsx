@@ -13,13 +13,12 @@ import { IdeaModel, User } from 'models';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import {
-  createAddIdea,
-  createDeleteIdea,
   useActions,
   useIdeaOptionButtonStyle,
   useIdeaRef,
   useShareIdea,
-} from 'services';
+} from 'services/hooks';
+import { createAddIdea, createDeleteIdea } from 'services/store';
 import { ideaNameStyle, withStarColor } from 'styles';
 import urljoin from 'url-join';
 import { absolutePrivateRoute, getRatingTooltip, roundAverage } from 'utils';

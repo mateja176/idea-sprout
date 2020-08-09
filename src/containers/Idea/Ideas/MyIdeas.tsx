@@ -14,11 +14,11 @@ import React from 'react';
 import FlipMove from 'react-flip-move';
 import { useSelector } from 'react-redux';
 import {
-  selectMyIdeas,
   useCreateIdea,
   useFirestoreCollection,
   useIdeasRef,
-} from 'services';
+} from 'services/hooks';
+import { selectMyIdeas } from 'services/store';
 import { IdeaRow } from '../IdeaRow';
 
 export const MyEmptyIdeas = () => {

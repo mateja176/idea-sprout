@@ -36,13 +36,9 @@ import {
   ReviewWithAuthor,
 } from 'models';
 import React from 'react';
-import {
-  env,
-  formatCurrency,
-  useReviewsRef,
-  useUpgradeToPro,
-  useUsersRef,
-} from 'services';
+import { env } from 'services/env';
+import { formatCurrency } from 'services/format';
+import { useReviewsRef, useUpgradeToPro, useUsersRef } from 'services/hooks';
 import {
   inputStyle,
   paypalButtonsHeight,

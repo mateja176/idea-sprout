@@ -2,7 +2,7 @@ import Menu, { MenuProps } from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { IdeaModel, SetCheck } from 'models';
 import React from 'react';
-import { useBooleanWithFallback } from 'services';
+import { useBooleanWithFallback } from 'services/hooks';
 import { ExpectationsCheck } from './ExpectationsCheck';
 import { NicheCheck } from './NicheCheck';
 

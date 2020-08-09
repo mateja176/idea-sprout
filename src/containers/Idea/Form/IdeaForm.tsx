@@ -25,7 +25,7 @@ import {
 import qs from 'qs';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useIdeasRef, useSignedInUser } from 'services';
+import { useIdeasRef, useSignedInUser } from 'services/hooks';
 import { inputStyle, textareaStyle } from 'styles';
 import {
   absolutePrivateRoute,

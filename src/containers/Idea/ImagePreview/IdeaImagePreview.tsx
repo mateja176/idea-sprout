@@ -5,7 +5,7 @@ import { IdeaPreviewWrapper } from 'components';
 import { StorageFile } from 'models';
 import React from 'react';
 import { useStorage } from 'reactfire';
-import { useStorageDownloadUrl } from 'services';
+import { useStorageDownloadUrl } from 'services/hooks';
 import { ideaListItemHeight } from 'styles';
 
 export interface IdeaImagePreviewProps {

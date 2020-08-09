@@ -5,7 +5,7 @@ import Alert from '@material-ui/lab/Alert';
 import { SnackbarContext } from 'context';
 import head from 'ramda/es/head';
 import React from 'react';
-import { useValueWithFallback } from 'services';
+import { useValueWithFallback } from 'services/hooks';
 
 export interface SnackbarProps {}
 

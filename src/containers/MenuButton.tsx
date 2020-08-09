@@ -4,7 +4,8 @@ import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/icons/Menu';
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { selectEmailVerified, useUserState } from 'services';
+import { useUserState } from 'services/hooks';
+import { selectEmailVerified } from 'services/store';
 import { getIsSignedIn } from 'utils';
 
 const buttonStyle: React.CSSProperties = {

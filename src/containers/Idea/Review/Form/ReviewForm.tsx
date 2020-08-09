@@ -25,7 +25,7 @@ import {
   useReviewsRef,
   useReviewSubmit,
   useShareIdea,
-} from 'services';
+} from 'services/hooks';
 import { checkWithMessageHeight } from 'styles';
 import {
   doNotShareWarning,

@@ -1,7 +1,7 @@
 import { IdeaModel, WithId } from 'models';
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { useFirestoreDoc, useIdeaRef } from 'services';
+import { useFirestoreDoc, useIdeaRef } from 'services/hooks';
 import { absolutePrivateRoute } from 'utils';
 import { IdeaForm } from './IdeaForm';
 

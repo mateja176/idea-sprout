@@ -4,7 +4,8 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
 import { useAuth as useFirebaseAuth } from 'reactfire';
-import { selectEmailVerified, useUserState } from 'services';
+import { useUserState } from 'services/hooks';
+import { selectEmailVerified } from 'services/store';
 import { absolutePrivateRoute, isUserLoading } from 'utils';
 import { RoutesSkeleton } from './RoutesSkeleton';
 

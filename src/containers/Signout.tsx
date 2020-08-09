@@ -9,7 +9,9 @@ import { User } from 'models';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useAuth } from 'reactfire';
-import { clearFirestoreCache, createReset, useActions } from 'services';
+import { clearFirestoreCache } from 'services/firebase';
+import { useActions } from 'services/hooks';
+import { createReset } from 'services/store';
 
 export interface SignoutProps {
   user: User;

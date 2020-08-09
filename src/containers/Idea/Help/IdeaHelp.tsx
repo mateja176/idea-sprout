@@ -2,7 +2,11 @@ import IconButton from '@material-ui/core/IconButton';
 import Help from '@material-ui/icons/Help';
 import { IdeaModel, User } from 'models';
 import React from 'react';
-import { useFirestoreDoc, useIdeaRef, useLocalStorageSet } from 'services';
+import {
+  useFirestoreDoc,
+  useIdeaRef,
+  useLocalStorageSet,
+} from 'services/hooks';
 
 export const IdeaHelp = ({ id, user }: { id: IdeaModel['id']; user: User }) => {
   const idea = useFirestoreDoc<IdeaModel>(useIdeaRef(id));

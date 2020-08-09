@@ -7,7 +7,7 @@ import { ReviewSection } from 'components';
 import { reviewFeedbackHeading, reviewRatingHeading } from 'elements';
 import { IdeaModel, Review } from 'models';
 import React from 'react';
-import { useFirestoreCollection, useReviewsRef } from 'services';
+import { useFirestoreCollection, useReviewsRef } from 'services/hooks';
 import { breakWordStyle } from 'styles';
 
 export const reviewsMb = 4;

@@ -1,7 +1,7 @@
 import { WithId } from 'models';
 import React from 'react';
 import { useRouteMatch } from 'react-router-dom';
-import { useUser } from 'services';
+import { useUser } from 'services/hooks';
 import { ideaPath } from 'utils';
 import { IdeaHelp } from './IdeaHelp';
 

@@ -1,6 +1,6 @@
 import { StorageFile } from 'models';
 import React from 'react';
-import { useLoadYoutubeScript, useRenderPlayer } from 'services';
+import { useLoadYoutubeScript, useRenderPlayer } from 'services/hooks';
 
 const options = { height: '100%' };
 

@@ -4,7 +4,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import LibraryAdd from '@material-ui/icons/LibraryAdd';
 import { User } from 'models';
 import React from 'react';
-import { useCreateIdea } from 'services';
+import { useCreateIdea } from 'services/hooks';
 
 export interface CreateIdeaProps {
   user: User;

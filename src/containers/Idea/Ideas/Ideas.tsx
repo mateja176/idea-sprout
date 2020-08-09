@@ -8,14 +8,13 @@ import { AutoSizer } from 'react-virtualized/dist/commonjs/AutoSizer';
 import { InfiniteLoader } from 'react-virtualized/dist/commonjs/InfiniteLoader';
 import { List } from 'react-virtualized/dist/commonjs/List';
 import { useFirestoreDocData } from 'reactfire';
+import { useActions, useIdeasCountRef } from 'services/hooks';
 import {
   createPromisedAction,
   fetchIdeasAsync,
   FetchIdeasAsync,
   selectIdeas,
-  useActions,
-  useIdeasCountRef,
-} from 'services';
+} from 'services/store';
 import { ideaListItemFullHeight } from 'styles';
 import { getType } from 'typesafe-actions';
 import { IdeaOptionsSkeleton } from '../IdeaOptionsSkeleton';

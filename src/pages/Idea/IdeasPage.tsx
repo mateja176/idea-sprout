@@ -8,7 +8,7 @@ import { MyIdeasSkeleton } from 'containers/Idea/Ideas/MyIdeasSkeleton';
 import qs from 'qs';
 import React from 'react';
 import { RouteComponentProps, useHistory, useLocation } from 'react-router-dom';
-import { useSignedInUser } from 'services';
+import { useSignedInUser } from 'services/hooks';
 
 export interface IdeasPageProps extends RouteComponentProps {}
 

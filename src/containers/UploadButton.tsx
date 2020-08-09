@@ -4,7 +4,7 @@ import CloudUpload from '@material-ui/icons/CloudUpload';
 import { SnackbarContext } from 'context';
 import { StorageFile, StoragePath, UpdateStorageFile } from 'models';
 import React from 'react';
-import { useUpload } from 'services';
+import { useUpload } from 'services/hooks';
 
 const inputStyle: React.CSSProperties = { display: 'none' };
 

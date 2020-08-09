@@ -16,7 +16,7 @@ import { SnackbarContext } from 'context';
 import { StorageFile, StoragePath } from 'models';
 import React from 'react';
 import { DropzoneOptions, useDropzone } from 'react-dropzone';
-import { useUpload } from 'services';
+import { useUpload } from 'services/hooks';
 
 export interface DropProps extends DropzoneOptions {
   heading: string;
