@@ -1,7 +1,7 @@
 import Box from '@material-ui/core/Box';
 import useTheme from '@material-ui/core/styles/useTheme';
 import { FileOptions } from 'containers/FileOptions';
-import { SectionEditor } from 'containers/SectionEditor';
+import { SectionEditor } from 'containers/SectionEditor/SectionEditor';
 import { Tour } from 'containers/Tour';
 import { EditorProps } from 'draft-js';
 import {
