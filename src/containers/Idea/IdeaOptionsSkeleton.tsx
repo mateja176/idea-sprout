@@ -1,6 +1,7 @@
 import Box from '@material-ui/core/Box';
 import Skeleton from '@material-ui/lab/Skeleton';
-import { IdeaOptionsWrapper, IdeaPreviewWrapper } from 'components/Idea';
+import { IdeaOptionsWrapper } from 'components/Idea/IdeaOptionsWrapper';
+import { IdeaPreviewWrapper } from 'components/Idea/IdeaPreviewWrapper';
 import React from 'react';
 import { textSectionStyle } from 'styles/idea';
 

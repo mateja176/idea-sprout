@@ -1,7 +1,7 @@
 import Box from '@material-ui/core/Box';
 import Skeleton from '@material-ui/lab/Skeleton';
 import useBoolean from 'ahooks/es/useBoolean';
-import { IdeaPreviewWrapper } from 'components/Idea';
+import { IdeaPreviewWrapper } from 'components/Idea/IdeaPreviewWrapper';
 import { StorageFile } from 'models/idea';
 import React from 'react';
 import { useStorage } from 'reactfire';
