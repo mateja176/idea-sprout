@@ -4,7 +4,7 @@ import { IdeaModel } from 'models/idea';
 import React from 'react';
 import { useIdeaOptionButtonStyle, useIdeaUrl } from 'services/hooks';
 import { IdeaOptions } from './IdeaOptions';
-import { ExportReviewSuspender } from './Review';
+import { ExportReviewSuspender } from './Review/Export';
 
 export interface IdeaRowProps {
   idea: IdeaModel;

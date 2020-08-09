@@ -26,7 +26,8 @@ import urljoin from 'url-join';
 import { getRatingTooltip, roundAverage } from 'utils/idea/idea';
 import { absolutePrivateRoute } from 'utils/routes';
 import { IdeaImagePreviewSuspender } from './ImagePreview';
-import { ReviewDialog, ReviewsDialog } from './Review';
+import { ReviewDialog } from './Review/ReviewDialog';
+import { ReviewsDialog } from './Review/ReviewsDialog';
 
 export interface IdeaOptionsProps extends Pick<User, 'uid'> {
   idea: IdeaModel;

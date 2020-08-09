@@ -32,12 +32,10 @@ import {
 } from 'utils/idea/idea';
 import { BackToIdeas } from './BackToIdeas';
 import { IdeaProps } from './Idea';
-import {
-  ExportReviewSuspender,
-  ReviewButtonSuspender,
-  ReviewDialog,
-  ReviewsDialog,
-} from './Review';
+import { ReviewButtonSuspender } from './Review/Button';
+import { ExportReviewSuspender } from './Review/Export';
+import { ReviewDialog } from './Review/ReviewDialog';
+import { ReviewsDialog } from './Review/ReviewsDialog';
 
 const boxShadow = 'rgba(0, 0, 0, 0.2) 0px 5px 8px';
 
