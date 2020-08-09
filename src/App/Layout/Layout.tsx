@@ -12,7 +12,7 @@ import useBoolean from 'ahooks/es/useBoolean';
 import { IdeaSprout } from 'components/icons';
 import { Link } from 'components/Link';
 import { Load } from 'components/Load';
-import { CreateIdeaIcon } from 'containers/Idea/Create';
+import { CreateIdeaIcon } from 'containers/Idea/Create/CreateIdeaIcon';
 import { IdeaHelpContainer } from 'containers/Idea/Help';
 import { MenuButton } from 'containers/MenuButton';
 import React from 'react';
