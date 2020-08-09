@@ -17,7 +17,8 @@ import { IdeaHelpContainer } from 'containers/Idea/Help/IdeaHelpContainer';
 import { MenuButton } from 'containers/MenuButton';
 import React from 'react';
 import { absolutePrivateRoute } from 'utils/routes';
-import { minNavWidth, Nav, NavSkeleton } from './Nav';
+import { minNavWidth, Nav } from './Nav/Nav';
+import { NavSkeleton } from './Nav/NavSkeleton';
 
 export interface LayoutProps {}
 
