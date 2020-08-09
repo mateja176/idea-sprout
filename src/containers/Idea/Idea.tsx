@@ -23,7 +23,7 @@ import React from 'react';
 import { ideaMarginBottom } from 'styles/idea';
 import { ideaSectionMl } from 'styles/styles';
 import { Images } from '../Image';
-import { VideoSuspender } from '../Video';
+import { VideoSuspender } from '../Video/VideoSuspender';
 import { IdeaImagePreviewSuspender } from './ImagePreview';
 
 export interface IdeaProps {
