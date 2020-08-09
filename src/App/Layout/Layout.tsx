@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import LibraryAdd from '@material-ui/icons/LibraryAdd';
 import useBoolean from 'ahooks/es/useBoolean';
-import { IdeaSprout } from 'components/icons';
+import { IdeaSprout } from 'components/icons/IdeaSprout';
 import { Link } from 'components/Link';
 import { Load } from 'components/Load';
 import { CreateIdeaIcon } from 'containers/Idea/Create/CreateIdeaIcon';

@@ -14,7 +14,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Autorenew from '@material-ui/icons/Autorenew';
 import Alert from '@material-ui/lab/Alert';
 import useBoolean from 'ahooks/es/useBoolean';
-import { Google } from 'components/icons';
+import { Google } from 'components/icons/Google';
 import { PageWrapper } from 'components/PageWrapper';
 import { SnackbarContext } from 'context/snackbar';
 import firebase, { FirebaseError, User } from 'firebase/app';
