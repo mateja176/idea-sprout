@@ -4,7 +4,7 @@ import useTheme from '@material-ui/core/styles/useTheme';
 import Typography from '@material-ui/core/Typography';
 import Rating from '@material-ui/lab/Rating';
 import { ReviewSection } from 'components/Idea';
-import { reviewFeedbackHeading, reviewRatingHeading } from 'elements';
+import { reviewFeedbackHeading, reviewRatingHeading } from 'elements/idea';
 import { IdeaModel, Review } from 'models';
 import React from 'react';
 import { useFirestoreCollection, useReviewsRef } from 'services/hooks';

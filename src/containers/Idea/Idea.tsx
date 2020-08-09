@@ -9,7 +9,7 @@ import {
   ideaTourSteps,
   problemSolutionTitle,
   rationaleTitle,
-} from 'elements';
+} from 'elements/idea';
 import {
   IdeaModel,
   NameLength,

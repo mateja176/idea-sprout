@@ -14,7 +14,7 @@ import { MultilineTextField } from 'components/MultilineTextField';
 import { PageWrapper } from 'components/PageWrapper';
 import { Drop, DropProps } from 'containers/Drop';
 import { SnackbarContext } from 'context';
-import { storyDescription } from 'elements';
+import { storyDescription } from 'elements/idea';
 import firebase from 'firebase/app';
 import { useFormik } from 'formik';
 import {

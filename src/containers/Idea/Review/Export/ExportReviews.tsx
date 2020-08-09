@@ -19,7 +19,7 @@ import useBoolean from 'ahooks/es/useBoolean';
 import { AuthCheck } from 'containers/AuthCheck';
 import { ProMembership } from 'containers/ProMembership';
 import { SnackbarContext } from 'context';
-import { proMembership, proMembershipDiscount } from 'elements';
+import { proMembership, proMembershipDiscount } from 'elements/upgrade';
 import firebase, { FirebaseError, User } from 'firebase/app';
 import { useFormik } from 'formik';
 import jsonexport from 'jsonexport/dist';
