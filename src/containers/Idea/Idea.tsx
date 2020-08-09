@@ -22,7 +22,7 @@ import {
 import React from 'react';
 import { ideaMarginBottom } from 'styles/idea';
 import { ideaSectionMl } from 'styles/styles';
-import { Images } from '../Image';
+import { Images } from '../Image/Images';
 import { VideoSuspender } from '../Video/VideoSuspender';
 import { IdeaImagePreviewSuspender } from './ImagePreview/IdeaImagePreviewSuspender';
 
