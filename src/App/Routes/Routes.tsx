@@ -1,5 +1,6 @@
 import { NotFound } from 'components/NotFound';
-import { IdeasSwitch, Signin } from 'pages';
+import { IdeasSwitch } from 'pages/Idea';
+import { Signin } from 'pages/Signin';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
