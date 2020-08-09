@@ -1,4 +1,4 @@
-import { IdeaContainer } from 'containers/Idea';
+import { IdeaContainer } from 'containers/Idea/IdeaContainer';
 import { IdeaContainerSkeleton } from 'containers/Idea/IdeaContainerSkeleton';
 import { IdeaModel } from 'models/idea';
 import React, { Suspense } from 'react';
