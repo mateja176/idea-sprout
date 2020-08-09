@@ -2,7 +2,8 @@ import React from 'react';
 import { hot } from 'react-hot-loader';
 import { Layout } from './Layout';
 import { Provider } from './Provider';
-import { Routes, RoutesSkeleton } from './Routes';
+import { Routes } from './Routes/Routes';
+import { RoutesSkeleton } from './Routes/RoutesSkeleton';
 import { Snackbar } from './Snackbar';
 
 export interface AppProps {}
