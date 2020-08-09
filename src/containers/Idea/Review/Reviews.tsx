@@ -3,7 +3,7 @@ import Divider from '@material-ui/core/Divider';
 import useTheme from '@material-ui/core/styles/useTheme';
 import Typography from '@material-ui/core/Typography';
 import Rating from '@material-ui/lab/Rating';
-import { ReviewSection } from 'components/Idea/Review';
+import { ReviewSection } from 'components/Idea/Review/ReviewSection';
 import { reviewFeedbackHeading, reviewRatingHeading } from 'elements/idea';
 import { IdeaModel } from 'models/idea';
 import { Review } from 'models/review';
