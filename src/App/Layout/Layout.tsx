@@ -13,7 +13,7 @@ import { IdeaSprout } from 'components/icons';
 import { Link } from 'components/Link';
 import { Load } from 'components/Load';
 import { CreateIdeaIcon } from 'containers/Idea/Create/CreateIdeaIcon';
-import { IdeaHelpContainer } from 'containers/Idea/Help';
+import { IdeaHelpContainer } from 'containers/Idea/Help/IdeaHelpContainer';
 import { MenuButton } from 'containers/MenuButton';
 import React from 'react';
 import { absolutePrivateRoute } from 'utils/routes';
