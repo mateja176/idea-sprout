@@ -13,7 +13,7 @@ import {
   ShareOptionsWrapper,
   SharePrompt,
 } from 'components';
-import { Check } from 'containers';
+import { Check } from 'containers/Check';
 import { doNotShareDescription, ratingLabel } from 'elements';
 import React from 'react';
 import { checkWithMessageHeight } from 'styles';

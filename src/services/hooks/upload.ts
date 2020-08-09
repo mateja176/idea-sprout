@@ -6,7 +6,7 @@ import {
   getFileData,
   getImageDimensions,
   getVideoDimensionsAndValidate,
-} from 'services';
+} from 'services/files';
 import urljoin from 'url-join';
 import { useSignedInUser } from './firebase';
 

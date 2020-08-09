@@ -1,9 +1,9 @@
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import { IdeaOptions } from 'containers';
 import { User } from 'firebase/app';
 import { IdeaModel } from 'models';
 import React from 'react';
 import { useIdeaOptionButtonStyle, useIdeaUrl } from 'services';
+import { IdeaOptions } from './IdeaOptions';
 import { ExportReviewSuspender } from './Review';
 
 export interface IdeaRowProps {

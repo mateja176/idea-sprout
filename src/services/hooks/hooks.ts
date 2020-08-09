@@ -8,7 +8,7 @@ import {
 } from 'react';
 import { useDispatch } from 'react-redux';
 import { ActionCreatorsMapObject, bindActionCreators } from 'redux';
-import { LocalStorageItems, LocalStorageKey, storage } from 'services';
+import { LocalStorageItems, LocalStorageKey, storage } from 'services/storage';
 import { Action } from '../store';
 
 export const useLocalStorageSubscribe = (key: LocalStorageKey) => {

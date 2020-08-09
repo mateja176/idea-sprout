@@ -1,6 +1,5 @@
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
-import { IdeaRow, IdeasSkeleton } from 'containers';
 import { User } from 'firebase/app';
 import { IdeaBatchError, IdeaFilter, WithCount } from 'models';
 import React from 'react';
@@ -20,6 +19,8 @@ import {
 import { ideaListItemFullHeight } from 'styles';
 import { getType } from 'typesafe-actions';
 import { IdeaOptionsSkeleton } from '../IdeaOptionsSkeleton';
+import { IdeaRow } from '../IdeaRow';
+import { IdeasSkeleton } from './IdeasSkeleton';
 
 export interface IdeasProps {
   user: User;

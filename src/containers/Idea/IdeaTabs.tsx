@@ -9,7 +9,7 @@ import Share from '@material-ui/icons/Share';
 import StarRate from '@material-ui/icons/StarRate';
 import Skeleton from '@material-ui/lab/Skeleton';
 import useBoolean from 'ahooks/es/useBoolean';
-import { ReviewDialog, ReviewsDialog, ShareMenu } from 'containers';
+import { ShareMenu } from 'containers/Share';
 import { User } from 'firebase/app';
 import { IdeaModel } from 'models';
 import React from 'react';
@@ -33,7 +33,12 @@ import {
 import { getRatingTooltip, getShareCountHelperText, roundAverage } from 'utils';
 import { BackToIdeas } from './BackToIdeas';
 import { IdeaProps } from './Idea';
-import { ExportReviewSuspender, ReviewButtonSuspender } from './Review';
+import {
+  ExportReviewSuspender,
+  ReviewButtonSuspender,
+  ReviewDialog,
+  ReviewsDialog,
+} from './Review';
 
 const boxShadow = 'rgba(0, 0, 0, 0.2) 0px 5px 8px';
 

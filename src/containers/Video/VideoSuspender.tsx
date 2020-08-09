@@ -1,12 +1,14 @@
 import Box from '@material-ui/core/Box';
 import useTheme from '@material-ui/core/styles/useTheme';
 import Skeleton from '@material-ui/lab/Skeleton';
-import { FileOptions, Video, YoutubeVideo } from 'containers';
+import { FileOptions } from 'containers/FileOptions';
+import { YoutubeVideo } from 'containers/YoutubeVideo';
 import { ideaSelector } from 'elements';
 import { IdeaModel, StorageFile, storagePath, UpdateIdea } from 'models';
 import React from 'react';
 import { mediaBgGreyVariant } from 'styles';
 import { EmbedVideo } from './EmbedVideo';
+import { Video } from './Video';
 
 export interface VideoSuspenderProps extends Pick<IdeaModel, 'story'> {
   isAuthor: boolean;

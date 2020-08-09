@@ -6,7 +6,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import Typography from '@material-ui/core/Typography';
 import Rating from '@material-ui/lab/Rating';
 import { MultilineTextField, ShareOptions, SharePrompt } from 'components';
-import { Check } from 'containers';
+import { Check } from 'containers/Check';
 import { ratingLabel } from 'elements';
 import { useFormik } from 'formik';
 import {

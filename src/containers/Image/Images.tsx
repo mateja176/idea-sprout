@@ -1,5 +1,5 @@
 import Box from '@material-ui/core/Box';
-import { FileOptions } from 'containers';
+import { FileOptions } from 'containers/FileOptions';
 import { ideaSelector } from 'elements';
 import { IdeaModel, UpdateIdea } from 'models';
 import React from 'react';

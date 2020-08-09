@@ -1,5 +1,5 @@
 import Box from '@material-ui/core/Box';
-import { Check } from 'containers';
+import { Check } from 'containers/Check';
 import { CheckProps } from 'models';
 import React from 'react';
 
