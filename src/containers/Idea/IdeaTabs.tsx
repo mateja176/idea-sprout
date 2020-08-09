@@ -24,7 +24,7 @@ import {
   tabsTitleSectionHeight,
   tabsTitleSectionPaddingBottom,
   withStarColor,
-} from 'styles';
+} from 'styles/styles';
 import {
   getRatingTooltip,
   getShareCountHelperText,

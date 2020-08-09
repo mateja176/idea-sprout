@@ -1,6 +1,6 @@
 import Box, { BoxProps } from '@material-ui/core/Box';
 import React from 'react';
-import { pageMargin } from 'styles';
+import { pageMargin } from 'styles/styles';
 
 export const PageWrapper: React.FC<BoxProps> = ({ children, ...props }) => (
   <Box m={pageMargin} {...props}>

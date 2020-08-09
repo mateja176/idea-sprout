@@ -7,7 +7,7 @@ import { User } from 'firebase';
 import { Order } from 'models';
 import React from 'react';
 import { useFirestoreDoc, useOrderRef } from 'services/hooks';
-import { tabChildStyle } from 'styles';
+import { tabChildStyle } from 'styles/styles';
 
 const days30 = 30 * 1000 * 60 * 60 * 24;
 

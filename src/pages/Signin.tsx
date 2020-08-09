@@ -26,7 +26,7 @@ import FacebookIcon from 'react-share/es/FacebookIcon';
 import TwitterIcon from 'react-share/es/TwitterIcon';
 import { useActions } from 'services/hooks';
 import { createSaveUser, createSetEmailVerified } from 'services/store';
-import { inputStyle, logoWidth } from 'styles';
+import { inputStyle, logoWidth } from 'styles/styles';
 import * as yup from 'yup';
 
 export interface SigninProps {

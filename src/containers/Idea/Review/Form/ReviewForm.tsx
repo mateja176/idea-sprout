@@ -27,7 +27,7 @@ import {
   useReviewSubmit,
   useShareIdea,
 } from 'services/hooks';
-import { checkWithMessageHeight } from 'styles';
+import { checkWithMessageHeight } from 'styles/styles';
 import {
   doNotShareWarning,
   feedbackFieldRows,

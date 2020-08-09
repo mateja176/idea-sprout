@@ -20,7 +20,8 @@ import {
   User,
 } from 'models';
 import React from 'react';
-import { ideaMarginBottom, ideaSectionMl } from 'styles';
+import { ideaMarginBottom } from 'styles/idea';
+import { ideaSectionMl } from 'styles/styles';
 import { Images } from '../Image';
 import { VideoSuspender } from '../Video';
 import { IdeaImagePreviewSuspender } from './ImagePreview';

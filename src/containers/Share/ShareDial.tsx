@@ -10,7 +10,7 @@ import useBoolean from 'ahooks/es/useBoolean';
 import { shareOptions } from 'components/share';
 import React from 'react';
 import FacebookShareButton from 'react-share/es/FacebookShareButton';
-import { shareIconSize, speedDialZIndex } from 'styles';
+import { shareIconSize, speedDialZIndex } from 'styles/styles';
 import { getShareCountHelperText } from 'utils/idea';
 
 interface StyleProps {

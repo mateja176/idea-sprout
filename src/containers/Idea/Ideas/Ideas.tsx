@@ -15,7 +15,7 @@ import {
   FetchIdeasAsync,
   selectIdeas,
 } from 'services/store';
-import { ideaListItemFullHeight } from 'styles';
+import { ideaListItemFullHeight } from 'styles/idea';
 import { getType } from 'typesafe-actions';
 import { IdeaOptionsSkeleton } from '../IdeaOptionsSkeleton';
 import { IdeaRow } from '../IdeaRow';

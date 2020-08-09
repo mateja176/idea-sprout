@@ -3,7 +3,7 @@ import { SnackbarContext } from 'context';
 import React from 'react';
 import ReactJoyride, { CallBackProps, Styles } from 'react-joyride';
 import { useLocalStorageSet, useLocalStorageSubscribe } from 'services/hooks';
-import { headerZIndex } from 'styles';
+import { headerZIndex } from 'styles/styles';
 
 export const Tour: React.FC<Pick<
   React.ComponentProps<typeof ReactJoyride>,

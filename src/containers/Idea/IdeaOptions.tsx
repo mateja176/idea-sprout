@@ -19,7 +19,8 @@ import {
   useShareIdea,
 } from 'services/hooks';
 import { createAddIdea, createDeleteIdea } from 'services/store';
-import { ideaNameStyle, withStarColor } from 'styles';
+import { ideaNameStyle } from 'styles/idea';
+import { withStarColor } from 'styles/styles';
 import urljoin from 'url-join';
 import { getRatingTooltip, roundAverage } from 'utils/idea';
 import { absolutePrivateRoute } from 'utils/routes';

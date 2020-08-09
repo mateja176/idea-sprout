@@ -39,12 +39,8 @@ import React from 'react';
 import { env } from 'services/env';
 import { formatCurrency } from 'services/format';
 import { useReviewsRef, useUpgradeToPro, useUsersRef } from 'services/hooks';
-import {
-  inputStyle,
-  paypalButtonsHeight,
-  paypalHeightBreakpoint,
-  tabChildStyle,
-} from 'styles';
+import { paypalButtonsHeight, paypalHeightBreakpoint } from 'styles/paypal';
+import { inputStyle, tabChildStyle } from 'styles/styles';
 import { paypal } from 'types';
 import {
   convertFirestoreCollection,

@@ -6,7 +6,7 @@ import { StorageFile } from 'models';
 import React from 'react';
 import { useStorage } from 'reactfire';
 import { useStorageDownloadUrl } from 'services/hooks';
-import { ideaListItemHeight } from 'styles';
+import { ideaListItemHeight } from 'styles/idea';
 
 export interface IdeaImagePreviewProps {
   path: StorageFile['path'];

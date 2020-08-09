@@ -6,7 +6,7 @@ import { YoutubeVideo } from 'containers/YoutubeVideo';
 import { ideaSelector } from 'elements/idea';
 import { IdeaModel, StorageFile, storagePath, UpdateIdea } from 'models';
 import React from 'react';
-import { mediaBgGreyVariant } from 'styles';
+import { mediaBgGreyVariant } from 'styles/styles';
 import { EmbedVideo } from './EmbedVideo';
 import { Video } from './Video';
 

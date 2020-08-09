@@ -6,7 +6,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { EmptyDraggableDialog } from 'containers/EmptyDraggableDialog';
 import { User } from 'models';
 import React from 'react';
-import { withEllipsis } from 'styles';
+import { withEllipsis } from 'styles/styles';
 import { ReviewForm, ReviewFormProps, ReviewFormSkeleton } from './Form';
 
 export interface ReviewDialogProps

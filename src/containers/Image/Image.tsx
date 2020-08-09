@@ -4,7 +4,7 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import { StorageFile } from 'models';
 import React from 'react';
 import { StorageImage } from 'reactfire';
-import { mediaBgGreyVariant } from 'styles';
+import { mediaBgGreyVariant } from 'styles/styles';
 
 export interface ImageProps
   extends StorageFile,

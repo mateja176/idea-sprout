@@ -2,7 +2,7 @@ import Box from '@material-ui/core/Box';
 import List from '@material-ui/core/List';
 import range from 'ramda/es/range';
 import React from 'react';
-import { ideaListStyle } from 'styles';
+import { ideaListStyle } from 'styles/idea';
 import { ideasFetchLimit } from 'utils/idea';
 import { IdeaOptionsSkeleton } from '../IdeaOptionsSkeleton';
 

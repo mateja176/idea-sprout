@@ -7,7 +7,8 @@ import { IdeaPreviewWrapper, IdeaSection } from 'components/Idea';
 import { Load } from 'components/Load';
 import { problemSolutionTitle, rationaleTitle } from 'elements/idea';
 import React from 'react';
-import { ideaMarginBottom, ideaSectionMl } from 'styles';
+import { ideaMarginBottom } from 'styles/idea';
+import { ideaSectionMl } from 'styles/styles';
 import { getInitialIdea } from 'utils/idea';
 
 const idea = getInitialIdea('');

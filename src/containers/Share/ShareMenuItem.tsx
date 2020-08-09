@@ -4,7 +4,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
 import { ShareConfig } from 'components/share';
 import React from 'react';
-import { shareIconSize } from 'styles';
+import { shareIconSize } from 'styles/styles';
 
 export const ShareMenuItem = React.forwardRef<
   HTMLLIElement,

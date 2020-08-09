@@ -8,7 +8,7 @@ import { reviewFeedbackHeading, reviewRatingHeading } from 'elements/idea';
 import { IdeaModel, Review } from 'models';
 import React from 'react';
 import { useFirestoreCollection, useReviewsRef } from 'services/hooks';
-import { breakWordStyle } from 'styles';
+import { breakWordStyle } from 'styles/styles';
 
 export const reviewsMb = 4;
 export const feedbackWrapperStyle: React.CSSProperties = {
