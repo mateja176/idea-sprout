@@ -1,7 +1,8 @@
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Rating from '@material-ui/lab/Rating';
-import { Load, ReviewSection } from 'components';
+import { ReviewSection } from 'components/Idea';
+import { Load } from 'components/Load';
 import { reviewFeedbackHeading, reviewRatingHeading } from 'elements';
 import { initialReview } from 'models';
 import React from 'react';

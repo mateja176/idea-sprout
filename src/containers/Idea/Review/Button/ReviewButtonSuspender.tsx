@@ -1,5 +1,5 @@
 import Tab, { TabProps } from '@material-ui/core/Tab';
-import { Load } from 'components';
+import { Load } from 'components/Load';
 import React from 'react';
 import { tabChildStyle } from 'styles';
 import { ReviewButton } from './ReviewButton';

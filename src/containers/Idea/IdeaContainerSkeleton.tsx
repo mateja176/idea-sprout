@@ -1,7 +1,7 @@
 import Box from '@material-ui/core/Box';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
-import { Load } from 'components';
+import { Load } from 'components/Load';
 import React from 'react';
 import { tabsTitleSectionHeight } from 'styles';
 import { BackToIdeas } from './BackToIdeas';

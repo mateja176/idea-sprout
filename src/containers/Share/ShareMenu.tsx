@@ -1,5 +1,5 @@
 import Menu, { MenuProps } from '@material-ui/core/Menu';
-import { shareOptions } from 'components';
+import { shareOptions } from 'components/share';
 import React from 'react';
 import { ShareMenuItem } from './ShareMenuItem';
 

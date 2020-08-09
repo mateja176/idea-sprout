@@ -1,5 +1,5 @@
 import Skeleton from '@material-ui/lab/Skeleton';
-import { IdeaPreviewWrapper } from 'components';
+import { IdeaPreviewWrapper } from 'components/Idea';
 import React from 'react';
 import { IdeaImagePreview } from './IdeaImagePreview';
 

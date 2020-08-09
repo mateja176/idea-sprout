@@ -4,15 +4,15 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import Typography from '@material-ui/core/Typography';
 import Rating from '@material-ui/lab/Rating';
+import { Load } from 'components/Load';
+import { MultilineTextField } from 'components/MultilineTextField';
 import {
-  Load,
-  MultilineTextField,
   shareOptionMr,
   shareOptions,
   shareOptionSize,
   ShareOptionsWrapper,
   SharePrompt,
-} from 'components';
+} from 'components/share';
 import { Check } from 'containers/Check';
 import { doNotShareDescription, ratingLabel } from 'elements';
 import React from 'react';

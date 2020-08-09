@@ -1,4 +1,4 @@
-import { NotFound } from 'components';
+import { NotFound } from 'components/NotFound';
 import { IdeasSwitch, Signin } from 'pages';
 import React from 'react';
 import { useSelector } from 'react-redux';

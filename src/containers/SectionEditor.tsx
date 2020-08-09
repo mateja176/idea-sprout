@@ -4,7 +4,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import useTheme from '@material-ui/core/styles/useTheme';
 import Cancel from '@material-ui/icons/Cancel';
 import Edit from '@material-ui/icons/Edit';
-import { IdeaSection, IdeaSectionProps } from 'components';
+import { IdeaSection, IdeaSectionProps } from 'components/Idea';
 import {
   ContentState,
   Editor as DraftEditor,
