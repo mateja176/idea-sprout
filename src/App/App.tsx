@@ -1,6 +1,6 @@
 import React from 'react';
 import { hot } from 'react-hot-loader';
-import { Layout } from './Layout';
+import { Layout } from './Layout/Layout';
 import { Provider } from './Provider';
 import { Routes } from './Routes/Routes';
 import { RoutesSkeleton } from './Routes/RoutesSkeleton';
