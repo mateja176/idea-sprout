@@ -37,7 +37,8 @@ import {
   rationaleText,
 } from 'utils/idea/idea';
 import { absolutePrivateRoute } from 'utils/routes';
-import { ExpectationsCheck, NicheCheck } from '../Check';
+import { ExpectationsCheck } from '../Check/ExpectationsCheck';
+import { NicheCheck } from '../Check/NicheCheck';
 
 export interface IdeaFormProps {
   idea: IdeaModel;
