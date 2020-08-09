@@ -1,12 +1,8 @@
 import { FirebaseError } from 'firebase/app';
-import {
-  IdeaFilter,
-  IdeaModel,
-  IdeaSprout,
-  IdeasState,
-  User,
-  WithId,
-} from 'models';
+import { User } from 'models/auth';
+import { IdeaFilter } from 'models/firebase';
+import { IdeaModel, IdeaSprout, IdeasState } from 'models/idea';
+import { WithId } from 'models/models';
 import { pipe, range } from 'ramda';
 import { IndexRange } from 'react-virtualized';
 import { createSelector } from 'reselect';

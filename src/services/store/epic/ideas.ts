@@ -1,5 +1,5 @@
 import firebase, { FirebaseError } from 'firebase/app';
-import { IdeaSprout } from 'models';
+import { IdeaSprout } from 'models/idea';
 import findLast from 'ramda/es/findLast';
 import { Epic, ofType } from 'redux-observable';
 import { defer, of } from 'rxjs';

@@ -23,7 +23,7 @@ import {
   IdeaModel,
   ProblemSolutionLength,
   RationaleLength,
-} from 'models';
+} from 'models/idea';
 import qs from 'qs';
 import React from 'react';
 import { useHistory } from 'react-router-dom';

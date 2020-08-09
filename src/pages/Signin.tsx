@@ -19,7 +19,7 @@ import { PageWrapper } from 'components/PageWrapper';
 import { SnackbarContext } from 'context/snackbar';
 import firebase, { FirebaseError, User } from 'firebase/app';
 import { FormikHelpers, useFormik } from 'formik';
-import { passwordSchema } from 'models';
+import { passwordSchema } from 'models/auth';
 import React from 'react';
 import { useQuery } from 'react-query';
 import FacebookIcon from 'react-share/es/FacebookIcon';

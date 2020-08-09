@@ -1,7 +1,11 @@
 import useBoolean from 'ahooks/es/useBoolean';
 import { SnackbarContext } from 'context/snackbar';
 import firebase from 'firebase/app';
-import { CreationIdea, IdeaModel, Order, Review, User, WithId } from 'models';
+import { User } from 'models/auth';
+import { CreationIdea, IdeaModel } from 'models/idea';
+import { WithId } from 'models/models';
+import { Review } from 'models/review';
+import { Order } from 'models/upgrade';
 import qs from 'qs';
 import { useContext, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';

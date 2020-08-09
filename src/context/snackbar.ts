@@ -1,4 +1,4 @@
-import { ISnackbar, SnackbarState } from 'models';
+import { ISnackbar, SnackbarState } from 'models/snackbar';
 import { createContext } from 'react';
 
 export interface ISnackbarContext {

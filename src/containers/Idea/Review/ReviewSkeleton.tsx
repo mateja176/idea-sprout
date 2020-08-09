@@ -4,7 +4,7 @@ import Rating from '@material-ui/lab/Rating';
 import { ReviewSection } from 'components/Idea';
 import { Load } from 'components/Load';
 import { reviewFeedbackHeading, reviewRatingHeading } from 'elements/idea';
-import { initialReview } from 'models';
+import { initialReview } from 'models/review';
 import React from 'react';
 import { feedbackWrapperStyle, reviewsMb } from './Reviews';
 

@@ -1,5 +1,5 @@
 import { User } from 'firebase';
-import { UserState } from 'models';
+import { UserState } from 'models/auth';
 
 export function isUserLoading(user: UserState): user is 'loading' {
   return user === 'loading';

@@ -1,6 +1,6 @@
 import { IdeaContainer } from 'containers/Idea';
 import { IdeaContainerSkeleton } from 'containers/Idea/IdeaContainerSkeleton';
-import { IdeaModel } from 'models';
+import { IdeaModel } from 'models/idea';
 import React, { Suspense } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 

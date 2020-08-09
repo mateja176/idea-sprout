@@ -1,5 +1,5 @@
 import Box from '@material-ui/core/Box';
-import { WithValue } from 'models';
+import { WithValue } from 'models/upgrade';
 import React from 'react';
 
 export interface Product {

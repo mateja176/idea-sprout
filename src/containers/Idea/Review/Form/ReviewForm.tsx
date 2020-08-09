@@ -10,16 +10,15 @@ import { ShareOptions, SharePrompt } from 'components/share';
 import { Check } from 'containers/Check';
 import { ratingLabel } from 'elements/idea';
 import { useFormik } from 'formik';
+import { User } from 'models/auth';
+import { CheckProps, IdeaModel } from 'models/idea';
 import {
-  CheckProps,
   createReviewSchema,
   CreationReview,
   FeedbackLength,
-  IdeaModel,
   initialCreationReview,
   Review,
-  User,
-} from 'models';
+} from 'models/review';
 import React from 'react';
 import {
   useFirestoreDoc,

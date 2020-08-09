@@ -4,7 +4,7 @@ import { Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { DraggableDialog } from 'containers/DraggableDialog';
-import { IdeaModel, Rating } from 'models';
+import { IdeaModel, Rating } from 'models/idea';
 import range from 'ramda/es/range';
 import React from 'react';
 import { withEllipsis } from 'styles/styles';

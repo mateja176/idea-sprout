@@ -5,7 +5,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import ExitToApp from '@material-ui/icons/ExitToApp';
 import useBoolean from 'ahooks/es/useBoolean';
 import { SnackbarContext } from 'context/snackbar';
-import { User } from 'models';
+import { User } from 'models/auth';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useAuth } from 'reactfire';

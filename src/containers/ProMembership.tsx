@@ -4,7 +4,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Beenhere from '@material-ui/icons/Beenhere';
 import EmojiEvents from '@material-ui/icons/EmojiEvents';
 import { User } from 'firebase';
-import { Order } from 'models';
+import { Order } from 'models/upgrade';
 import React from 'react';
 import { useFirestoreDoc, useOrderRef } from 'services/hooks';
 import { tabChildStyle } from 'styles/styles';

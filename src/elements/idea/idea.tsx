@@ -1,5 +1,5 @@
 import Typography from '@material-ui/core/Typography';
-import { headingIds } from 'models';
+import { headingIds } from 'models/idea';
 import React from 'react';
 
 export const nameTitle = (

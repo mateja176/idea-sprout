@@ -1,4 +1,4 @@
-import { IconProps } from 'models';
+import { IconProps } from 'models/components';
 import React from 'react';
 import { logoWidth } from 'styles/styles';
 

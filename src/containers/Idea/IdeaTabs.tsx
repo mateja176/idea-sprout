@@ -11,7 +11,7 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import useBoolean from 'ahooks/es/useBoolean';
 import { ShareMenu } from 'containers/Share';
 import { User } from 'firebase/app';
-import { IdeaModel } from 'models';
+import { IdeaModel } from 'models/idea';
 import React from 'react';
 import { StorageImage } from 'reactfire';
 import { useActions, useIdeaUrl, useShareIdea } from 'services/hooks';

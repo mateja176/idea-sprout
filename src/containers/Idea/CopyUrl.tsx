@@ -1,5 +1,5 @@
 import { SnackbarContext } from 'context/snackbar';
-import { ShareButtonProps } from 'models';
+import { ShareButtonProps } from 'models/models';
 import React from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 

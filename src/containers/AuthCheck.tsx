@@ -1,6 +1,6 @@
 import useBoolean from 'ahooks/es/useBoolean';
 import firebase from 'firebase/app';
-import { Claims } from 'models';
+import { Claims } from 'models/firebase';
 import React from 'react';
 import { AuthCheck as FirebaseAuthCheck, useAuth } from 'reactfire';
 

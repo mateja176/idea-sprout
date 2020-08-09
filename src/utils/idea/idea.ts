@@ -7,7 +7,7 @@ import {
   InitialIdea,
   RawIdea,
   StorageFile,
-} from 'models';
+} from 'models/idea';
 
 export const ideasFetchLimit = 15;
 

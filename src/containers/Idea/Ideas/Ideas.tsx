@@ -1,7 +1,9 @@
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import { User } from 'firebase/app';
-import { IdeaBatchError, IdeaFilter, WithCount } from 'models';
+import { IdeaFilter } from 'models/firebase';
+import { IdeaBatchError } from 'models/idea';
+import { WithCount } from 'models/models';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AutoSizer } from 'react-virtualized/dist/commonjs/AutoSizer';

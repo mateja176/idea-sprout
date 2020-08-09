@@ -1,6 +1,7 @@
 import IconButton from '@material-ui/core/IconButton';
 import Help from '@material-ui/icons/Help';
-import { IdeaModel, User } from 'models';
+import { User } from 'models/auth';
+import { IdeaModel } from 'models/idea';
 import React from 'react';
 import {
   useFirestoreDoc,

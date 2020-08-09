@@ -1,4 +1,4 @@
-import { Env, RawEnv } from 'models';
+import { Env, RawEnv } from 'models/env';
 import { assertRequired } from './services';
 
 const rawEnv: RawEnv = {

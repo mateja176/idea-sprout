@@ -9,7 +9,8 @@ import StarRate from '@material-ui/icons/StarRate';
 import useBoolean from 'ahooks/es/useBoolean';
 import { IdeaOptionsWrapper } from 'components/Idea';
 import { ShareMenuButton } from 'containers/Share';
-import { IdeaModel, User } from 'models';
+import { User } from 'models/auth';
+import { IdeaModel } from 'models/idea';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import {

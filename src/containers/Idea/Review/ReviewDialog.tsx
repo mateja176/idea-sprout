@@ -4,7 +4,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { Theme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { EmptyDraggableDialog } from 'containers/EmptyDraggableDialog';
-import { User } from 'models';
+import { User } from 'models/auth';
 import React from 'react';
 import { withEllipsis } from 'styles/styles';
 import { ReviewForm, ReviewFormProps, ReviewFormSkeleton } from './Form';

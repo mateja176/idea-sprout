@@ -1,7 +1,7 @@
 import Box from '@material-ui/core/Box';
 import { FileOptions } from 'containers/FileOptions';
 import { ideaSelector } from 'elements/idea';
-import { IdeaModel, UpdateIdea } from 'models';
+import { IdeaModel, UpdateIdea } from 'models/idea';
 import React from 'react';
 import { Image } from './Image';
 

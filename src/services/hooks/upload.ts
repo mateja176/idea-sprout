@@ -1,6 +1,7 @@
 import useBoolean from 'ahooks/es/useBoolean';
 import firebase from 'firebase/app';
-import { StorageFile, StoragePath } from 'models';
+import { StoragePath } from 'models/firebase';
+import { StorageFile } from 'models/idea';
 import { useStorage } from 'reactfire';
 import {
   getFileData,

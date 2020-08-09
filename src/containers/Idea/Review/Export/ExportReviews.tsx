@@ -25,16 +25,15 @@ import { useFormik } from 'formik';
 import jsonexport from 'jsonexport/dist';
 import kebabCase from 'lodash/kebabCase';
 import {
-  claims,
   FirestoreUser,
-  IdeaModel,
   passwordSchema,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   Provider,
   ProviderId,
-  Review,
-  ReviewWithAuthor,
-} from 'models';
+} from 'models/auth';
+import { claims } from 'models/firebase';
+import { IdeaModel } from 'models/idea';
+import { Review, ReviewWithAuthor } from 'models/review';
 import React from 'react';
 import { env } from 'services/env';
 import { formatCurrency } from 'services/format';

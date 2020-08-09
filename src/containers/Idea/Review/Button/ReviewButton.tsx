@@ -3,7 +3,8 @@ import { ButtonProps } from '@material-ui/core/Button';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Tooltip from '@material-ui/core/Tooltip';
 import RateReview from '@material-ui/icons/RateReview';
-import { IdeaModel, User } from 'models';
+import { User } from 'models/auth';
+import { IdeaModel } from 'models/idea';
 import React from 'react';
 import { useFirestoreDoc, useReviewRef } from 'services/hooks';
 

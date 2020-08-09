@@ -1,4 +1,5 @@
-import { IdeaModel, WithId } from 'models';
+import { IdeaModel } from 'models/idea';
+import { WithId } from 'models/models';
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { useFirestoreDoc, useIdeaRef } from 'services/hooks';

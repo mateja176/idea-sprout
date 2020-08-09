@@ -1,4 +1,4 @@
-import { ShareButtonProps, ShareIconProps } from 'models';
+import { ShareButtonProps, ShareIconProps } from 'models/models';
 import React from 'react';
 import FacebookIcon from 'react-share/es/FacebookIcon';
 import FacebookShareButton from 'react-share/es/FacebookShareButton';

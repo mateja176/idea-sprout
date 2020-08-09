@@ -1,4 +1,4 @@
-import { currency } from 'models';
+import { currency } from 'models/upgrade';
 
 export const formatCurrency: ReturnType<
   typeof Intl['NumberFormat']

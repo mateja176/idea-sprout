@@ -10,6 +10,7 @@ import {
   problemSolutionTitle,
   rationaleTitle,
 } from 'elements/idea';
+import { User } from 'models/auth';
 import {
   IdeaModel,
   NameLength,
@@ -17,8 +18,7 @@ import {
   RationaleLength,
   TaglineLength,
   UpdateIdea,
-  User,
-} from 'models';
+} from 'models/idea';
 import React from 'react';
 import { ideaMarginBottom } from 'styles/idea';
 import { ideaSectionMl } from 'styles/styles';

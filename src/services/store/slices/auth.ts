@@ -1,5 +1,5 @@
 import { FirebaseError } from 'firebase';
-import { User } from 'models';
+import { User } from 'models/auth';
 import { createSelector } from 'reselect';
 import { ActionType, createAction, createAsyncAction } from 'typesafe-actions';
 

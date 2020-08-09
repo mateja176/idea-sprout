@@ -1,4 +1,4 @@
-import { IdeaModel } from 'models';
+import { IdeaModel } from 'models/idea';
 import { useMemo } from 'react';
 import urljoin from 'url-join';
 import { absolutePrivateRoute } from 'utils/routes';

@@ -1,4 +1,4 @@
-import { StorageFile } from 'models';
+import { StorageFile } from 'models/idea';
 import React from 'react';
 import { useLoadYoutubeScript, useRenderPlayer } from 'services/hooks';
 

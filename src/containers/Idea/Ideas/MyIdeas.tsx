@@ -9,7 +9,7 @@ import LibraryAdd from '@material-ui/icons/LibraryAdd';
 import Publish from '@material-ui/icons/Publish';
 import Share from '@material-ui/icons/Share';
 import { User } from 'firebase/app';
-import { IdeaModel } from 'models';
+import { IdeaModel } from 'models/idea';
 import React from 'react';
 import FlipMove from 'react-flip-move';
 import { useSelector } from 'react-redux';
