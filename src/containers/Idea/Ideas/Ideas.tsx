@@ -17,7 +17,7 @@ import {
   fetchIdeasAsync,
   FetchIdeasAsync,
   selectIdeas,
-} from 'services/store/slices';
+} from 'services/store/slices/ideas';
 import { ideaListItemFullHeight } from 'styles/idea';
 import { getType } from 'typesafe-actions';
 import { IdeaRow } from '../IdeaRow';

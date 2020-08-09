@@ -15,7 +15,7 @@ import {
   FetchIdeasRequest,
   FetchIdeasSuccess,
   selectIdeas,
-} from '../slices';
+} from '../slices/ideas';
 
 export const fetch: Epic<
   Action,

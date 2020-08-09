@@ -18,7 +18,7 @@ import {
   useStorageDownloadURL as useFirebaseStorageDownloadUrl,
   useUser as useFirebaseUser,
 } from 'reactfire';
-import { createUpdateIdea } from 'services/store/slices';
+import { createUpdateIdea } from 'services/store/slices/ideas';
 import {
   convertFirestoreCollection,
   convertFirestoreDocument,

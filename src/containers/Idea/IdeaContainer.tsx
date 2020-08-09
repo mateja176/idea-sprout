@@ -10,7 +10,7 @@ import {
   useSignedInUser,
 } from 'services/hooks/firebase';
 import { useActions } from 'services/hooks/hooks';
-import { createUpdateIdea } from 'services/store/slices';
+import { createUpdateIdea } from 'services/store/slices/ideas';
 import { absolutePrivateRoute } from 'utils/routes';
 import { Idea, IdeaProps } from './Idea';
 import { IdeaTabs } from './IdeaTabs';

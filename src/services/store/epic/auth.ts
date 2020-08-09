@@ -7,7 +7,11 @@ import { withFirestore } from 'services/firebase';
 import { getType } from 'typesafe-actions';
 import { firestoreCollections } from 'utils/firebase';
 import { Action, State } from '../reducer';
-import { createSaveUser, SaveUserAction, SaveUserRequest } from '../slices';
+import {
+  createSaveUser,
+  SaveUserAction,
+  SaveUserRequest,
+} from '../slices/auth';
 
 export const saveUser: Epic<Action, SaveUserAction, State> = (action$) =>
   action$.pipe(

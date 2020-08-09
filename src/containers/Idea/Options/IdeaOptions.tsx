@@ -16,7 +16,7 @@ import { useHistory } from 'react-router-dom';
 import { useIdeaRef, useShareIdea } from 'services/hooks/firebase';
 import { useActions } from 'services/hooks/hooks';
 import { useIdeaOptionButtonStyle } from 'services/hooks/style';
-import { createAddIdea, createDeleteIdea } from 'services/store/slices';
+import { createAddIdea, createDeleteIdea } from 'services/store/slices/ideas';
 import { ideaNameStyle } from 'styles/idea';
 import { withStarColor } from 'styles/styles';
 import urljoin from 'url-join';

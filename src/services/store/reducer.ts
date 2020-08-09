@@ -1,6 +1,7 @@
 import { combineReducers, Reducer as ReduxReducer } from 'redux';
 import { createAction, getType } from 'typesafe-actions';
-import { auth, ideasSlice } from './slices';
+import { auth } from './slices/auth';
+import { ideasSlice } from './slices/ideas';
 
 const reducers = {
   ideasSlice,
