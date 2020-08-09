@@ -1,4 +1,3 @@
-import { convertToRaw, EditorState } from 'draft-js';
 import {
   FormIdea,
   IdeaModel,
@@ -45,13 +44,6 @@ export const getFileName = (file: StorageFile) =>
 
 export const getFileNames = (files: StorageFile[]) =>
   files.flatMap(getFileName);
-
-export const stateToString = (editorState: EditorState): string => {
-  const text = convertToRaw(editorState.getCurrentContent())
-    .blocks.reduce((text, block) => text.concat('\n', block.text), '')
-    .trim();
-  return text;
-};
 
 export function isIdea(idea: IdeasState['ideas'][number]): idea is IdeaSprout {
   return !!idea && idea !== 'loading' && !(idea instanceof Error);

@@ -14,7 +14,7 @@ import {
 } from 'draft-js';
 import 'draft-js/dist/Draft.css';
 import React from 'react';
-import { stateToString } from 'utils/idea/idea';
+import { stateToString } from './utils';
 
 const editingStates = ['off', 'blur', 'focus', 'tooShort', 'tooLong'] as const;
 type EditingStates = typeof editingStates;
