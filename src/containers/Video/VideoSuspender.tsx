@@ -3,7 +3,7 @@ import useTheme from '@material-ui/core/styles/useTheme';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { FileOptions } from 'containers/FileOptions';
 import { YoutubeVideo } from 'containers/YoutubeVideo';
-import { ideaSelector } from 'elements/idea';
+import { ideaSelector } from 'elements/idea/tour';
 import { storagePath } from 'models/firebase';
 import { IdeaModel, StorageFile, UpdateIdea } from 'models/idea';
 import React from 'react';

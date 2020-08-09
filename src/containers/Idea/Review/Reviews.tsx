@@ -4,7 +4,10 @@ import useTheme from '@material-ui/core/styles/useTheme';
 import Typography from '@material-ui/core/Typography';
 import Rating from '@material-ui/lab/Rating';
 import { ReviewSection } from 'components/Idea/Review/ReviewSection';
-import { reviewFeedbackHeading, reviewRatingHeading } from 'elements/idea';
+import {
+  reviewFeedbackHeading,
+  reviewRatingHeading,
+} from 'elements/idea/review';
 import { IdeaModel } from 'models/idea';
 import { Review } from 'models/review';
 import React from 'react';

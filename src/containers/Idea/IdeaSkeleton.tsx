@@ -6,7 +6,7 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import { IdeaPreviewWrapper } from 'components/Idea/IdeaPreviewWrapper';
 import { IdeaSection } from 'components/Idea/IdeaSection';
 import { Load } from 'components/Load';
-import { problemSolutionTitle, rationaleTitle } from 'elements/idea';
+import { problemSolutionTitle, rationaleTitle } from 'elements/idea/idea';
 import React from 'react';
 import { ideaMarginBottom } from 'styles/idea';
 import { ideaSectionMl } from 'styles/styles';

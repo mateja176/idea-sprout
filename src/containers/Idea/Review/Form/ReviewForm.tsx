@@ -8,7 +8,7 @@ import Rating from '@material-ui/lab/Rating';
 import { MultilineTextField } from 'components/MultilineTextField';
 import { ShareOptions, SharePrompt } from 'components/share';
 import { Check } from 'containers/Check';
-import { ratingLabel } from 'elements/idea';
+import { ratingLabel } from 'elements/idea/review';
 import { useFormik } from 'formik';
 import { User } from 'models/auth';
 import { CheckProps, IdeaModel } from 'models/idea';

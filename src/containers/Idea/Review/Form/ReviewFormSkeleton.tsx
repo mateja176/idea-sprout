@@ -14,7 +14,7 @@ import {
   SharePrompt,
 } from 'components/share';
 import { Check } from 'containers/Check';
-import { doNotShareDescription, ratingLabel } from 'elements/idea';
+import { doNotShareDescription, ratingLabel } from 'elements/idea/review';
 import React from 'react';
 import { checkWithMessageHeight } from 'styles/styles';
 import { feedbackFieldRows, feedbackHelperText } from 'utils/idea/review';

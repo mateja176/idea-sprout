@@ -4,12 +4,8 @@ import { FileOptions } from 'containers/FileOptions';
 import { SectionEditor } from 'containers/SectionEditor/SectionEditor';
 import { Tour } from 'containers/Tour';
 import { EditorProps } from 'draft-js';
-import {
-  ideaSelector,
-  ideaTourSteps,
-  problemSolutionTitle,
-  rationaleTitle,
-} from 'elements/idea';
+import { problemSolutionTitle, rationaleTitle } from 'elements/idea/idea';
+import { ideaSelector, ideaTourSteps } from 'elements/idea/tour';
 import { User } from 'models/auth';
 import {
   IdeaModel,

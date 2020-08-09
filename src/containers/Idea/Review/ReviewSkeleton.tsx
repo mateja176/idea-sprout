@@ -3,7 +3,10 @@ import Typography from '@material-ui/core/Typography';
 import Rating from '@material-ui/lab/Rating';
 import { ReviewSection } from 'components/Idea/Review/ReviewSection';
 import { Load } from 'components/Load';
-import { reviewFeedbackHeading, reviewRatingHeading } from 'elements/idea';
+import {
+  reviewFeedbackHeading,
+  reviewRatingHeading,
+} from 'elements/idea/review';
 import { initialReview } from 'models/review';
 import React from 'react';
 import { feedbackWrapperStyle, reviewsMb } from './Reviews';
