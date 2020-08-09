@@ -1,6 +1,6 @@
 import Box from '@material-ui/core/Box';
 import useBoolean from 'ahooks/es/useBoolean';
-import { SnackbarContext } from 'context';
+import { SnackbarContext } from 'context/snackbar';
 import { IdeaModel, IdeaSprout } from 'models';
 import React from 'react';
 import { Redirect } from 'react-router-dom';

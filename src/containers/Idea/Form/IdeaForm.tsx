@@ -13,7 +13,7 @@ import { Link } from 'components/Link';
 import { MultilineTextField } from 'components/MultilineTextField';
 import { PageWrapper } from 'components/PageWrapper';
 import { Drop, DropProps } from 'containers/Drop';
-import { SnackbarContext } from 'context';
+import { SnackbarContext } from 'context/snackbar';
 import { storyDescription } from 'elements/idea';
 import firebase from 'firebase/app';
 import { useFormik } from 'formik';

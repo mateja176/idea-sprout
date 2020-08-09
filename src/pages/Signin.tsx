@@ -16,7 +16,7 @@ import Alert from '@material-ui/lab/Alert';
 import useBoolean from 'ahooks/es/useBoolean';
 import { Google } from 'components/icons';
 import { PageWrapper } from 'components/PageWrapper';
-import { SnackbarContext } from 'context';
+import { SnackbarContext } from 'context/snackbar';
 import firebase, { FirebaseError, User } from 'firebase/app';
 import { FormikHelpers, useFormik } from 'formik';
 import { passwordSchema } from 'models';

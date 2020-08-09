@@ -18,7 +18,7 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import useBoolean from 'ahooks/es/useBoolean';
 import { AuthCheck } from 'containers/AuthCheck';
 import { ProMembership } from 'containers/ProMembership';
-import { SnackbarContext } from 'context';
+import { SnackbarContext } from 'context/snackbar';
 import { proMembership, proMembershipDiscount } from 'elements/upgrade';
 import firebase, { FirebaseError, User } from 'firebase/app';
 import { useFormik } from 'formik';

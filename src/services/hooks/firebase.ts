@@ -1,5 +1,5 @@
 import useBoolean from 'ahooks/es/useBoolean';
-import { SnackbarContext } from 'context';
+import { SnackbarContext } from 'context/snackbar';
 import firebase from 'firebase/app';
 import { CreationIdea, IdeaModel, Order, Review, User, WithId } from 'models';
 import qs from 'qs';

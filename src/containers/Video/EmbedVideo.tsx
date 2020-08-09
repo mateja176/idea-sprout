@@ -9,7 +9,7 @@ import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/icons/Link';
 import Skeleton from '@material-ui/lab/Skeleton';
 import useBoolean from 'ahooks/es/useBoolean';
-import { SnackbarContext } from 'context';
+import { SnackbarContext } from 'context/snackbar';
 import { useFormik } from 'formik';
 import { StorageFile } from 'models';
 import qs from 'qs';

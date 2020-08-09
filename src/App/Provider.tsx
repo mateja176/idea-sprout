@@ -2,7 +2,7 @@ import {
   initialSnackbarContext,
   ISnackbarContext,
   SnackbarContext,
-} from 'context';
+} from 'context/snackbar';
 import LogRocket from 'logrocket';
 import setupLogRocketReact from 'logrocket-react';
 import init from 'ramda/es/init';

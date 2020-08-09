@@ -12,7 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
 import Info from '@material-ui/icons/Info';
 import useBoolean from 'ahooks/es/useBoolean';
-import { SnackbarContext } from 'context';
+import { SnackbarContext } from 'context/snackbar';
 import { StorageFile, StoragePath } from 'models';
 import React from 'react';
 import { DropzoneOptions, useDropzone } from 'react-dropzone';
