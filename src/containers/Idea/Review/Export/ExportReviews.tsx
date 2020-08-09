@@ -40,7 +40,7 @@ import { formatCurrency } from 'services/format';
 import { useReviewsRef, useUpgradeToPro, useUsersRef } from 'services/hooks';
 import { paypalButtonsHeight, paypalHeightBreakpoint } from 'styles/paypal';
 import { inputStyle, tabChildStyle } from 'styles/styles';
-import { paypal } from 'types';
+import { Order } from 'types/paypal';
 import {
   convertFirestoreCollection,
   convertFirestoreDocument,
@@ -273,7 +273,7 @@ export const ExportReviews: React.FC<
           const capture = () =>
             actions.order.capture().catch(
               () =>
-                new Promise<paypal.Order>((resolve) => {
+                new Promise<Order>((resolve) => {
                   setTimeout(() => {
                     capture().then(resolve);
                   }, 2000);

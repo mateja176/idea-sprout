@@ -1,16 +1,14 @@
 import useBoolean from 'ahooks/es/useBoolean';
 import { SnackbarContext } from 'context/snackbar';
 import { useCallback, useContext, useMemo } from 'react';
-import { youtube } from 'types';
+import { Player } from 'types/youtube';
 import { v4 } from 'uuid';
 
 const API = 'https://www.youtube.com/iframe_api';
 
 const scriptId = 'youtube-iframe-script';
 
-export const useRenderPlayer = (
-  options?: Partial<youtube.Player['options']>,
-) => {
+export const useRenderPlayer = (options?: Partial<Player['options']>) => {
   const { queueSnackbar } = useContext(SnackbarContext);
 
   const [videoLoading, setVideoLoading] = useBoolean();
