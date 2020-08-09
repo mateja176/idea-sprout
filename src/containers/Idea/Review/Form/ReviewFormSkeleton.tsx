@@ -6,13 +6,13 @@ import Typography from '@material-ui/core/Typography';
 import Rating from '@material-ui/lab/Rating';
 import { Load } from 'components/Load';
 import { MultilineTextField } from 'components/MultilineTextField';
+import { shareOptions } from 'components/share/share';
 import {
   shareOptionMr,
-  shareOptions,
   shareOptionSize,
   ShareOptionsWrapper,
-  SharePrompt,
-} from 'components/share';
+} from 'components/share/ShareOptions';
+import { SharePrompt } from 'components/share/SharePrompt';
 import { Check } from 'containers/Check';
 import { doNotShareDescription, ratingLabel } from 'elements/idea/review';
 import React from 'react';
