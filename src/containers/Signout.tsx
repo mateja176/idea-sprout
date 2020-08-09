@@ -11,7 +11,7 @@ import { useHistory } from 'react-router-dom';
 import { useAuth } from 'reactfire';
 import { clearFirestoreCache } from 'services/firebase';
 import { useActions } from 'services/hooks/hooks';
-import { createReset } from 'services/store';
+import { createReset } from 'services/store/reducer';
 
 export interface SignoutProps {
   user: User;

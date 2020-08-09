@@ -9,7 +9,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { useUserState } from 'services/hooks/firebase';
-import { selectEmailVerified } from 'services/store';
+import { selectEmailVerified } from 'services/store/slices';
 import { getIsSignedIn } from 'utils/auth';
 import {
   absolutePrivateNavigationRoutes,

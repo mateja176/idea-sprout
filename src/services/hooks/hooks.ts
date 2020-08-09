@@ -9,7 +9,7 @@ import {
 import { useDispatch } from 'react-redux';
 import { ActionCreatorsMapObject, bindActionCreators } from 'redux';
 import { LocalStorageItems, LocalStorageKey, storage } from 'services/storage';
-import { Action } from '../store';
+import { Action } from '../store/reducer';
 
 export const useLocalStorageSubscribe = (key: LocalStorageKey) => {
   const [value, setValue] = useState<LocalStorageItems[typeof key] | null>(

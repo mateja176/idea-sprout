@@ -11,7 +11,7 @@ import { Provider as ReduxProvider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { FirebaseAppProvider } from 'reactfire';
 import { env } from 'services/env';
-import { store } from 'services/store';
+import { store } from 'services/store/store';
 import { ThemeProvider } from './ThemeProvider';
 
 const firebaseConfig = {

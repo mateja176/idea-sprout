@@ -12,12 +12,12 @@ import { List } from 'react-virtualized/dist/commonjs/List';
 import { useFirestoreDocData } from 'reactfire';
 import { useIdeasCountRef } from 'services/hooks/firebase';
 import { useActions } from 'services/hooks/hooks';
+import { createPromisedAction } from 'services/store/middleware';
 import {
-  createPromisedAction,
   fetchIdeasAsync,
   FetchIdeasAsync,
   selectIdeas,
-} from 'services/store';
+} from 'services/store/slices';
 import { ideaListItemFullHeight } from 'styles/idea';
 import { getType } from 'typesafe-actions';
 import { IdeaRow } from '../IdeaRow';

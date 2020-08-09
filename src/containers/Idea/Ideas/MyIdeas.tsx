@@ -18,7 +18,7 @@ import {
   useFirestoreCollection,
   useIdeasRef,
 } from 'services/hooks/firebase';
-import { selectMyIdeas } from 'services/store';
+import { selectMyIdeas } from 'services/store/slices';
 import { IdeaRow } from '../IdeaRow';
 
 export const MyEmptyIdeas = () => {

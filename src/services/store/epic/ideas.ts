@@ -5,7 +5,7 @@ import { Epic, ofType } from 'redux-observable';
 import { defer, of } from 'rxjs';
 import { catchError, concatMap, first, map, mergeMap } from 'rxjs/operators';
 import { interceptGetIdeasError, withFirestore } from 'services/firebase';
-import { Action, State } from 'services/store';
+import { Action, State } from 'services/store/reducer';
 import { getType } from 'typesafe-actions';
 import { convertFirestoreDocument, firestoreCollections } from 'utils/firebase';
 import { isIdea } from 'utils/idea/idea';
