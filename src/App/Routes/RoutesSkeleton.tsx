@@ -4,7 +4,7 @@ import Tabs from '@material-ui/core/Tabs';
 import { Load } from 'components/Load';
 import { NotFound } from 'components/NotFound';
 import { IdeaContainerSkeleton } from 'containers/Idea/IdeaContainerSkeleton';
-import { IdeasSkeleton } from 'containers/Idea/Ideas';
+import { IdeasSkeleton } from 'containers/Idea/Ideas/IdeasSkeleton';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { absolutePrivateRoute } from 'utils/routes';
