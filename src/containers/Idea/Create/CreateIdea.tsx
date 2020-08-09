@@ -4,7 +4,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import LibraryAdd from '@material-ui/icons/LibraryAdd';
 import { User } from 'models/auth';
 import React from 'react';
-import { useCreateIdea } from 'services/hooks';
+import { useCreateIdea } from 'services/hooks/firebase';
 
 export interface CreateIdeaProps {
   user: User;

@@ -5,11 +5,11 @@ import { IdeaModel, IdeaSprout } from 'models/idea';
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 import {
-  useActions,
   useFirestoreDoc,
   useIdeaRef,
   useSignedInUser,
-} from 'services/hooks';
+} from 'services/hooks/firebase';
+import { useActions } from 'services/hooks/hooks';
 import { createUpdateIdea } from 'services/store';
 import { absolutePrivateRoute } from 'utils/routes';
 import { Idea, IdeaProps } from './Idea';

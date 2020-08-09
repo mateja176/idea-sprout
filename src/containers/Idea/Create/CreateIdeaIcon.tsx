@@ -2,7 +2,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import LibraryAdd from '@material-ui/icons/LibraryAdd';
 import React from 'react';
-import { useCreateIdea, useUser } from 'services/hooks';
+import { useCreateIdea, useUser } from 'services/hooks/firebase';
 
 export const CreateIdeaIcon = () => {
   const user = useUser();

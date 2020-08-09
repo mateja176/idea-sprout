@@ -13,12 +13,9 @@ import { User } from 'models/auth';
 import { IdeaModel } from 'models/idea';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import {
-  useActions,
-  useIdeaOptionButtonStyle,
-  useIdeaRef,
-  useShareIdea,
-} from 'services/hooks';
+import { useIdeaRef, useShareIdea } from 'services/hooks/firebase';
+import { useActions } from 'services/hooks/hooks';
+import { useIdeaOptionButtonStyle } from 'services/hooks/style';
 import { createAddIdea, createDeleteIdea } from 'services/store';
 import { ideaNameStyle } from 'styles/idea';
 import { withStarColor } from 'styles/styles';

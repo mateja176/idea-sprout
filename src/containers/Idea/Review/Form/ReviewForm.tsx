@@ -25,7 +25,7 @@ import {
   useReviewsRef,
   useReviewSubmit,
   useShareIdea,
-} from 'services/hooks';
+} from 'services/hooks/firebase';
 import { checkWithMessageHeight } from 'styles/styles';
 import {
   doNotShareWarning,

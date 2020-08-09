@@ -37,7 +37,11 @@ import { Review, ReviewWithAuthor } from 'models/review';
 import React from 'react';
 import { env } from 'services/env';
 import { formatCurrency } from 'services/format';
-import { useReviewsRef, useUpgradeToPro, useUsersRef } from 'services/hooks';
+import {
+  useReviewsRef,
+  useUpgradeToPro,
+  useUsersRef,
+} from 'services/hooks/firebase';
 import { paypalButtonsHeight, paypalHeightBreakpoint } from 'styles/paypal';
 import { inputStyle, tabChildStyle } from 'styles/styles';
 import { Order } from 'types/paypal';

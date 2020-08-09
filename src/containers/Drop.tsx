@@ -17,7 +17,7 @@ import { StoragePath } from 'models/firebase';
 import { StorageFile } from 'models/idea';
 import React from 'react';
 import { DropzoneOptions, useDropzone } from 'react-dropzone';
-import { useUpload } from 'services/hooks';
+import { useUpload } from 'services/hooks/upload';
 
 export interface DropProps extends DropzoneOptions {
   heading: string;

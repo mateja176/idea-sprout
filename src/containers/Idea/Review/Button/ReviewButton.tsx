@@ -6,7 +6,7 @@ import RateReview from '@material-ui/icons/RateReview';
 import { User } from 'models/auth';
 import { IdeaModel } from 'models/idea';
 import React from 'react';
-import { useFirestoreDoc, useReviewRef } from 'services/hooks';
+import { useFirestoreDoc, useReviewRef } from 'services/hooks/firebase';
 
 const useStyles = makeStyles((theme) => ({
   tooltip: {

@@ -5,7 +5,7 @@ import { SnackbarContext } from 'context/snackbar';
 import { StoragePath } from 'models/firebase';
 import { StorageFile, UpdateStorageFile } from 'models/idea';
 import React from 'react';
-import { useUpload } from 'services/hooks';
+import { useUpload } from 'services/hooks/upload';
 
 const inputStyle: React.CSSProperties = { display: 'none' };
 

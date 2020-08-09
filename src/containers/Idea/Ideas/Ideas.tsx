@@ -10,7 +10,8 @@ import { AutoSizer } from 'react-virtualized/dist/commonjs/AutoSizer';
 import { InfiniteLoader } from 'react-virtualized/dist/commonjs/InfiniteLoader';
 import { List } from 'react-virtualized/dist/commonjs/List';
 import { useFirestoreDocData } from 'reactfire';
-import { useActions, useIdeasCountRef } from 'services/hooks';
+import { useIdeasCountRef } from 'services/hooks/firebase';
+import { useActions } from 'services/hooks/hooks';
 import {
   createPromisedAction,
   fetchIdeasAsync,

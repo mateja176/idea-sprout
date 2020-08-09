@@ -8,7 +8,7 @@ import { Signout } from 'containers/Signout';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
-import { useUserState } from 'services/hooks';
+import { useUserState } from 'services/hooks/firebase';
 import { selectEmailVerified } from 'services/store';
 import { getIsSignedIn } from 'utils/auth';
 import {

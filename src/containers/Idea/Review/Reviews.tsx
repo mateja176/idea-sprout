@@ -8,7 +8,7 @@ import { reviewFeedbackHeading, reviewRatingHeading } from 'elements/idea';
 import { IdeaModel } from 'models/idea';
 import { Review } from 'models/review';
 import React from 'react';
-import { useFirestoreCollection, useReviewsRef } from 'services/hooks';
+import { useFirestoreCollection, useReviewsRef } from 'services/hooks/firebase';
 import { breakWordStyle } from 'styles/styles';
 
 export const reviewsMb = 4;

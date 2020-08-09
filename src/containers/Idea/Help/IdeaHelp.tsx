@@ -3,11 +3,8 @@ import Help from '@material-ui/icons/Help';
 import { User } from 'models/auth';
 import { IdeaModel } from 'models/idea';
 import React from 'react';
-import {
-  useFirestoreDoc,
-  useIdeaRef,
-  useLocalStorageSet,
-} from 'services/hooks';
+import { useFirestoreDoc, useIdeaRef } from 'services/hooks/firebase';
+import { useLocalStorageSet } from 'services/hooks/hooks';
 
 export const IdeaHelp = ({ id, user }: { id: IdeaModel['id']; user: User }) => {
   const idea = useFirestoreDoc<IdeaModel>(useIdeaRef(id));

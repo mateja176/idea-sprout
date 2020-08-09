@@ -6,7 +6,7 @@ import EmojiEvents from '@material-ui/icons/EmojiEvents';
 import { User } from 'firebase';
 import { Order } from 'models/upgrade';
 import React from 'react';
-import { useFirestoreDoc, useOrderRef } from 'services/hooks';
+import { useFirestoreDoc, useOrderRef } from 'services/hooks/firebase';
 import { tabChildStyle } from 'styles/styles';
 
 const days30 = 30 * 1000 * 60 * 60 * 24;

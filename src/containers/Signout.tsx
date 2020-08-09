@@ -10,7 +10,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useAuth } from 'reactfire';
 import { clearFirestoreCache } from 'services/firebase';
-import { useActions } from 'services/hooks';
+import { useActions } from 'services/hooks/hooks';
 import { createReset } from 'services/store';
 
 export interface SignoutProps {

@@ -14,7 +14,7 @@ import { useFormik } from 'formik';
 import { StorageFile } from 'models/idea';
 import qs from 'qs';
 import React from 'react';
-import { useLoadYoutubeScript, useRenderPlayer } from 'services/hooks';
+import { useLoadYoutubeScript, useRenderPlayer } from 'services/hooks/youtube';
 import { inputStyle, mediaBgGreyVariant } from 'styles/styles';
 import * as yup from 'yup';
 

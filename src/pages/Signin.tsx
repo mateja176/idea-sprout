@@ -24,7 +24,7 @@ import React from 'react';
 import { useQuery } from 'react-query';
 import FacebookIcon from 'react-share/es/FacebookIcon';
 import TwitterIcon from 'react-share/es/TwitterIcon';
-import { useActions } from 'services/hooks';
+import { useActions } from 'services/hooks/hooks';
 import { createSaveUser, createSetEmailVerified } from 'services/store';
 import { inputStyle, logoWidth } from 'styles/styles';
 import * as yup from 'yup';

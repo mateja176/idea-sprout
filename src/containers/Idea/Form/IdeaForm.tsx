@@ -27,7 +27,7 @@ import {
 import qs from 'qs';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useIdeasRef, useSignedInUser } from 'services/hooks';
+import { useIdeasRef, useSignedInUser } from 'services/hooks/firebase';
 import { inputStyle, textareaStyle } from 'styles/styles';
 import {
   getFileName,

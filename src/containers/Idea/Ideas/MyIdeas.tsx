@@ -17,7 +17,7 @@ import {
   useCreateIdea,
   useFirestoreCollection,
   useIdeasRef,
-} from 'services/hooks';
+} from 'services/hooks/firebase';
 import { selectMyIdeas } from 'services/store';
 import { IdeaRow } from '../IdeaRow';
 
