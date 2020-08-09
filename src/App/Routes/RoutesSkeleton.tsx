@@ -2,7 +2,7 @@ import Box from '@material-ui/core/Box';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
 import { Load, NotFound } from 'components';
-import { IdeaContainerSkeleton, IdeasSkeleton } from 'containers';
+import { IdeaContainerSkeleton, IdeasSkeleton } from 'containers/Idea';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { absolutePrivateRoute } from 'utils';

@@ -3,7 +3,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import { AcademyLink, Link } from 'components';
-import { Signout } from 'containers';
+import { Signout } from 'containers/Signout';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';

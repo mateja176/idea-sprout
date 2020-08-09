@@ -3,7 +3,7 @@ import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
 import Person from '@material-ui/icons/Person';
 import Search from '@material-ui/icons/Search';
-import { Ideas, IdeasSkeleton, MyIdeas } from 'containers';
+import { Ideas, IdeasSkeleton, MyIdeas } from 'containers/Idea';
 import { MyIdeasSkeleton } from 'containers/Idea/Ideas/MyIdeasSkeleton';
 import qs from 'qs';
 import React from 'react';
