@@ -8,7 +8,7 @@ import RateReview from '@material-ui/icons/RateReview';
 import StarRate from '@material-ui/icons/StarRate';
 import useBoolean from 'ahooks/es/useBoolean';
 import { IdeaOptionsWrapper } from 'components/Idea';
-import { ShareMenuButton } from 'containers/Share';
+import { ShareMenuButton } from 'containers/Share/ShareMenuButton';
 import { User } from 'models/auth';
 import { IdeaModel } from 'models/idea';
 import React from 'react';

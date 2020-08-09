@@ -9,7 +9,7 @@ import Share from '@material-ui/icons/Share';
 import StarRate from '@material-ui/icons/StarRate';
 import Skeleton from '@material-ui/lab/Skeleton';
 import useBoolean from 'ahooks/es/useBoolean';
-import { ShareMenu } from 'containers/Share';
+import { ShareMenu } from 'containers/Share/ShareMenu';
 import { User } from 'firebase/app';
 import { IdeaModel } from 'models/idea';
 import React from 'react';
