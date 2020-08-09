@@ -22,7 +22,7 @@ import { withStarColor } from 'styles/styles';
 import urljoin from 'url-join';
 import { getRatingTooltip, roundAverage } from 'utils/idea/idea';
 import { absolutePrivateRoute } from 'utils/routes';
-import { IdeaImagePreviewSuspender } from '../ImagePreview';
+import { IdeaImagePreviewSuspender } from '../ImagePreview/IdeaImagePreviewSuspender';
 import { ReviewDialog } from '../Review/ReviewDialog';
 import { ReviewsDialog } from '../Review/ReviewsDialog';
 

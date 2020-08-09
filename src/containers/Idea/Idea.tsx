@@ -24,7 +24,7 @@ import { ideaMarginBottom } from 'styles/idea';
 import { ideaSectionMl } from 'styles/styles';
 import { Images } from '../Image';
 import { VideoSuspender } from '../Video/VideoSuspender';
-import { IdeaImagePreviewSuspender } from './ImagePreview';
+import { IdeaImagePreviewSuspender } from './ImagePreview/IdeaImagePreviewSuspender';
 
 export interface IdeaProps {
   user: User;
