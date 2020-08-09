@@ -7,7 +7,8 @@ import { EmptyDraggableDialog } from 'containers/EmptyDraggableDialog';
 import { User } from 'models/auth';
 import React from 'react';
 import { withEllipsis } from 'styles/styles';
-import { ReviewForm, ReviewFormProps, ReviewFormSkeleton } from './Form';
+import { ReviewForm, ReviewFormProps } from './Form/ReviewForm';
+import { ReviewFormSkeleton } from './Form/ReviewFormSkeleton';
 
 export interface ReviewDialogProps
   extends ReviewFormProps,
