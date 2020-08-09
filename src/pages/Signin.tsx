@@ -57,7 +57,7 @@ const actionCreators = {
   setEmailVerified: createSetEmailVerified,
 };
 
-export const Signin: React.FC<SigninProps> = ({ user, auth }) => {
+const Signin: React.FC<SigninProps> = ({ user, auth }) => {
   const { saveUser, setEmailVerified } = useActions(actionCreators);
   const saveUserCredential = React.useCallback(
     (credential: firebase.auth.UserCredential) => {
@@ -427,3 +427,5 @@ export const Signin: React.FC<SigninProps> = ({ user, auth }) => {
     </>
   );
 };
+
+export default Signin;

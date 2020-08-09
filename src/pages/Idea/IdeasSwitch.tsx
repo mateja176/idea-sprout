@@ -6,9 +6,11 @@ import { IdeasPage } from './IdeasPage';
 
 export interface IdeasSwitchProps extends RouteComponentProps {}
 
-export const IdeasSwitch: React.FC<IdeasSwitchProps> = () => (
+const IdeasSwitch: React.FC<IdeasSwitchProps> = () => (
   <Switch>
     <Route exact path={absolutePrivateRoute.ideas.path} component={IdeasPage} />
     <Route exact path={ideaPath} component={IdeaPage} />
   </Switch>
 );
+
+export default IdeasSwitch;
