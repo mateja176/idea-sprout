@@ -35,7 +35,7 @@ import {
 import { BackToIdeas } from './BackToIdeas';
 import { IdeaProps } from './Idea';
 import { ReviewButtonSuspender } from './Review/Button/ReviewButtonSuspender';
-import { ExportReviewSuspender } from './Review/Export';
+import { ExportReviewSuspender } from './Review/Export/ExportReviewSuspender';
 import { ReviewDialog } from './Review/ReviewDialog';
 import { ReviewsDialog } from './Review/ReviewsDialog';
 

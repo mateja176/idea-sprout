@@ -5,7 +5,7 @@ import React from 'react';
 import { useIdeaUrl } from 'services/hooks/idea';
 import { useIdeaOptionButtonStyle } from 'services/hooks/style';
 import { IdeaOptions } from './Options/IdeaOptions';
-import { ExportReviewSuspender } from './Review/Export';
+import { ExportReviewSuspender } from './Review/Export/ExportReviewSuspender';
 
 export interface IdeaRowProps {
   idea: IdeaModel;
