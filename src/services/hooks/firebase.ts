@@ -16,13 +16,13 @@ import {
 } from 'reactfire';
 import { createUpdateIdea } from 'services/store';
 import {
-  absolutePrivateRoute,
   convertFirestoreCollection,
   convertFirestoreDocument,
   firestoreCollections,
-  getInitialIdea,
   hasOnlyId,
-} from 'utils';
+} from 'utils/firebase';
+import { getInitialIdea } from 'utils/idea';
+import { absolutePrivateRoute } from 'utils/routes';
 import { useActions } from './hooks';
 
 export const useUser = <U = User>(options?: ReactFireOptions<U | null>) =>

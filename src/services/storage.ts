@@ -1,4 +1,4 @@
-import { arrayToMap } from 'utils';
+import { arrayToMap } from 'utils/utils';
 
 export const localStorageKeys = ['shouldRunTour'] as const;
 export type LocalStorageKeys = typeof localStorageKeys;

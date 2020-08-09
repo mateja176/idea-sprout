@@ -6,7 +6,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Skeleton from '@material-ui/lab/Skeleton';
 import range from 'ramda/es/range';
 import React from 'react';
-import { absolutePrivateNavigationRoutes } from 'utils';
+import { absolutePrivateNavigationRoutes } from 'utils/routes';
 
 export const NavItemSkeleton: React.FC = () => (
   <ListItem>

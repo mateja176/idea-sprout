@@ -6,7 +6,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { useUserState } from 'services/hooks';
 import { selectEmailVerified } from 'services/store';
-import { getIsSignedIn } from 'utils';
+import { getIsSignedIn } from 'utils/auth';
 
 const buttonStyle: React.CSSProperties = {
   marginLeft: 0,

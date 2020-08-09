@@ -6,7 +6,7 @@ import { NotFound } from 'components/NotFound';
 import { IdeaContainerSkeleton, IdeasSkeleton } from 'containers/Idea';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { absolutePrivateRoute } from 'utils';
+import { absolutePrivateRoute } from 'utils/routes';
 
 export const RoutesSkeleton: React.FC = () => {
   const location = useLocation();

@@ -2,7 +2,7 @@ import { WithId } from 'models';
 import React from 'react';
 import { useRouteMatch } from 'react-router-dom';
 import { useUser } from 'services/hooks';
-import { ideaPath } from 'utils';
+import { ideaPath } from 'utils/routes';
 import { IdeaHelp } from './IdeaHelp';
 
 export const IdeaHelpContainer = () => {

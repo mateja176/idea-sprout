@@ -11,7 +11,7 @@ import {
   useSignedInUser,
 } from 'services/hooks';
 import { createUpdateIdea } from 'services/store';
-import { absolutePrivateRoute } from 'utils';
+import { absolutePrivateRoute } from 'utils/routes';
 import { Idea, IdeaProps } from './Idea';
 import { IdeaTabs } from './IdeaTabs';
 

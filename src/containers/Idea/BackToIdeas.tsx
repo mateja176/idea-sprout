@@ -5,7 +5,7 @@ import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { tabChildStyle } from 'styles';
-import { absolutePrivateRoute } from 'utils';
+import { absolutePrivateRoute } from 'utils/routes';
 
 export const BackToIdeas: React.FC<Omit<TabProps, 'onClick' | 'label'>> = ({
   ...props

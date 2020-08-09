@@ -8,7 +8,7 @@ import { Load } from 'components/Load';
 import { problemSolutionTitle, rationaleTitle } from 'elements';
 import React from 'react';
 import { ideaMarginBottom, ideaSectionMl } from 'styles';
-import { getInitialIdea } from 'utils';
+import { getInitialIdea } from 'utils/idea';
 
 const idea = getInitialIdea('');
 

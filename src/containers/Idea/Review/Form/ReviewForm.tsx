@@ -32,7 +32,7 @@ import {
   doNotShareWarning,
   feedbackFieldRows,
   feedbackHelperText,
-} from 'utils';
+} from 'utils/idea';
 
 export interface ReviewFormProps extends Pick<User, 'uid'> {
   idea: IdeaModel;

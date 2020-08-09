@@ -11,7 +11,7 @@ import { shareOptions } from 'components/share';
 import React from 'react';
 import FacebookShareButton from 'react-share/es/FacebookShareButton';
 import { shareIconSize, speedDialZIndex } from 'styles';
-import { getShareCountHelperText } from 'utils';
+import { getShareCountHelperText } from 'utils/idea';
 
 interface StyleProps {
   i: number;

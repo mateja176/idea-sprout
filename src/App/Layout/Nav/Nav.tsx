@@ -10,11 +10,11 @@ import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { useUserState } from 'services/hooks';
 import { selectEmailVerified } from 'services/store';
+import { getIsSignedIn } from 'utils/auth';
 import {
   absolutePrivateNavigationRoutes,
   absolutePublicNavigationRoutes,
-  getIsSignedIn,
-} from 'utils';
+} from 'utils/routes';
 import { NavItemSkeleton } from './NavSkeleton';
 
 export interface NavProps {

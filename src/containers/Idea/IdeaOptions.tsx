@@ -21,7 +21,8 @@ import {
 import { createAddIdea, createDeleteIdea } from 'services/store';
 import { ideaNameStyle, withStarColor } from 'styles';
 import urljoin from 'url-join';
-import { absolutePrivateRoute, getRatingTooltip, roundAverage } from 'utils';
+import { getRatingTooltip, roundAverage } from 'utils/idea';
+import { absolutePrivateRoute } from 'utils/routes';
 import { IdeaImagePreviewSuspender } from './ImagePreview';
 import { ReviewDialog, ReviewsDialog } from './Review';
 

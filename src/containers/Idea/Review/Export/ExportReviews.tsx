@@ -46,7 +46,10 @@ import {
   tabChildStyle,
 } from 'styles';
 import { paypal } from 'types';
-import { convertFirestoreCollection, convertFirestoreDocument } from 'utils';
+import {
+  convertFirestoreCollection,
+  convertFirestoreDocument,
+} from 'utils/firebase';
 import * as yup from 'yup';
 
 const id = 'paypal-container';

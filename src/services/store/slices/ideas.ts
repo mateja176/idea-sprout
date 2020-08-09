@@ -16,7 +16,7 @@ import {
   createAsyncAction,
   getType,
 } from 'typesafe-actions';
-import { isIdea } from 'utils';
+import { isIdea } from 'utils/idea';
 
 export const initialIdeasState: IdeasState = {
   ideas: [],

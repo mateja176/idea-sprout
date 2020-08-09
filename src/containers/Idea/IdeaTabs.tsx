@@ -25,7 +25,11 @@ import {
   tabsTitleSectionPaddingBottom,
   withStarColor,
 } from 'styles';
-import { getRatingTooltip, getShareCountHelperText, roundAverage } from 'utils';
+import {
+  getRatingTooltip,
+  getShareCountHelperText,
+  roundAverage,
+} from 'utils/idea';
 import { BackToIdeas } from './BackToIdeas';
 import { IdeaProps } from './Idea';
 import {

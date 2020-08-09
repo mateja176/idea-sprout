@@ -3,7 +3,7 @@ import List from '@material-ui/core/List';
 import range from 'ramda/es/range';
 import React from 'react';
 import { ideaListStyle } from 'styles';
-import { ideasFetchLimit } from 'utils';
+import { ideasFetchLimit } from 'utils/idea';
 import { IdeaOptionsSkeleton } from '../IdeaOptionsSkeleton';
 
 export interface IdeasSkeletonProps {}

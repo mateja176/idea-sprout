@@ -17,7 +17,7 @@ import { Check } from 'containers/Check';
 import { doNotShareDescription, ratingLabel } from 'elements';
 import React from 'react';
 import { checkWithMessageHeight } from 'styles';
-import { feedbackFieldRows, feedbackHelperText } from 'utils';
+import { feedbackFieldRows, feedbackHelperText } from 'utils/idea';
 import { ratingSectionMb, shareSectionMt } from './ReviewForm';
 
 export interface ReviewFormSkeletonProps {}

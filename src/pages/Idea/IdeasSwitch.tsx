@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router-dom';
-import { absolutePrivateRoute, ideaPath } from 'utils';
+import { absolutePrivateRoute, ideaPath } from 'utils/routes';
 import { IdeaPage } from './IdeaPage';
 import { IdeasPage } from './IdeasPage';
 

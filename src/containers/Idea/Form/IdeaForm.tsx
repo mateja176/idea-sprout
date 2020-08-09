@@ -30,13 +30,13 @@ import { useHistory } from 'react-router-dom';
 import { useIdeasRef, useSignedInUser } from 'services/hooks';
 import { inputStyle, textareaStyle } from 'styles';
 import {
-  absolutePrivateRoute,
   getFileName,
   getFileNames,
   getFormIdea,
   problemSolutionText,
   rationaleText,
-} from 'utils';
+} from 'utils/idea';
+import { absolutePrivateRoute } from 'utils/routes';
 import { ExpectationsCheck, NicheCheck } from '../Check';
 
 export interface IdeaFormProps {

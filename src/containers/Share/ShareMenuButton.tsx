@@ -4,7 +4,7 @@ import Share from '@material-ui/icons/Share';
 import useBoolean from 'ahooks/es/useBoolean';
 import React from 'react';
 import FacebookShareButton from 'react-share/es/FacebookShareButton';
-import { getShareCountHelperText } from 'utils';
+import { getShareCountHelperText } from 'utils/idea';
 import { ShareMenu } from './ShareMenu';
 
 export const ShareMenuButton = React.memo<

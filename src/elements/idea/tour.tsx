@@ -4,7 +4,7 @@ import appleLogo1977 from 'img/apple-logo-1977.png';
 import appleLogo2003 from 'img/apple-logo-2003.png';
 import React from 'react';
 import { Step } from 'react-joyride';
-import { getAppleIdea } from 'utils';
+import { getAppleIdea } from 'utils/idea';
 
 const logoSize = 150;
 

@@ -5,7 +5,7 @@ import { from } from 'rxjs';
 import { concatMap, delay, map, mergeMap, retryWhen } from 'rxjs/operators';
 import { withFirestore } from 'services/firebase';
 import { getType } from 'typesafe-actions';
-import { firestoreCollections } from 'utils';
+import { firestoreCollections } from 'utils/firebase';
 import { Action, State } from '../reducer';
 import { createSaveUser, SaveUserAction, SaveUserRequest } from '../slices';
 
