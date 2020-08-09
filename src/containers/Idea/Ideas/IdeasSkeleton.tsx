@@ -4,7 +4,7 @@ import range from 'ramda/es/range';
 import React from 'react';
 import { ideaListStyle } from 'styles/idea';
 import { ideasFetchLimit } from 'utils/idea/idea';
-import { IdeaOptionsSkeleton } from '../IdeaOptionsSkeleton';
+import { IdeaOptionsSkeleton } from '../Options/IdeaOptionsSkeleton';
 
 export interface IdeasSkeletonProps {}
 

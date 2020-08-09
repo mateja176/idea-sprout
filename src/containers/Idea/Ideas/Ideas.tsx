@@ -19,8 +19,8 @@ import {
 } from 'services/store';
 import { ideaListItemFullHeight } from 'styles/idea';
 import { getType } from 'typesafe-actions';
-import { IdeaOptionsSkeleton } from '../IdeaOptionsSkeleton';
 import { IdeaRow } from '../IdeaRow';
+import { IdeaOptionsSkeleton } from '../Options/IdeaOptionsSkeleton';
 import { IdeasSkeleton } from './IdeasSkeleton';
 
 export interface IdeasProps {

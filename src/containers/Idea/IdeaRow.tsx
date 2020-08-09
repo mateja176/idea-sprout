@@ -3,7 +3,7 @@ import { User } from 'firebase/app';
 import { IdeaModel } from 'models/idea';
 import React from 'react';
 import { useIdeaOptionButtonStyle, useIdeaUrl } from 'services/hooks';
-import { IdeaOptions } from './IdeaOptions';
+import { IdeaOptions } from './Options/IdeaOptions';
 import { ExportReviewSuspender } from './Review/Export';
 
 export interface IdeaRowProps {
