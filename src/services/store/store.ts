@@ -1,7 +1,7 @@
 import { applyMiddleware, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { createEpicMiddleware } from 'redux-observable';
-import { epic } from './epic';
+import { epic } from './epic/epic';
 import { promiseMiddleware } from './middleware/promisedAction';
 import { Action, reducer, State } from './reducer';
 
