@@ -34,7 +34,7 @@ import {
 } from 'utils/idea/idea';
 import { BackToIdeas } from './BackToIdeas';
 import { IdeaProps } from './Idea';
-import { ReviewButtonSuspender } from './Review/Button';
+import { ReviewButtonSuspender } from './Review/Button/ReviewButtonSuspender';
 import { ExportReviewSuspender } from './Review/Export';
 import { ReviewDialog } from './Review/ReviewDialog';
 import { ReviewsDialog } from './Review/ReviewsDialog';
