@@ -33,7 +33,7 @@ export const Routes: React.FC = () => {
     return <RoutesSkeleton />;
   } else if (user === null || !user.emailVerified) {
     return (
-      <React.Suspense fallback={RoutesSkeleton}>
+      <React.Suspense fallback={<RoutesSkeleton />}>
         <Signin user={user} auth={auth} />
       </React.Suspense>
     );
