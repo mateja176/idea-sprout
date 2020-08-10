@@ -4,7 +4,6 @@ import firebase from 'firebase/app';
 import { IndexRange } from 'react-virtualized';
 import * as yup from 'yup';
 import { User } from './auth';
-import { IdeaFilter } from './firebase';
 import { WithAuthor, WithId } from './models';
 
 export const checkNames = ['niche', 'expectations'] as const;
@@ -162,3 +161,9 @@ export const headingIds = {
 };
 
 export type UpdateStorageFile = (file: StorageFile) => Promise<void>;
+
+export interface IdeaFilter<Key extends keyof IdeaModel> {
+  fieldPath: Key;
+  opStr: firebase.firestore.WhereFilterOp;
+  value: IdeaModel[Key];
+}
