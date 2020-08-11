@@ -5,7 +5,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import DragIndicator from '@material-ui/icons/DragIndicator';
 import React from 'react';
-import { modalMaxWidth } from 'styles/styles';
+import { modalMaxWidth } from 'utils/styles/styles';
 import { EmptyDraggableDialog } from './EmptyDraggableDialog';
 
 export interface DraggableDialogProps

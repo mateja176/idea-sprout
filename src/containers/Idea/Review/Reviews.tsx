@@ -12,7 +12,7 @@ import { IdeaModel } from 'models/idea';
 import { Review } from 'models/review';
 import React from 'react';
 import { useFirestoreCollection, useReviewsRef } from 'services/hooks/firebase';
-import { breakWordStyle } from 'styles/styles';
+import { breakWordStyle } from 'utils/styles/styles';
 
 export const reviewsMb = 4;
 export const feedbackWrapperStyle: React.CSSProperties = {

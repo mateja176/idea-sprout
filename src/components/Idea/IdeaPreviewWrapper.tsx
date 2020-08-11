@@ -1,7 +1,7 @@
 import Box, { BoxProps } from '@material-ui/core/Box';
 import React from 'react';
-import { ideaListItemHeight } from 'styles/idea';
-import { logoBorderRadius } from 'styles/styles';
+import { ideaListItemHeight } from 'utils/styles/idea';
+import { logoBorderRadius } from 'utils/styles/styles';
 
 export const IdeaPreviewWrapper = React.memo<BoxProps>(
   ({ children, ...props }) => {

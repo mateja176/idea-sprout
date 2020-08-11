@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { IconProps } from 'models/components';
 import React from 'react';
-import { iconSize } from 'styles/styles';
+import { iconSize } from 'utils/styles/styles';
 
 export const LightBulb: React.FC<IconProps> = (props) => {
   return (

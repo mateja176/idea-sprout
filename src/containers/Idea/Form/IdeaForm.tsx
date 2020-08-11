@@ -28,7 +28,6 @@ import qs from 'qs';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useIdeasRef, useSignedInUser } from 'services/hooks/firebase';
-import { inputStyle, textareaStyle } from 'styles/styles';
 import {
   getFileName,
   getFileNames,
@@ -37,6 +36,7 @@ import {
   rationaleText,
 } from 'utils/idea/idea';
 import { absolutePrivateRoute } from 'utils/routes';
+import { inputStyle, textareaStyle } from 'utils/styles/styles';
 import { ExpectationsCheck } from '../Check/ExpectationsCheck';
 import { NicheCheck } from '../Check/NicheCheck';
 

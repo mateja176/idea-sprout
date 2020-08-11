@@ -19,6 +19,11 @@ import { useActions } from 'services/hooks/hooks';
 import { useIdeaUrl } from 'services/hooks/idea';
 import { createAddIdea, createDeleteIdea } from 'services/store/slices/ideas';
 import {
+  getRatingTooltip,
+  getShareCountHelperText,
+  roundAverage,
+} from 'utils/idea/idea';
+import {
   ideaTabStyle,
   logoBorderRadius,
   tabChildStyle,
@@ -26,12 +31,7 @@ import {
   tabsTitleSectionHeight,
   tabsTitleSectionPaddingBottom,
   withStarColor,
-} from 'styles/styles';
-import {
-  getRatingTooltip,
-  getShareCountHelperText,
-  roundAverage,
-} from 'utils/idea/idea';
+} from 'utils/styles/styles';
 import { BackToIdeas } from './BackToIdeas';
 import { IdeaProps } from './Idea';
 import { ReviewButtonSuspender } from './Review/Button/ReviewButtonSuspender';

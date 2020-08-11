@@ -16,8 +16,8 @@ import { SharePrompt } from 'components/share/SharePrompt';
 import { Check } from 'containers/Check';
 import { doNotShareDescription, ratingLabel } from 'elements/idea/review';
 import React from 'react';
-import { checkWithMessageHeight } from 'styles/styles';
 import { feedbackFieldRows, feedbackHelperText } from 'utils/idea/review';
+import { checkWithMessageHeight } from 'utils/styles/styles';
 import { ratingSectionMb, shareSectionMt } from './ReviewForm';
 
 export interface ReviewFormSkeletonProps {}

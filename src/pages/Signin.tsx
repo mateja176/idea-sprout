@@ -29,7 +29,7 @@ import {
   createSaveUser,
   createSetEmailVerified,
 } from 'services/store/slices/auth';
-import { inputStyle, logoWidth } from 'styles/styles';
+import { inputStyle, logoWidth } from 'utils/styles/styles';
 import * as yup from 'yup';
 
 export interface SigninProps {

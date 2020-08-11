@@ -8,9 +8,9 @@ import { IdeaSection } from 'components/Idea/IdeaSection';
 import { Load } from 'components/Load';
 import { problemSolutionTitle, rationaleTitle } from 'elements/idea/idea';
 import React from 'react';
-import { ideaMarginBottom } from 'styles/idea';
-import { ideaSectionMl } from 'styles/styles';
 import { getInitialIdea } from 'utils/idea/idea';
+import { ideaMarginBottom } from 'utils/styles/idea';
+import { ideaSectionMl } from 'utils/styles/styles';
 
 const idea = getInitialIdea('');
 

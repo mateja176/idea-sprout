@@ -7,7 +7,7 @@ import { ideaSelector } from 'elements/idea/tour';
 import { storagePath } from 'models/firebase';
 import { IdeaModel, StorageFile, UpdateIdea } from 'models/idea';
 import React from 'react';
-import { mediaBgGreyVariant } from 'styles/styles';
+import { mediaBgGreyVariant } from 'utils/styles/styles';
 import { EmbedVideo } from './EmbedVideo';
 import { Video } from './Video';
 

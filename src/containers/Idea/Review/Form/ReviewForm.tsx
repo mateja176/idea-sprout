@@ -27,12 +27,12 @@ import {
   useReviewSubmit,
   useShareIdea,
 } from 'services/hooks/firebase';
-import { checkWithMessageHeight } from 'styles/styles';
 import {
   doNotShareWarning,
   feedbackFieldRows,
   feedbackHelperText,
 } from 'utils/idea/review';
+import { checkWithMessageHeight } from 'utils/styles/styles';
 
 export interface ReviewFormProps extends Pick<User, 'uid'> {
   idea: IdeaModel;

@@ -42,13 +42,16 @@ import {
   useUpgradeToPro,
   useUsersRef,
 } from 'services/hooks/firebase';
-import { paypalButtonsHeight, paypalHeightBreakpoint } from 'styles/paypal';
-import { inputStyle, tabChildStyle } from 'styles/styles';
 import { Order } from 'types/paypal';
 import {
   convertFirestoreCollection,
   convertFirestoreDocument,
 } from 'utils/firebase';
+import {
+  paypalButtonsHeight,
+  paypalHeightBreakpoint,
+} from 'utils/styles/paypal';
+import { inputStyle, tabChildStyle } from 'utils/styles/styles';
 import * as yup from 'yup';
 
 const id = 'paypal-container';

@@ -16,8 +16,8 @@ import {
   UpdateIdea,
 } from 'models/idea';
 import React from 'react';
-import { ideaMarginBottom } from 'styles/idea';
-import { ideaSectionMl } from 'styles/styles';
+import { ideaMarginBottom } from 'utils/styles/idea';
+import { ideaSectionMl } from 'utils/styles/styles';
 import { Images } from '../Image/Images';
 import { VideoSuspender } from '../Video/VideoSuspender';
 import { IdeaImagePreviewSuspender } from './ImagePreview/IdeaImagePreviewSuspender';

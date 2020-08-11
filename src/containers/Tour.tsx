@@ -6,7 +6,7 @@ import {
   useLocalStorageSet,
   useLocalStorageSubscribe,
 } from 'services/hooks/hooks';
-import { headerZIndex } from 'styles/styles';
+import { headerZIndex } from 'utils/styles/styles';
 
 export const Tour: React.FC<Pick<
   React.ComponentProps<typeof ReactJoyride>,

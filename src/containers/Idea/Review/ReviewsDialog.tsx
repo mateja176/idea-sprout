@@ -7,7 +7,7 @@ import { DraggableDialog } from 'containers/DraggableDialog';
 import { IdeaModel, Rating } from 'models/idea';
 import range from 'ramda/es/range';
 import React from 'react';
-import { withEllipsis } from 'styles/styles';
+import { withEllipsis } from 'utils/styles/styles';
 import { Reviews } from './Reviews';
 import { ReviewSkeleton } from './ReviewSkeleton';
 

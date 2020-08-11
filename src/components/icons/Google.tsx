@@ -1,6 +1,6 @@
 import { IconProps } from 'models/components';
 import React from 'react';
-import { logoWidth } from 'styles/styles';
+import { logoWidth } from 'utils/styles/styles';
 
 export const Google: React.FC<IconProps> = (props) => (
   <svg viewBox="0 0 512 512" width={logoWidth} {...props}>

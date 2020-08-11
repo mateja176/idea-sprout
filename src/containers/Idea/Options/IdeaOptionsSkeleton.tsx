@@ -3,7 +3,7 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import { IdeaPreviewWrapper } from 'components/Idea/IdeaPreviewWrapper';
 import { IdeaOptionsWrapper } from 'containers/Idea/Options/IdeaOptionsWrapper';
 import React from 'react';
-import { textSectionStyle } from 'styles/idea';
+import { textSectionStyle } from 'utils/styles/idea';
 
 const option = <Skeleton variant={'rect'} width={'100%'} height={'100%'} />;
 

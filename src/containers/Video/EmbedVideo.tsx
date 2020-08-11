@@ -15,7 +15,7 @@ import { StorageFile } from 'models/idea';
 import qs from 'qs';
 import React from 'react';
 import { useLoadYoutubeScript, useRenderPlayer } from 'services/hooks/youtube';
-import { inputStyle, mediaBgGreyVariant } from 'styles/styles';
+import { inputStyle, mediaBgGreyVariant } from 'utils/styles/styles';
 import * as yup from 'yup';
 
 const type = 'video';
