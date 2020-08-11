@@ -10,3 +10,7 @@ export interface Order {
   orderId: WithId['id'];
   createdAt: firebase.firestore.Timestamp;
 }
+
+export type Upgrade = (params: {
+  orderId: string;
+}) => Promise<firebase.functions.HttpsCallableResult>;

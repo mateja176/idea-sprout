@@ -23,6 +23,7 @@ import { proMembership, proMembershipDiscount } from 'elements/upgrade';
 import firebase, { FirebaseError, User } from 'firebase/app';
 import { useFormik } from 'formik';
 import { useReviewsRef, useUpgradeToPro, useUsersRef } from 'hooks/firebase';
+import { useRenderButtons } from 'hooks/upgrade';
 import jsonexport from 'jsonexport/dist';
 import kebabCase from 'lodash/kebabCase';
 import {
@@ -30,7 +31,6 @@ import {
   passwordSchema,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   Provider,
-  ProviderId,
 } from 'models/auth';
 import { claims } from 'models/firebase';
 import { IdeaModel } from 'models/idea';
@@ -38,7 +38,6 @@ import { Review, ReviewWithAuthor } from 'models/review';
 import React from 'react';
 import { env } from 'services/env';
 import { formatCurrency } from 'services/format';
-import { Order } from 'types/paypal';
 import {
   convertFirestoreCollection,
   convertFirestoreDocument,
@@ -256,68 +255,15 @@ export const ExportReviews: React.FC<
     [user],
   );
 
-  const renderButtons = React.useCallback(() => {
-    window.paypal
-      ?.Buttons({
-        createOrder: (_, actions) =>
-          actions.order.create({
-            purchase_units: [
-              {
-                description: 'Pro membership',
-                amount: {
-                  value: proMembershipDiscount.amount.value,
-                },
-              },
-            ],
-          }),
-        onApprove: (_, actions) => {
-          setApproving.setTrue();
-
-          const capture = () =>
-            actions.order.capture().catch(
-              () =>
-                new Promise<Order>((resolve) => {
-                  setTimeout(() => {
-                    capture().then(resolve);
-                  }, 2000);
-                }),
-            );
-
-          return capture().then(({ id }) =>
-            upgrade({ orderId: id }).then(() => {
-              const [provider] = user.providerData;
-              if (provider) {
-                const providerId = provider.providerId as ProviderId;
-                if (providerId === 'password') {
-                  setPasswordDialogOpen.setTrue();
-                } else {
-                  const CurrentProvider = [
-                    firebase.auth.GoogleAuthProvider,
-                    firebase.auth.FacebookAuthProvider,
-                    firebase.auth.TwitterAuthProvider,
-                  ].find((provider) => provider.PROVIDER_ID === providerId);
-                  if (CurrentProvider) {
-                    return reauthenticateWithPopup(CurrentProvider).then(close);
-                  } else {
-                    console.error('Unknown provider id', providerId);
-                  }
-                }
-              } else {
-                console.error('No provider found for user', user);
-              }
-            }),
-          );
-        },
-      })
-      .render(`#${id}`);
-  }, [
+  const renderButtons = useRenderButtons({
+    id,
     upgrade,
+    onApprove: setApproving.setTrue,
     user,
-    close,
-    setPasswordDialogOpen,
-    setApproving,
+    reauthenticateWithPassword: setPasswordDialogOpen.setTrue,
     reauthenticateWithPopup,
-  ]);
+    close,
+  });
 
   const loadScript = React.useCallback(() => {
     setScriptLoading.setTrue();

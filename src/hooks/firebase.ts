@@ -5,7 +5,7 @@ import { User } from 'models/auth';
 import { CreationIdea, IdeaModel } from 'models/idea';
 import { WithId } from 'models/models';
 import { Review } from 'models/review';
-import { Order } from 'models/upgrade';
+import { Order, Upgrade } from 'models/upgrade';
 import qs from 'qs';
 import { useContext, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
@@ -269,9 +269,7 @@ export const useCreateIdea = () => {
 export const useFunctions = () => useFirebaseFunctions();
 export const useUpgradeToPro = () => {
   const functions = useFunctions();
-  return useMemo<
-    (params: {
-      orderId: string;
-    }) => Promise<firebase.functions.HttpsCallableResult>
-  >(() => functions.httpsCallable('upgradeToPro'), [functions]);
+  return useMemo<Upgrade>(() => functions.httpsCallable('upgradeToPro'), [
+    functions,
+  ]);
 };
