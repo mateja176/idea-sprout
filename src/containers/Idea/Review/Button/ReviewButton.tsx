@@ -3,10 +3,10 @@ import { ButtonProps } from '@material-ui/core/Button';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Tooltip from '@material-ui/core/Tooltip';
 import RateReview from '@material-ui/icons/RateReview';
+import { useFirestoreDoc, useReviewRef } from 'hooks/firebase';
 import { User } from 'models/auth';
 import { IdeaModel } from 'models/idea';
 import React from 'react';
-import { useFirestoreDoc, useReviewRef } from 'services/hooks/firebase';
 
 const useStyles = makeStyles((theme) => ({
   tooltip: {

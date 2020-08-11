@@ -19,12 +19,12 @@ import { PageWrapper } from 'components/PageWrapper';
 import { SnackbarContext } from 'context/snackbar';
 import firebase, { FirebaseError, User } from 'firebase/app';
 import { FormikHelpers, useFormik } from 'formik';
+import { useActions } from 'hooks/hooks';
 import { passwordSchema } from 'models/auth';
 import React from 'react';
 import { useQuery } from 'react-query';
 import FacebookIcon from 'react-share/es/FacebookIcon';
 import TwitterIcon from 'react-share/es/TwitterIcon';
-import { useActions } from 'services/hooks/hooks';
 import {
   createSaveUser,
   createSetEmailVerified,

@@ -1,7 +1,7 @@
+import { useUser } from 'hooks/firebase';
 import { WithId } from 'models/models';
 import React from 'react';
 import { useRouteMatch } from 'react-router-dom';
-import { useUser } from 'services/hooks/firebase';
 import { ideaPath } from 'utils/routes';
 import { IdeaHelp } from './IdeaHelp';
 

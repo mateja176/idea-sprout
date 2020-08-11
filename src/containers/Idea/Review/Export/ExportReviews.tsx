@@ -22,6 +22,7 @@ import { SnackbarContext } from 'context/snackbar';
 import { proMembership, proMembershipDiscount } from 'elements/upgrade';
 import firebase, { FirebaseError, User } from 'firebase/app';
 import { useFormik } from 'formik';
+import { useReviewsRef, useUpgradeToPro, useUsersRef } from 'hooks/firebase';
 import jsonexport from 'jsonexport/dist';
 import kebabCase from 'lodash/kebabCase';
 import {
@@ -37,11 +38,6 @@ import { Review, ReviewWithAuthor } from 'models/review';
 import React from 'react';
 import { env } from 'services/env';
 import { formatCurrency } from 'services/format';
-import {
-  useReviewsRef,
-  useUpgradeToPro,
-  useUsersRef,
-} from 'services/hooks/firebase';
 import { Order } from 'types/paypal';
 import {
   convertFirestoreCollection,

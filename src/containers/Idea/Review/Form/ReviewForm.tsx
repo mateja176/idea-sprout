@@ -11,6 +11,12 @@ import { SharePrompt } from 'components/share/SharePrompt';
 import { Check } from 'containers/Check';
 import { ratingLabel } from 'elements/idea/review';
 import { useFormik } from 'formik';
+import {
+  useFirestoreDoc,
+  useReviewsRef,
+  useReviewSubmit,
+  useShareIdea,
+} from 'hooks/firebase';
 import { User } from 'models/auth';
 import { CheckProps, IdeaModel } from 'models/idea';
 import {
@@ -21,12 +27,6 @@ import {
   Review,
 } from 'models/review';
 import React from 'react';
-import {
-  useFirestoreDoc,
-  useReviewsRef,
-  useReviewSubmit,
-  useShareIdea,
-} from 'services/hooks/firebase';
 import {
   doNotShareWarning,
   feedbackFieldRows,

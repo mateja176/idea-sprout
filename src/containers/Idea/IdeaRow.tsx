@@ -1,9 +1,9 @@
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import { User } from 'firebase/app';
+import { useIdeaUrl } from 'hooks/idea';
+import { useIdeaOptionButtonStyle } from 'hooks/style';
 import { IdeaModel } from 'models/idea';
 import React from 'react';
-import { useIdeaUrl } from 'services/hooks/idea';
-import { useIdeaOptionButtonStyle } from 'services/hooks/style';
 import { IdeaOptions } from './Options/IdeaOptions';
 import { ExportReviewSuspender } from './Review/Export/ExportReviewSuspender';
 

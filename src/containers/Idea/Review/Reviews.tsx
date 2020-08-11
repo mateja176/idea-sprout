@@ -8,10 +8,10 @@ import {
   reviewFeedbackHeading,
   reviewRatingHeading,
 } from 'elements/idea/review';
+import { useFirestoreCollection, useReviewsRef } from 'hooks/firebase';
 import { IdeaModel } from 'models/idea';
 import { Review } from 'models/review';
 import React from 'react';
-import { useFirestoreCollection, useReviewsRef } from 'services/hooks/firebase';
 import { breakWordStyle } from 'utils/styles/styles';
 
 export const reviewsMb = 4;

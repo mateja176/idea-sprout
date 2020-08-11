@@ -7,10 +7,10 @@ import { Ideas } from 'containers/Idea/Ideas/Ideas';
 import { IdeasSkeleton } from 'containers/Idea/Ideas/IdeasSkeleton';
 import { MyIdeas } from 'containers/Idea/Ideas/MyIdeas';
 import { MyIdeasSkeleton } from 'containers/Idea/Ideas/MyIdeasSkeleton';
+import { useSignedInUser } from 'hooks/firebase';
 import qs from 'qs';
 import React from 'react';
 import { RouteComponentProps, useHistory, useLocation } from 'react-router-dom';
-import { useSignedInUser } from 'services/hooks/firebase';
 
 export interface IdeasPageProps extends RouteComponentProps {}
 

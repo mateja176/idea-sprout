@@ -11,12 +11,12 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import useBoolean from 'ahooks/es/useBoolean';
 import { ShareMenu } from 'containers/Share/ShareMenu';
 import { User } from 'firebase/app';
+import { useShareIdea } from 'hooks/firebase';
+import { useActions } from 'hooks/hooks';
+import { useIdeaUrl } from 'hooks/idea';
 import { IdeaModel } from 'models/idea';
 import React from 'react';
 import { StorageImage } from 'reactfire';
-import { useShareIdea } from 'services/hooks/firebase';
-import { useActions } from 'services/hooks/hooks';
-import { useIdeaUrl } from 'services/hooks/idea';
 import { createAddIdea, createDeleteIdea } from 'services/store/slices/ideas';
 import {
   getRatingTooltip,

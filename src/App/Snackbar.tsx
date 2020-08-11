@@ -3,9 +3,9 @@ import MaterialSnackbar from '@material-ui/core/Snackbar';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Alert from '@material-ui/lab/Alert';
 import { SnackbarContext } from 'context/snackbar';
+import { useValueWithFallback } from 'hooks/hooks';
 import head from 'ramda/es/head';
 import React from 'react';
-import { useValueWithFallback } from 'services/hooks/hooks';
 
 export interface SnackbarProps {}
 

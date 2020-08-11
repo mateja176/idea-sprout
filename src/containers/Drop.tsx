@@ -13,11 +13,11 @@ import ArrowDownward from '@material-ui/icons/ArrowDownward';
 import Info from '@material-ui/icons/Info';
 import useBoolean from 'ahooks/es/useBoolean';
 import { SnackbarContext } from 'context/snackbar';
+import { useUpload } from 'hooks/upload';
 import { StoragePath } from 'models/firebase';
 import { StorageFile } from 'models/idea';
 import React from 'react';
 import { DropzoneOptions, useDropzone } from 'react-dropzone';
-import { useUpload } from 'services/hooks/upload';
 
 export interface DropProps extends DropzoneOptions {
   heading: string;

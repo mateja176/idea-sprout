@@ -1,6 +1,8 @@
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import { User } from 'firebase/app';
+import { useIdeasCountRef } from 'hooks/firebase';
+import { useActions } from 'hooks/hooks';
 import { IdeaBatchError, IdeaFilter } from 'models/idea';
 import { WithCount } from 'models/models';
 import React from 'react';
@@ -9,8 +11,6 @@ import { AutoSizer } from 'react-virtualized/dist/commonjs/AutoSizer';
 import { InfiniteLoader } from 'react-virtualized/dist/commonjs/InfiniteLoader';
 import { List } from 'react-virtualized/dist/commonjs/List';
 import { useFirestoreDocData } from 'reactfire';
-import { useIdeasCountRef } from 'services/hooks/firebase';
-import { useActions } from 'services/hooks/hooks';
 import { createPromisedAction } from 'services/store/middleware/promisedAction';
 import {
   fetchIdeasAsync,

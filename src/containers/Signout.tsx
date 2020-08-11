@@ -5,12 +5,12 @@ import Tooltip from '@material-ui/core/Tooltip';
 import ExitToApp from '@material-ui/icons/ExitToApp';
 import useBoolean from 'ahooks/es/useBoolean';
 import { SnackbarContext } from 'context/snackbar';
+import { useActions } from 'hooks/hooks';
 import { User } from 'models/auth';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useAuth } from 'reactfire';
 import { clearFirestoreCache } from 'services/firebase';
-import { useActions } from 'services/hooks/hooks';
 import { createReset } from 'services/store/reducer';
 
 export interface SignoutProps {

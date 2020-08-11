@@ -4,9 +4,9 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Beenhere from '@material-ui/icons/Beenhere';
 import EmojiEvents from '@material-ui/icons/EmojiEvents';
 import { User } from 'firebase';
+import { useFirestoreDoc, useOrderRef } from 'hooks/firebase';
 import { Order } from 'models/upgrade';
 import React from 'react';
-import { useFirestoreDoc, useOrderRef } from 'services/hooks/firebase';
 import { tabChildStyle } from 'utils/styles/styles';
 
 const days30 = 30 * 1000 * 60 * 60 * 24;
