@@ -1,6 +1,7 @@
 import useBoolean from 'ahooks/es/useBoolean';
 import { SnackbarContext } from 'context/snackbar';
 import { useCallback, useContext, useMemo } from 'react';
+import { renderPlayerService } from 'services/youtube';
 import { Player } from 'types/youtube';
 import { v4 } from 'uuid';
 
@@ -19,25 +20,17 @@ export const useRenderPlayer = (options?: Partial<Player['options']>) => {
     ({ videoId, onReady }: { videoId: string; onReady?: () => void }) => {
       setVideoLoading.setTrue();
 
-      try {
-        if (window.YT) {
-          new window.YT.Player(playerId, {
-            ...options,
-            videoId,
-            events: {
-              onReady: () => {
-                setVideoLoading.setFalse();
+      return renderPlayerService({ playerId, videoId, ...options })
+        .then(() => {
+          setVideoLoading.setFalse();
 
-                if (onReady) {
-                  onReady();
-                }
-              },
-            },
-          });
-        }
-      } catch (e) {
-        queueSnackbar({ severity: 'error', message: e.message });
-      }
+          if (onReady) {
+            onReady();
+          }
+        })
+        .catch((e: Error) => {
+          queueSnackbar({ severity: 'error', message: e.message });
+        });
     },
     [setVideoLoading, queueSnackbar, playerId, options],
   );
