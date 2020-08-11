@@ -1,7 +1,7 @@
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
-import appleLogo1977 from 'img/apple-logo-1977.png';
-import appleLogo2003 from 'img/apple-logo-2003.png';
+import appleLogo1977 from 'assets/img/apple-logo-1977.png';
+import appleLogo2003 from 'assets/img/apple-logo-2003.png';
 import React from 'react';
 import { Step } from 'react-joyride';
 import { getAppleIdea } from 'utils/idea/idea';
