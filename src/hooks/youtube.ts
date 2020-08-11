@@ -1,13 +1,9 @@
 import useBoolean from 'ahooks/es/useBoolean';
 import { SnackbarContext } from 'context/snackbar';
 import { useCallback, useContext, useMemo } from 'react';
-import { renderPlayerService } from 'services/youtube';
+import { loadScriptService, renderPlayerService } from 'services/youtube';
 import { Player } from 'types/youtube';
 import { v4 } from 'uuid';
-
-const API = 'https://www.youtube.com/iframe_api';
-
-const scriptId = 'youtube-iframe-script';
 
 export const useRenderPlayer = (options?: Partial<Player['options']>) => {
   const { queueSnackbar } = useContext(SnackbarContext);
@@ -47,30 +43,15 @@ export const useLoadYoutubeScript = () => {
 
   const loadScript = useCallback(
     (onLoad?: () => void) => {
-      if (document.getElementById(scriptId)) {
+      setScriptLoading.setTrue();
+
+      return loadScriptService().then(() => {
         if (onLoad) {
           onLoad();
         }
-      } else {
-        setScriptLoading.setTrue();
-        const script = document.createElement('script');
 
-        script.id = scriptId;
-
-        script.src = API;
-
-        script.addEventListener('load', () => {
-          window.YT?.ready(() => {
-            if (onLoad) {
-              onLoad();
-            }
-          });
-
-          setScriptLoading.setFalse();
-        });
-
-        document.body.appendChild(script);
-      }
+        setScriptLoading.setFalse();
+      });
     },
     [setScriptLoading],
   );
