@@ -44,3 +44,25 @@ export const getVideoDimensionsAndValidate = (data: string) =>
     width: instance.videoWidth,
     height: instance.videoHeight,
   }));
+
+export const exportFile = ({
+  name,
+  content,
+}: {
+  name: string;
+  content: string;
+}) => {
+  const blob = new Blob([content], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = name;
+
+  document.body.appendChild(a);
+
+  a.click();
+
+  URL.revokeObjectURL(url);
+  a.remove();
+};

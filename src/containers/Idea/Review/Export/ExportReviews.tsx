@@ -37,6 +37,7 @@ import { IdeaModel } from 'models/idea';
 import { Review, ReviewWithAuthor } from 'models/review';
 import React from 'react';
 import { env } from 'services/env';
+import { exportFile } from 'services/files';
 import { formatCurrency } from 'services/format';
 import {
   convertFirestoreCollection,
@@ -154,21 +155,12 @@ export const ExportReviews: React.FC<
         ),
       )
       .then((reviews) => jsonexport(reviews))
-      .then((csv) => {
-        const blob = new Blob([csv], { type: 'text/csv' });
-        const url = URL.createObjectURL(blob);
-
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `${kebabCase(idea.name)}_reviews.csv`;
-
-        document.body.appendChild(a);
-
-        a.click();
-
-        URL.revokeObjectURL(url);
-        a.remove();
-      })
+      .then((csv) =>
+        exportFile({
+          name: `${kebabCase(idea.name)}_reviews.csv`,
+          content: csv,
+        }),
+      )
       .finally(() => {
         setLoading.setFalse();
       });
