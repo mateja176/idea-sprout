@@ -1,7 +1,7 @@
 import { IdeaContainerSkeleton } from 'containers/Idea/IdeaContainerSkeleton';
+import { absolutePrivateRoute, ideaPath } from 'elements/routes';
 import React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router-dom';
-import { absolutePrivateRoute, ideaPath } from 'utils/routes';
 import { IdeaPageProps } from './IdeaPage';
 import { IdeasPageSkeleton } from './IdeasPageSkeleton';
 

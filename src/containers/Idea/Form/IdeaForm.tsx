@@ -15,6 +15,7 @@ import { PageWrapper } from 'components/PageWrapper';
 import { Drop, DropProps } from 'containers/Drop';
 import { SnackbarContext } from 'context/snackbar';
 import { storyDescription } from 'elements/idea/idea';
+import { absolutePrivateRoute } from 'elements/routes';
 import firebase from 'firebase/app';
 import { useFormik } from 'formik';
 import { useIdeasRef, useSignedInUser } from 'hooks/firebase';
@@ -35,7 +36,6 @@ import {
   problemSolutionText,
   rationaleText,
 } from 'utils/idea/idea';
-import { absolutePrivateRoute } from 'utils/routes';
 import { inputStyle, textareaStyle } from 'utils/styles/styles';
 import { ExpectationsCheck } from '../Check/ExpectationsCheck';
 import { NicheCheck } from '../Check/NicheCheck';

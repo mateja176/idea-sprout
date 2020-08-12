@@ -15,8 +15,8 @@ import { Load } from 'components/Load';
 import { CreateIdeaIcon } from 'containers/Idea/Create/CreateIdeaIcon';
 import { IdeaHelpContainer } from 'containers/Idea/Help/IdeaHelpContainer';
 import { MenuButton } from 'containers/MenuButton';
+import { absolutePrivateRoute } from 'elements/routes';
 import React from 'react';
-import { absolutePrivateRoute } from 'utils/routes';
 import { minNavWidth, Nav } from './Nav/Nav';
 import { NavSkeleton } from './Nav/NavSkeleton';
 

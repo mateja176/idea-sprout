@@ -1,5 +1,6 @@
 import useBoolean from 'ahooks/es/useBoolean';
 import { SnackbarContext } from 'context/snackbar';
+import { absolutePrivateRoute } from 'elements/routes';
 import firebase from 'firebase/app';
 import { User } from 'models/auth';
 import { CreationIdea, IdeaModel } from 'models/idea';
@@ -26,7 +27,6 @@ import {
   hasOnlyId,
 } from 'utils/firebase';
 import { getInitialIdea } from 'utils/idea/idea';
-import { absolutePrivateRoute } from 'utils/routes';
 import { useActions } from './hooks';
 
 export const useUser = <U = User>(options?: ReactFireOptions<U | null>) =>

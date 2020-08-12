@@ -1,8 +1,8 @@
 import { NotFound } from 'components/NotFound';
 import { IdeaContainerSkeleton } from 'containers/Idea/IdeaContainerSkeleton';
+import { absolutePrivateRoute } from 'elements/routes';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { absolutePrivateRoute } from 'utils/routes';
 import { IdeasPageSkeleton } from '../pages/Idea/IdeasPageSkeleton';
 
 export const RoutesSkeleton: React.FC = () => {

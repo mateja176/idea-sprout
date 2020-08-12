@@ -1,4 +1,5 @@
 import { NotFound } from 'components/NotFound';
+import { absolutePrivateRoute } from 'elements/routes';
 import { useUserState } from 'hooks/firebase';
 import React from 'react';
 import { useSelector } from 'react-redux';
@@ -6,7 +7,6 @@ import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
 import { useAuth as useFirebaseAuth } from 'reactfire';
 import { selectEmailVerified } from 'services/store/slices/auth';
 import { isUserLoading } from 'utils/auth';
-import { absolutePrivateRoute } from 'utils/routes';
 import IdeasSwitch from '../pages/Idea/IdeasSwitch';
 import { RoutesSkeleton } from './RoutesSkeleton';
 

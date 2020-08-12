@@ -1,9 +1,9 @@
+import { absolutePrivateRoute } from 'elements/routes';
 import { useFirestoreDoc, useIdeaRef } from 'hooks/firebase';
 import { IdeaModel } from 'models/idea';
 import { WithId } from 'models/models';
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { absolutePrivateRoute } from 'utils/routes';
 import { IdeaForm } from './IdeaForm';
 
 export interface EditIdeaFormProps extends WithId {

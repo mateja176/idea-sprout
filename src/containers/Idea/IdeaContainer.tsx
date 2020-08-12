@@ -1,13 +1,13 @@
 import Box from '@material-ui/core/Box';
 import useBoolean from 'ahooks/es/useBoolean';
 import { SnackbarContext } from 'context/snackbar';
+import { absolutePrivateRoute } from 'elements/routes';
 import { useFirestoreDoc, useIdeaRef, useSignedInUser } from 'hooks/firebase';
 import { useActions } from 'hooks/hooks';
 import { IdeaModel, IdeaSprout } from 'models/idea';
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { createUpdateIdea } from 'services/store/slices/ideas';
-import { absolutePrivateRoute } from 'utils/routes';
 import { Idea, IdeaProps } from './Idea';
 import { IdeaTabs } from './IdeaTabs';
 

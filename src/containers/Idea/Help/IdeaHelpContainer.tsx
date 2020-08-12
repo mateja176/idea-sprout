@@ -1,8 +1,8 @@
+import { ideaPath } from 'elements/routes';
 import { useUser } from 'hooks/firebase';
 import { WithId } from 'models/models';
 import React from 'react';
 import { useRouteMatch } from 'react-router-dom';
-import { ideaPath } from 'utils/routes';
 import { IdeaHelp } from './IdeaHelp';
 
 export const IdeaHelpContainer = () => {
