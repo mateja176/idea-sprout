@@ -1,4 +1,4 @@
-import * as fs from 'fs';
+import * as fs from 'fs-extra';
 import { join } from 'path';
 import * as ts from 'typescript';
 
@@ -82,48 +82,44 @@ const validateHierarchy = (rootPath: string) =>
   fs.readdirSync(rootPath).forEach((path) => {
     const fullPath = join(rootPath, path);
 
-    fs.lstat(fullPath, (err, stats) => {
-      if (!err) {
-        if (stats.isDirectory()) {
-          validateHierarchy(fullPath);
-        } else if (path.endsWith('.ts') || path.endsWith('.tsx')) {
-          fs.readFile(fullPath, { encoding: 'utf8' }, (err, content) => {
-            if (!err) {
-              const file = ts.createSourceFile(
-                path,
-                content,
-                ts.ScriptTarget.Latest,
+    fs.lstat(fullPath).then((stats) => {
+      if (stats.isDirectory()) {
+        validateHierarchy(fullPath);
+      } else if (path.endsWith('.ts') || path.endsWith('.tsx')) {
+        fs.readFile(fullPath, { encoding: 'utf8' }).then((content) => {
+          const file = ts.createSourceFile(
+            path,
+            content,
+            ts.ScriptTarget.Latest,
+          );
+
+          file.forEachChild((child) => {
+            if (ts.isImportDeclaration(child)) {
+              const source: string = (child.moduleSpecifier as any).text;
+
+              const topLevelParent = fullPath
+                .split(fullRootPath)[1]
+                .split('/')[1];
+
+              Object.entries(constraints).forEach(
+                ([topLevelFolder, { disallowed }]) => {
+                  if (
+                    topLevelParent === topLevelFolder &&
+                    disallowed.includes(source as KnownPath)
+                  ) {
+                    console.log(
+                      getErrorMessage({
+                        path: fullPath,
+                        parentPath: topLevelParent,
+                        source,
+                      }),
+                    );
+                  }
+                },
               );
-
-              file.forEachChild((child) => {
-                if (ts.isImportDeclaration(child)) {
-                  const source: string = (child.moduleSpecifier as any).text;
-
-                  const topLevelParent = fullPath
-                    .split(fullRootPath)[1]
-                    .split('/')[1];
-
-                  Object.entries(constraints).forEach(
-                    ([topLevelFolder, { disallowed }]) => {
-                      if (
-                        topLevelParent === topLevelFolder &&
-                        disallowed.includes(source as KnownPath)
-                      ) {
-                        console.log(
-                          getErrorMessage({
-                            path: fullPath,
-                            parentPath: topLevelParent,
-                            source,
-                          }),
-                        );
-                      }
-                    },
-                  );
-                }
-              });
             }
           });
-        }
+        });
       }
     });
   });
