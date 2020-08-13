@@ -1,5 +1,7 @@
 # Project Architecture
 
+## Dependency graph
+
 ![dependency-graph](https://gist.githubusercontent.com/mateja176/20453360659b5e544e81077141274b25/raw/fab5ed1490af48c9b1bd508c1cd94c0b96940c88/graph.svg)
 
 ```ts
@@ -34,6 +36,19 @@
   index: ['react', 'window', 'App'],
 }
 ```
+
+### Additional notes
+
+- `utils` are different from `models` in the sense that they may contain functions
+- What `models` are to `utils`, `elements` are to `components`
+- `App` contains singleton components and as such is different from `containers`
+- Elements are static and components are pure, however, context is impure
+    - Additionally, `context` contains state which is not tied to any components lifecycle
+- only services should reference `window` to reduce surface area and increase platform independence by making it easier to locate and mock globals
+- Since `pages` are lazy loaded, common modules should not contain large third party libraries like draft-js unless every pages is relying on the library, in order for the lazy loading to pay off
+- `types` contain third party type declarations
+- `assets` contain **static** assets like images
+- `tests` contain tests
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
