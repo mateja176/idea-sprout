@@ -1,3 +1,40 @@
+# Project Architecture
+
+![dependency-graph](https://gist.githubusercontent.com/mateja176/20453360659b5e544e81077141274b25/raw/fab5ed1490af48c9b1bd508c1cd94c0b96940c88/graph.svg)
+
+```ts
+{
+  utils: ['models'],
+  elements: ['react', 'models', 'utils'],
+  components: ['react', 'models', 'utils', 'elements'],
+  context: ['react', 'models', 'utils'],
+  services: ['window', 'models', 'utils'],
+  hooks: ['react', 'models', 'utils', 'services', 'context'],
+  containers: [
+    'react',
+    'models',
+    'utils',
+    'elements',
+    'components',
+    'services',
+    'context',
+    'hooks',
+  ],
+  App: [
+    'react',
+    'models',
+    'utils',
+    'elements',
+    'components',
+    'services',
+    'context',
+    'hooks',
+    'containers',
+  ],
+  index: ['react', 'window', 'App'],
+}
+```
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
