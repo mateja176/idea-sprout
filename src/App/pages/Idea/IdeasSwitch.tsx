@@ -2,7 +2,6 @@ import { IdeaContainerSkeleton } from 'containers/Idea/IdeaContainerSkeleton';
 import { absolutePrivateRoute, ideaPath } from 'elements/routes';
 import React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router-dom';
-import { IdeaPageProps } from './IdeaPage';
 import { IdeasPageSkeleton } from './IdeasPageSkeleton';
 
 const LazyIdeasPage = React.lazy(() => import('./IdeasPage'));
@@ -13,7 +12,9 @@ const IdeasPage: React.FC<RouteComponentProps> = (props) => (
 );
 
 const LazyIdeaPage = React.lazy(() => import('./IdeaPage'));
-const IdeaPage: React.FC<IdeaPageProps> = (props) => (
+const IdeaPage: React.FC<React.ComponentProps<typeof LazyIdeaPage>> = (
+  props,
+) => (
   <React.Suspense fallback={<IdeaContainerSkeleton />}>
     <LazyIdeaPage {...props} />
   </React.Suspense>
