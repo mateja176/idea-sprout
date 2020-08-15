@@ -105,6 +105,8 @@ const Signin: React.FC<SigninProps> = ({ user, auth }) => {
 
   const resendIconRef = React.useRef<SVGSVGElement | null>(null);
 
+  const [signinOrCreateError, setSigninOrCreateError] = React.useState('');
+
   const sendVerification = React.useCallback(() => {
     if (user) {
       const animation = resendIconRef.current?.animate(
@@ -112,24 +114,30 @@ const Signin: React.FC<SigninProps> = ({ user, auth }) => {
         { duration: 1000, iterations: Infinity, easing: 'ease-in-out' },
       );
 
-      return user?.sendEmailVerification().then(() => {
-        animation?.cancel();
-      });
+      return user
+        ?.sendEmailVerification()
+        .catch((error: FirebaseError) => {
+          console.log(error);
+          setSigninOrCreateError(error.message);
+        })
+        .finally(() => {
+          animation?.cancel();
+        });
     } else {
       return Promise.resolve();
     }
   }, [user]);
-  const sendVerificationQuery = useQuery({
-    queryKey: 'sendVerification',
-    queryFn: sendVerification,
-    config: {
-      enabled: false,
-      retry: Infinity,
-      retryDelay: () => 2000,
-    },
-  });
-
-  const [signinOrCreateError, setSigninOrCreateError] = React.useState('');
+  const sendVerificationParams = React.useMemo(
+    () => ({
+      queryKey: 'sendVerification',
+      queryFn: sendVerification,
+      config: {
+        enabled: false,
+      },
+    }),
+    [sendVerification],
+  );
+  const sendVerificationQuery = useQuery(sendVerificationParams);
 
   const reloadUser = React.useCallback(
     () =>
