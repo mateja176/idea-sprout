@@ -25,6 +25,7 @@ import React from 'react';
 import { useQuery } from 'react-query';
 import FacebookIcon from 'react-share/es/FacebookIcon';
 import TwitterIcon from 'react-share/es/TwitterIcon';
+import { blur } from 'services/services';
 import {
   createSaveUser,
   createSetEmailVerified,
@@ -207,13 +208,11 @@ const Signin: React.FC<SigninProps> = ({ user, auth }) => {
   }, []);
 
   const onSubmit = React.useCallback(
-    (
-      formValues: FormValues,
-      { resetForm, setTouched }: FormikHelpers<FormValues>,
-    ) => {
+    (formValues: FormValues, { resetForm }: FormikHelpers<FormValues>) => {
       resetErrors();
       const handleSuccess = () => {
-        setTouched({});
+        blur();
+
         resetForm();
       };
       const handleError = (error: FirebaseError) => {
