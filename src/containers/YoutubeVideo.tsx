@@ -1,6 +1,7 @@
 import { useLoadYoutubeScript, useRenderPlayer } from 'hooks/youtube';
 import { StorageFile } from 'models/idea';
 import React from 'react';
+import { createPlayerDiv } from 'services/youtube';
 
 const options = { height: '100%' };
 
@@ -20,9 +21,7 @@ export const YoutubeVideo: React.FC<
       // * since YT removes the div replacing it with an iframe
       // * and when React attempts to remove the div an error is thrown
       // * hence a div is used which is not managed by React
-      const player = document.createElement('div');
-      player.id = playerId;
-      player.style.width = '100%';
+      const player = createPlayerDiv(playerId);
       ref.current.appendChild(player);
 
       loadScript(() => {

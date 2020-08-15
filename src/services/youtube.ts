@@ -47,3 +47,11 @@ export const loadScriptService = () => {
     });
   }
 };
+
+export const createPlayerDiv = (id: string) => {
+  const player = document.createElement('div');
+  player.id = id;
+  player.style.width = '100%';
+
+  return player;
+};
