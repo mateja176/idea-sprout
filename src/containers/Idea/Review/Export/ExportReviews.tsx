@@ -8,30 +8,22 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Tab, { TabProps } from '@material-ui/core/Tab';
-import TextField from '@material-ui/core/TextField';
 import Tooltip from '@material-ui/core/Tooltip';
 import Beenhere from '@material-ui/icons/Beenhere';
 import CloudDownload from '@material-ui/icons/CloudDownload';
 import EmojiEvents from '@material-ui/icons/EmojiEvents';
-import Alert from '@material-ui/lab/Alert';
 import Skeleton from '@material-ui/lab/Skeleton';
 import useBoolean from 'ahooks/es/useBoolean';
 import { AuthCheck } from 'containers/AuthCheck';
 import { ProMembership } from 'containers/ProMembership';
 import { SnackbarContext } from 'context/snackbar';
 import { proMembership, proMembershipDiscount } from 'elements/upgrade';
-import firebase, { FirebaseError, User } from 'firebase/app';
-import { useFormik } from 'formik';
+import firebase, { User } from 'firebase/app';
 import { useReviewsRef, useUpgradeToPro, useUsersRef } from 'hooks/firebase';
 import { useRenderButtons } from 'hooks/upgrade';
 import jsonexport from 'jsonexport/dist';
 import kebabCase from 'lodash/kebabCase';
-import {
-  FirestoreUser,
-  passwordSchema,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  Provider,
-} from 'models/auth';
+import { FirestoreUser } from 'models/auth';
 import { claims } from 'models/firebase';
 import { IdeaModel } from 'models/idea';
 import { Review, ReviewWithAuthor } from 'models/review';
@@ -47,8 +39,7 @@ import {
   paypalButtonsHeight,
   paypalHeightBreakpoint,
 } from 'utils/styles/paypal';
-import { inputStyle, tabChildStyle } from 'utils/styles/styles';
-import * as yup from 'yup';
+import { tabChildStyle } from 'utils/styles/styles';
 
 const id = 'paypal-container';
 
@@ -59,15 +50,6 @@ const dialogContentStyle: React.CSSProperties = { overflowY: 'auto' };
 const originalPriceStyle: React.CSSProperties = {
   textDecoration: 'line-through',
 };
-
-const initialValues = {
-  password: '',
-};
-type FormValues = typeof initialValues;
-
-const validationSchema = yup.object().required().shape<FormValues>({
-  password: passwordSchema,
-});
 
 const useStyles = makeStyles((theme) => ({
   paypalButtonsHeight: {
@@ -181,46 +163,6 @@ export const ExportReviews: React.FC<
     setUpgradeDialogOpen.setFalse();
   }, [queueSnackbar, setApproving, setUpgradeDialogOpen]);
 
-  const [passwordDialogOpen, setPasswordDialogOpen] = useBoolean();
-  const [passwordError, setPasswordError] = React.useState('');
-
-  const {
-    handleSubmit,
-    getFieldProps,
-    touched,
-    errors,
-    isSubmitting,
-  } = useFormik({
-    initialValues,
-    validationSchema,
-    onSubmit: ({ password }, { resetForm }) => {
-      const reauthenticate = (password: string) => {
-        if (user.email) {
-          const credential = firebase.auth.EmailAuthProvider.credential(
-            user.email,
-            password,
-          );
-          return user
-            .reauthenticateAndRetrieveDataWithCredential(credential)
-            .then(() => {
-              setPasswordDialogOpen.setFalse();
-              close();
-            })
-            .catch((error: FirebaseError) => {
-              resetForm();
-              setPasswordError(error.message);
-            });
-        } else {
-          console.error(
-            'The providerId is "password" but the user has no email.',
-          );
-        }
-      };
-
-      return reauthenticate(password);
-    },
-  });
-
   const upgrade: typeof upgradeToPro = React.useCallback(
     ({ orderId: id }) =>
       upgradeToPro({ orderId: id }).catch(
@@ -234,26 +176,10 @@ export const ExportReviews: React.FC<
     [upgradeToPro],
   );
 
-  const reauthenticateWithPopup = React.useCallback(
-    (Provider: Provider) =>
-      user.reauthenticateWithPopup(new Provider()).catch(
-        () =>
-          new Promise<firebase.auth.UserCredential>((resolve) => {
-            setTimeout(() => {
-              reauthenticateWithPopup(Provider).then(resolve);
-            }, 2000);
-          }),
-      ),
-    [user],
-  );
-
   const renderButtons = useRenderButtons({
     id,
     upgrade,
     onApprove: setApproving.setTrue,
-    user,
-    reauthenticateWithPassword: setPasswordDialogOpen.setTrue,
-    reauthenticateWithPopup,
     close,
   });
 
@@ -292,11 +218,6 @@ export const ExportReviews: React.FC<
       loadScript();
     }
   }, [renderButtons, loadScript]);
-
-  const passwordHelperText = React.useMemo(
-    () => (touched.password || '') && errors.password,
-    [touched, errors],
-  );
 
   return (
     <>
@@ -374,29 +295,6 @@ export const ExportReviews: React.FC<
               </div>
             </Box>
           </Box>
-          <Dialog open={passwordDialogOpen}>
-            <DialogContent>
-              <Box mb={2}>
-                <Alert severity={passwordError ? 'error' : 'info'}>
-                  {passwordError ? passwordError : "Confirm that it's you"}
-                </Alert>
-              </Box>
-              <form onSubmit={handleSubmit}>
-                <TextField
-                  {...getFieldProps('password')}
-                  type={'password'}
-                  label={'Password'}
-                  error={touched.password && !!errors.password}
-                  helperText={passwordHelperText}
-                  variant={'outlined'}
-                  style={inputStyle}
-                />
-                <Button disabled={isSubmitting} type={'submit'}>
-                  Confirm
-                </Button>
-              </form>
-            </DialogContent>
-          </Dialog>
         </DialogContent>
         <DialogActions>
           <Button onClick={setUpgradeDialogOpen.setFalse}>Close</Button>

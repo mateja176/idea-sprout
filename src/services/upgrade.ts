@@ -1,6 +1,4 @@
 import { proMembershipDiscount } from 'elements/upgrade';
-import firebase from 'firebase/app';
-import { Provider, ProviderId, User } from 'models/auth';
 import { Upgrade } from 'models/upgrade';
 import { Order } from 'types/paypal';
 
@@ -8,11 +6,6 @@ export interface RenderButtonsParams {
   id: string;
   upgrade: Upgrade;
   onApprove: () => void;
-  user: User;
-  reauthenticateWithPassword: () => void;
-  reauthenticateWithPopup: (
-    provider: Provider,
-  ) => Promise<firebase.auth.UserCredential>;
   close: () => void;
 }
 
@@ -20,9 +13,6 @@ export const renderButtons = ({
   id,
   upgrade,
   onApprove,
-  user,
-  reauthenticateWithPassword,
-  reauthenticateWithPopup,
   close,
 }: RenderButtonsParams) => () =>
   window.paypal
@@ -51,30 +41,9 @@ export const renderButtons = ({
               }),
           );
 
-        return capture().then(({ id }) =>
-          upgrade({ orderId: id }).then(() => {
-            const [provider] = user.providerData;
-            if (provider) {
-              const providerId = provider.providerId as ProviderId;
-              if (providerId === 'password') {
-                reauthenticateWithPassword();
-              } else {
-                const CurrentProvider = [
-                  firebase.auth.GoogleAuthProvider,
-                  firebase.auth.FacebookAuthProvider,
-                  firebase.auth.TwitterAuthProvider,
-                ].find((provider) => provider.PROVIDER_ID === providerId);
-                if (CurrentProvider) {
-                  return reauthenticateWithPopup(CurrentProvider).then(close);
-                } else {
-                  console.error('Unknown provider id', providerId);
-                }
-              }
-            } else {
-              console.error('No provider found for user', user);
-            }
-          }),
-        );
+        return capture()
+          .then(({ id }) => upgrade({ orderId: id }))
+          .then(close);
       },
     })
     .render(`#${id}`);
