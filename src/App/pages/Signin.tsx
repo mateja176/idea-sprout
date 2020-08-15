@@ -155,16 +155,20 @@ const Signin: React.FC<SigninProps> = ({ user, auth }) => {
         : Promise.resolve(),
     [user, queueSnackbar, setEmailVerified],
   );
-  useQuery({
-    queryKey: 'reloadUser',
-    queryFn: reloadUser,
-    config: {
-      enabled: !!user,
-      retry: Infinity,
-      retryDelay: () => 2000,
-      refetchInterval: 2000,
-    },
-  });
+  const reloadUserParams = React.useMemo(
+    () => ({
+      queryKey: 'reloadUser',
+      queryFn: reloadUser,
+      config: {
+        enabled: !!user,
+        retry: Infinity,
+        retryDelay: () => 2000,
+        refetchInterval: 2000,
+      },
+    }),
+    [user, reloadUser],
+  );
+  useQuery(reloadUserParams);
 
   const validationSchema = yup.object().required().shape<FormValues>({
     email: yup.string().required().email(),
