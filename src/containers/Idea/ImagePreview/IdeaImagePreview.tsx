@@ -22,14 +22,6 @@ export const IdeaImagePreview = React.memo<IdeaImagePreviewProps>(
 
     const [imageLoading, setImageLoading] = useBoolean();
 
-    React.useEffect(() => {
-      setImageLoading.setTrue();
-    }, [path, setImageLoading]);
-
-    const handleImageLoad = React.useCallback(() => {
-      setImageLoading.setFalse();
-    }, [setImageLoading]);
-
     return (
       <IdeaPreviewWrapper>
         {imageLoading && (
@@ -44,7 +36,8 @@ export const IdeaImagePreview = React.memo<IdeaImagePreviewProps>(
             src={url}
             height={ideaListItemHeight}
             alt="Preview"
-            onLoad={handleImageLoad}
+            onLoadStart={setImageLoading.setTrue}
+            onLoad={setImageLoading.setFalse}
           />
         </Box>
       </IdeaPreviewWrapper>
