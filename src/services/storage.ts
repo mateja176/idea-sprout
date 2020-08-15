@@ -44,7 +44,7 @@ const subscribersRef = { current: initialSubscribers };
 
 export const storage: LocalStorage = {
   getItem: (key) => {
-    const value = localStorage.getItem(key);
+    const value = window.localStorage.getItem(key);
     return value ? JSON.parse(value) : null;
   },
   setItem: (key, value) => {
@@ -52,17 +52,17 @@ export const storage: LocalStorage = {
       callback('set', value);
     });
 
-    localStorage.setItem(key, String(value));
+    window.localStorage.setItem(key, String(value));
   },
   removeItem: (key: LocalStorageKey) => {
     subscribersRef.current[key].forEach((callback) => {
       callback('remove', null);
     });
 
-    localStorage.remove(localStorage);
+    window.localStorage.remove(window.localStorage);
   },
   clear: () => {
-    localStorage.clear();
+    window.localStorage.clear();
 
     Object.values(subscribersRef.current).forEach((callbacks) => {
       callbacks.forEach((callback) => {

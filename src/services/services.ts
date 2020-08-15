@@ -14,5 +14,5 @@ export function assertRequired<O extends {}>(
 }
 
 export const blur = () => {
-  (document.activeElement as HTMLInputElement)?.blur();
+  (window.document.activeElement as HTMLInputElement)?.blur();
 };

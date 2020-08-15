@@ -25,11 +25,11 @@ export const renderPlayerService = ({
 };
 
 export const loadScriptService = () => {
-  if (document.getElementById(scriptId)) {
+  if (window.document.getElementById(scriptId)) {
     return Promise.resolve();
   } else {
     return new Promise((resolve) => {
-      const script = document.createElement('script');
+      const script = window.document.createElement('script');
 
       script.id = scriptId;
 
@@ -43,13 +43,13 @@ export const loadScriptService = () => {
         }
       });
 
-      document.body.appendChild(script);
+      window.document.body.appendChild(script);
     });
   }
 };
 
 export const createPlayerDiv = (id: string) => {
-  const player = document.createElement('div');
+  const player = window.document.createElement('div');
   player.id = id;
   player.style.width = '100%';
 

@@ -52,11 +52,11 @@ export const renderButtons = ({
 export const paypalScriptId = 'paypal-script';
 
 export const loadPaypalScript = () => {
-  const script = document.createElement('script');
+  const script = window.document.createElement('script');
   script.src = `https://www.paypal.com/sdk/js?client-id=${env.paypalClientId}`;
   script.id = paypalScriptId;
 
-  document.body.appendChild(script);
+  window.document.body.appendChild(script);
 
   return new Promise((resolve) => {
     script.addEventListener('load', resolve);
@@ -64,4 +64,4 @@ export const loadPaypalScript = () => {
 };
 
 export const hasPaypalScriptLoaded = () =>
-  !!document.getElementById(paypalScriptId);
+  !!window.document.getElementById(paypalScriptId);

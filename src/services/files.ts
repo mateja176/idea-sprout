@@ -26,7 +26,7 @@ export const getImageDimensions = (data: string) =>
 
 export const getVideoDimensionsAndValidate = (data: string) =>
   new Promise<HTMLVideoElement>((resolve, reject) => {
-    const instance = document.createElement('video');
+    const instance = window.document.createElement('video');
 
     instance.src = data;
 
@@ -52,17 +52,17 @@ export const exportFile = ({
   name: string;
   content: string;
 }) => {
-  const blob = new Blob([content], { type: 'text/csv' });
-  const url = URL.createObjectURL(blob);
+  const blob = new window.Blob([content], { type: 'text/csv' });
+  const url = window.URL.createObjectURL(blob);
 
-  const a = document.createElement('a');
+  const a = window.document.createElement('a');
   a.href = url;
   a.download = name;
 
-  document.body.appendChild(a);
+  window.document.body.appendChild(a);
 
   a.click();
 
-  URL.revokeObjectURL(url);
+  window.URL.revokeObjectURL(url);
   a.remove();
 };
