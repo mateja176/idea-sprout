@@ -28,9 +28,9 @@ import { IdeaModel } from 'models/idea';
 import { Review, ReviewWithAuthor } from 'models/review';
 import React from 'react';
 import { AuthCheck } from 'reactfire';
-import { env } from 'services/env';
 import { exportFile } from 'services/files';
 import { formatCurrency } from 'services/format';
+import { hasPaypalScriptLoaded, loadPaypalScript } from 'services/upgrade';
 import {
   convertFirestoreCollection,
   convertFirestoreDocument,
@@ -42,8 +42,6 @@ import {
 import { tabChildStyle } from 'utils/styles/styles';
 
 const id = 'paypal-container';
-
-const scriptId = 'paypal-script';
 
 const dialogContentStyle: React.CSSProperties = { overflowY: 'auto' };
 
@@ -186,17 +184,11 @@ export const ExportReviews: React.FC<
   const loadScript = React.useCallback(() => {
     setScriptLoading.setTrue();
 
-    const script = document.createElement('script');
-    script.src = `https://www.paypal.com/sdk/js?client-id=${env.paypalClientId}`;
-    script.id = scriptId;
-
-    script.addEventListener('load', () => {
+    loadPaypalScript().then(() => {
       setScriptLoading.setFalse();
 
       renderButtons();
     });
-
-    document.body.appendChild(script);
   }, [renderButtons, setScriptLoading]);
 
   const openUpgradeDialog = React.useCallback(() => {
@@ -212,7 +204,7 @@ export const ExportReviews: React.FC<
   );
 
   const handleEntered = React.useCallback(() => {
-    if (document.getElementById(scriptId)) {
+    if (hasPaypalScriptLoaded()) {
       renderButtons();
     } else {
       loadScript();
