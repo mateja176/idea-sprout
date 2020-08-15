@@ -103,10 +103,22 @@ const Signin: React.FC<SigninProps> = ({ user, auth }) => {
     theme.breakpoints.down('xs'),
   );
 
-  const sendVerification = React.useCallback(
-    () => (user ? user?.sendEmailVerification() : Promise.resolve()),
-    [user],
-  );
+  const resendIconRef = React.useRef<SVGSVGElement | null>(null);
+
+  const sendVerification = React.useCallback(() => {
+    if (user) {
+      const animation = resendIconRef.current?.animate(
+        [{ transform: 'rotate(0deg)' }, { transform: 'rotate(360deg)' }],
+        { duration: 1000, iterations: Infinity, easing: 'ease-in-out' },
+      );
+
+      return user?.sendEmailVerification().then(() => {
+        animation?.cancel();
+      });
+    } else {
+      return Promise.resolve();
+    }
+  }, [user]);
   const sendVerificationQuery = useQuery({
     queryKey: 'sendVerification',
     queryFn: sendVerification,
@@ -256,19 +268,6 @@ const Signin: React.FC<SigninProps> = ({ user, auth }) => {
   }, [sendVerificationQuery]);
 
   const notVerifiedEmail = !!user && !user.emailVerified;
-
-  const resendIconRef = React.useRef<SVGSVGElement | null>(null);
-  React.useEffect(() => {
-    const animation = sendVerificationQuery.isLoading
-      ? resendIconRef.current?.animate(
-          [{ transform: 'rotate(0deg)' }, { transform: 'rotate(360deg)' }],
-          { duration: 1000, iterations: Infinity, easing: 'ease-in-out' },
-        )
-      : undefined;
-    return () => {
-      animation?.cancel();
-    };
-  }, [sendVerificationQuery.isLoading]);
 
   const handleReset = React.useCallback(() => {
     auth.signOut();
