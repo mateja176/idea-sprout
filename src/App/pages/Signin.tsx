@@ -1,6 +1,10 @@
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Grow from '@material-ui/core/Grow';
 import Link from '@material-ui/core/Link';
@@ -18,11 +22,17 @@ import { Google } from 'components/icons/Google';
 import { PageWrapper } from 'components/PageWrapper';
 import { SnackbarContext } from 'context/snackbar';
 import firebase, { FirebaseError, User } from 'firebase/app';
-import { FormikHelpers, useFormik } from 'formik';
-import { useActions } from 'hooks/hooks';
+import { FormikConfig, FormikHelpers, useFormik } from 'formik';
+import {
+  useActions,
+  useLocalStorageItem,
+  useLocalStorageRemove,
+  useOrigin,
+} from 'hooks/hooks';
 import { passwordSchema } from 'models/auth';
 import React from 'react';
 import { useQuery } from 'react-query';
+import { useLocation } from 'react-router-dom';
 import FacebookIcon from 'react-share/es/FacebookIcon';
 import TwitterIcon from 'react-share/es/TwitterIcon';
 import { blur } from 'services/services';
@@ -30,6 +40,7 @@ import {
   createSaveUser,
   createSetEmailVerified,
 } from 'services/store/slices/auth';
+import urljoin from 'url-join';
 import { inputStyle, logoWidth } from 'utils/styles/styles';
 import * as yup from 'yup';
 
@@ -56,13 +67,27 @@ const initialValues = {
 };
 type FormValues = typeof initialValues;
 
+const initialEmailFormValues = { email: '' };
+type EmailFormValues = typeof initialEmailFormValues;
+const emailFormSchema = yup.object().required().shape<EmailFormValues>({
+  email: yup.string().required().email(),
+});
+
 const actionCreators = {
   saveUser: createSaveUser.request,
   setEmailVerified: createSetEmailVerified,
 };
 
 const Signin: React.FC<SigninProps> = ({ user, auth }) => {
+  const location = useLocation();
+
+  const origin = useOrigin();
+
+  const emailItem = useLocalStorageItem('email');
+  const removeFromStorage = useLocalStorageRemove();
+
   const { saveUser, setEmailVerified } = useActions(actionCreators);
+
   const saveUserCredential = React.useCallback(
     (credential: firebase.auth.UserCredential) => {
       if (credential.user) {
@@ -307,6 +332,75 @@ const Signin: React.FC<SigninProps> = ({ user, auth }) => {
     signIn(new firebase.auth.TwitterAuthProvider());
   }, [signIn]);
 
+  const emailFormParams: FormikConfig<EmailFormValues> = React.useMemo(
+    () => ({
+      initialValues: initialEmailFormValues,
+      validationSchema: emailFormSchema,
+      onSubmit: ({ email }, { resetForm }) => {
+        return auth
+          .sendSignInLinkToEmail(email, { url: origin, handleCodeInApp: true })
+          .then(() => {
+            emailItem.set(email);
+
+            queueSnackbar({
+              severity: 'success',
+              message: `A signin link has been sent to ${email}`,
+              autoHideDuration: 60000,
+            });
+
+            resetForm();
+          })
+          .catch((error: FirebaseError) =>
+            setSigninOrCreateError(error.message),
+          );
+      },
+    }),
+    [auth, origin, queueSnackbar, emailItem],
+  );
+  const emailForm = useFormik(emailFormParams);
+
+  const [confirmEmailDialogOpen, setConfirmEmailDialogOpen] = useBoolean();
+
+  const signInWithEmailLink = React.useCallback(
+    (email: NonNullable<User['email']>) =>
+      auth.signInWithEmailLink(email).then(saveUserCredential),
+    [auth, saveUserCredential],
+  );
+
+  const confirmEmailFormParams: FormikConfig<EmailFormValues> = React.useMemo(
+    () => ({
+      initialValues: initialEmailFormValues,
+      validationSchema: emailFormSchema,
+      onSubmit: ({ email }) => signInWithEmailLink(email),
+    }),
+    [signInWithEmailLink],
+  );
+  const confirmEmailForm = useFormik(confirmEmailFormParams);
+
+  React.useEffect(() => {
+    const isSignInWithEmailLink = auth.isSignInWithEmailLink(
+      urljoin(origin, location.pathname, location.search),
+    );
+
+    if (isSignInWithEmailLink) {
+      if (emailItem.value) {
+        signInWithEmailLink(emailItem.value).then(() =>
+          removeFromStorage('email'),
+        );
+      } else {
+        setConfirmEmailDialogOpen.setTrue();
+      }
+    }
+  }, [
+    auth,
+    signInWithEmailLink,
+    origin,
+    location,
+    setConfirmEmailDialogOpen,
+    emailItem,
+    removeFromStorage,
+  ]);
+
   return (
     <>
       <Tabs variant={'fullWidth'} value={activeTab} onChange={handleTabChange}>
@@ -404,6 +498,32 @@ const Signin: React.FC<SigninProps> = ({ user, auth }) => {
             <Typography>Or sign in with</Typography>
           </Box>
           <Box ml={2}>
+            <Box>
+              <form onSubmit={emailForm.handleSubmit}>
+                <Box display={'flex'} alignItems={'flex-start'}>
+                  <TextField
+                    {...emailForm.getFieldProps('email')}
+                    label={'Email link'}
+                    variant={'outlined'}
+                    error={!!emailForm.errors.email}
+                    helperText={
+                      (emailForm.touched.email || '') && emailForm.errors.email
+                    }
+                    style={inputStyle}
+                  />
+                  <Box ml={1} mt={'10px'}>
+                    <Button
+                      type={'submit'}
+                      disabled={emailForm.isSubmitting}
+                      color={'primary'}
+                      variant={'contained'}
+                    >
+                      Send link
+                    </Button>
+                  </Box>
+                </Box>
+              </form>
+            </Box>
             <ButtonGroup color="primary" disabled={loading}>
               <Button
                 onClick={handleGoogleSignin}
@@ -437,6 +557,34 @@ const Signin: React.FC<SigninProps> = ({ user, auth }) => {
           </Box>
         </Box>
       </PageWrapper>
+      <Dialog open={confirmEmailDialogOpen}>
+        <DialogTitle>Confirm Email</DialogTitle>
+        <DialogContent>
+          <form onSubmit={confirmEmailForm.handleSubmit}>
+            <TextField
+              {...confirmEmailForm.getFieldProps('email')}
+              label={'Email'}
+              error={!!confirmEmailForm.errors.email}
+              helperText={
+                (confirmEmailForm.touched.email || '') &&
+                confirmEmailForm.errors.email
+              }
+              variant={'outlined'}
+              style={inputStyle}
+            />
+          </form>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            variant={'contained'}
+            color={'primary'}
+            disabled={confirmEmailForm.isSubmitting}
+            onClick={confirmEmailForm.submitForm}
+          >
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };
