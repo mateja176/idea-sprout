@@ -440,7 +440,7 @@ const Signin: React.FC<SigninProps> = ({ user }) => {
                   return (
                     <Alert severity={'info'}>
                       {activeTab === 0 ? 'Sign in' : 'Register'} to discover,
-                      create and share ideas.
+                      create and review ideas.
                     </Alert>
                   );
               }
