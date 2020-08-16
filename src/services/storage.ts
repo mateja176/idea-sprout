@@ -54,7 +54,7 @@ export const storage: Storage = {
       callback('set', value);
     });
 
-    window.localStorage.setItem(key, String(value));
+    window.localStorage.setItem(key, JSON.stringify(value));
   },
   removeItem: (key) => {
     subscribersRef.current[key].forEach((callback) => {
