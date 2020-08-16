@@ -42,3 +42,7 @@ a:-webkit-any-link {
 .DraftEditor-root * {
   -webkit-user-select: text;
 }
+
+.MuiDialog-root {
+  z-index: 2147483647;
+}
