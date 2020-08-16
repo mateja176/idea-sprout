@@ -13,13 +13,13 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
 import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Autorenew from '@material-ui/icons/Autorenew';
 import Alert from '@material-ui/lab/Alert';
 import useBoolean from 'ahooks/es/useBoolean';
 import { Google } from 'components/icons/Google';
 import { PageWrapper } from 'components/PageWrapper';
+import { SigninDivider } from 'components/SigninDivider';
 import { SnackbarContext } from 'context/snackbar';
 import firebase, { FirebaseError, User } from 'firebase/app';
 import { FormikConfig, FormikHelpers, useFormik } from 'formik';
@@ -496,9 +496,7 @@ const Signin: React.FC<SigninProps> = ({ user }) => {
               </Button>
             </Box>
           </Grow>
-          <Box mt={3} mb={2}>
-            <Typography>Or sign in with</Typography>
-          </Box>
+          <SigninDivider />
           <Box ml={2}>
             <Box>
               <form onSubmit={emailForm.handleSubmit}>

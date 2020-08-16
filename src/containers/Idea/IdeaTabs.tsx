@@ -1,6 +1,5 @@
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -17,6 +16,7 @@ import Share from '@material-ui/icons/Share';
 import StarRate from '@material-ui/icons/StarRate';
 import Skeleton from '@material-ui/lab/Skeleton';
 import useBoolean from 'ahooks/es/useBoolean';
+import { SigninSkeleton } from 'App/pages/SigninSkeleton';
 import { ShareMenu } from 'containers/Share/ShareMenu';
 import { useShareIdea } from 'hooks/firebase';
 import { useActions } from 'hooks/hooks';
@@ -303,7 +303,7 @@ export const IdeaTabs: React.FC<
                 justifyContent={'center'}
                 height={'100%'}
               >
-                <CircularProgress variant={'indeterminate'} />
+                <SigninSkeleton />
               </Box>
             }
           >
