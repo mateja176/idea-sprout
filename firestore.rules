@@ -5,7 +5,7 @@ function isSignedIn() {
 }
 
 function isAuthor() {
-  return resource.data.author == request.auth.uid;
+  return isSignedIn() && resource.data.author == request.auth.uid;
 }
 
 function isIdeaMine() {
@@ -153,15 +153,14 @@ service cloud.firestore {
       allow read, write: if false;
     }
     match /ideas/{ideaId} {
-      allow read: if isSignedIn()
-        // && (!('query' in request) || request.query.limit <= 30) // * my ideas aren't yet being lazy loaded
-        && (isAuthor() || resource.data.status == 'sprout');
+      allow read: if (isAuthor() || resource.data.status == 'sprout');
+        // && (!('query' in request) || request.query.limit <= 30) // * my ideas aren't yet being lazy loaded;
       allow create: if isSignedIn() && canCreateIdea() && isIdeaType();
       allow update: if isPartialIdeaType() && willBeAuthor() && (isIdeaMine() && notUpdatingRating() && notUpdatingSharedBy()) ||
         (isSignedIn() && canShare());
 
       match /reviews/{userId} {
-        allow read: if isSignedIn();
+        allow read: if true;
         allow write: if isSignedIn() && userId == request.auth.uid && isReviewType();
       }
     }

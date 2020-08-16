@@ -196,11 +196,11 @@ const shareIdeaActionCreators = { updateIdea: createUpdateIdea };
 export const useShareIdea = (idea: IdeaModel) => {
   const { updateIdea } = useActions(shareIdeaActionCreators);
 
-  const user = useSignedInUser();
+  const user = useUser();
 
   const ideaRef = useIdeaRef(idea.id);
 
-  if (Object.keys(idea.sharedBy).includes(user.uid)) {
+  if (!user || Object.keys(idea.sharedBy).includes(user.uid)) {
     return () => {};
   } else {
     return () => {

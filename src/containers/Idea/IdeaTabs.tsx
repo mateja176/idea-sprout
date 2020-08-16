@@ -1,19 +1,28 @@
 import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import CloudOff from '@material-ui/icons/CloudOff';
+import EmojiEvents from '@material-ui/icons/EmojiEvents';
+import Person from '@material-ui/icons/Person';
 import Publish from '@material-ui/icons/Publish';
+import RateReview from '@material-ui/icons/RateReview';
 import Share from '@material-ui/icons/Share';
 import StarRate from '@material-ui/icons/StarRate';
 import Skeleton from '@material-ui/lab/Skeleton';
 import useBoolean from 'ahooks/es/useBoolean';
 import { ShareMenu } from 'containers/Share/ShareMenu';
-import { User } from 'firebase/app';
 import { useShareIdea } from 'hooks/firebase';
 import { useActions } from 'hooks/hooks';
 import { useIdeaUrl } from 'hooks/idea';
+import { useReviewPromptStyles } from 'hooks/style';
+import { WithMaybeUser } from 'models/auth';
 import { IdeaModel } from 'models/idea';
 import React from 'react';
 import { StorageImage } from 'reactfire';
@@ -23,6 +32,7 @@ import {
   getShareCountHelperText,
   roundAverage,
 } from 'utils/idea/idea';
+import { getReviewPrompt } from 'utils/idea/review';
 import {
   ideaTabStyle,
   logoBorderRadius,
@@ -32,12 +42,16 @@ import {
   withEllipsis,
   withStarColor,
 } from 'utils/styles/styles';
-import { BackToIdeas } from './BackToIdeas';
 import { IdeaProps } from './Idea';
+import { IdeasLink } from './IdeasLink';
 import { ReviewButtonSuspender } from './Review/Button/ReviewButtonSuspender';
 import { ExportReviewSuspender } from './Review/Export/ExportReviewSuspender';
 import { ReviewDialog } from './Review/ReviewDialog';
 import { ReviewsDialog } from './Review/ReviewsDialog';
+
+const Signin = React.lazy(() => import('App/pages/Signin'));
+
+const signinDialogContentStyle: React.CSSProperties = { padding: 0 };
 
 const boxShadow = 'rgba(0, 0, 0, 0.2) 0px 5px 8px';
 
@@ -50,10 +64,10 @@ const actionCreators = {
 
 export const IdeaTabs: React.FC<
   {
-    user: User;
     idea: IdeaModel;
     showName: boolean;
-  } & Pick<IdeaProps, 'update'>
+  } & WithMaybeUser &
+    Pick<IdeaProps, 'update'>
 > = ({ user, idea, showName, update }) => {
   const { addIdea, deleteIdea } = useActions(actionCreators);
 
@@ -73,7 +87,7 @@ export const IdeaTabs: React.FC<
 
   const [reviewsOpen, setReviewsOpen] = useBoolean();
 
-  const isAuthor = user.uid === idea.author;
+  const isAuthor = user?.uid === idea.author;
 
   const publish = React.useCallback(() => {
     const withStatus = { status: 'sprout' } as const;
@@ -98,10 +112,34 @@ export const IdeaTabs: React.FC<
     [showName],
   );
 
+  const [signinDialogOpen, setSigninDialogOpen] = useBoolean();
+  React.useEffect(() => {
+    if (user && signinDialogOpen) {
+      setSigninDialogOpen.setFalse();
+    }
+  }, [user, signinDialogOpen, setSigninDialogOpen]);
+
+  const reviewPromptClasses = useReviewPromptStyles();
+
   return (
     <Box boxShadow={showName ? boxShadow : 'none'}>
       <Tabs value={false} variant={'fullWidth'}>
-        <BackToIdeas style={ideaTabStyle} />
+        {user ? (
+          <IdeasLink style={ideaTabStyle} />
+        ) : (
+          <Tab
+            aria-label={'Sign in'}
+            style={ideaTabStyle}
+            onClick={setSigninDialogOpen.setTrue}
+            label={
+              <Tooltip title={'Sign in to check out more ideas'}>
+                <Box style={tabChildStyle}>
+                  <Person color={'primary'} />
+                </Box>
+              </Tooltip>
+            }
+          />
+        )}
         <Tab
           ref={shareTabRef}
           style={ideaTabStyle}
@@ -151,7 +189,7 @@ export const IdeaTabs: React.FC<
             }
             aria-label={'Publish or unpublish'}
           />
-        ) : (
+        ) : user ? (
           <ReviewButtonSuspender
             reviewOpen={reviewOpen}
             ideaId={idea.id}
@@ -161,8 +199,44 @@ export const IdeaTabs: React.FC<
             onClick={setReviewOpen.setTrue}
             tooltipClosed={showName}
           />
+        ) : (
+          <Tab
+            aria-label={'Sign in and Review'}
+            style={ideaTabStyle}
+            label={
+              <Tooltip
+                open
+                title={getReviewPrompt(idea.ratingCount)}
+                classes={reviewPromptClasses}
+              >
+                <Box
+                  style={tabChildStyle}
+                  onClick={setSigninDialogOpen.setTrue}
+                >
+                  <RateReview color={'primary'} />
+                </Box>
+              </Tooltip>
+            }
+          />
         )}
-        <ExportReviewSuspender idea={idea} user={user} style={ideaTabStyle} />
+        {user ? (
+          <ExportReviewSuspender idea={idea} user={user} style={ideaTabStyle} />
+        ) : (
+          <Tab
+            aria-label={'Sign in to join the pros'}
+            style={ideaTabStyle}
+            label={
+              <Tooltip title={'Sign in to join the pros'}>
+                <Box
+                  style={tabChildStyle}
+                  onClick={setSigninDialogOpen.setTrue}
+                >
+                  <EmojiEvents color={'secondary'} />
+                </Box>
+              </Tooltip>
+            }
+          />
+        )}
       </Tabs>
       <Box height={tabsTitleSectionHeight}>
         <Box
@@ -210,13 +284,36 @@ export const IdeaTabs: React.FC<
         open={reviewsOpen}
         onClose={setReviewsOpen.setFalse}
       />
-      <ReviewDialog
-        uid={user.uid}
-        idea={idea}
-        ideaUrl={ideaUrl}
-        open={reviewOpen}
-        onClose={setReviewOpen.setFalse}
-      />
+      {user && (
+        <ReviewDialog
+          uid={user.uid}
+          idea={idea}
+          ideaUrl={ideaUrl}
+          open={reviewOpen}
+          onClose={setReviewOpen.setFalse}
+        />
+      )}
+      <Dialog open={signinDialogOpen} fullScreen>
+        <DialogContent style={signinDialogContentStyle}>
+          <React.Suspense
+            fallback={
+              <Box
+                display={'flex'}
+                alignItems={'center'}
+                justifyContent={'center'}
+                height={'100%'}
+              >
+                <CircularProgress variant={'indeterminate'} />
+              </Box>
+            }
+          >
+            <Signin user={user} />
+          </React.Suspense>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={setSigninDialogOpen.setFalse}>Close</Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };

@@ -6,7 +6,7 @@ import { Tour } from 'containers/Tour';
 import { EditorProps } from 'draft-js';
 import { problemSolutionTitle, rationaleTitle } from 'elements/idea/idea';
 import { ideaSelector, ideaTourSteps } from 'elements/idea/tour';
-import { User } from 'models/auth';
+import { WithMaybeUser } from 'models/auth';
 import {
   IdeaModel,
   NameLength,
@@ -22,8 +22,7 @@ import { Images } from '../Image/Images';
 import { VideoSuspender } from '../Video/VideoSuspender';
 import { IdeaImagePreviewSuspender } from './ImagePreview/IdeaImagePreviewSuspender';
 
-export interface IdeaProps {
-  user: User;
+export interface IdeaProps extends WithMaybeUser {
   idea: IdeaModel;
   update: UpdateIdea;
 }
@@ -34,7 +33,7 @@ export const Idea = React.forwardRef<HTMLDivElement, IdeaProps>(
   ({ user, idea, update }, nameWrapperRef) => {
     const theme = useTheme();
 
-    const isAuthor = user.uid === idea.author;
+    const isAuthor = user?.uid === idea.author;
 
     const saveName = React.useCallback(
       (name: IdeaModel['name']) => {

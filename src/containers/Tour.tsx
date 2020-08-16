@@ -27,7 +27,7 @@ export const Tour: React.FC<Pick<
 
         queueSnackbar({
           severity: 'success',
-          message: "Now it's your turn. Fingers crossed 🍀",
+          message: 'Congrats on finishing the tour!',
         });
       }
     },
