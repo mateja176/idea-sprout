@@ -16,8 +16,8 @@ import Share from '@material-ui/icons/Share';
 import StarRate from '@material-ui/icons/StarRate';
 import Skeleton from '@material-ui/lab/Skeleton';
 import useBoolean from 'ahooks/es/useBoolean';
-import { SigninSkeleton } from 'App/pages/SigninSkeleton';
 import { ShareMenu } from 'containers/Share/ShareMenu';
+import { SigninSkeleton } from 'containers/Signin/SigninSkeleton';
 import { useShareIdea } from 'hooks/firebase';
 import { useActions } from 'hooks/hooks';
 import { useIdeaUrl } from 'hooks/idea';
@@ -49,7 +49,7 @@ import { ExportReviewSuspender } from './Review/Export/ExportReviewSuspender';
 import { ReviewDialog } from './Review/ReviewDialog';
 import { ReviewsDialog } from './Review/ReviewsDialog';
 
-const Signin = React.lazy(() => import('App/pages/Signin'));
+const Signin = React.lazy(() => import('containers/Signin/Signin'));
 
 const signinDialogContentStyle: React.CSSProperties = { padding: 0 };
 
