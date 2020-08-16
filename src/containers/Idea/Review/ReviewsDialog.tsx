@@ -7,7 +7,7 @@ import { DraggableDialog } from 'containers/DraggableDialog';
 import { IdeaModel, Rating } from 'models/idea';
 import range from 'ramda/es/range';
 import React from 'react';
-import { withEllipsis } from 'utils/styles/styles';
+import { withInlineEllipsis } from 'utils/styles/styles';
 import { Reviews } from './Reviews';
 import { ReviewSkeleton } from './ReviewSkeleton';
 
@@ -31,7 +31,7 @@ export const ReviewsDialog = React.memo<ReviewsProps>(
         scroll="paper"
         dialogTitle={
           <>
-            Reviews:&nbsp;<i style={withEllipsis}>{name}</i>
+            Reviews:&nbsp;<i style={withInlineEllipsis}>{name}</i>
           </>
         }
         actions={<Button onClick={onClose}>Close</Button>}

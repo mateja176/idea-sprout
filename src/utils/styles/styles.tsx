@@ -44,10 +44,13 @@ export const withPointer: React.CSSProperties = {
 };
 
 export const withEllipsis: React.CSSProperties = {
-  display: 'inline-block',
   textOverflow: 'ellipsis',
   whiteSpace: 'nowrap',
   overflowX: 'hidden',
+};
+export const withInlineEllipsis: React.CSSProperties = {
+  ...withEllipsis,
+  display: 'inline-block',
 };
 
 export const inputStyle: React.CSSProperties = {

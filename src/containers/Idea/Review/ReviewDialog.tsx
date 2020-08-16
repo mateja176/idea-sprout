@@ -6,7 +6,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { EmptyDraggableDialog } from 'containers/EmptyDraggableDialog';
 import { User } from 'models/auth';
 import React from 'react';
-import { withEllipsis } from 'utils/styles/styles';
+import { withInlineEllipsis } from 'utils/styles/styles';
 import { ReviewForm, ReviewFormProps } from './Form/ReviewForm';
 import { ReviewFormSkeleton } from './Form/ReviewFormSkeleton';
 
@@ -32,7 +32,7 @@ export const ReviewDialog = React.memo<ReviewDialogProps>(
       >
         <DialogTitle>
           <Box display={'flex'} alignItems={'center'}>
-            Review:&nbsp;<i style={withEllipsis}>{idea.name}</i>
+            Review:&nbsp;<i style={withInlineEllipsis}>{idea.name}</i>
           </Box>
         </DialogTitle>
         <React.Suspense fallback={<ReviewFormSkeleton />}>
