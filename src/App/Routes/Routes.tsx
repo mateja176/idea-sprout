@@ -39,11 +39,7 @@ export const Routes: React.FC = () => {
           path={absolutePrivateRoute.root.path}
           component={RedirectToIdeas}
         />
-        <Route
-          exact
-          path={absolutePrivateRoute.ideas.path}
-          component={IdeasSwitch}
-        />
+        <Route path={absolutePrivateRoute.ideas.path} component={IdeasSwitch} />
         <Route component={NotFound} />
       </Switch>
     );
