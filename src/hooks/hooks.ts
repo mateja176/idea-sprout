@@ -38,9 +38,29 @@ export const useLocalStorageSubscribe = (key: LocalStorageKey) => {
   return value;
 };
 
+export const useLocalStorageGet = <Key extends LocalStorageKey>(key: Key) => {
+  const [item, setItem] = useState<LocalStorageItems[Key] | null>(null);
+
+  useEffect(() => {
+    setItem(storage.getItem(key));
+  }, [key]);
+
+  return item;
+};
+
 export const useLocalStorageSet = (key: LocalStorageKey) => {
   return (value: LocalStorageItems[typeof key]) => {
     storage.setItem(key, value);
+  };
+};
+
+export const useLocalStorageItem = <Key extends LocalStorageKey>(key: Key) => {
+  return { value: useLocalStorageGet(key), set: useLocalStorageSet(key) };
+};
+
+export const useLocalStorageRemove = () => {
+  return (key: LocalStorageKey) => {
+    storage.removeItem(key);
   };
 };
 
