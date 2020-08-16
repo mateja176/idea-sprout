@@ -13,7 +13,7 @@ export const IdeaContainerSkeleton: React.FC<IdeaContainerSkeletonProps> = () =>
   return (
     <>
       <Box>
-        <Tabs value={false}>
+        <Tabs value={false} variant={'fullWidth'}>
           <IdeasLink />
           <Load boxFlex={1}>
             <Tab />
