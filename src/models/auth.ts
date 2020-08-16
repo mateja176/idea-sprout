@@ -8,6 +8,9 @@ export type UserState = 'loading' | firebase.User | null;
 export interface WithUserState {
   user: UserState;
 }
+export interface WithUser {
+  user: User;
+}
 
 export type FirestoreUser = Pick<
   User,
