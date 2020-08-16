@@ -17,6 +17,7 @@ import { IdeaHelpContainer } from 'containers/Idea/Help/IdeaHelpContainer';
 import { MenuButton } from 'containers/MenuButton';
 import { absolutePrivateRoute } from 'elements/routes';
 import React from 'react';
+import './Layout.css';
 import { minNavWidth, Nav } from './Nav/Nav';
 import { NavSkeleton } from './Nav/NavSkeleton';
 
@@ -24,6 +25,9 @@ export interface LayoutProps {}
 
 const useStyles = makeStyles((theme) => ({
   toolbar: theme.mixins.toolbar,
+}));
+
+const useDrawerStyles = makeStyles(() => ({
   paper: {
     minWidth: minNavWidth,
   },
@@ -41,12 +45,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   const [drawerOpen, setDrawerOpen] = useBoolean();
 
-  const drawerClasses = React.useMemo(
-    () => ({
-      paper: classes.paper,
-    }),
-    [classes],
-  );
+  const drawerClasses = useDrawerStyles();
 
   return (
     <Box height={'100%'} display={'flex'} flexDirection={'column'}>
