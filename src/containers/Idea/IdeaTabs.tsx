@@ -29,7 +29,6 @@ import {
   tabChildStyle,
   tabsLogoHeight,
   tabsTitleSectionHeight,
-  tabsTitleSectionPaddingBottom,
   withStarColor,
 } from 'utils/styles/styles';
 import { BackToIdeas } from './BackToIdeas';
@@ -166,32 +165,31 @@ export const IdeaTabs: React.FC<
       <Box height={tabsTitleSectionHeight}>
         <Box
           mx={3}
-          mb={`${tabsTitleSectionPaddingBottom}px`}
           display={'flex'}
           alignItems={'center'}
           height={showName ? tabsLogoHeight : 0}
           overflow={'hidden'}
           style={titleSectionStyle}
         >
-          <Typography variant={'h4'}>{idea.name}</Typography>
-          <Box ml={2}>
-            <React.Suspense
-              fallback={
-                <Skeleton
-                  variant={'circle'}
-                  width={tabsLogoHeight}
-                  height={tabsLogoHeight}
-                />
-              }
-            >
-              <StorageImage
-                style={imageStyle}
-                storagePath={idea.logo.path}
+          <Box mr={2}>
+            <Typography variant={'h4'}>{idea.name}</Typography>
+          </Box>
+          <React.Suspense
+            fallback={
+              <Skeleton
+                variant={'circle'}
                 width={tabsLogoHeight}
                 height={tabsLogoHeight}
               />
-            </React.Suspense>
-          </Box>
+            }
+          >
+            <StorageImage
+              style={imageStyle}
+              storagePath={idea.logo.path}
+              width={tabsLogoHeight}
+              height={tabsLogoHeight}
+            />
+          </React.Suspense>
         </Box>
       </Box>
       <ShareMenu
