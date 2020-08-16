@@ -7,13 +7,25 @@ import { absolutePrivateRoute } from 'elements/routes';
 import React from 'react';
 import { tabChildStyle } from 'utils/styles/styles';
 
-export const IdeasLink: React.FC<Omit<TabProps, 'onClick' | 'label'>> = (
-  props,
-) => {
+const linkStyle: React.CSSProperties = { flex: 1 };
+
+export const IdeasLink: React.FC<Omit<TabProps, 'onClick' | 'label'>> = ({
+  style,
+  ...props
+}) => {
+  const tabStyle: React.CSSProperties = React.useMemo(
+    () => ({
+      ...style,
+      width: '100%',
+    }),
+    [style],
+  );
+
   return (
-    <Link to={absolutePrivateRoute.ideas.path}>
+    <Link to={absolutePrivateRoute.ideas.path} style={linkStyle}>
       <Tab
         {...props}
+        style={tabStyle}
         label={
           <Tooltip title={'All ideas'}>
             <Box style={tabChildStyle}>
