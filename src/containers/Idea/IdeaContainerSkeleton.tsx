@@ -4,8 +4,8 @@ import Tabs from '@material-ui/core/Tabs';
 import { Load } from 'components/Load';
 import React from 'react';
 import { tabsTitleSectionHeight } from 'utils/styles/styles';
-import { BackToIdeas } from './BackToIdeas';
 import { IdeaSkeleton } from './IdeaSkeleton';
+import { IdeasLink } from './IdeasLink';
 
 export interface IdeaContainerSkeletonProps {}
 
@@ -14,7 +14,7 @@ export const IdeaContainerSkeleton: React.FC<IdeaContainerSkeletonProps> = () =>
     <>
       <Box>
         <Tabs value={false}>
-          <BackToIdeas />
+          <IdeasLink />
           <Load boxFlex={1}>
             <Tab />
           </Load>
