@@ -1,22 +1,13 @@
 import Box from '@material-ui/core/Box';
 import { ButtonProps } from '@material-ui/core/Button';
-import makeStyles from '@material-ui/core/styles/makeStyles';
 import Tooltip from '@material-ui/core/Tooltip';
 import RateReview from '@material-ui/icons/RateReview';
 import { useFirestoreDoc, useReviewRef } from 'hooks/firebase';
+import { useReviewPromptStyles } from 'hooks/style';
 import { User } from 'models/auth';
 import { IdeaModel } from 'models/idea';
 import React from 'react';
-
-const useStyles = makeStyles((theme) => ({
-  tooltip: {
-    background: theme.palette.primary.main,
-    fontSize: '0.8em',
-  },
-  arrow: {
-    color: theme.palette.primary.main,
-  },
-}));
+import { getReviewPrompt } from 'utils/idea/review';
 
 export const ReviewButton: React.FC<
   {
@@ -31,20 +22,14 @@ export const ReviewButton: React.FC<
 
   const review = useFirestoreDoc(reviewRef);
 
-  const classes = useStyles();
+  const classes = useReviewPromptStyles();
 
   return (
     <Tooltip
       arrow
       classes={classes}
       open={review ? undefined : !reviewOpen}
-      title={
-        review
-          ? 'Review'
-          : reviewCount > 1
-          ? `Join the ${reviewCount} people who reviewed`
-          : "Your review directly impacts the idea's lifecycle"
-      }
+      title={review ? 'Review' : getReviewPrompt(reviewCount)}
     >
       <Box style={style} onClick={onClick}>
         <RateReview color="primary" />

@@ -1,3 +1,4 @@
+import { makeStyles } from '@material-ui/core/styles';
 import useTheme from '@material-ui/core/styles/useTheme';
 import { useMemo } from 'react';
 
@@ -21,3 +22,13 @@ export const useIdeaOptionsButtonBorder = () => {
 
   return useMemo(() => `1px solid ${theme.palette.grey[600]}`, [theme]);
 };
+
+export const useReviewPromptStyles = makeStyles((theme) => ({
+  tooltip: {
+    background: theme.palette.primary.main,
+    fontSize: '0.8em',
+  },
+  arrow: {
+    color: theme.palette.primary.main,
+  },
+}));
