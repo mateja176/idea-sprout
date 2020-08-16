@@ -6,7 +6,15 @@ import { ReviewButton } from './ReviewButton';
 
 export const ReviewButtonSuspender: React.FC<
   React.ComponentProps<typeof ReviewButton> & TabProps
-> = ({ reviewOpen, reviewCount, ideaId, uid, onClick, ...props }) => {
+> = ({
+  reviewOpen,
+  reviewCount,
+  ideaId,
+  uid,
+  onClick,
+  tooltipClosed,
+  ...props
+}) => {
   const { style } = props;
 
   return (
@@ -27,6 +35,7 @@ export const ReviewButtonSuspender: React.FC<
             reviewCount={reviewCount}
             style={tabChildStyle}
             onClick={onClick}
+            tooltipClosed={tooltipClosed}
           />
         }
         aria-label={'Review'}

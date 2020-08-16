@@ -159,6 +159,7 @@ export const IdeaTabs: React.FC<
             reviewCount={idea.ratingCount}
             style={ideaTabStyle}
             onClick={setReviewOpen.setTrue}
+            tooltipClosed={showName}
           />
         )}
         <ExportReviewSuspender idea={idea} user={user} style={ideaTabStyle} />

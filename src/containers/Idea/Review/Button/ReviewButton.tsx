@@ -16,8 +16,17 @@ export const ReviewButton: React.FC<
     uid: User['uid'];
     reviewCount: number;
     style: React.CSSProperties;
+    tooltipClosed: boolean;
   } & Pick<ButtonProps, 'onClick'>
-> = ({ reviewOpen, ideaId, uid, reviewCount, style, onClick }) => {
+> = ({
+  reviewOpen,
+  ideaId,
+  uid,
+  reviewCount,
+  style,
+  onClick,
+  tooltipClosed,
+}) => {
   const reviewRef = useReviewRef(ideaId, uid);
 
   const review = useFirestoreDoc(reviewRef);
@@ -28,7 +37,7 @@ export const ReviewButton: React.FC<
     <Tooltip
       arrow
       classes={classes}
-      open={review ? undefined : !reviewOpen}
+      open={tooltipClosed || review ? undefined : !reviewOpen}
       title={review ? 'Review' : getReviewPrompt(reviewCount)}
     >
       <Box style={style} onClick={onClick}>
