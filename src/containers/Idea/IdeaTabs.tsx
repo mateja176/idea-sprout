@@ -29,6 +29,7 @@ import {
   tabChildStyle,
   tabsLogoHeight,
   tabsTitleSectionHeight,
+  withEllipsis,
   withStarColor,
 } from 'utils/styles/styles';
 import { BackToIdeas } from './BackToIdeas';
@@ -171,8 +172,10 @@ export const IdeaTabs: React.FC<
           overflow={'hidden'}
           style={titleSectionStyle}
         >
-          <Box mr={2}>
-            <Typography variant={'h4'}>{idea.name}</Typography>
+          <Box mr={2} overflow={'hidden'}>
+            <Typography variant={'h4'} style={withEllipsis}>
+              {idea.name}
+            </Typography>
           </Box>
           <React.Suspense
             fallback={
