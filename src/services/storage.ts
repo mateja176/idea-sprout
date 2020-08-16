@@ -50,18 +50,18 @@ export const storage: Storage = {
     return value ? JSON.parse(value) : null;
   },
   setItem: (key, value) => {
+    window.localStorage.setItem(key, JSON.stringify(value));
+
     subscribersRef.current[key].forEach((callback) => {
       callback('set', value);
     });
-
-    window.localStorage.setItem(key, JSON.stringify(value));
   },
   removeItem: (key) => {
+    window.localStorage.removeItem(key);
+
     subscribersRef.current[key].forEach((callback) => {
       callback('remove', null);
     });
-
-    window.localStorage.remove(window.localStorage);
   },
   clear: () => {
     window.localStorage.clear();
