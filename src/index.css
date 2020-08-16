@@ -44,5 +44,5 @@ a:-webkit-any-link {
 }
 
 .MuiDialog-root {
-  z-index: 2147483647;
+  z-index: 2147483647 !important;
 }
