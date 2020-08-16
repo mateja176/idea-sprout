@@ -1,48 +1,50 @@
 import { arrayToMap } from 'utils/utils';
 
-export const localStorageKeys = ['shouldRunTour'] as const;
+export const localStorageKeys = ['shouldRunTour', 'email'] as const;
 export type LocalStorageKeys = typeof localStorageKeys;
 export type LocalStorageKey = LocalStorageKeys[number];
 export const localStorageKey = arrayToMap(localStorageKeys);
 
 export type LocalStorageItems = {
   [localStorageKey.shouldRunTour]: boolean;
+  [localStorageKey.email]: string;
 };
 
 export type Unsubscribe = () => void;
-export type Subscriber<Key extends LocalStorageKey> = {
-  key: Key;
-  callback: <Action extends 'initial' | 'set' | 'remove'>(
-    action: Action,
-    value: Action extends 'remove' ? null : LocalStorageItems[Key],
-  ) => void;
-};
 
-type SubScriberMap = {
-  [Key in LocalStorageKey]: Subscriber<Key>['callback'][];
-};
+export type StorageAction = 'initial' | 'set' | 'remove';
 
-export const initialSubscribers: SubScriberMap = {
+export type StorageValue = LocalStorageItems[keyof LocalStorageItems] | null;
+
+export type StorageSubscribe = (
+  action: StorageAction,
+  value: StorageValue,
+) => void;
+
+type Subscribers = { [key in LocalStorageKey]: StorageSubscribe[] };
+
+export const initialSubscribers: Subscribers = {
   shouldRunTour: [],
+  email: [],
 };
 
-export interface LocalStorage {
+const subscribersRef = { current: initialSubscribers };
+
+export type Storage = {
   getItem: <Key extends LocalStorageKey>(key: Key) => LocalStorageItems[Key];
   setItem: <Key extends LocalStorageKey>(
     key: Key,
     value: LocalStorageItems[Key],
   ) => void;
-  removeItem: (key: LocalStorageKey) => void;
+  removeItem: <Key extends LocalStorageKey>(key: Key) => void;
   clear: () => void;
   subscribe: <Key extends LocalStorageKey>(
     key: Key,
-    callback: Subscriber<Key>['callback'],
+    callback: (action: StorageAction, value: StorageValue) => void,
   ) => Unsubscribe;
-}
+};
 
-const subscribersRef = { current: initialSubscribers };
-
-export const storage: LocalStorage = {
+export const storage: Storage = {
   getItem: (key) => {
     const value = window.localStorage.getItem(key);
     return value ? JSON.parse(value) : null;
@@ -54,7 +56,7 @@ export const storage: LocalStorage = {
 
     window.localStorage.setItem(key, String(value));
   },
-  removeItem: (key: LocalStorageKey) => {
+  removeItem: (key) => {
     subscribersRef.current[key].forEach((callback) => {
       callback('remove', null);
     });
