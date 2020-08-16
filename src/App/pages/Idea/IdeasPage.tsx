@@ -7,17 +7,20 @@ import { Ideas } from 'containers/Idea/Ideas/Ideas';
 import { IdeasSkeleton } from 'containers/Idea/Ideas/IdeasSkeleton';
 import { MyIdeas } from 'containers/Idea/Ideas/MyIdeas';
 import { MyIdeasSkeleton } from 'containers/Idea/Ideas/MyIdeasSkeleton';
-import { useSignedInUser } from 'hooks/firebase';
+import { useUserState } from 'hooks/firebase';
+import { WithUser } from 'models/auth';
 import qs from 'qs';
 import React from 'react';
 import { RouteComponentProps, useHistory, useLocation } from 'react-router-dom';
+import { isUserLoading } from 'utils/auth';
+import { IdeasPageSkeleton } from './IdeasPageSkeleton';
 
-export interface IdeasPageProps extends RouteComponentProps {}
+export interface IdeasPageProps extends RouteComponentProps, WithUser {}
 
-const IdeasPage: React.FC<IdeasPageProps> = () => {
+const Signin = React.lazy(() => import('../Signin'));
+
+const IdeasPage: React.FC<IdeasPageProps> = ({ user }) => {
   const history = useHistory();
-
-  const user = useSignedInUser();
 
   const query = qs.parse(useLocation().search, { ignoreQueryPrefix: true });
 
@@ -77,4 +80,18 @@ const IdeasPage: React.FC<IdeasPageProps> = () => {
   );
 };
 
-export default IdeasPage;
+export default (props: Omit<IdeasPageProps, 'user'>) => {
+  const user = useUserState();
+
+  if (isUserLoading(user)) {
+    return <IdeasPageSkeleton />;
+  } else if (user === null || !user.emailVerified) {
+    return (
+      <React.Suspense fallback={<IdeasPageSkeleton />}>
+        <Signin user={user} />
+      </React.Suspense>
+    );
+  } else {
+    return <IdeasPage {...props} user={user} />;
+  }
+};

@@ -2,8 +2,9 @@ import Box from '@material-ui/core/Box';
 import useBoolean from 'ahooks/es/useBoolean';
 import { SnackbarContext } from 'context/snackbar';
 import { absolutePrivateRoute } from 'elements/routes';
-import { useFirestoreDoc, useIdeaRef, useSignedInUser } from 'hooks/firebase';
+import { useFirestoreDoc, useIdeaRef } from 'hooks/firebase';
 import { useActions } from 'hooks/hooks';
+import { WithUser } from 'models/auth';
 import { IdeaModel, IdeaSprout } from 'models/idea';
 import React from 'react';
 import { Redirect } from 'react-router-dom';
@@ -11,7 +12,7 @@ import { createUpdateIdea } from 'services/store/slices/ideas';
 import { Idea, IdeaProps } from './Idea';
 import { IdeaTabs } from './IdeaTabs';
 
-export interface IdeaContainerProps extends Pick<IdeaModel, 'id'> {
+export interface IdeaContainerProps extends Pick<IdeaModel, 'id'>, WithUser {
   initialIdea?: IdeaModel;
 }
 
@@ -22,12 +23,11 @@ const actionCreators = {
 export const IdeaContainer: React.FC<IdeaContainerProps> = ({
   id,
   initialIdea,
+  user,
 }) => {
   const { updateIdea } = useActions(actionCreators);
 
   const { queueSnackbar } = React.useContext(SnackbarContext);
-
-  const user = useSignedInUser();
 
   const ideaRef = useIdeaRef(id);
 

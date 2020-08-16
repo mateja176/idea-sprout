@@ -35,6 +35,7 @@ import { useQuery } from 'react-query';
 import { useLocation } from 'react-router-dom';
 import FacebookIcon from 'react-share/es/FacebookIcon';
 import TwitterIcon from 'react-share/es/TwitterIcon';
+import { useAuth } from 'reactfire';
 import { blur } from 'services/services';
 import {
   createSaveUser,
@@ -46,7 +47,6 @@ import * as yup from 'yup';
 
 export interface SigninProps {
   user: User | null;
-  auth: firebase.auth.Auth;
 }
 
 const linkStyle: React.CSSProperties = {
@@ -78,7 +78,9 @@ const actionCreators = {
   setEmailVerified: createSetEmailVerified,
 };
 
-const Signin: React.FC<SigninProps> = ({ user, auth }) => {
+const Signin: React.FC<SigninProps> = ({ user }) => {
+  const auth = useAuth();
+
   const location = useLocation();
 
   const origin = useOrigin();

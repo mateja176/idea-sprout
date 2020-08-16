@@ -3,7 +3,6 @@ import { hot } from 'react-hot-loader';
 import { Layout } from './Layout/Layout';
 import { Provider } from './Provider/Provider';
 import { Routes } from './Routes/Routes';
-import { RoutesSkeleton } from './Routes/RoutesSkeleton';
 import { Snackbar } from './Snackbar';
 
 export interface AppProps {}
@@ -12,9 +11,7 @@ const AppComponent: React.FC<AppProps> = () => {
   return (
     <Provider>
       <Layout>
-        <React.Suspense fallback={<RoutesSkeleton />}>
-          <Routes />
-        </React.Suspense>
+        <Routes />
         <Snackbar />
       </Layout>
     </Provider>
