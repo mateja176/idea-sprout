@@ -16,3 +16,5 @@ export function assertRequired<O extends {}>(
 export const blur = () => {
   (window.document.activeElement as HTMLInputElement)?.blur();
 };
+
+export const getOrigin = () => window.location.origin;

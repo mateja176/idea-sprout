@@ -2,10 +2,12 @@ import { absolutePrivateRoute } from 'elements/routes';
 import { IdeaModel } from 'models/idea';
 import { useMemo } from 'react';
 import urljoin from 'url-join';
+import { useOrigin } from './hooks';
 
 export const useIdeaUrl = (id: IdeaModel['id']) => {
-  return useMemo(
-    () => urljoin(process.env.PUBLIC_URL, absolutePrivateRoute.ideas.path, id),
-    [id],
-  );
+  const origin = useOrigin();
+  return useMemo(() => urljoin(origin, absolutePrivateRoute.ideas.path, id), [
+    id,
+    origin,
+  ]);
 };

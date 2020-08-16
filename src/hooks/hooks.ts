@@ -8,8 +8,19 @@ import {
 } from 'react';
 import { useDispatch } from 'react-redux';
 import { ActionCreatorsMapObject, bindActionCreators } from 'redux';
+import { getOrigin } from 'services/services';
 import { LocalStorageItems, LocalStorageKey, storage } from 'services/storage';
 import { Action } from '../services/store/reducer';
+
+export const useOrigin = () => {
+  const [origin, setOrigin] = useState('');
+
+  useEffect(() => {
+    setOrigin(getOrigin());
+  }, []);
+
+  return origin;
+};
 
 export const useLocalStorageSubscribe = (key: LocalStorageKey) => {
   const [value, setValue] = useState<LocalStorageItems[typeof key] | null>(
