@@ -10,6 +10,7 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { createUpdateIdea } from 'services/store/slices/ideas';
 import { Idea, IdeaProps } from './Idea';
+import { IdeaMetaTags } from './IdeaMetaTags';
 import { IdeaTabs } from './IdeaTabs';
 
 export interface IdeaContainerProps
@@ -71,6 +72,7 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({
       overflow={'auto'}
       onScroll={handleScroll}
     >
+      <IdeaMetaTags idea={idea} />
       <IdeaTabs user={user} idea={idea} showName={showName} update={update} />
       <Idea user={user} idea={idea} update={update} />
     </Box>
