@@ -17,7 +17,9 @@ import { IdeasPageSkeleton } from './IdeasPageSkeleton';
 
 export interface IdeasPageProps extends RouteComponentProps, WithUser {}
 
-const Signin = React.lazy(() => import('containers/Signin/Signin'));
+const Signin = React.lazy(() =>
+  import(/* webpackChunkName: "Signin" */ 'containers/Signin/Signin'),
+);
 
 const IdeasPage: React.FC<IdeasPageProps> = ({ user }) => {
   const history = useHistory();

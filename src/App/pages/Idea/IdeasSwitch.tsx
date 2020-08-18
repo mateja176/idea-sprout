@@ -4,14 +4,18 @@ import React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router-dom';
 import { IdeasPageSkeleton } from './IdeasPageSkeleton';
 
-const LazyIdeasPage = React.lazy(() => import('./IdeasPage'));
+const LazyIdeasPage = React.lazy(() =>
+  import(/* webpackChunkName: "IdeasPage" */ './IdeasPage'),
+);
 const IdeasPage: React.FC<RouteComponentProps> = (props) => (
   <React.Suspense fallback={<IdeasPageSkeleton />}>
     <LazyIdeasPage {...props} />
   </React.Suspense>
 );
 
-const LazyIdeaPage = React.lazy(() => import('./IdeaPage'));
+const LazyIdeaPage = React.lazy(() =>
+  import(/* webpackChunkName: "IdeaPage" */ './IdeaPage'),
+);
 const IdeaPage: React.FC<React.ComponentProps<typeof LazyIdeaPage>> = (
   props,
 ) => (

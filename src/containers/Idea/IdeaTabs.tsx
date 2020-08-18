@@ -49,7 +49,9 @@ import { ExportReviewSuspender } from './Review/Export/ExportReviewSuspender';
 import { ReviewDialog } from './Review/ReviewDialog';
 import { ReviewsDialog } from './Review/ReviewsDialog';
 
-const Signin = React.lazy(() => import('containers/Signin/Signin'));
+const Signin = React.lazy(() =>
+  import(/* webpackChunkName: "Signin" */ 'containers/Signin/Signin'),
+);
 
 const signinDialogContentStyle: React.CSSProperties = { padding: 0 };
 

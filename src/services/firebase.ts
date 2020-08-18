@@ -20,5 +20,7 @@ export const clearFirestoreCache = () => {
 
 export const withFirestore = <Param>(param: Param) =>
   firebase.firestore === undefined
-    ? import('firebase/firestore').then(() => param)
+    ? import(/* webpackChunkName: "Firestore" */ 'firebase/firestore').then(
+        () => param,
+      )
     : Promise.resolve(param);
