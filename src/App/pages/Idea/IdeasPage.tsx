@@ -7,6 +7,7 @@ import { Ideas } from 'containers/Idea/Ideas/Ideas';
 import { IdeasSkeleton } from 'containers/Idea/Ideas/IdeasSkeleton';
 import { MyIdeas } from 'containers/Idea/Ideas/MyIdeas';
 import { MyIdeasSkeleton } from 'containers/Idea/Ideas/MyIdeasSkeleton';
+import { SigninSkeleton } from 'containers/Signin/SigninSkeleton';
 import { useUserState } from 'hooks/firebase';
 import { WithUser } from 'models/auth';
 import qs from 'qs';
@@ -89,7 +90,7 @@ export default (props: Omit<IdeasPageProps, 'user'>) => {
     return <IdeasPageSkeleton />;
   } else if (user === null || !user.emailVerified) {
     return (
-      <React.Suspense fallback={<IdeasPageSkeleton />}>
+      <React.Suspense fallback={<SigninSkeleton />}>
         <Signin user={user} />
       </React.Suspense>
     );
