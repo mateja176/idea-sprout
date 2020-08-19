@@ -57,8 +57,9 @@
     "postinstall": "yarn --cwd functions install --ignore-engines",
     "predeploy": "yarn build",
     "deploy": "firebase deploy",
+    "analyze:build": "source-map-explorer 'build/static/js/*.js'",
     "preanalyze": "yarn build",
-    "analyze": "source-map-explorer 'build/static/js/*.js'"
+    "analyze": "yarn analyze:build"
   },
   "eslintConfig": {
     "extends": "react-app"
