@@ -1,8 +1,8 @@
 import { absolutePrivateRoute, ideaPath } from 'elements/routes';
 import React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router-dom';
-import { LazyIdeaPageSuspender } from './LazyIdeaPage';
-import { LazyIdeasPageSuspender } from './LazyIdeasPage';
+import { LazyIdeasPageSuspender } from '../Ideas/LazyIdeasPage';
+import { LazyIdeaPageSuspender } from '../LazyIdeaPage';
 
 export interface IdeasSwitchProps extends RouteComponentProps {}
 
