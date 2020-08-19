@@ -17,8 +17,7 @@ import StarRate from '@material-ui/icons/StarRate';
 import Skeleton from '@material-ui/lab/Skeleton';
 import useBoolean from 'ahooks/es/useBoolean';
 import { ShareMenu } from 'containers/Share/ShareMenu';
-import { LazySigninSuspender } from 'containers/Signin/LazySignin';
-import { SigninSkeleton } from 'containers/Signin/SigninSkeleton';
+import { CenteredLazySignin } from 'containers/Signin/LazySignin';
 import { useShareIdea } from 'hooks/firebase';
 import { useActions } from 'hooks/hooks';
 import { useIdeaUrl } from 'hooks/idea';
@@ -294,19 +293,7 @@ export const IdeaTabs: React.FC<
       )}
       <Dialog open={signinDialogOpen} fullScreen>
         <DialogContent style={signinDialogContentStyle}>
-          <LazySigninSuspender
-            user={user}
-            fallback={
-              <Box
-                display={'flex'}
-                alignItems={'center'}
-                justifyContent={'center'}
-                height={'100%'}
-              >
-                <SigninSkeleton />
-              </Box>
-            }
-          />
+          <CenteredLazySignin user={user} />
         </DialogContent>
         <DialogActions>
           <Button onClick={setSigninDialogOpen.setFalse}>Close</Button>

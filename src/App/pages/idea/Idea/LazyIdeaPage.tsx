@@ -1,16 +1,10 @@
 import { IdeaContainerSkeleton } from 'containers/Idea/IdeaContainerSkeleton';
-import { WithFallback } from 'models/components';
-import React from 'react';
+import Loadable from 'react-loadable';
 
-const LazyIdeaPage = React.lazy(() =>
-  import(/* webpackChunkName: "IdeaPage" */ './IdeaPage'),
-);
+const LazyIdeaPage = Loadable({
+  loader: () => import(/* webpackChunkName: "IdeaPage" */ './IdeaPage'),
+  loading: IdeaContainerSkeleton,
+  modules: ['./IdeaPage.tsx'],
+  webpack: () => [require.resolveWeak('./IdeaPage.tsx')],
+});
 export default LazyIdeaPage;
-
-export const LazyIdeaPageSuspender: React.FC<
-  React.ComponentProps<typeof LazyIdeaPage> & WithFallback
-> = ({ fallback = <IdeaContainerSkeleton />, ...props }) => (
-  <React.Suspense fallback={fallback}>
-    <LazyIdeaPage {...props} />
-  </React.Suspense>
-);

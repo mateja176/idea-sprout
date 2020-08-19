@@ -1,8 +1,8 @@
 import { absolutePrivateRoute, ideaPath } from 'elements/routes';
 import React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router-dom';
-import { LazyIdeasPageSuspender } from '../Ideas/LazyIdeasPage';
-import { LazyIdeaPageSuspender } from '../LazyIdeaPage';
+import LazyIdeaPage from '../Idea/LazyIdeaPage';
+import LazyIdeasPage from '../Ideas/LazyIdeasPage';
 
 export interface IdeasSwitchProps extends RouteComponentProps {}
 
@@ -11,9 +11,9 @@ const IdeasSwitch: React.FC<IdeasSwitchProps> = () => (
     <Route
       exact
       path={absolutePrivateRoute.ideas.path}
-      component={LazyIdeasPageSuspender}
+      component={LazyIdeasPage}
     />
-    <Route exact path={ideaPath} component={LazyIdeaPageSuspender} />
+    <Route exact path={ideaPath} component={LazyIdeaPage} />
   </Switch>
 );
 

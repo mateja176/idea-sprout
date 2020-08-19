@@ -7,7 +7,7 @@ import { Ideas } from 'containers/Idea/Ideas/Ideas';
 import { IdeasSkeleton } from 'containers/Idea/Ideas/IdeasSkeleton';
 import { MyIdeas } from 'containers/Idea/Ideas/MyIdeas';
 import { MyIdeasSkeleton } from 'containers/Idea/Ideas/MyIdeasSkeleton';
-import { LazySigninSuspender } from 'containers/Signin/LazySignin';
+import LazySignin from 'containers/Signin/LazySignin';
 import { useUserState } from 'hooks/firebase';
 import { WithUser } from 'models/auth';
 import qs from 'qs';
@@ -85,7 +85,7 @@ export default (props: Omit<IdeasPageProps, 'user'>) => {
   if (isUserLoading(user)) {
     return <IdeasPageSkeleton />;
   } else if (user === null || !user.emailVerified) {
-    return <LazySigninSuspender user={user} />;
+    return <LazySignin user={user} />;
   } else {
     return <IdeasPage {...props} user={user} />;
   }
