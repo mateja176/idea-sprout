@@ -7,7 +7,7 @@ import { Ideas } from 'containers/Idea/Ideas/Ideas';
 import { IdeasSkeleton } from 'containers/Idea/Ideas/IdeasSkeleton';
 import { MyIdeas } from 'containers/Idea/Ideas/MyIdeas';
 import { MyIdeasSkeleton } from 'containers/Idea/Ideas/MyIdeasSkeleton';
-import { SigninSkeleton } from 'containers/Signin/SigninSkeleton';
+import { LazySigninSuspender } from 'containers/Signin/LazySignin';
 import { useUserState } from 'hooks/firebase';
 import { WithUser } from 'models/auth';
 import qs from 'qs';
@@ -17,10 +17,6 @@ import { isUserLoading } from 'utils/auth';
 import { IdeasPageSkeleton } from './IdeasPageSkeleton';
 
 export interface IdeasPageProps extends RouteComponentProps, WithUser {}
-
-const Signin = React.lazy(() =>
-  import(/* webpackChunkName: "Signin" */ 'containers/Signin/Signin'),
-);
 
 const IdeasPage: React.FC<IdeasPageProps> = ({ user }) => {
   const history = useHistory();
@@ -89,11 +85,7 @@ export default (props: Omit<IdeasPageProps, 'user'>) => {
   if (isUserLoading(user)) {
     return <IdeasPageSkeleton />;
   } else if (user === null || !user.emailVerified) {
-    return (
-      <React.Suspense fallback={<SigninSkeleton />}>
-        <Signin user={user} />
-      </React.Suspense>
-    );
+    return <LazySigninSuspender user={user} />;
   } else {
     return <IdeasPage {...props} user={user} />;
   }

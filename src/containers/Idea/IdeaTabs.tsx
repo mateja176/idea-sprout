@@ -17,6 +17,7 @@ import StarRate from '@material-ui/icons/StarRate';
 import Skeleton from '@material-ui/lab/Skeleton';
 import useBoolean from 'ahooks/es/useBoolean';
 import { ShareMenu } from 'containers/Share/ShareMenu';
+import { LazySigninSuspender } from 'containers/Signin/LazySignin';
 import { SigninSkeleton } from 'containers/Signin/SigninSkeleton';
 import { useShareIdea } from 'hooks/firebase';
 import { useActions } from 'hooks/hooks';
@@ -48,10 +49,6 @@ import { ReviewButtonSuspender } from './Review/Button/ReviewButtonSuspender';
 import { ExportReviewSuspender } from './Review/Export/ExportReviewSuspender';
 import { ReviewDialog } from './Review/ReviewDialog';
 import { ReviewsDialog } from './Review/ReviewsDialog';
-
-const Signin = React.lazy(() =>
-  import(/* webpackChunkName: "Signin" */ 'containers/Signin/Signin'),
-);
 
 const signinDialogContentStyle: React.CSSProperties = { padding: 0 };
 
@@ -297,7 +294,8 @@ export const IdeaTabs: React.FC<
       )}
       <Dialog open={signinDialogOpen} fullScreen>
         <DialogContent style={signinDialogContentStyle}>
-          <React.Suspense
+          <LazySigninSuspender
+            user={user}
             fallback={
               <Box
                 display={'flex'}
@@ -308,9 +306,7 @@ export const IdeaTabs: React.FC<
                 <SigninSkeleton />
               </Box>
             }
-          >
-            <Signin user={user} />
-          </React.Suspense>
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={setSigninDialogOpen.setFalse}>Close</Button>
