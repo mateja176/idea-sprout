@@ -56,7 +56,9 @@
     "eject": "react-scripts eject",
     "postinstall": "yarn --cwd functions install --ignore-engines",
     "predeploy": "yarn build",
-    "deploy": "firebase deploy",
+    "deploy:firebase": "firebase deploy",
+    "deploy": "yarn deploy:firebase",
+    "deploy:hosting": "yarn deploy:firebase --only hosting",
     "analyze:build": "source-map-explorer 'build/static/js/*.js'",
     "preanalyze": "yarn build",
     "analyze": "yarn analyze:build"
