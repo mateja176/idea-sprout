@@ -2,7 +2,8 @@ import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
 import fetch from 'node-fetch';
 import * as url from 'url';
-import { interfaces, paypal } from './interfaces';
+import * as interfaces from './models/models';
+import * as paypal from './types/paypal';
 
 export const upgradeToPro = functions.https.onCall(async (data, context) => {
   const { orderId } = data;
