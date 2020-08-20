@@ -21,9 +21,14 @@ export interface IdeasPageProps extends RouteComponentProps, WithUser {}
 const IdeasPage: React.FC<IdeasPageProps> = ({ user }) => {
   const history = useHistory();
 
-  const query = qs.parse(useLocation().search, { ignoreQueryPrefix: true });
+  const location = useLocation();
 
-  const showMyIdeas = (query.author && query.author) === user.uid;
+  const query = React.useMemo(
+    () => qs.parse(location.search, { ignoreQueryPrefix: true }),
+    [location],
+  );
+
+  const showMyIdeas = query.author && query.author === user.uid;
 
   const handleDiscover: React.MouseEventHandler = React.useCallback(() => {
     history.push({
