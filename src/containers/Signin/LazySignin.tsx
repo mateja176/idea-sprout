@@ -1,6 +1,6 @@
 /// <reference types="webpack-env" />
 
-import Loader from 'react-loadable';
+import Loadable from 'react-loadable';
 import { SigninSkeleton } from './SigninSkeleton';
 
 export const loadSignin = () =>
@@ -10,7 +10,7 @@ const modules = ['./Signin.tsx'];
 
 const webpack = () => [require.resolveWeak('./Signin.tsx')];
 
-const LazySignin = Loader({
+const LazySignin = Loadable({
   loader: loadSignin,
   loading: SigninSkeleton,
   modules,
