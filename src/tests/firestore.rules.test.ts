@@ -6,8 +6,9 @@ import {
   initializeAdminApp,
   initializeTestApp,
 } from '@firebase/testing';
-import { CreationIdea, RawReview } from 'models';
-import { firestoreCollections, getInitialIdea } from 'utils';
+import { CreationIdea } from 'models/idea';
+import { firestoreCollections } from 'utils/firebase';
+import { getInitialIdea } from 'utils/idea/idea';
 
 const projectId = 'idea-sprout';
 const myId = '1';
