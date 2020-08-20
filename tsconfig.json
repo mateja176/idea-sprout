@@ -15,7 +15,8 @@
     "noEmit": true,
     "jsx": "react",
     "baseUrl": "src",
-    "types": ["react/experimental", "jest"]
+    "types": ["react/experimental", "jest"],
+    "noUnusedLocals": true
   },
   "include": ["src"]
 }

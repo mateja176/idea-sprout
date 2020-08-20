@@ -137,11 +137,6 @@ const reviewSubmitActionCreators = {
   updateIdea: createUpdateIdea,
 };
 
-type RatingUpdate = Record<
-  Extract<keyof IdeaModel, 'averageRating' | 'ratingCount'>,
-  firebase.firestore.FieldValue
->;
-
 export const useReviewSubmit = ({
   idea,
   currentReview,
