@@ -1,4 +1,4 @@
-import useBoolean from 'ahooks/es/useBoolean';
+import { useBoolean } from 'ahooks';
 import firebase from 'firebase/app';
 import { Claims } from 'models/firebase';
 import React from 'react';

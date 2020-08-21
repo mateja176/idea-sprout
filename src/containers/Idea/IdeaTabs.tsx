@@ -15,7 +15,7 @@ import RateReview from '@material-ui/icons/RateReview';
 import Share from '@material-ui/icons/Share';
 import StarRate from '@material-ui/icons/StarRate';
 import Skeleton from '@material-ui/lab/Skeleton';
-import useBoolean from 'ahooks/es/useBoolean';
+import { useBoolean } from 'ahooks';
 import { ShareMenu } from 'containers/Share/ShareMenu';
 import LazySignin from 'containers/Signin/LazySignin';
 import { useShareIdea } from 'hooks/firebase';

@@ -1,4 +1,4 @@
-import useBoolean from 'ahooks/es/useBoolean';
+import { useBoolean } from 'ahooks';
 import { SnackbarContext } from 'context/snackbar';
 import { useCallback, useContext, useMemo } from 'react';
 import { loadScriptService, renderPlayerService } from 'services/youtube';

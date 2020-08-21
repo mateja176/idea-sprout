@@ -13,7 +13,7 @@ import Beenhere from '@material-ui/icons/Beenhere';
 import CloudDownload from '@material-ui/icons/CloudDownload';
 import EmojiEvents from '@material-ui/icons/EmojiEvents';
 import Skeleton from '@material-ui/lab/Skeleton';
-import useBoolean from 'ahooks/es/useBoolean';
+import { useBoolean } from 'ahooks';
 import { ProMembership } from 'containers/ProMembership';
 import { SnackbarContext } from 'context/snackbar';
 import { proMembership, proMembershipDiscount } from 'elements/upgrade';

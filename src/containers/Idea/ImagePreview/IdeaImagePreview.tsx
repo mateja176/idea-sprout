@@ -1,6 +1,6 @@
 import Box from '@material-ui/core/Box';
 import Skeleton from '@material-ui/lab/Skeleton';
-import useBoolean from 'ahooks/es/useBoolean';
+import { useBoolean } from 'ahooks';
 import { IdeaPreviewWrapper } from 'components/Idea/IdeaPreviewWrapper';
 import { useStorageDownloadUrl } from 'hooks/firebase';
 import { StorageFile } from 'models/idea';

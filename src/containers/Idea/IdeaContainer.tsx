@@ -1,5 +1,5 @@
 import Box from '@material-ui/core/Box';
-import useBoolean from 'ahooks/es/useBoolean';
+import { useBoolean } from 'ahooks';
 import { SnackbarContext } from 'context/snackbar';
 import { absolutePrivateRoute } from 'elements/routes';
 import { useFirestoreDoc, useIdeaRef } from 'hooks/firebase';

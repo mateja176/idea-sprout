@@ -6,7 +6,7 @@ import CloudOff from '@material-ui/icons/CloudOff';
 import Publish from '@material-ui/icons/Publish';
 import RateReview from '@material-ui/icons/RateReview';
 import StarRate from '@material-ui/icons/StarRate';
-import useBoolean from 'ahooks/es/useBoolean';
+import { useBoolean } from 'ahooks';
 import { IdeaOptionsWrapper } from 'containers/Idea/Options/IdeaOptionsWrapper';
 import { ShareMenuButton } from 'containers/Share/ShareMenuButton';
 import { absolutePrivateRoute } from 'elements/routes';
