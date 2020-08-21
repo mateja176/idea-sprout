@@ -4,6 +4,7 @@ import { Epic, ofType } from 'redux-observable';
 import { from } from 'rxjs';
 import { concatMap, delay, map, mergeMap, retryWhen } from 'rxjs/operators';
 import { withFirestore } from 'services/firebase';
+import { GlobalWithDrift } from 'types/drift';
 import { getType } from 'typesafe-actions';
 import { firestoreCollections } from 'utils/firebase';
 import { Action, State } from '../reducer';
@@ -25,7 +26,7 @@ export const saveUser: Epic<Action, SaveUserAction, State> = (action$) =>
             ...(displayName ? { displayName } : {}),
           });
 
-          window.drift?.identify(uid, {
+          (globalThis as GlobalWithDrift).drift?.identify(uid, {
             displayName,
             email,
             phoneNumber,

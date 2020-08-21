@@ -17,3 +17,11 @@ export interface YT {
   Player: Player;
   ready: ready;
 }
+
+export interface WithYT {
+  YT: YT;
+}
+
+export type GlobalWithMaybeYT = typeof globalThis & Partial<WithYT>;
+
+export type GlobalWithYT = typeof globalThis & WithYT;

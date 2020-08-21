@@ -1,4 +1,4 @@
-import { Player } from 'types/youtube';
+import { GlobalWithMaybeYT, GlobalWithYT, Player } from 'types/youtube';
 
 const API = 'https://www.youtube.com/iframe_api';
 
@@ -13,8 +13,8 @@ export const renderPlayerService = ({
   ...options
 }: RenderPlayerParams) => {
   return new Promise((resolve) => {
-    if (window.YT) {
-      new window.YT.Player(playerId, {
+    if ((globalThis as GlobalWithMaybeYT).YT) {
+      new (globalThis as GlobalWithYT).YT.Player(playerId, {
         ...options,
         events: {
           onReady: resolve,
@@ -25,31 +25,31 @@ export const renderPlayerService = ({
 };
 
 export const loadScriptService = () => {
-  if (window.document.getElementById(scriptId)) {
+  if (globalThis.document.getElementById(scriptId)) {
     return Promise.resolve();
   } else {
     return new Promise((resolve) => {
-      const script = window.document.createElement('script');
+      const script = globalThis.document.createElement('script');
 
       script.id = scriptId;
 
       script.src = API;
 
       script.addEventListener('load', () => {
-        if (window.YT) {
-          window.YT.ready(resolve);
+        if ((globalThis as GlobalWithMaybeYT).YT) {
+          (globalThis as GlobalWithYT).YT.ready(resolve);
         } else {
-          console.error('"window.YT.ready" is not a function');
+          console.error('"globalThis.YT.ready" is not a function');
         }
       });
 
-      window.document.body.appendChild(script);
+      globalThis.document.body.appendChild(script);
     });
   }
 };
 
 export const createPlayerDiv = (id: string) => {
-  const player = window.document.createElement('div');
+  const player = globalThis.document.createElement('div');
   player.id = id;
   player.style.width = '100%';
 

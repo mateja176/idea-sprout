@@ -14,10 +14,10 @@ export function assertRequired<O extends {}>(
 }
 
 export const blur = () => {
-  (window.document.activeElement as HTMLInputElement)?.blur();
+  (globalThis.document.activeElement as HTMLInputElement)?.blur();
 };
 
-export const getOrigin = () => window.location.origin;
+export const getOrigin = () => globalThis.location.origin;
 
 interface MetaTagValues {
   image: string;
@@ -31,13 +31,15 @@ type MaybeMetaTagValues = {
 };
 
 export const getMetaTags = () => ({
-  title: window.document.querySelector('title'),
-  favicon: window.document.querySelector('link[rel="icon"]'),
-  metaTwitterImage: window.document.querySelector('meta[name="twitter:image"]'),
-  metaImage: window.document.querySelector('meta[property="og:image"]'),
-  metaURL: window.document.querySelector('meta[property="og:url"]'),
-  metaTitle: window.document.querySelector('meta[property="og:title"]'),
-  metaDescription: window.document.querySelector(
+  title: globalThis.document.querySelector('title'),
+  favicon: globalThis.document.querySelector('link[rel="icon"]'),
+  metaTwitterImage: globalThis.document.querySelector(
+    'meta[name="twitter:image"]',
+  ),
+  metaImage: globalThis.document.querySelector('meta[property="og:image"]'),
+  metaURL: globalThis.document.querySelector('meta[property="og:url"]'),
+  metaTitle: globalThis.document.querySelector('meta[property="og:title"]'),
+  metaDescription: globalThis.document.querySelector(
     'meta[property="og:description"]',
   ),
 });

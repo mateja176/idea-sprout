@@ -1,5 +1,11 @@
 /* eslint-disable camelcase */
 
+export interface WithPaypal {
+  paypal?: Paypal;
+}
+
+export type GlobalWithPaypal = typeof globalThis & WithPaypal;
+
 export interface Paypal {
   Buttons: (config: {
     createOrder: (_: unknown, actions: Actions) => void;

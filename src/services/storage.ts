@@ -46,25 +46,25 @@ export type Storage = {
 
 export const storage: Storage = {
   getItem: (key) => {
-    const value = window.localStorage.getItem(key);
+    const value = globalThis.localStorage.getItem(key);
     return value ? JSON.parse(value) : null;
   },
   setItem: (key, value) => {
-    window.localStorage.setItem(key, JSON.stringify(value));
+    globalThis.localStorage.setItem(key, JSON.stringify(value));
 
     subscribersRef.current[key].forEach((callback) => {
       callback('set', value);
     });
   },
   removeItem: (key) => {
-    window.localStorage.removeItem(key);
+    globalThis.localStorage.removeItem(key);
 
     subscribersRef.current[key].forEach((callback) => {
       callback('remove', null);
     });
   },
   clear: () => {
-    window.localStorage.clear();
+    globalThis.localStorage.clear();
 
     Object.values(subscribersRef.current).forEach((callbacks) => {
       callbacks.forEach((callback) => {
