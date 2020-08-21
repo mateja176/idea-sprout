@@ -518,7 +518,7 @@ const Signin: React.FC<SigninProps> = ({ user }) => {
                       color={'primary'}
                       variant={'contained'}
                     >
-                      Send link
+                      Send
                     </Button>
                   </Box>
                 </Box>

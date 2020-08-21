@@ -63,7 +63,7 @@ export const SigninSkeleton: React.FC = () => {
           </Load>
           <Box ml={1}>
             <Load>
-              <Button variant={'contained'}>Send link</Button>
+              <Button variant={'contained'}>Send</Button>
             </Load>
           </Box>
         </Box>
