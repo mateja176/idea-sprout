@@ -28,7 +28,7 @@ const IdeasPage: React.FC<IdeasPageProps> = ({ user }) => {
     [location],
   );
 
-  const showMyIdeas = query.author && query.author === user.uid;
+  const showMyIdeas = !!query.author && query.author === user.uid;
 
   const handleDiscover: React.MouseEventHandler = React.useCallback(() => {
     history.push({
