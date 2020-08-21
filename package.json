@@ -59,7 +59,6 @@
     "deploy:firebase": "firebase deploy",
     "deploy": "yarn deploy:firebase",
     "deploy:hosting": "yarn deploy:firebase --only hosting",
-    "predeploy:functions": "yarn build",
     "deploy:functions": "yarn deploy:firebase --only functions",
     "analyze:build": "source-map-explorer 'build/static/js/*.js'",
     "preanalyze": "yarn build",
