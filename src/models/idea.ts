@@ -167,3 +167,9 @@ export interface IdeaFilter<Key extends keyof IdeaModel> {
   opStr: firebase.firestore.WhereFilterOp;
   value: IdeaModel[Key];
 }
+
+export interface WithPreloadedIdea {
+  __PRELOADED_IDEA__?: IdeaModel;
+}
+
+export type GlobalWithPreloadedIdea = typeof globalThis & WithPreloadedIdea;

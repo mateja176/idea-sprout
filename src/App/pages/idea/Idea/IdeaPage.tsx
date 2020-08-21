@@ -2,7 +2,7 @@ import { IdeaContainer } from 'containers/Idea/IdeaContainer';
 import { IdeaContainerSkeleton } from 'containers/Idea/IdeaContainerSkeleton';
 import { useUserState } from 'hooks/firebase';
 import { WithMaybeUser } from 'models/auth';
-import { IdeaModel } from 'models/idea';
+import { GlobalWithPreloadedIdea, IdeaModel } from 'models/idea';
 import React, { Suspense } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { isUserLoading } from 'utils/auth';
@@ -22,9 +22,12 @@ const IdeaPage: React.FC<IdeaPageProps> = ({
   },
   location: { state },
 }) => {
+  const initialIdea =
+    state?.idea || (globalThis as GlobalWithPreloadedIdea).__PRELOADED_IDEA__;
+
   return (
     <Suspense fallback={<IdeaContainerSkeleton />}>
-      <IdeaContainer id={id} initialIdea={state?.idea} user={user} />
+      <IdeaContainer id={id} initialIdea={initialIdea} user={user} />
     </Suspense>
   );
 };
