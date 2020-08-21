@@ -229,32 +229,35 @@ export const SectionEditorWithRef: React.RefForwardingComponent<
           />
         </div>
       </div>
-      <Box my={1} display={'flex'} alignItems={'center'}>
-        {isAuthor && (
-          <Box mr={1} onMouseDown={handleMouseDown}>
-            <Chip
-              icon={editing ? <Cancel /> : <Edit />}
-              label={
-                <Box
-                  display={'flex'}
-                  alignItems={'center'}
-                  color={theme.palette.text.secondary}
-                >
-                  <Box>{min}</Box>
-                  &nbsp;{'<'}&nbsp;
-                  <Box color={theme.palette.primary.main}>
-                    {editorStateText.length}
-                  </Box>
-                  &nbsp;{'<'}&nbsp;
-                  <Box>{max}</Box>
+      <Box
+        visibility={isAuthor ? 'visible' : 'hidden'}
+        my={1}
+        display={'flex'}
+        alignItems={'center'}
+      >
+        <Box mr={1} onMouseDown={handleMouseDown}>
+          <Chip
+            icon={editing ? <Cancel /> : <Edit />}
+            label={
+              <Box
+                display={'flex'}
+                alignItems={'center'}
+                color={theme.palette.text.secondary}
+              >
+                <Box>{min}</Box>
+                &nbsp;{'<'}&nbsp;
+                <Box color={theme.palette.primary.main}>
+                  {editorStateText.length}
                 </Box>
-              }
-              color={isValid ? 'primary' : 'secondary'}
-              clickable
-              variant={'outlined'}
-            />
-          </Box>
-        )}
+                &nbsp;{'<'}&nbsp;
+                <Box>{max}</Box>
+              </Box>
+            }
+            color={isValid ? 'primary' : 'secondary'}
+            clickable
+            variant={'outlined'}
+          />
+        </Box>
         <Box visibility={isValid ? 'hidden' : 'visible'}>
           <FormHelperText error>
             {isTooShort
