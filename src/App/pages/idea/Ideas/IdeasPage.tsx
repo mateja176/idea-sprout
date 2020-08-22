@@ -11,14 +11,13 @@ import IdeasSkeleton from '../../../../containers/Idea/Ideas/IdeasSkeleton';
 import { MyIdeas } from '../../../../containers/Idea/Ideas/MyIdeas';
 import MyIdeasSkeleton from '../../../../containers/Idea/Ideas/MyIdeasSkeleton';
 import LazySignin from '../../../../containers/Signin/LazySignin';
-import { useUserState } from '../../../../hooks/firebase';
+import { useUser } from '../../../../hooks/firebase';
 import { WithUser } from '../../../../models/auth';
-import { isUserLoading } from '../../../../utils/auth';
 import IdeasPageSkeleton from './IdeasPageSkeleton';
 
-export interface IdeasPageProps extends RouteComponentProps, WithUser {}
+export interface IdeasPageProps extends RouteComponentProps {}
 
-const IdeasPage: React.FC<IdeasPageProps> = ({ user }) => {
+const IdeasPage: React.FC<IdeasPageProps & WithUser> = ({ user }) => {
   const history = useHistory();
 
   const location = useLocation();
@@ -86,14 +85,22 @@ const IdeasPage: React.FC<IdeasPageProps> = ({ user }) => {
 
 IdeasPage.displayName = 'IdeasPage';
 
-export default (props: Omit<IdeasPageProps, 'user'>) => {
-  const user = useUserState();
+const IdeasPageWithUser = (props: IdeasPageProps) => {
+  const user = useUser();
 
-  if (isUserLoading(user)) {
-    return <IdeasPageSkeleton />;
-  } else if (user === null || !user.emailVerified) {
+  if (user === null || !user.emailVerified) {
     return <LazySignin user={user} />;
   } else {
     return <IdeasPage {...props} user={user} />;
   }
 };
+
+const IdeasPageSuspender = (props: IdeasPageProps) => {
+  return (
+    <React.Suspense fallback={IdeasPageSkeleton}>
+      <IdeasPageWithUser {...props} />
+    </React.Suspense>
+  );
+};
+
+export default IdeasPageSuspender;
