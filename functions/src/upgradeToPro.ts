@@ -2,7 +2,7 @@ import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
 import fetch from 'node-fetch';
 import * as url from 'url';
-import * as interfaces from './models/models';
+import * as models from './models/models';
 import * as paypal from './types/paypal';
 
 export const upgradeToPro = functions.https.onCall(async (data, context) => {
@@ -37,7 +37,7 @@ export const upgradeToPro = functions.https.onCall(async (data, context) => {
 
   // * verify order
 
-  const config = functions.config() as interfaces.Config;
+  const config = functions.config() as models.Config;
 
   // 1c. Get an access token from the PayPal API
   const basicAuth = Buffer.from(
