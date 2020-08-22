@@ -4,10 +4,12 @@
     "Beenhere",
     "Figma",
     "Millis",
+    "copyfiles",
     "esnext",
     "firebasestorage",
     "jsonexport",
     "onloadmetadata",
+    "postbuild",
     "preanalyze",
     "reactfire",
     "urljoin"
