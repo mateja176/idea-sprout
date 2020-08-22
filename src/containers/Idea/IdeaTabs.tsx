@@ -296,12 +296,7 @@ export const IdeaTabs: React.FC<
       )}
       <Dialog open={signinDialogOpen} fullScreen>
         <DialogContent style={signinDialogContentStyle}>
-          <Box
-            display={'flex'}
-            alignItems={'center'}
-            justifyContent={'center'}
-            height={'100%'}
-          >
+          <Box display={'flex'} flexDirection={'column'} height={'100%'}>
             <LazySignin user={user} />
           </Box>
         </DialogContent>
