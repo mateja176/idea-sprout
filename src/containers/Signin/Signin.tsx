@@ -523,36 +523,38 @@ const Signin: React.FC<SigninProps> = ({ user }) => {
                 </Box>
               </form>
             </Box>
-            <ButtonGroup color="primary" disabled={loading}>
-              <Button
-                onClick={handleGoogleSignin}
-                classes={buttonClasses}
-                startIcon={<Google opacity={opacity} />}
-                aria-label={'Google'}
-              >
-                {!xsAndDown && 'Google'}
-              </Button>
-              <Button
-                onClick={handleFacebookSignin}
-                classes={buttonClasses}
-                startIcon={
-                  <FacebookIcon round size={logoWidth} opacity={opacity} />
-                }
-                aria-label={'Facebook'}
-              >
-                {!xsAndDown && 'Facebook'}
-              </Button>
-              <Button
-                onClick={handleTwitterSignin}
-                classes={buttonClasses}
-                startIcon={
-                  <TwitterIcon round size={logoWidth} opacity={opacity} />
-                }
-                aria-label={'Twitter'}
-              >
-                {!xsAndDown && 'Twitter'}
-              </Button>
-            </ButtonGroup>
+            <Box display={'flex'} justifyContent={'center'}>
+              <ButtonGroup color="primary" disabled={loading}>
+                <Button
+                  onClick={handleGoogleSignin}
+                  classes={buttonClasses}
+                  startIcon={<Google opacity={opacity} />}
+                  aria-label={'Google'}
+                >
+                  {!xsAndDown && 'Google'}
+                </Button>
+                <Button
+                  onClick={handleFacebookSignin}
+                  classes={buttonClasses}
+                  startIcon={
+                    <FacebookIcon round size={logoWidth} opacity={opacity} />
+                  }
+                  aria-label={'Facebook'}
+                >
+                  {!xsAndDown && 'Facebook'}
+                </Button>
+                <Button
+                  onClick={handleTwitterSignin}
+                  classes={buttonClasses}
+                  startIcon={
+                    <TwitterIcon round size={logoWidth} opacity={opacity} />
+                  }
+                  aria-label={'Twitter'}
+                >
+                  {!xsAndDown && 'Twitter'}
+                </Button>
+              </ButtonGroup>
+            </Box>
           </Box>
         </Box>
       </PageWrapper>
