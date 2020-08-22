@@ -1,7 +1,6 @@
 import { proMembershipDiscount } from '../elements/upgrade';
 import { Upgrade } from '../models/upgrade';
 import { GlobalWithPaypal, Order } from '../types/paypal';
-import { env } from './env';
 
 export interface RenderButtonsParams {
   id: string;
@@ -51,9 +50,9 @@ export const renderButtons = ({
 
 export const paypalScriptId = 'paypal-script';
 
-export const loadPaypalScript = () => {
+export const loadPaypalScript = (clientId: string) => {
   const script = globalThis.document.createElement('script');
-  script.src = `https://www.paypal.com/sdk/js?client-id=${env.paypalClientId}`;
+  script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`;
   script.id = paypalScriptId;
 
   globalThis.document.body.appendChild(script);

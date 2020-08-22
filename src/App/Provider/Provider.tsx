@@ -10,31 +10,37 @@ import {
   ISnackbarContext,
   SnackbarContext,
 } from '../../context/snackbar';
-import { env } from '../../services/env';
+import { useGetEnv } from '../../hooks/env';
 import { store } from '../../services/store/store';
 import { ThemeProvider } from './ThemeProvider';
-
-const firebaseConfig = {
-  apiKey: env.firebaseApiKey,
-  authDomain: env.firebaseAuthDomain,
-  databaseUrl: env.firebaseDatabaseUrl,
-  projectId: env.firebaseProjectId,
-  storageBucket: env.firebaseStorageBucket,
-  messagingSenderId: env.firebaseMessagingSenderId,
-  appId: env.firebaseAppId,
-  measurementId: env.firebaseMeasurementId,
-};
 
 export interface ProviderProps {}
 
 export const Provider: React.FC<ProviderProps> = ({ children }) => {
+  const getEnv = useGetEnv();
+
+  const firebaseConfig = React.useMemo(
+    () => ({
+      apiKey: getEnv('firebaseApiKey'),
+      authDomain: getEnv('firebaseAuthDomain'),
+      databaseUrl: getEnv('firebaseDatabaseUrl'),
+      projectId: getEnv('firebaseProjectId'),
+      storageBucket: getEnv('firebaseStorageBucket'),
+      messagingSenderId: getEnv('firebaseMessagingSenderId'),
+      appId: getEnv('firebaseAppId'),
+      measurementId: getEnv('firebaseMeasurementId'),
+    }),
+    [getEnv],
+  );
+
   React.useEffect(() => {
-    if (process.env.NODE_ENV === 'production' && env.logRocketId) {
-      LogRocket.init(env.logRocketId);
+    const logRocketId = getEnv('logRocketId');
+    if (process.env.NODE_ENV === 'production' && logRocketId) {
+      LogRocket.init(logRocketId);
 
       setupLogRocketReact(LogRocket);
     }
-  }, []);
+  }, [getEnv]);
 
   const [snackbarQueue, setSnackbarQueue] = React.useState(
     initialSnackbarContext.queue,

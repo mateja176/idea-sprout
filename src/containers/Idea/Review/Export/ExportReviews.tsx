@@ -24,6 +24,7 @@ import {
   proMembership,
   proMembershipDiscount,
 } from '../../../../elements/upgrade';
+import { useGetEnv } from '../../../../hooks/env';
 import {
   useReviewsRef,
   useUpgradeToPro,
@@ -191,15 +192,20 @@ export const ExportReviews: React.FC<
     close,
   });
 
+  const getEnv = useGetEnv();
+
   const loadScript = React.useCallback(() => {
     setScriptLoading.setTrue();
 
-    loadPaypalScript().then(() => {
-      setScriptLoading.setFalse();
+    const paypalClientId = getEnv('paypalClientId');
+    if (paypalClientId) {
+      loadPaypalScript(paypalClientId).then(() => {
+        setScriptLoading.setFalse();
 
-      renderButtons();
-    });
-  }, [renderButtons, setScriptLoading]);
+        renderButtons();
+      });
+    }
+  }, [renderButtons, setScriptLoading, getEnv]);
 
   const openUpgradeDialog = React.useCallback(() => {
     setUpgradeDialogOpen.setTrue();
