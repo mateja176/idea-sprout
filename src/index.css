@@ -46,3 +46,7 @@ a:-webkit-any-link {
 .MuiDialog-root {
   z-index: 2147483647 !important;
 }
+
+.MuiDrawer-root {
+  z-index: 1500 !important;
+}
