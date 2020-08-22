@@ -1,5 +1,5 @@
 import firebase, { FirebaseError } from 'firebase/app';
-import findLast from 'ramda/es/findLast';
+import { findLast } from 'ramda';
 import { Epic, ofType } from 'redux-observable';
 import { defer, of } from 'rxjs';
 import { catchError, concatMap, first, map, mergeMap } from 'rxjs/operators';

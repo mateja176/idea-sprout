@@ -2,7 +2,7 @@ import Badge from '@material-ui/core/Badge';
 import MaterialSnackbar from '@material-ui/core/Snackbar';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Alert from '@material-ui/lab/Alert';
-import head from 'ramda/es/head';
+import { head } from 'ramda';
 import React from 'react';
 import { SnackbarContext } from '../context/snackbar';
 import { useValueWithFallback } from '../hooks/hooks';

@@ -1,6 +1,6 @@
 import Box from '@material-ui/core/Box';
 import List from '@material-ui/core/List';
-import range from 'ramda/es/range';
+import { range } from 'ramda';
 import React from 'react';
 import { ideasFetchLimit } from '../../../utils/idea/idea';
 import { ideaListStyle } from '../../../utils/styles/idea';

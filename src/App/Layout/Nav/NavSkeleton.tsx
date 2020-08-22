@@ -4,7 +4,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Skeleton from '@material-ui/lab/Skeleton';
-import range from 'ramda/es/range';
+import { range } from 'ramda';
 import React from 'react';
 import { absolutePrivateNavigationRoutes } from '../../../elements/routes';
 

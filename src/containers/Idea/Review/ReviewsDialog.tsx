@@ -3,7 +3,7 @@ import Button from '@material-ui/core/Button';
 import { Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import range from 'ramda/es/range';
+import { range } from 'ramda';
 import React from 'react';
 import { DraggableDialog } from '../../../containers/DraggableDialog';
 import { IdeaModel, Rating } from '../../../models/idea';
