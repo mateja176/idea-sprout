@@ -4,7 +4,6 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import useTheme from '@material-ui/core/styles/useTheme';
 import Cancel from '@material-ui/icons/Cancel';
 import Edit from '@material-ui/icons/Edit';
-import { IdeaSection, IdeaSectionProps } from 'components/Idea/IdeaSection';
 import {
   ContentState,
   Editor as DraftEditor,
@@ -14,6 +13,10 @@ import {
 } from 'draft-js';
 import 'draft-js/dist/Draft.css';
 import React from 'react';
+import {
+  IdeaSection,
+  IdeaSectionProps,
+} from '../../components/Idea/IdeaSection';
 import { stateToString } from './utils';
 
 const editingStates = ['off', 'blur', 'focus', 'tooShort', 'tooLong'] as const;

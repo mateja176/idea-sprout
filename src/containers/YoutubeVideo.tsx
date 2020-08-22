@@ -1,7 +1,7 @@
-import { useLoadYoutubeScript, useRenderPlayer } from 'hooks/youtube';
-import { StorageFile } from 'models/idea';
 import React from 'react';
-import { createPlayerDiv } from 'services/youtube';
+import { useLoadYoutubeScript, useRenderPlayer } from '../hooks/youtube';
+import { StorageFile } from '../models/idea';
+import { createPlayerDiv } from '../services/youtube';
 
 const options = { height: '100%' };
 

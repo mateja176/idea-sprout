@@ -1,7 +1,7 @@
-import { absolutePrivateRoute } from 'elements/routes';
-import { IdeaModel } from 'models/idea';
 import { useMemo } from 'react';
 import urljoin from 'url-join';
+import { absolutePrivateRoute } from '../elements/routes';
+import { IdeaModel } from '../models/idea';
 import { useOrigin } from './hooks';
 
 export const useIdeaUrl = (id: IdeaModel['id']) => {

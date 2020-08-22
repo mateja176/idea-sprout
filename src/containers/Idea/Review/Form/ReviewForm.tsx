@@ -5,34 +5,34 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import Typography from '@material-ui/core/Typography';
 import Rating from '@material-ui/lab/Rating';
-import { MultilineTextField } from 'components/MultilineTextField';
-import { ShareOptions } from 'components/share/ShareOptions';
-import { SharePrompt } from 'components/share/SharePrompt';
-import { Check } from 'containers/Check';
-import { ratingLabel } from 'elements/idea/review';
 import { useFormik } from 'formik';
+import React from 'react';
+import { MultilineTextField } from '../../../../components/MultilineTextField';
+import { ShareOptions } from '../../../../components/share/ShareOptions';
+import { SharePrompt } from '../../../../components/share/SharePrompt';
+import { ratingLabel } from '../../../../elements/idea/review';
 import {
   useFirestoreDoc,
   useReviewsRef,
   useReviewSubmit,
   useShareIdea,
-} from 'hooks/firebase';
-import { User } from 'models/auth';
-import { CheckProps, IdeaModel } from 'models/idea';
+} from '../../../../hooks/firebase';
+import { User } from '../../../../models/auth';
+import { CheckProps, IdeaModel } from '../../../../models/idea';
 import {
   createReviewSchema,
   CreationReview,
   FeedbackLength,
   initialCreationReview,
   Review,
-} from 'models/review';
-import React from 'react';
+} from '../../../../models/review';
 import {
   doNotShareWarning,
   feedbackFieldRows,
   feedbackHelperText,
-} from 'utils/idea/review';
-import { checkWithMessageHeight } from 'utils/styles/styles';
+} from '../../../../utils/idea/review';
+import { checkWithMessageHeight } from '../../../../utils/styles/styles';
+import { Check } from '../../../Check';
 
 export interface ReviewFormProps extends Pick<User, 'uid'> {
   idea: IdeaModel;

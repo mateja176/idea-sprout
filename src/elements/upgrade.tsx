@@ -1,6 +1,6 @@
 import Box from '@material-ui/core/Box';
-import { WithValue } from 'models/upgrade';
 import React from 'react';
+import { WithValue } from '../models/upgrade';
 
 export interface Product {
   amount: WithValue;

@@ -2,10 +2,10 @@ import Box from '@material-ui/core/Box';
 import Tab, { TabProps } from '@material-ui/core/Tab';
 import Tooltip from '@material-ui/core/Tooltip';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
-import { Link } from 'components/Link';
-import { absolutePrivateRoute } from 'elements/routes';
 import React from 'react';
-import { tabChildStyle } from 'utils/styles/styles';
+import { Link } from '../../components/Link';
+import { absolutePrivateRoute } from '../../elements/routes';
+import { tabChildStyle } from '../../utils/styles/styles';
 
 const linkStyle: React.CSSProperties = { flex: 1 };
 

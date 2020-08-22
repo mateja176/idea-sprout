@@ -1,8 +1,8 @@
 import Dashboard from '@material-ui/icons/Dashboard';
 import VideoLibrary from '@material-ui/icons/VideoLibrary';
-import { NestedRoutes, Route, Routes, ToAbsoluteRec } from 'models/routes';
 import React from 'react';
 import urljoin from 'url-join';
+import { NestedRoutes, Route, Routes, ToAbsoluteRec } from '../models/routes';
 
 /**
  * uses any to circumvent `Type instantiation is excessively deep and possibly infinite.`

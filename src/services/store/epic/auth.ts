@@ -3,10 +3,10 @@ import LogRocket from 'logrocket';
 import { Epic, ofType } from 'redux-observable';
 import { from } from 'rxjs';
 import { concatMap, delay, map, mergeMap, retryWhen } from 'rxjs/operators';
-import { withFirestore } from 'services/firebase';
-import { GlobalWithDrift } from 'types/drift';
 import { getType } from 'typesafe-actions';
-import { firestoreCollections } from 'utils/firebase';
+import { withFirestore } from '../../../services/firebase';
+import { GlobalWithDrift } from '../../../types/drift';
+import { firestoreCollections } from '../../../utils/firebase';
 import { Action, State } from '../reducer';
 import {
   createSaveUser,

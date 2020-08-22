@@ -1,9 +1,9 @@
 import Box from '@material-ui/core/Box';
 import Skeleton from '@material-ui/lab/Skeleton';
-import { IdeaPreviewWrapper } from 'components/Idea/IdeaPreviewWrapper';
-import { IdeaOptionsWrapper } from 'containers/Idea/Options/IdeaOptionsWrapper';
 import React from 'react';
-import { textSectionStyle } from 'utils/styles/idea';
+import { IdeaPreviewWrapper } from '../../../components/Idea/IdeaPreviewWrapper';
+import { textSectionStyle } from '../../../utils/styles/idea';
+import { IdeaOptionsWrapper } from '../../Idea/Options/IdeaOptionsWrapper';
 
 const option = <Skeleton variant={'rect'} width={'100%'} height={'100%'} />;
 

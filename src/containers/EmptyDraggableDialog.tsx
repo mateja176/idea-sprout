@@ -1,7 +1,7 @@
 import Dialog, { DialogProps } from '@material-ui/core/Dialog';
 import { PaperProps } from '@material-ui/core/Paper';
-import { DraggablePaper } from 'components/DraggablePaper';
 import React from 'react';
+import { DraggablePaper } from '../components/DraggablePaper';
 
 export const EmptyDraggableDialog = React.memo<
   DialogProps & { disabled: boolean }

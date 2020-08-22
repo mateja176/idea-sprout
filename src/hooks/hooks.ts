@@ -8,8 +8,12 @@ import {
 } from 'react';
 import { useDispatch } from 'react-redux';
 import { ActionCreatorsMapObject, bindActionCreators } from 'redux';
-import { getOrigin } from 'services/services';
-import { LocalStorageItems, LocalStorageKey, storage } from 'services/storage';
+import { getOrigin } from '../services/services';
+import {
+  LocalStorageItems,
+  LocalStorageKey,
+  storage,
+} from '../services/storage';
 import { Action } from '../services/store/reducer';
 
 export const useOrigin = () => {

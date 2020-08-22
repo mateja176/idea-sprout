@@ -1,7 +1,7 @@
 import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 import React from 'react';
-import { themePalette } from 'utils/styles/theme';
+import { themePalette } from '../../utils/styles/theme';
 
 export const ThemeProvider: React.FC = ({ children }) => {
   const themeOverrides = React.useMemo(() => createMuiTheme(themePalette), []);

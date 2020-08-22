@@ -1,6 +1,6 @@
 import firebase from 'firebase/app';
-import { WithId } from 'models/models';
 import equals from 'ramda/es/equals';
+import { WithId } from '../models/models';
 
 export const firestoreCollections = {
   users: {

@@ -1,12 +1,13 @@
 import Box from '@material-ui/core/Box';
 import useTheme from '@material-ui/core/styles/useTheme';
-import { FileOptions } from 'containers/FileOptions';
-import { SectionEditor } from 'containers/SectionEditor/SectionEditor';
-import { Tour } from 'containers/Tour';
 import { EditorProps } from 'draft-js';
-import { problemSolutionTitle, rationaleTitle } from 'elements/idea/idea';
-import { ideaSelector, ideaTourSteps } from 'elements/idea/tour';
-import { WithMaybeUser } from 'models/auth';
+import React from 'react';
+import { FileOptions } from '../../containers/FileOptions';
+import { SectionEditor } from '../../containers/SectionEditor/SectionEditor';
+import { Tour } from '../../containers/Tour';
+import { problemSolutionTitle, rationaleTitle } from '../../elements/idea/idea';
+import { ideaSelector, ideaTourSteps } from '../../elements/idea/tour';
+import { WithMaybeUser } from '../../models/auth';
 import {
   IdeaModel,
   NameLength,
@@ -14,10 +15,9 @@ import {
   RationaleLength,
   TaglineLength,
   UpdateIdea,
-} from 'models/idea';
-import React from 'react';
-import { ideaMarginBottom } from 'utils/styles/idea';
-import { ideaSectionMl } from 'utils/styles/styles';
+} from '../../models/idea';
+import { ideaMarginBottom } from '../../utils/styles/idea';
+import { ideaSectionMl } from '../../utils/styles/styles';
 import { Images } from '../Image/Images';
 import { VideoSuspender } from '../Video/VideoSuspender';
 import { IdeaImagePreviewSuspender } from './ImagePreview/IdeaImagePreviewSuspender';

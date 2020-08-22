@@ -3,16 +3,16 @@ import Divider from '@material-ui/core/Divider';
 import useTheme from '@material-ui/core/styles/useTheme';
 import Typography from '@material-ui/core/Typography';
 import Rating from '@material-ui/lab/Rating';
-import { ReviewSection } from 'components/Idea/Review/ReviewSection';
+import React from 'react';
+import { ReviewSection } from '../../../components/Idea/Review/ReviewSection';
 import {
   reviewFeedbackHeading,
   reviewRatingHeading,
-} from 'elements/idea/review';
-import { useFirestoreCollection, useReviewsRef } from 'hooks/firebase';
-import { IdeaModel } from 'models/idea';
-import { Review } from 'models/review';
-import React from 'react';
-import { breakWordStyle } from 'utils/styles/styles';
+} from '../../../elements/idea/review';
+import { useFirestoreCollection, useReviewsRef } from '../../../hooks/firebase';
+import { IdeaModel } from '../../../models/idea';
+import { Review } from '../../../models/review';
+import { breakWordStyle } from '../../../utils/styles/styles';
 
 export const reviewsMb = 4;
 export const feedbackWrapperStyle: React.CSSProperties = {

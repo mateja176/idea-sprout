@@ -1,7 +1,7 @@
-import { NotFound } from 'components/NotFound';
-import { absolutePrivateRoute } from 'elements/routes';
 import React from 'react';
 import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
+import { NotFound } from '../../components/NotFound';
+import { absolutePrivateRoute } from '../../elements/routes';
 import IdeasSwitch from '../pages/idea/Switch/IdeasSwitch';
 
 const RedirectToIdeas: React.FC<RouteComponentProps> = () => (

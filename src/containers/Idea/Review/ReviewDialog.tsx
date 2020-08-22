@@ -3,10 +3,10 @@ import { DialogProps } from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { Theme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { EmptyDraggableDialog } from 'containers/EmptyDraggableDialog';
-import { User } from 'models/auth';
 import React from 'react';
-import { withInlineEllipsis } from 'utils/styles/styles';
+import { EmptyDraggableDialog } from '../../../containers/EmptyDraggableDialog';
+import { User } from '../../../models/auth';
+import { withInlineEllipsis } from '../../../utils/styles/styles';
 import { ReviewForm, ReviewFormProps } from './Form/ReviewForm';
 import { ReviewFormSkeleton } from './Form/ReviewFormSkeleton';
 

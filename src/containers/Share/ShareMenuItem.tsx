@@ -2,9 +2,9 @@ import Box from '@material-ui/core/Box';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
-import { ShareConfig } from 'components/share/share';
 import React from 'react';
-import { shareIconSize } from 'utils/styles/styles';
+import { ShareConfig } from '../../components/share/share';
+import { shareIconSize } from '../../utils/styles/styles';
 
 export const ShareMenuItem = React.forwardRef<
   HTMLLIElement,

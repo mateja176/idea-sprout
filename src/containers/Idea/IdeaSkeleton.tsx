@@ -3,14 +3,14 @@ import Chip from '@material-ui/core/Chip';
 import Typography from '@material-ui/core/Typography';
 import Edit from '@material-ui/icons/Edit';
 import Skeleton from '@material-ui/lab/Skeleton';
-import { IdeaPreviewWrapper } from 'components/Idea/IdeaPreviewWrapper';
-import { IdeaSection } from 'components/Idea/IdeaSection';
-import { Load } from 'components/Load';
-import { problemSolutionTitle, rationaleTitle } from 'elements/idea/idea';
 import React from 'react';
-import { getInitialIdea } from 'utils/idea/idea';
-import { ideaMarginBottom } from 'utils/styles/idea';
-import { ideaSectionMl } from 'utils/styles/styles';
+import { IdeaPreviewWrapper } from '../../components/Idea/IdeaPreviewWrapper';
+import { IdeaSection } from '../../components/Idea/IdeaSection';
+import { Load } from '../../components/Load';
+import { problemSolutionTitle, rationaleTitle } from '../../elements/idea/idea';
+import { getInitialIdea } from '../../utils/idea/idea';
+import { ideaMarginBottom } from '../../utils/styles/idea';
+import { ideaSectionMl } from '../../utils/styles/styles';
 
 const idea = getInitialIdea('');
 

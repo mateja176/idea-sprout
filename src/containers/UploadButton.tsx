@@ -1,11 +1,11 @@
 import Button, { ButtonProps } from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import CloudUpload from '@material-ui/icons/CloudUpload';
-import { SnackbarContext } from 'context/snackbar';
-import { useUpload } from 'hooks/upload';
-import { StoragePath } from 'models/firebase';
-import { StorageFile, UpdateStorageFile } from 'models/idea';
 import React from 'react';
+import { SnackbarContext } from '../context/snackbar';
+import { useUpload } from '../hooks/upload';
+import { StoragePath } from '../models/firebase';
+import { StorageFile, UpdateStorageFile } from '../models/idea';
 
 const inputStyle: React.CSSProperties = { display: 'none' };
 

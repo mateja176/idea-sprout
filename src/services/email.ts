@@ -1,4 +1,4 @@
-﻿import { SendEmailParams } from 'models/email';
+﻿import { SendEmailParams } from '../models/email';
 
 const url = 'https://smtpjs.com/v3/smtpjs.aspx?';
 const method = 'POST';

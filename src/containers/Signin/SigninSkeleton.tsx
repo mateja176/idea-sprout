@@ -7,13 +7,13 @@ import Tabs from '@material-ui/core/Tabs';
 import TextField from '@material-ui/core/TextField';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Alert from '@material-ui/lab/Alert';
-import { Google } from 'components/icons/Google';
-import { Load } from 'components/Load';
-import { SigninDivider } from 'components/SigninDivider';
 import React from 'react';
 import FacebookIcon from 'react-share/es/FacebookIcon';
 import TwitterIcon from 'react-share/es/TwitterIcon';
-import { logoWidth } from 'utils/styles/styles';
+import { Google } from '../../components/icons/Google';
+import { Load } from '../../components/Load';
+import { SigninDivider } from '../../components/SigninDivider';
+import { logoWidth } from '../../utils/styles/styles';
 
 const fieldMb = `${34}px`;
 

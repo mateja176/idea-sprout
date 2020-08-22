@@ -3,17 +3,17 @@ import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
 import Person from '@material-ui/icons/Person';
 import Search from '@material-ui/icons/Search';
-import { Ideas } from 'containers/Idea/Ideas/Ideas';
-import { IdeasSkeleton } from 'containers/Idea/Ideas/IdeasSkeleton';
-import { MyIdeas } from 'containers/Idea/Ideas/MyIdeas';
-import { MyIdeasSkeleton } from 'containers/Idea/Ideas/MyIdeasSkeleton';
-import LazySignin from 'containers/Signin/LazySignin';
-import { useUserState } from 'hooks/firebase';
-import { WithUser } from 'models/auth';
 import qs from 'qs';
 import React from 'react';
 import { RouteComponentProps, useHistory, useLocation } from 'react-router-dom';
-import { isUserLoading } from 'utils/auth';
+import { Ideas } from '../../../../containers/Idea/Ideas/Ideas';
+import { IdeasSkeleton } from '../../../../containers/Idea/Ideas/IdeasSkeleton';
+import { MyIdeas } from '../../../../containers/Idea/Ideas/MyIdeas';
+import { MyIdeasSkeleton } from '../../../../containers/Idea/Ideas/MyIdeasSkeleton';
+import LazySignin from '../../../../containers/Signin/LazySignin';
+import { useUserState } from '../../../../hooks/firebase';
+import { WithUser } from '../../../../models/auth';
+import { isUserLoading } from '../../../../utils/auth';
 import { IdeasPageSkeleton } from './IdeasPageSkeleton';
 
 export interface IdeasPageProps extends RouteComponentProps, WithUser {}

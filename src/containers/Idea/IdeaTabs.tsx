@@ -16,23 +16,26 @@ import Share from '@material-ui/icons/Share';
 import StarRate from '@material-ui/icons/StarRate';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { useBoolean } from 'ahooks';
-import { ShareMenu } from 'containers/Share/ShareMenu';
-import LazySignin from 'containers/Signin/LazySignin';
-import { useShareIdea } from 'hooks/firebase';
-import { useActions } from 'hooks/hooks';
-import { useIdeaUrl } from 'hooks/idea';
-import { useReviewPromptStyles } from 'hooks/style';
-import { WithMaybeUser } from 'models/auth';
-import { IdeaModel } from 'models/idea';
 import React from 'react';
 import { StorageImage } from 'reactfire';
-import { createAddIdea, createDeleteIdea } from 'services/store/slices/ideas';
+import { ShareMenu } from '../../containers/Share/ShareMenu';
+import LazySignin from '../../containers/Signin/LazySignin';
+import { useShareIdea } from '../../hooks/firebase';
+import { useActions } from '../../hooks/hooks';
+import { useIdeaUrl } from '../../hooks/idea';
+import { useReviewPromptStyles } from '../../hooks/style';
+import { WithMaybeUser } from '../../models/auth';
+import { IdeaModel } from '../../models/idea';
+import {
+  createAddIdea,
+  createDeleteIdea,
+} from '../../services/store/slices/ideas';
 import {
   getRatingTooltip,
   getShareCountHelperText,
   roundAverage,
-} from 'utils/idea/idea';
-import { getReviewPrompt } from 'utils/idea/review';
+} from '../../utils/idea/idea';
+import { getReviewPrompt } from '../../utils/idea/review';
 import {
   ideaTabStyle,
   logoBorderRadius,
@@ -41,7 +44,7 @@ import {
   tabsTitleSectionHeight,
   withEllipsis,
   withStarColor,
-} from 'utils/styles/styles';
+} from '../../utils/styles/styles';
 import { IdeaProps } from './Idea';
 import { IdeasLink } from './IdeasLink';
 import { ReviewButtonSuspender } from './Review/Button/ReviewButtonSuspender';

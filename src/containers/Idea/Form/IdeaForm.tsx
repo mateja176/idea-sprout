@@ -9,34 +9,34 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import Info from '@material-ui/icons/Info';
-import { Link } from 'components/Link';
-import { MultilineTextField } from 'components/MultilineTextField';
-import { PageWrapper } from 'components/PageWrapper';
-import { Drop, DropProps } from 'containers/Drop';
-import { SnackbarContext } from 'context/snackbar';
-import { storyDescription } from 'elements/idea/idea';
-import { absolutePrivateRoute } from 'elements/routes';
 import firebase from 'firebase/app';
 import { useFormik } from 'formik';
-import { useIdeasRef, useSignedInUser } from 'hooks/firebase';
+import qs from 'qs';
+import React from 'react';
+import { useHistory } from 'react-router-dom';
+import { Link } from '../../../components/Link';
+import { MultilineTextField } from '../../../components/MultilineTextField';
+import { PageWrapper } from '../../../components/PageWrapper';
+import { SnackbarContext } from '../../../context/snackbar';
+import { storyDescription } from '../../../elements/idea/idea';
+import { absolutePrivateRoute } from '../../../elements/routes';
+import { useIdeasRef, useSignedInUser } from '../../../hooks/firebase';
 import {
   CreationIdea,
   creationIdeaSchema,
   IdeaModel,
   ProblemSolutionLength,
   RationaleLength,
-} from 'models/idea';
-import qs from 'qs';
-import React from 'react';
-import { useHistory } from 'react-router-dom';
+} from '../../../models/idea';
 import {
   getFileName,
   getFileNames,
   getFormIdea,
   problemSolutionText,
   rationaleText,
-} from 'utils/idea/idea';
-import { inputStyle, textareaStyle } from 'utils/styles/styles';
+} from '../../../utils/idea/idea';
+import { inputStyle, textareaStyle } from '../../../utils/styles/styles';
+import { Drop, DropProps } from '../../Drop';
 import { ExpectationsCheck } from '../Check/ExpectationsCheck';
 import { NicheCheck } from '../Check/NicheCheck';
 

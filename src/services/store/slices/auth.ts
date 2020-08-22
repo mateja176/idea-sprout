@@ -1,7 +1,7 @@
 import { FirebaseError } from 'firebase';
-import { User } from 'models/auth';
 import { createSelector } from 'reselect';
 import { ActionType, createAction, createAsyncAction } from 'typesafe-actions';
+import { User } from '../../../models/auth';
 
 export const initialAuthState = {
   emailVerified: false,

@@ -1,6 +1,6 @@
 import Typography from '@material-ui/core/Typography';
-import { headingIds } from 'models/idea';
 import React from 'react';
+import { headingIds } from '../../models/idea';
 
 export const nameTitle = (
   <Typography id={headingIds.name} variant="h5">

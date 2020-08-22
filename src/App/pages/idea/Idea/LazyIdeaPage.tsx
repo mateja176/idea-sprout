@@ -1,5 +1,5 @@
-import { IdeaContainerSkeleton } from 'containers/Idea/IdeaContainerSkeleton';
 import Loadable from 'react-loadable';
+import { IdeaContainerSkeleton } from '../../../../containers/Idea/IdeaContainerSkeleton';
 
 const LazyIdeaPage = Loadable({
   loader: () => import(/* webpackChunkName: "IdeaPage" */ './IdeaPage'),

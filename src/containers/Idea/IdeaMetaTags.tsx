@@ -1,9 +1,9 @@
-import { useStorageDownloadUrl } from 'hooks/firebase';
-import { useIdeaUrl } from 'hooks/idea';
-import { IdeaModel } from 'models/idea';
 import React from 'react';
 import { useStorage } from 'reactfire';
-import { saveMetaTagValues, setMetaTagValues } from 'services/services';
+import { useStorageDownloadUrl } from '../../hooks/firebase';
+import { useIdeaUrl } from '../../hooks/idea';
+import { IdeaModel } from '../../models/idea';
+import { saveMetaTagValues, setMetaTagValues } from '../../services/services';
 
 const IdeaMetaTagsComponent: React.FC<{ idea: IdeaModel }> = ({ idea }) => {
   const url = useIdeaUrl(idea.id);

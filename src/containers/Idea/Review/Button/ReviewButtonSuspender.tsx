@@ -1,7 +1,7 @@
 import Tab, { TabProps } from '@material-ui/core/Tab';
-import { Load } from 'components/Load';
 import React from 'react';
-import { tabChildStyle } from 'utils/styles/styles';
+import { Load } from '../../../../components/Load';
+import { tabChildStyle } from '../../../../utils/styles/styles';
 import { ReviewButton } from './ReviewButton';
 
 export const ReviewButtonSuspender: React.FC<

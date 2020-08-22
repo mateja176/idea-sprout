@@ -1,8 +1,3 @@
-import {
-  initialSnackbarContext,
-  ISnackbarContext,
-  SnackbarContext,
-} from 'context/snackbar';
 import LogRocket from 'logrocket';
 import setupLogRocketReact from 'logrocket-react';
 import init from 'ramda/es/init';
@@ -10,8 +5,13 @@ import React from 'react';
 import { Provider as ReduxProvider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { FirebaseAppProvider } from 'reactfire';
-import { env } from 'services/env';
-import { store } from 'services/store/store';
+import {
+  initialSnackbarContext,
+  ISnackbarContext,
+  SnackbarContext,
+} from '../../context/snackbar';
+import { env } from '../../services/env';
+import { store } from '../../services/store/store';
 import { ThemeProvider } from './ThemeProvider';
 
 const firebaseConfig = {

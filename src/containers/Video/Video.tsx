@@ -1,6 +1,6 @@
-import { StorageFile } from 'models/idea';
 import React from 'react';
 import { useStorage, useStorageDownloadURL } from 'reactfire';
+import { StorageFile } from '../../models/idea';
 
 export interface VideoProps extends Pick<StorageFile, 'path'> {}
 

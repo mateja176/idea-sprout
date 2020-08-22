@@ -4,20 +4,26 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import Typography from '@material-ui/core/Typography';
 import Rating from '@material-ui/lab/Rating';
-import { Load } from 'components/Load';
-import { MultilineTextField } from 'components/MultilineTextField';
-import { shareOptions } from 'components/share/share';
+import React from 'react';
+import { Load } from '../../../../components/Load';
+import { MultilineTextField } from '../../../../components/MultilineTextField';
+import { shareOptions } from '../../../../components/share/share';
 import {
   shareOptionMr,
   shareOptionSize,
   ShareOptionsWrapper,
-} from 'components/share/ShareOptions';
-import { SharePrompt } from 'components/share/SharePrompt';
-import { Check } from 'containers/Check';
-import { doNotShareDescription, ratingLabel } from 'elements/idea/review';
-import React from 'react';
-import { feedbackFieldRows, feedbackHelperText } from 'utils/idea/review';
-import { checkWithMessageHeight } from 'utils/styles/styles';
+} from '../../../../components/share/ShareOptions';
+import { SharePrompt } from '../../../../components/share/SharePrompt';
+import {
+  doNotShareDescription,
+  ratingLabel,
+} from '../../../../elements/idea/review';
+import {
+  feedbackFieldRows,
+  feedbackHelperText,
+} from '../../../../utils/idea/review';
+import { checkWithMessageHeight } from '../../../../utils/styles/styles';
+import { Check } from '../../../Check';
 import { ratingSectionMb, shareSectionMt } from './ReviewForm';
 
 export interface ReviewFormSkeletonProps {}

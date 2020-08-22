@@ -1,7 +1,7 @@
 import Tooltip from '@material-ui/core/Tooltip';
 import Info from '@material-ui/icons/Info';
-import { IdeaModel } from 'models/idea';
 import React from 'react';
+import { IdeaModel } from '../../models/idea';
 
 const promptStyle: React.CSSProperties = {
   display: 'flex',

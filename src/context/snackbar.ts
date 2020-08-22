@@ -1,5 +1,5 @@
-import { ISnackbar, SnackbarState } from 'models/snackbar';
 import { createContext } from 'react';
+import { ISnackbar, SnackbarState } from '../models/snackbar';
 
 export interface ISnackbarContext {
   queue: SnackbarState['queue'];

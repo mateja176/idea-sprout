@@ -2,9 +2,9 @@ import Box from '@material-ui/core/Box';
 import Button, { ButtonProps } from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Remove from '@material-ui/icons/Remove';
-import { StoragePath } from 'models/firebase';
-import { UpdateStorageFile } from 'models/idea';
 import React from 'react';
+import { StoragePath } from '../models/firebase';
+import { UpdateStorageFile } from '../models/idea';
 import { UploadButtonSuspender } from './UploadButtonSuspender';
 
 export const bottomButtonStyle: React.CSSProperties = {

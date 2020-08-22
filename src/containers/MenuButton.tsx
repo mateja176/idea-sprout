@@ -2,11 +2,11 @@ import Box from '@material-ui/core/Box';
 import { ButtonProps } from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/icons/Menu';
-import { useUserState } from 'hooks/firebase';
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { selectEmailVerified } from 'services/store/slices/auth';
-import { getIsSignedIn } from 'utils/auth';
+import { useUserState } from '../hooks/firebase';
+import { selectEmailVerified } from '../services/store/slices/auth';
+import { getIsSignedIn } from '../utils/auth';
 
 const buttonStyle: React.CSSProperties = {
   marginLeft: 0,

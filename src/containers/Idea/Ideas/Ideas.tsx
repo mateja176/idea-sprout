@@ -1,24 +1,24 @@
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import { User } from 'firebase/app';
-import { useIdeasCountRef } from 'hooks/firebase';
-import { useActions } from 'hooks/hooks';
-import { IdeaBatchError, IdeaFilter } from 'models/idea';
-import { WithCount } from 'models/models';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AutoSizer } from 'react-virtualized/dist/commonjs/AutoSizer';
 import { InfiniteLoader } from 'react-virtualized/dist/commonjs/InfiniteLoader';
 import { List } from 'react-virtualized/dist/commonjs/List';
 import { useFirestoreDocData } from 'reactfire';
-import { createPromisedAction } from 'services/store/middleware/promisedAction';
+import { getType } from 'typesafe-actions';
+import { useIdeasCountRef } from '../../../hooks/firebase';
+import { useActions } from '../../../hooks/hooks';
+import { IdeaBatchError, IdeaFilter } from '../../../models/idea';
+import { WithCount } from '../../../models/models';
+import { createPromisedAction } from '../../../services/store/middleware/promisedAction';
 import {
   fetchIdeasAsync,
   FetchIdeasAsync,
   selectIdeas,
-} from 'services/store/slices/ideas';
-import { getType } from 'typesafe-actions';
-import { ideaListItemFullHeight } from 'utils/styles/idea';
+} from '../../../services/store/slices/ideas';
+import { ideaListItemFullHeight } from '../../../utils/styles/idea';
 import { IdeaRow } from '../IdeaRow';
 import { IdeaOptionsSkeleton } from '../Options/IdeaOptionsSkeleton';
 import { IdeasSkeleton } from './IdeasSkeleton';

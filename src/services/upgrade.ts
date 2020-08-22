@@ -1,6 +1,6 @@
-import { proMembershipDiscount } from 'elements/upgrade';
-import { Upgrade } from 'models/upgrade';
-import { GlobalWithPaypal, Order } from 'types/paypal';
+import { proMembershipDiscount } from '../elements/upgrade';
+import { Upgrade } from '../models/upgrade';
+import { GlobalWithPaypal, Order } from '../types/paypal';
 import { env } from './env';
 
 export interface RenderButtonsParams {

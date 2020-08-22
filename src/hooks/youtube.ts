@@ -1,9 +1,9 @@
 import { useBoolean } from 'ahooks';
-import { SnackbarContext } from 'context/snackbar';
 import { useCallback, useContext, useMemo } from 'react';
-import { loadScriptService, renderPlayerService } from 'services/youtube';
-import { Player } from 'types/youtube';
 import { v4 } from 'uuid';
+import { SnackbarContext } from '../context/snackbar';
+import { loadScriptService, renderPlayerService } from '../services/youtube';
+import { Player } from '../types/youtube';
 
 export const useRenderPlayer = (options?: Partial<Player['options']>) => {
   const { queueSnackbar } = useContext(SnackbarContext);

@@ -1,12 +1,5 @@
 import { useBoolean } from 'ahooks';
-import { SnackbarContext } from 'context/snackbar';
-import { absolutePrivateRoute } from 'elements/routes';
 import firebase from 'firebase/app';
-import { User } from 'models/auth';
-import { CreationIdea, IdeaModel } from 'models/idea';
-import { WithId } from 'models/models';
-import { Review } from 'models/review';
-import { Order, Upgrade } from 'models/upgrade';
 import qs from 'qs';
 import { useContext, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
@@ -19,14 +12,21 @@ import {
   useStorageDownloadURL as useFirebaseStorageDownloadUrl,
   useUser as useFirebaseUser,
 } from 'reactfire';
-import { createUpdateIdea } from 'services/store/slices/ideas';
+import { SnackbarContext } from '../context/snackbar';
+import { absolutePrivateRoute } from '../elements/routes';
+import { User } from '../models/auth';
+import { CreationIdea, IdeaModel } from '../models/idea';
+import { WithId } from '../models/models';
+import { Review } from '../models/review';
+import { Order, Upgrade } from '../models/upgrade';
+import { createUpdateIdea } from '../services/store/slices/ideas';
 import {
   convertFirestoreCollection,
   convertFirestoreDocument,
   firestoreCollections,
   hasOnlyId,
-} from 'utils/firebase';
-import { getInitialIdea } from 'utils/idea/idea';
+} from '../utils/firebase';
+import { getInitialIdea } from '../utils/idea/idea';
 import { useActions } from './hooks';
 
 export const useUser = <U = User>(options?: ReactFireOptions<U | null>) =>

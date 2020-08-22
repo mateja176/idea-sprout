@@ -2,19 +2,19 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import { AcademyLink } from 'components/AcademyLink';
-import { Link } from 'components/Link';
-import { Signout } from 'containers/Signout';
-import {
-  absolutePrivateNavigationRoutes,
-  absolutePublicNavigationRoutes,
-} from 'elements/routes';
-import { useUserState } from 'hooks/firebase';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
-import { selectEmailVerified } from 'services/store/slices/auth';
-import { getIsSignedIn } from 'utils/auth';
+import { AcademyLink } from '../../../components/AcademyLink';
+import { Link } from '../../../components/Link';
+import { Signout } from '../../../containers/Signout';
+import {
+  absolutePrivateNavigationRoutes,
+  absolutePublicNavigationRoutes,
+} from '../../../elements/routes';
+import { useUserState } from '../../../hooks/firebase';
+import { selectEmailVerified } from '../../../services/store/slices/auth';
+import { getIsSignedIn } from '../../../utils/auth';
 import { NavItemSkeleton } from './NavSkeleton';
 
 export interface NavProps {

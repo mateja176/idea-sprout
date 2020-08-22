@@ -14,8 +14,8 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import Info from '@material-ui/icons/Info';
 import { useBoolean } from 'ahooks';
-import { CheckProps } from 'models/idea';
 import React from 'react';
+import { CheckProps } from '../models/idea';
 
 export const Check: React.FC<CheckProps> = ({
   label,

@@ -9,16 +9,16 @@ import LibraryAdd from '@material-ui/icons/LibraryAdd';
 import Publish from '@material-ui/icons/Publish';
 import Share from '@material-ui/icons/Share';
 import { User } from 'firebase/app';
+import React from 'react';
+import FlipMove from 'react-flip-move';
+import { useSelector } from 'react-redux';
 import {
   useCreateIdea,
   useFirestoreCollection,
   useIdeasRef,
-} from 'hooks/firebase';
-import { IdeaModel } from 'models/idea';
-import React from 'react';
-import FlipMove from 'react-flip-move';
-import { useSelector } from 'react-redux';
-import { selectMyIdeas } from 'services/store/slices/ideas';
+} from '../../../hooks/firebase';
+import { IdeaModel } from '../../../models/idea';
+import { selectMyIdeas } from '../../../services/store/slices/ideas';
 import { IdeaRow } from '../IdeaRow';
 
 export const MyEmptyIdeas = () => {

@@ -1,4 +1,3 @@
-import { ShareButtonProps, ShareIconProps } from 'models/models';
 import React from 'react';
 import FacebookIcon from 'react-share/es/FacebookIcon';
 import FacebookShareButton from 'react-share/es/FacebookShareButton';
@@ -10,6 +9,7 @@ import ViberIcon from 'react-share/es/ViberIcon';
 import ViberShareButton from 'react-share/es/ViberShareButton';
 import WhatsappIcon from 'react-share/es/WhatsappIcon';
 import WhatsappShareButton from 'react-share/es/WhatsappShareButton';
+import { ShareButtonProps, ShareIconProps } from '../../models/models';
 
 export interface ShareConfig {
   label: string;

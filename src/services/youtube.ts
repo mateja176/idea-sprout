@@ -1,4 +1,4 @@
-import { GlobalWithMaybeYT, GlobalWithYT, Player } from 'types/youtube';
+import { GlobalWithMaybeYT, GlobalWithYT, Player } from '../types/youtube';
 
 const API = 'https://www.youtube.com/iframe_api';
 

@@ -1,9 +1,9 @@
 import useTheme from '@material-ui/core/styles/useTheme';
-import { SnackbarContext } from 'context/snackbar';
-import { useLocalStorageSet, useLocalStorageSubscribe } from 'hooks/hooks';
 import React from 'react';
 import ReactJoyride, { CallBackProps, Styles } from 'react-joyride';
-import { headerZIndex } from 'utils/styles/styles';
+import { SnackbarContext } from '../context/snackbar';
+import { useLocalStorageSet, useLocalStorageSubscribe } from '../hooks/hooks';
+import { headerZIndex } from '../utils/styles/styles';
 
 export const Tour: React.FC<Pick<
   React.ComponentProps<typeof ReactJoyride>,

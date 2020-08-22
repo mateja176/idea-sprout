@@ -1,7 +1,7 @@
 import Box from '@material-ui/core/Box';
-import { Check } from 'containers/Check';
-import { CheckProps } from 'models/idea';
 import React from 'react';
+import { Check } from '../../../containers/Check';
+import { CheckProps } from '../../../models/idea';
 
 export interface NicheCheckProps
   extends Pick<CheckProps, 'checked' | 'onChange'> {}

@@ -1,5 +1,5 @@
-import { SigninDivider } from 'components/SigninDivider';
 import React from 'react';
+import { SigninDivider } from '../../components/SigninDivider';
 import Signin from './Signin';
 
 const SigninSuspender: typeof Signin = (props) => {

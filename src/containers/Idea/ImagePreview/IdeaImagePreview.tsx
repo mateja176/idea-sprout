@@ -1,12 +1,12 @@
 import Box from '@material-ui/core/Box';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { useBoolean } from 'ahooks';
-import { IdeaPreviewWrapper } from 'components/Idea/IdeaPreviewWrapper';
-import { useStorageDownloadUrl } from 'hooks/firebase';
-import { StorageFile } from 'models/idea';
 import React from 'react';
 import { useStorage } from 'reactfire';
-import { ideaListItemHeight } from 'utils/styles/idea';
+import { IdeaPreviewWrapper } from '../../../components/Idea/IdeaPreviewWrapper';
+import { useStorageDownloadUrl } from '../../../hooks/firebase';
+import { StorageFile } from '../../../models/idea';
+import { ideaListItemHeight } from '../../../utils/styles/idea';
 
 export interface IdeaImagePreviewProps {
   path: StorageFile['path'];

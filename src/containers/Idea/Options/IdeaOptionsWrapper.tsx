@@ -1,9 +1,12 @@
 import Box from '@material-ui/core/Box';
 import ListItem from '@material-ui/core/ListItem';
-import { useIdeaOptionsButtonBorder } from 'hooks/style';
 import React from 'react';
-import { ideaListItemStyle, textSectionStyle } from 'utils/styles/idea';
 import { IdeaPreviewWrapper } from '../../../components/Idea/IdeaPreviewWrapper';
+import { useIdeaOptionsButtonBorder } from '../../../hooks/style';
+import {
+  ideaListItemStyle,
+  textSectionStyle,
+} from '../../../utils/styles/idea';
 
 export const IdeaOptionsWrapper = ({
   imagePreview,

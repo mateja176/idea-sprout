@@ -1,8 +1,8 @@
 import Box from '@material-ui/core/Box';
-import { FileOptions } from 'containers/FileOptions';
-import { ideaSelector } from 'elements/idea/tour';
-import { IdeaModel, UpdateIdea } from 'models/idea';
 import React from 'react';
+import { FileOptions } from '../../containers/FileOptions';
+import { ideaSelector } from '../../elements/idea/tour';
+import { IdeaModel, UpdateIdea } from '../../models/idea';
 import { Image } from './Image';
 
 export interface ImagesProps extends Pick<IdeaModel, 'images'> {

@@ -14,32 +14,42 @@ import CloudDownload from '@material-ui/icons/CloudDownload';
 import EmojiEvents from '@material-ui/icons/EmojiEvents';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { useBoolean } from 'ahooks';
-import { ProMembership } from 'containers/ProMembership';
-import { SnackbarContext } from 'context/snackbar';
-import { proMembership, proMembershipDiscount } from 'elements/upgrade';
 import firebase, { User } from 'firebase/app';
-import { useReviewsRef, useUpgradeToPro, useUsersRef } from 'hooks/firebase';
-import { useRenderButtons } from 'hooks/upgrade';
 import jsonexport from 'jsonexport/dist';
 import kebabCase from 'lodash/kebabCase';
-import { FirestoreUser } from 'models/auth';
-import { claims } from 'models/firebase';
-import { IdeaModel } from 'models/idea';
-import { Review, ReviewWithAuthor } from 'models/review';
 import React from 'react';
 import { AuthCheck } from 'reactfire';
-import { exportFile } from 'services/files';
-import { formatCurrency } from 'services/format';
-import { hasPaypalScriptLoaded, loadPaypalScript } from 'services/upgrade';
+import { SnackbarContext } from '../../../../context/snackbar';
+import {
+  proMembership,
+  proMembershipDiscount,
+} from '../../../../elements/upgrade';
+import {
+  useReviewsRef,
+  useUpgradeToPro,
+  useUsersRef,
+} from '../../../../hooks/firebase';
+import { useRenderButtons } from '../../../../hooks/upgrade';
+import { FirestoreUser } from '../../../../models/auth';
+import { claims } from '../../../../models/firebase';
+import { IdeaModel } from '../../../../models/idea';
+import { Review, ReviewWithAuthor } from '../../../../models/review';
+import { exportFile } from '../../../../services/files';
+import { formatCurrency } from '../../../../services/format';
+import {
+  hasPaypalScriptLoaded,
+  loadPaypalScript,
+} from '../../../../services/upgrade';
 import {
   convertFirestoreCollection,
   convertFirestoreDocument,
-} from 'utils/firebase';
+} from '../../../../utils/firebase';
 import {
   paypalButtonsHeight,
   paypalHeightBreakpoint,
-} from 'utils/styles/paypal';
-import { tabChildStyle } from 'utils/styles/styles';
+} from '../../../../utils/styles/paypal';
+import { tabChildStyle } from '../../../../utils/styles/styles';
+import { ProMembership } from '../../../ProMembership';
 
 const id = 'paypal-container';
 

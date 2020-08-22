@@ -1,6 +1,6 @@
 import Tab from '@material-ui/core/Tab';
-import { Load } from 'components/Load';
 import React from 'react';
+import { Load } from '../../../../components/Load';
 import { ExportReviews } from './ExportReviews';
 
 export const ExportReviewSuspender: typeof ExportReviews = (props) => {

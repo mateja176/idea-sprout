@@ -1,10 +1,10 @@
 import Box from '@material-ui/core/Box';
 import useTheme from '@material-ui/core/styles/useTheme';
 import Skeleton from '@material-ui/lab/Skeleton';
-import { StorageFile } from 'models/idea';
 import React from 'react';
 import { StorageImage } from 'reactfire';
-import { mediaBgGreyVariant } from 'utils/styles/styles';
+import { StorageFile } from '../../models/idea';
+import { mediaBgGreyVariant } from '../../utils/styles/styles';
 
 export interface ImageProps
   extends StorageFile,

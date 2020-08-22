@@ -1,14 +1,14 @@
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Rating from '@material-ui/lab/Rating';
-import { ReviewSection } from 'components/Idea/Review/ReviewSection';
-import { Load } from 'components/Load';
+import React from 'react';
+import { ReviewSection } from '../../../components/Idea/Review/ReviewSection';
+import { Load } from '../../../components/Load';
 import {
   reviewFeedbackHeading,
   reviewRatingHeading,
-} from 'elements/idea/review';
-import { initialReview } from 'models/review';
-import React from 'react';
+} from '../../../elements/idea/review';
+import { initialReview } from '../../../models/review';
 import { feedbackWrapperStyle, reviewsMb } from './Reviews';
 
 export const ReviewSkeleton: React.FC = () => {

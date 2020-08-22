@@ -1,11 +1,11 @@
-import { IdeaContainer } from 'containers/Idea/IdeaContainer';
-import { IdeaContainerSkeleton } from 'containers/Idea/IdeaContainerSkeleton';
-import { useUserState } from 'hooks/firebase';
-import { WithMaybeUser } from 'models/auth';
-import { GlobalWithPreloadedIdea, IdeaModel } from 'models/idea';
 import React, { Suspense } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import { isUserLoading } from 'utils/auth';
+import { IdeaContainer } from '../../../../containers/Idea/IdeaContainer';
+import { IdeaContainerSkeleton } from '../../../../containers/Idea/IdeaContainerSkeleton';
+import { useUserState } from '../../../../hooks/firebase';
+import { WithMaybeUser } from '../../../../models/auth';
+import { GlobalWithPreloadedIdea, IdeaModel } from '../../../../models/idea';
+import { isUserLoading } from '../../../../utils/auth';
 
 export interface IdeaPageProps
   extends WithMaybeUser,

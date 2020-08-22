@@ -1,8 +1,8 @@
 import { useBoolean } from 'ahooks';
 import firebase from 'firebase/app';
-import { Claims } from 'models/firebase';
 import React from 'react';
 import { AuthCheck as FirebaseAuthCheck, useAuth } from 'reactfire';
+import { Claims } from '../models/firebase';
 
 export const AuthCheck: React.FC<
   Omit<

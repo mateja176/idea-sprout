@@ -1,7 +1,4 @@
 import { FirebaseError } from 'firebase/app';
-import { User } from 'models/auth';
-import { IdeaFilter, IdeaModel, IdeaSprout, IdeasState } from 'models/idea';
-import { WithId } from 'models/models';
 import { pipe, range } from 'ramda';
 import { IndexRange } from 'react-virtualized';
 import { createSelector } from 'reselect';
@@ -11,7 +8,15 @@ import {
   createAsyncAction,
   getType,
 } from 'typesafe-actions';
-import { isIdea } from 'utils/idea/idea';
+import { User } from '../../../models/auth';
+import {
+  IdeaFilter,
+  IdeaModel,
+  IdeaSprout,
+  IdeasState,
+} from '../../../models/idea';
+import { WithId } from '../../../models/models';
+import { isIdea } from '../../../utils/idea/idea';
 
 export const initialIdeasState: IdeasState = {
   ideas: [],

@@ -1,6 +1,6 @@
-import { absolutePrivateRoute, ideaPath } from 'elements/routes';
 import React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router-dom';
+import { absolutePrivateRoute, ideaPath } from '../../../../elements/routes';
 import LazyIdeaPage from '../Idea/LazyIdeaPage';
 import LazyIdeasPage from '../Ideas/LazyIdeasPage';
 

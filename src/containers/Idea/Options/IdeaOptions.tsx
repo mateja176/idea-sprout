@@ -7,21 +7,24 @@ import Publish from '@material-ui/icons/Publish';
 import RateReview from '@material-ui/icons/RateReview';
 import StarRate from '@material-ui/icons/StarRate';
 import { useBoolean } from 'ahooks';
-import { IdeaOptionsWrapper } from 'containers/Idea/Options/IdeaOptionsWrapper';
-import { ShareMenuButton } from 'containers/Share/ShareMenuButton';
-import { absolutePrivateRoute } from 'elements/routes';
-import { useIdeaRef, useShareIdea } from 'hooks/firebase';
-import { useActions } from 'hooks/hooks';
-import { useIdeaOptionButtonStyle } from 'hooks/style';
-import { User } from 'models/auth';
-import { IdeaModel } from 'models/idea';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { createAddIdea, createDeleteIdea } from 'services/store/slices/ideas';
 import urljoin from 'url-join';
-import { getRatingTooltip, roundAverage } from 'utils/idea/idea';
-import { ideaNameStyle } from 'utils/styles/idea';
-import { withStarColor } from 'utils/styles/styles';
+import { IdeaOptionsWrapper } from '../../../containers/Idea/Options/IdeaOptionsWrapper';
+import { ShareMenuButton } from '../../../containers/Share/ShareMenuButton';
+import { absolutePrivateRoute } from '../../../elements/routes';
+import { useIdeaRef, useShareIdea } from '../../../hooks/firebase';
+import { useActions } from '../../../hooks/hooks';
+import { useIdeaOptionButtonStyle } from '../../../hooks/style';
+import { User } from '../../../models/auth';
+import { IdeaModel } from '../../../models/idea';
+import {
+  createAddIdea,
+  createDeleteIdea,
+} from '../../../services/store/slices/ideas';
+import { getRatingTooltip, roundAverage } from '../../../utils/idea/idea';
+import { ideaNameStyle } from '../../../utils/styles/idea';
+import { withStarColor } from '../../../utils/styles/styles';
 import { IdeaImagePreviewSuspender } from '../ImagePreview/IdeaImagePreviewSuspender';
 import { ReviewDialog } from '../Review/ReviewDialog';
 import { ReviewsDialog } from '../Review/ReviewsDialog';

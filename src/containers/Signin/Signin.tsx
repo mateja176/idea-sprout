@@ -17,33 +17,33 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Autorenew from '@material-ui/icons/Autorenew';
 import Alert from '@material-ui/lab/Alert';
 import { useBoolean } from 'ahooks';
-import { Google } from 'components/icons/Google';
-import { PageWrapper } from 'components/PageWrapper';
-import { SigninDivider } from 'components/SigninDivider';
-import { SnackbarContext } from 'context/snackbar';
 import firebase, { FirebaseError, User } from 'firebase/app';
 import { FormikConfig, FormikHelpers, useFormik } from 'formik';
-import {
-  useActions,
-  useLocalStorageItem,
-  useLocalStorageRemove,
-  useOrigin,
-} from 'hooks/hooks';
-import { passwordSchema } from 'models/auth';
 import React from 'react';
 import { useQuery } from 'react-query';
 import { useLocation } from 'react-router-dom';
 import FacebookIcon from 'react-share/es/FacebookIcon';
 import TwitterIcon from 'react-share/es/TwitterIcon';
 import { useAuth } from 'reactfire';
-import { blur } from 'services/services';
+import urljoin from 'url-join';
+import * as yup from 'yup';
+import { Google } from '../../components/icons/Google';
+import { PageWrapper } from '../../components/PageWrapper';
+import { SigninDivider } from '../../components/SigninDivider';
+import { SnackbarContext } from '../../context/snackbar';
+import {
+  useActions,
+  useLocalStorageItem,
+  useLocalStorageRemove,
+  useOrigin,
+} from '../../hooks/hooks';
+import { passwordSchema } from '../../models/auth';
+import { blur } from '../../services/services';
 import {
   createSaveUser,
   createSetEmailVerified,
-} from 'services/store/slices/auth';
-import urljoin from 'url-join';
-import { inputStyle, logoWidth } from 'utils/styles/styles';
-import * as yup from 'yup';
+} from '../../services/store/slices/auth';
+import { inputStyle, logoWidth } from '../../utils/styles/styles';
 
 export interface SigninProps {
   user: User | null;

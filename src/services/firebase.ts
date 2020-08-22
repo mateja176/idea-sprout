@@ -1,5 +1,5 @@
 import firebase from 'firebase/app';
-import { GlobalWithReactfire } from 'types/firebase';
+import { GlobalWithReactfire } from '../types/firebase';
 
 export const interceptGetIdeasError = (
   snapshot: firebase.firestore.QuerySnapshot,

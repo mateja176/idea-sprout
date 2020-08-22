@@ -9,14 +9,14 @@ import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/icons/Link';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { useBoolean } from 'ahooks';
-import { SnackbarContext } from 'context/snackbar';
 import { useFormik } from 'formik';
-import { useLoadYoutubeScript, useRenderPlayer } from 'hooks/youtube';
-import { StorageFile } from 'models/idea';
 import qs from 'qs';
 import React from 'react';
-import { inputStyle, mediaBgGreyVariant } from 'utils/styles/styles';
 import * as yup from 'yup';
+import { SnackbarContext } from '../../context/snackbar';
+import { useLoadYoutubeScript, useRenderPlayer } from '../../hooks/youtube';
+import { StorageFile } from '../../models/idea';
+import { inputStyle, mediaBgGreyVariant } from '../../utils/styles/styles';
 
 const type = 'video';
 
