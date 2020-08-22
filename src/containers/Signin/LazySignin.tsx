@@ -4,11 +4,11 @@ import Loadable from 'react-loadable';
 import SigninSkeleton from './SigninSkeleton';
 
 export const loadSignin = () =>
-  import(/* webpackChunkName: "Signin" */ './SigninSuspender');
+  import(/* webpackChunkName: "SigninSuspender" */ './SigninSuspender');
 
-const modules = ['./Signin.tsx'];
+const modules = ['./SigninSuspender'];
 
-const webpack = () => [require.resolveWeak('./Signin.tsx')];
+const webpack = () => [require.resolveWeak('./SigninSuspender')];
 
 const LazySignin = Loadable({
   loader: loadSignin,
