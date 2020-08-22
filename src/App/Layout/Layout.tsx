@@ -39,7 +39,8 @@ const loadIconButton = (
     </IconButton>
   </Load>
 );
-export const Layout: React.FC<LayoutProps> = ({ children }) => {
+
+const Layout: React.FC<LayoutProps> = ({ children }) => {
   const classes = useStyles();
 
   const [drawerOpen, setDrawerOpen] = useBoolean();
@@ -112,3 +113,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
     </Box>
   );
 };
+
+Layout.displayName = 'Layout';
+
+export default Layout;
