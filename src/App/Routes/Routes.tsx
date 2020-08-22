@@ -1,12 +1,9 @@
 import React from 'react';
-import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
+import RedirectToIdeas from '../../components/Idea/RedirectToIdeas';
 import { NotFound } from '../../components/NotFound';
 import { absolutePrivateRoute } from '../../elements/routes';
 import IdeasSwitch from '../pages/idea/Switch/IdeasSwitch';
-
-const RedirectToIdeas: React.FC<RouteComponentProps> = () => (
-  <Redirect to={absolutePrivateRoute.ideas.path} />
-);
 
 export const Routes: React.FC = () => {
   return (
