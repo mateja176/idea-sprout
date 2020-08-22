@@ -8,7 +8,7 @@ import SpeedDialAction, {
 } from '@material-ui/lab/SpeedDialAction';
 import { useBoolean } from 'ahooks';
 import React from 'react';
-import FacebookShareButton from 'react-share/es/FacebookShareButton';
+import { FacebookShareButton } from 'react-share';
 import { shareOptions } from '../../components/share/share';
 import { getShareCountHelperText } from '../../utils/idea/idea';
 import { shareIconSize, speedDialZIndex } from '../../utils/styles/styles';
