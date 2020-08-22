@@ -1,5 +1,4 @@
-import { Env, RawEnv } from '../models/env';
-import { assertRequired } from './services';
+import { RawEnv } from '../models/env';
 
 const rawEnv: RawEnv = {
   firebaseApiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -18,8 +17,7 @@ const rawEnv: RawEnv = {
   paypalClientId: process.env.REACT_APP_PAYPAL_CLIENT_ID,
 };
 
-assertRequired(rawEnv);
-export const env: Env = {
+export const env = {
   ...rawEnv,
   logRocketId: process.env.REACT_APP_LOG_ROCKET_ID,
   driftId: process.env.REACT_APP_DRIFT_ID,
