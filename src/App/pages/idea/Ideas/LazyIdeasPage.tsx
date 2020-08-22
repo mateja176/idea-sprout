@@ -5,7 +5,7 @@ const LazyIdeasPage = Loadable({
   loader: () => import(/* webpackChunkName: "IdeasPage" */ './IdeasPage'),
   loading: IdeasPageSkeleton,
   modules: ['./IdeasPage.tsx'],
-  webpack: () => ['./IdeasPage.tsx'],
+  webpack: () => [require.resolveWeak('./IdeasPage.tsx')],
 });
 
 export default LazyIdeasPage;
