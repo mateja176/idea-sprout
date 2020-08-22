@@ -16,6 +16,7 @@ export interface Env {
   smtpFrom: string;
   paypalClientId: string;
   logRocketId?: string;
+  driftId?: string;
 }
 
 export type RawEnv = DeepPartial<Env>;
