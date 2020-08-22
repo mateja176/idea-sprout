@@ -12,7 +12,7 @@ import {
   absolutePrivateNavigationRoutes,
   absolutePublicNavigationRoutes,
 } from '../../../elements/routes';
-import { useUserState } from '../../../hooks/firebase';
+import { useUser } from '../../../hooks/firebase';
 import { selectEmailVerified } from '../../../services/store/slices/auth';
 import { getIsSignedIn } from '../../../utils/auth';
 import { NavItemSkeleton } from './NavSkeleton';
@@ -30,7 +30,7 @@ export const withNavWidth: React.CSSProperties = {
 export const Nav: React.FC<NavProps> = ({ onClick }) => {
   useSelector(selectEmailVerified); // * user.reload() does not trigger a re-render
 
-  const user = useUserState();
+  const user = useUser();
   const isSignedIn = getIsSignedIn(user);
 
   const routes = isSignedIn
@@ -39,22 +39,24 @@ export const Nav: React.FC<NavProps> = ({ onClick }) => {
 
   const location = useLocation();
 
-  return user === null || user === 'loading' ? null : (
-    <List style={withNavWidth}>
-      {routes.map(({ label, path, icon }) => (
-        <Link key={path} to={path} onClick={onClick}>
-          <ListItem button selected={location.pathname === path}>
-            <ListItemIcon>{icon}</ListItemIcon>
-            <ListItemText>{label}</ListItemText>
-          </ListItem>
-        </Link>
-      ))}
-      {!!user && (
-        <React.Suspense fallback={NavItemSkeleton}>
-          <Signout user={user} onClick={onClick} />
-        </React.Suspense>
-      )}
-      {isSignedIn && <AcademyLink />}
-    </List>
+  return (
+    user && (
+      <List style={withNavWidth}>
+        {routes.map(({ label, path, icon }) => (
+          <Link key={path} to={path} onClick={onClick}>
+            <ListItem button selected={location.pathname === path}>
+              <ListItemIcon>{icon}</ListItemIcon>
+              <ListItemText>{label}</ListItemText>
+            </ListItem>
+          </Link>
+        ))}
+        {!!user && (
+          <React.Suspense fallback={NavItemSkeleton}>
+            <Signout user={user} onClick={onClick} />
+          </React.Suspense>
+        )}
+        {isSignedIn && <AcademyLink />}
+      </List>
+    )
   );
 };

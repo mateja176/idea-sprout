@@ -5,26 +5,24 @@ import RedirectToIdeas from '../../../../components/Idea/RedirectToIdeas';
 import { IdeaContainer } from '../../../../containers/Idea/IdeaContainer';
 import { IdeaContainerSkeleton } from '../../../../containers/Idea/IdeaContainerSkeleton';
 import { SnackbarContext } from '../../../../context/snackbar';
-import { useUserState } from '../../../../hooks/firebase';
-import { WithMaybeUser } from '../../../../models/auth';
+import { useUser } from '../../../../hooks/firebase';
 import { GlobalWithPreloadedIdea, IdeaModel } from '../../../../models/idea';
-import { isUserLoading } from '../../../../utils/auth';
 
 export interface IdeaPageProps
-  extends WithMaybeUser,
-    RouteComponentProps<
-      { id: IdeaModel['id'] },
-      {},
-      { idea: IdeaModel } | null
-    > {}
+  extends RouteComponentProps<
+    { id: IdeaModel['id'] },
+    {},
+    { idea: IdeaModel } | null
+  > {}
 
 const IdeaPage: React.FC<IdeaPageProps> = ({
-  user,
   match: {
     params: { id },
   },
   location: { state },
 }) => {
+  const user = useUser();
+
   const initialIdea =
     state?.idea || (globalThis as GlobalWithPreloadedIdea).__PRELOADED_IDEA__;
 
@@ -47,12 +45,12 @@ const IdeaPage: React.FC<IdeaPageProps> = ({
   );
 };
 
-export default (props: Omit<IdeaPageProps, 'user'>) => {
-  const user = useUserState();
-
-  if (isUserLoading(user)) {
-    return <IdeaContainerSkeleton />;
-  } else {
-    return <IdeaPage {...props} user={user} />;
-  }
+const IdeaPageSuspender = (props: IdeaPageProps) => {
+  return (
+    <React.Suspense fallback={<IdeaContainerSkeleton />}>
+      <IdeaPage {...props} />
+    </React.Suspense>
+  );
 };
+
+export default IdeaPageSuspender;
