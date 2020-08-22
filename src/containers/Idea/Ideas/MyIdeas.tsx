@@ -103,3 +103,7 @@ export const MyIdeas: React.FC<{ user: User }> = ({ user }) => {
     </Box>
   );
 };
+
+MyIdeas.displayName = 'MyIdeas';
+
+export default MyIdeas;

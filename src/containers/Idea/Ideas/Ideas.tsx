@@ -21,7 +21,7 @@ import {
 import { ideaListItemFullHeight } from '../../../utils/styles/idea';
 import { IdeaRow } from '../IdeaRow';
 import { IdeaOptionsSkeleton } from '../Options/IdeaOptionsSkeleton';
-import { IdeasSkeleton } from './IdeasSkeleton';
+import IdeasSkeleton from './IdeasSkeleton';
 
 export interface IdeasProps {
   user: User;
@@ -73,7 +73,7 @@ const RowError: React.FC<{
   );
 };
 
-export const Ideas = ({ user }: IdeasProps) => {
+const Ideas = ({ user }: IdeasProps) => {
   const ideas = useSelector(selectIdeas);
 
   const ideasCountRef = useIdeasCountRef();
@@ -159,3 +159,7 @@ export const Ideas = ({ user }: IdeasProps) => {
     </AutoSizer>
   );
 };
+
+Ideas.displayName = 'Ideas';
+
+export default Ideas;

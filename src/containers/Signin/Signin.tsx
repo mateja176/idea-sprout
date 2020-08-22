@@ -590,4 +590,6 @@ const Signin: React.FC<SigninProps> = ({ user }) => {
   );
 };
 
+Signin.displayName = 'Signin';
+
 export default Signin;

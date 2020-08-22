@@ -16,7 +16,7 @@ import { logoWidth } from '../../utils/styles/styles';
 
 const fieldMb = `${34}px`;
 
-export const SigninSkeleton: React.FC = () => {
+const SigninSkeleton: React.FC = () => {
   const smAndUp = useMediaQuery((theme: Theme) => theme.breakpoints.up('sm'));
 
   return (
@@ -85,3 +85,7 @@ export const SigninSkeleton: React.FC = () => {
     </Box>
   );
 };
+
+SigninSkeleton.displayName = 'SigninSkeleton';
+
+export default SigninSkeleton;

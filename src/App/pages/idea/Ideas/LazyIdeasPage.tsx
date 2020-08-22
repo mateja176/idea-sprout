@@ -1,5 +1,5 @@
 import Loadable from 'react-loadable';
-import { IdeasPageSkeleton } from './IdeasPageSkeleton';
+import IdeasPageSkeleton from './IdeasPageSkeleton';
 
 const LazyIdeasPage = Loadable({
   loader: () => import(/* webpackChunkName: "IdeasPage" */ './IdeasPage'),
@@ -7,4 +7,5 @@ const LazyIdeasPage = Loadable({
   modules: ['./IdeasPage.tsx'],
   webpack: () => ['./IdeasPage.tsx'],
 });
+
 export default LazyIdeasPage;

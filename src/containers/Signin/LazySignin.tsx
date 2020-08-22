@@ -1,7 +1,7 @@
 /// <reference types="webpack-env" />
 
 import Loadable from 'react-loadable';
-import { SigninSkeleton } from './SigninSkeleton';
+import SigninSkeleton from './SigninSkeleton';
 
 export const loadSignin = () =>
   import(/* webpackChunkName: "Signin" */ './SigninSuspender');
@@ -16,4 +16,5 @@ const LazySignin = Loadable({
   modules,
   webpack,
 });
+
 export default LazySignin;

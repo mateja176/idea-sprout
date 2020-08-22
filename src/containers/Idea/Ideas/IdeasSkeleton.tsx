@@ -8,7 +8,7 @@ import { IdeaOptionsSkeleton } from '../Options/IdeaOptionsSkeleton';
 
 export interface IdeasSkeletonProps {}
 
-export const IdeasSkeleton: React.FC<IdeasSkeletonProps> = () => {
+const IdeasSkeleton: React.FC<IdeasSkeletonProps> = () => {
   return (
     <Box flex={1} display={'flex'} flexDirection={'column'} overflow={'auto'}>
       <List style={ideaListStyle}>
@@ -19,3 +19,7 @@ export const IdeasSkeleton: React.FC<IdeasSkeletonProps> = () => {
     </Box>
   );
 };
+
+IdeasSkeleton.displayName = 'IdeasSkeleton';
+
+export default IdeasSkeleton;

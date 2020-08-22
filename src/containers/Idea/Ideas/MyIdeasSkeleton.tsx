@@ -1,4 +1,8 @@
 import React from 'react';
-import { IdeasSkeleton } from './IdeasSkeleton';
+import IdeasSkeleton from './IdeasSkeleton';
 
-export const MyIdeasSkeleton: React.FC = () => <IdeasSkeleton />;
+const MyIdeasSkeleton: React.FC = () => <IdeasSkeleton />;
+
+MyIdeasSkeleton.displayName = 'MyIdeasSkeleton';
+
+export default MyIdeasSkeleton;

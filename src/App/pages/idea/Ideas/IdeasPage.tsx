@@ -6,15 +6,15 @@ import Search from '@material-ui/icons/Search';
 import qs from 'qs';
 import React from 'react';
 import { RouteComponentProps, useHistory, useLocation } from 'react-router-dom';
-import { Ideas } from '../../../../containers/Idea/Ideas/Ideas';
-import { IdeasSkeleton } from '../../../../containers/Idea/Ideas/IdeasSkeleton';
+import Ideas from '../../../../containers/Idea/Ideas/Ideas';
+import IdeasSkeleton from '../../../../containers/Idea/Ideas/IdeasSkeleton';
 import { MyIdeas } from '../../../../containers/Idea/Ideas/MyIdeas';
-import { MyIdeasSkeleton } from '../../../../containers/Idea/Ideas/MyIdeasSkeleton';
+import MyIdeasSkeleton from '../../../../containers/Idea/Ideas/MyIdeasSkeleton';
 import LazySignin from '../../../../containers/Signin/LazySignin';
 import { useUserState } from '../../../../hooks/firebase';
 import { WithUser } from '../../../../models/auth';
 import { isUserLoading } from '../../../../utils/auth';
-import { IdeasPageSkeleton } from './IdeasPageSkeleton';
+import IdeasPageSkeleton from './IdeasPageSkeleton';
 
 export interface IdeasPageProps extends RouteComponentProps, WithUser {}
 
@@ -83,6 +83,8 @@ const IdeasPage: React.FC<IdeasPageProps> = ({ user }) => {
     </Box>
   );
 };
+
+IdeasPage.displayName = 'IdeasPage';
 
 export default (props: Omit<IdeasPageProps, 'user'>) => {
   const user = useUserState();
