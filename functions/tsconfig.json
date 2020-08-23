@@ -7,8 +7,12 @@
     "sourceMap": true,
     "strict": true,
     "target": "es2017",
-    "skipLibCheck": true
+    "lib": ["ES2019", "DOM"],
+    "skipLibCheck": true,
+    "jsx": "react",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "types": ["react/experimental"]
   },
-  "compileOnSave": true,
-  "include": ["src"]
+  "compileOnSave": true
 }
