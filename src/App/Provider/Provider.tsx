@@ -61,17 +61,21 @@ export const Provider: React.FC<ProviderProps> = ({ children }) => {
     [snackbarQueue],
   );
 
-  return (
-    <BrowserRouter>
-      <ReduxProvider store={store}>
-        <FirebaseAppProvider firebaseConfig={firebaseConfig}>
-          <ThemeProvider>
-            <SnackbarContext.Provider value={snackbarContext}>
-              {children}
-            </SnackbarContext.Provider>
-          </ThemeProvider>
-        </FirebaseAppProvider>
-      </ReduxProvider>
-    </BrowserRouter>
+  const app = (
+    <ReduxProvider store={store}>
+      <FirebaseAppProvider firebaseConfig={firebaseConfig}>
+        <ThemeProvider>
+          <SnackbarContext.Provider value={snackbarContext}>
+            {children}
+          </SnackbarContext.Provider>
+        </ThemeProvider>
+      </FirebaseAppProvider>
+    </ReduxProvider>
+  );
+
+  return typeof window === 'undefined' ? (
+    app
+  ) : (
+    <BrowserRouter>{app}</BrowserRouter>
   );
 };
