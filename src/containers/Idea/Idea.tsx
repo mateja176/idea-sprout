@@ -2,9 +2,9 @@ import Box from '@material-ui/core/Box';
 import useTheme from '@material-ui/core/styles/useTheme';
 import { EditorProps } from 'draft-js';
 import React from 'react';
-import { FileOptions } from '../../containers/FileOptions';
 import { SectionEditor } from '../../containers/SectionEditor/SectionEditor';
 import { Tour } from '../../containers/Tour';
+import { PreloadContext } from '../../context/preload';
 import { problemSolutionTitle, rationaleTitle } from '../../elements/idea/idea';
 import { ideaSelector, ideaTourSteps } from '../../elements/idea/tour';
 import { WithMaybeUser } from '../../models/auth';
@@ -18,6 +18,7 @@ import {
 } from '../../models/idea';
 import { ideaMarginBottom } from '../../utils/styles/idea';
 import { ideaSectionMl } from '../../utils/styles/styles';
+import { FileOptions } from '../FileOptions';
 import { Images } from '../Image/Images';
 import { VideoSuspender } from '../Video/VideoSuspender';
 import { IdeaImagePreviewSuspender } from './ImagePreview/IdeaImagePreviewSuspender';
@@ -31,6 +32,8 @@ const blockStyleFn: EditorProps['blockStyleFn'] = () => 'MuiTypography-h4';
 
 export const Idea = React.forwardRef<HTMLDivElement, IdeaProps>(
   ({ user, idea, update }, nameWrapperRef) => {
+    const preloaded = React.useContext(PreloadContext);
+
     const theme = useTheme();
 
     const isAuthor = user?.uid === idea.author;
@@ -82,7 +85,11 @@ export const Idea = React.forwardRef<HTMLDivElement, IdeaProps>(
       >
         <Tour steps={ideaTourSteps} />
         <Box id={ideaSelector.logo} display={'flex'} mx={ideaSectionMl}>
-          <IdeaImagePreviewSuspender path={idea.logo.path} />
+          {preloaded.logoUrl ? (
+            <img src={preloaded.logoUrl} alt={idea.name} />
+          ) : (
+            <IdeaImagePreviewSuspender path={idea.logo.path} />
+          )}
           <Box visibility={isAuthor ? 'visible' : 'hidden'}>
             <FileOptions
               storagePath={'images'}
@@ -128,7 +135,12 @@ export const Idea = React.forwardRef<HTMLDivElement, IdeaProps>(
           max={ProblemSolutionLength.max}
           onSave={saveProblemSolution}
         />
-        <Images images={idea.images} isAuthor={isAuthor} update={update} />
+        <Images
+          ideaName={idea.name}
+          images={idea.images}
+          isAuthor={isAuthor}
+          update={update}
+        />
         <SectionEditor
           id={ideaSelector.rationale}
           isAuthor={isAuthor}

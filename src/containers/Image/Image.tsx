@@ -3,12 +3,15 @@ import useTheme from '@material-ui/core/styles/useTheme';
 import Skeleton from '@material-ui/lab/Skeleton';
 import React from 'react';
 import { StorageImage } from 'reactfire';
-import { StorageFile } from '../../models/idea';
+import { IdeaModel, StorageFile } from '../../models/idea';
 import { mediaBgGreyVariant } from '../../utils/styles/styles';
 
 export interface ImageProps
   extends StorageFile,
     Pick<React.ComponentProps<typeof StorageImage>, 'onClick'> {
+  ideaName: IdeaModel['name'];
+  i: number;
+  src?: string;
   isLast?: boolean;
 }
 
@@ -19,6 +22,9 @@ export const Image: React.FC<ImageProps> = ({
   path,
   width,
   height,
+  ideaName,
+  i,
+  src,
   isLast = false,
 }) => {
   const theme = useTheme();
@@ -38,23 +44,27 @@ export const Image: React.FC<ImageProps> = ({
       height={`calc(100vw * ${height / width})`}
       maxHeight={'100%'}
     >
-      <React.Suspense
-        fallback={
-          <Skeleton
-            variant={'rect'}
+      {src ? (
+        <img src={src} alt={`${ideaName} ${i}`} />
+      ) : (
+        <React.Suspense
+          fallback={
+            <Skeleton
+              variant={'rect'}
+              height={'100%'}
+              width={'100%'}
+              style={skeletonStyle}
+            />
+          }
+        >
+          <StorageImage
+            storagePath={path}
             height={'100%'}
-            width={'100%'}
-            style={skeletonStyle}
+            style={imageStyle}
+            onClick={onClick}
           />
-        }
-      >
-        <StorageImage
-          storagePath={path}
-          height={'100%'}
-          style={imageStyle}
-          onClick={onClick}
-        />
-      </React.Suspense>
+        </React.Suspense>
+      )}
     </Box>
   );
 };

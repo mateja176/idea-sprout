@@ -23,6 +23,19 @@ import type { RawIdea } from '../../src/models/idea';
 import theme from '../../src/utils/styles/theme';
 import * as models from './models/models';
 
+const getFileUrl = (path: string) =>
+  url
+    .format({
+      protocol: 'https',
+      hostname: 'firebasestorage.googleapis.com',
+      pathname: join(
+        'v0/b/idea-sprout.appspot.com/o',
+        encodeURIComponent(path),
+      ),
+      search: qs.stringify({ alt: 'media' }),
+    })
+    .toString();
+
 export const renderIdea = functions.https.onRequest(async (req, res) => {
   const {
     config: firebase,
@@ -46,17 +59,7 @@ export const renderIdea = functions.https.onRequest(async (req, res) => {
       return res.redirect('/ideas');
     }
 
-    const logoUrl: string = url
-      .format({
-        protocol: 'https',
-        hostname: 'firebasestorage.googleapis.com',
-        pathname: join(
-          'v0/b/idea-sprout.appspot.com/o',
-          encodeURIComponent(ideaData.logo.path),
-        ),
-        search: qs.stringify({ alt: 'media' }),
-      })
-      .toString();
+    const logoUrl: string = getFileUrl(ideaData.logo.path);
 
     const ideaUrl = url
       .format({
@@ -107,7 +110,16 @@ export const renderIdea = functions.https.onRequest(async (req, res) => {
                   driftId: drift.id,
                 }}
               >
-                <PreloadContext.Provider value={{ ideaUrl, logoUrl }}>
+                <PreloadContext.Provider
+                  value={{
+                    ideaUrl,
+                    logoUrl,
+                    storyUrl: getFileUrl(ideaData.story.path),
+                    imageUrls: ideaData.images.map((image) =>
+                      getFileUrl(image.path),
+                    ),
+                  }}
+                >
                   <App />
                 </PreloadContext.Provider>
               </EnvContext.Provider>

@@ -1,10 +1,12 @@
 import Box from '@material-ui/core/Box';
 import Button, { ButtonProps } from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
+import CloudUpload from '@material-ui/icons/CloudUpload';
 import Remove from '@material-ui/icons/Remove';
 import React from 'react';
 import { StoragePath } from '../models/firebase';
 import { UpdateStorageFile } from '../models/idea';
+import { hasWindow } from '../services/services';
 import { UploadButtonSuspender } from './UploadButtonSuspender';
 
 export const bottomButtonStyle: React.CSSProperties = {
@@ -60,12 +62,16 @@ export const FileOptions: React.FC<{
         color={'primary'}
         orientation={variant === 'bottom' ? 'horizontal' : 'vertical'}
       >
-        <UploadButtonSuspender
-          storagePath={storagePath}
-          update={update}
-          style={uploadButtonStyle}
-          label={label}
-        />
+        {hasWindow() ? (
+          <UploadButtonSuspender
+            storagePath={storagePath}
+            update={update}
+            style={uploadButtonStyle}
+            label={label}
+          />
+        ) : (
+          <Button style={uploadButtonStyle} startIcon={<CloudUpload />} />
+        )}
         {Embed && <Embed style={buttonStyle} />}
         {remove ? (
           <Button style={buttonStyle} onClick={remove} startIcon={<Remove />}>

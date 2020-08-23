@@ -1,16 +1,25 @@
 import Box from '@material-ui/core/Box';
 import React from 'react';
 import { FileOptions } from '../../containers/FileOptions';
+import { PreloadContext } from '../../context/preload';
 import { ideaSelector } from '../../elements/idea/tour';
 import { IdeaModel, UpdateIdea } from '../../models/idea';
 import { Image } from './Image';
 
 export interface ImagesProps extends Pick<IdeaModel, 'images'> {
+  ideaName: IdeaModel['name'];
   isAuthor: boolean;
   update: UpdateIdea;
 }
 
-export const Images: React.FC<ImagesProps> = ({ images, isAuthor, update }) => {
+export const Images: React.FC<ImagesProps> = ({
+  ideaName,
+  images,
+  isAuthor,
+  update,
+}) => {
+  const preloaded = React.useContext(PreloadContext);
+
   const handleUpdate: React.ComponentProps<
     typeof FileOptions
   >['update'] = React.useCallback(
@@ -22,15 +31,22 @@ export const Images: React.FC<ImagesProps> = ({ images, isAuthor, update }) => {
   );
   return (
     <>
-      {images.map((image, i) => (
+      {images.map(({ path, ...image }, i) => (
         <Box
           id={ideaSelector.image}
           height={'100%'}
-          key={`${image.path}${i}`}
+          key={`${path}${i}`}
           display="flex"
           flexDirection="column"
         >
-          <Image isLast={i === images.length - 1} {...image} />
+          <Image
+            isLast={i === images.length - 1}
+            {...image}
+            path={path}
+            src={preloaded.imageUrls[i]}
+            i={i}
+            ideaName={ideaName}
+          />
         </Box>
       ))}
       {isAuthor && (

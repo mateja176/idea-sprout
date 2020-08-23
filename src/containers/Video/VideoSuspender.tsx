@@ -4,6 +4,7 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import React from 'react';
 import { FileOptions } from '../../containers/FileOptions';
 import { YoutubeVideo } from '../../containers/YoutubeVideo';
+import { PreloadContext } from '../../context/preload';
 import { ideaSelector } from '../../elements/idea/tour';
 import { storagePath } from '../../models/firebase';
 import { IdeaModel, StorageFile, UpdateIdea } from '../../models/idea';
@@ -21,6 +22,8 @@ export const VideoSuspender: React.FC<VideoSuspenderProps> = ({
   isAuthor,
   update,
 }) => {
+  const preloaded = React.useContext(PreloadContext);
+
   const theme = useTheme();
 
   const updateStory = React.useCallback(
@@ -62,7 +65,9 @@ export const VideoSuspender: React.FC<VideoSuspenderProps> = ({
         height={isStoragePath ? `calc(100vw * ${height / width})` : height}
         maxHeight={'100%'}
       >
-        {isStoragePath ? (
+        {preloaded.storyUrl ? (
+          <video controls width={'100%'} src={preloaded.storyUrl} />
+        ) : isStoragePath ? (
           <React.Suspense fallback={skeleton}>
             <Video path={path} />
           </React.Suspense>
