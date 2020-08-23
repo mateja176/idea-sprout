@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { RouteComponentProps } from 'react-router-dom';
 import RedirectToIdeas from '../../../../components/Idea/RedirectToIdeas';
@@ -37,20 +37,18 @@ const IdeaPage: React.FC<IdeaPageProps> = ({
   }, [queueSnackbar]);
 
   return (
-    <Suspense fallback={<IdeaContainerSkeleton />}>
+    <React.Suspense fallback={<IdeaContainerSkeleton />}>
       <ErrorBoundary FallbackComponent={RedirectToIdeas} onError={handleError}>
         <IdeaContainer id={id} initialIdea={initialIdea} user={user} />
       </ErrorBoundary>
-    </Suspense>
+    </React.Suspense>
   );
 };
 
-const IdeaPageSuspender = (props: IdeaPageProps) => {
+export default (props: IdeaPageProps) => {
   return (
     <React.Suspense fallback={<IdeaContainerSkeleton />}>
       <IdeaPage {...props} />
     </React.Suspense>
   );
 };
-
-export default IdeaPageSuspender;
