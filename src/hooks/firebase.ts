@@ -1,11 +1,12 @@
 import { useBoolean } from 'ahooks';
 import firebase from 'firebase/app';
+import 'firebase/auth';
+import 'firebase/firestore';
 import qs from 'qs';
-import { useContext, useMemo } from 'react';
+import React, { useContext, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
   ReactFireOptions,
-  useFirestore,
   useFirestoreCollection as useFirebaseFirestoreCollection,
   useFirestoreDoc as useFirebaseFirestoreDoc,
   useFunctions as useFirebaseFunctions,
@@ -32,8 +33,21 @@ import { useActions } from './hooks';
 export const useUser = <U = User>(options?: ReactFireOptions<U | null>) =>
   useFirebaseUser<U | null>(undefined, options);
 
+// * in spite of what is written in the docs
+// * about the hooks not throwing when a start value is supplied
+// * the hook still causes the component to suspend
+export const useMaybeUser = () => {
+  const user = useFirebaseUser(firebase.auth(), {
+    startWithValue: 'loading' as const,
+  });
+
+  return user === 'loading' ? null : user; // * null cannot be provided as a value to start with
+};
+
 export const useSignedInUser = (options?: ReactFireOptions<firebase.User>) =>
   useFirebaseUser<firebase.User>(undefined, options);
+
+export const useFirestore = () => firebase.firestore();
 
 export const useUsersRef = () => {
   const firestore = useFirestore();
@@ -216,7 +230,7 @@ export const useStorageDownloadUrl: typeof useFirebaseStorageDownloadUrl = (
 };
 
 export const useCreateIdea = () => {
-  const user = useSignedInUser();
+  const user = useMaybeUser();
 
   const { queueSnackbar } = useContext(SnackbarContext);
 
@@ -226,34 +240,37 @@ export const useCreateIdea = () => {
 
   const [loading, setLoading] = useBoolean();
 
-  const create = () => {
-    setLoading.setTrue();
-    history.push({
-      pathname: absolutePrivateRoute.ideas.path,
-      search: qs.stringify({ author: user.uid }),
-    });
-    const newIdea: CreationIdea = {
-      ...getInitialIdea(user.uid),
-      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-    };
-    // * the promise is not rejected even if the client is offline
-    // * the promise is pending until it resolves or the tab is closed
-    return ideasRef
-      .add(newIdea)
-      .finally(setLoading.setFalse)
-      .then(() => {
-        queueSnackbar({
-          severity: 'success',
-          message: 'Update, publish and share to get feedback!',
-          autoHideDuration: 10000,
-        });
-      });
-  };
-
-  return {
-    create,
-    loading,
-  };
+  return React.useMemo(
+    () => ({
+      create: user
+        ? () => {
+            setLoading.setTrue();
+            history.push({
+              pathname: absolutePrivateRoute.ideas.path,
+              search: qs.stringify({ author: user.uid }),
+            });
+            const newIdea: CreationIdea = {
+              ...getInitialIdea(user.uid),
+              createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            };
+            // * the promise is not rejected even if the client is offline
+            // * the promise is pending until it resolves or the tab is closed
+            return ideasRef
+              .add(newIdea)
+              .finally(setLoading.setFalse)
+              .then(() => {
+                queueSnackbar({
+                  severity: 'success',
+                  message: 'Update, publish and share to get feedback!',
+                  autoHideDuration: 10000,
+                });
+              });
+          }
+        : () => Promise.resolve(),
+      loading,
+    }),
+    [loading, ideasRef, user, queueSnackbar, history, setLoading],
+  );
 };
 
 export const useFunctions = () => useFirebaseFunctions();

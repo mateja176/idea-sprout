@@ -12,7 +12,7 @@ import {
   absolutePrivateNavigationRoutes,
   absolutePublicNavigationRoutes,
 } from '../../../elements/routes';
-import { useUser } from '../../../hooks/firebase';
+import { useMaybeUser } from '../../../hooks/firebase';
 import { selectEmailVerified } from '../../../services/store/slices/auth';
 import { getIsSignedIn } from '../../../utils/auth';
 import { NavItemSkeleton } from './NavSkeleton';
@@ -30,7 +30,7 @@ export const withNavWidth: React.CSSProperties = {
 export const Nav: React.FC<NavProps> = ({ onClick }) => {
   useSelector(selectEmailVerified); // * user.reload() does not trigger a re-render
 
-  const user = useUser();
+  const user = useMaybeUser();
   const isSignedIn = getIsSignedIn(user);
 
   const routes = isSignedIn

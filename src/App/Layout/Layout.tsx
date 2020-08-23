@@ -7,18 +7,15 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
-import LibraryAdd from '@material-ui/icons/LibraryAdd';
 import { useBoolean } from 'ahooks';
 import React from 'react';
 import { IdeaSprout } from '../../components/icons/IdeaSprout';
 import { Link } from '../../components/Link';
-import { Load } from '../../components/Load';
 import { CreateIdeaIcon } from '../../containers/Idea/Create/CreateIdeaIcon';
 import { IdeaHelpContainer } from '../../containers/Idea/Help/IdeaHelpContainer';
 import { MenuButton } from '../../containers/MenuButton';
 import { absolutePrivateRoute } from '../../elements/routes';
 import { minNavWidth, Nav } from './Nav/Nav';
-import { NavSkeleton } from './Nav/NavSkeleton';
 
 export interface LayoutProps {}
 
@@ -32,14 +29,6 @@ const useDrawerStyles = makeStyles(() => ({
   },
 }));
 
-const loadIconButton = (
-  <Load variant={'circle'}>
-    <IconButton aria-label={'Create idea'}>
-      <LibraryAdd />
-    </IconButton>
-  </Load>
-);
-
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const classes = useStyles();
 
@@ -52,9 +41,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <AppBar position="static">
         <Toolbar>
           <Box mr={2}>
-            <React.Suspense fallback={loadIconButton}>
-              <MenuButton onClick={setDrawerOpen.setTrue} />
-            </React.Suspense>
+            <MenuButton onClick={setDrawerOpen.setTrue} />
           </Box>
           <Box flex={1} display={'flex'}>
             <Box
@@ -73,13 +60,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             </Link>
           </Box>
           <Box mr={1}>
-            <React.Suspense fallback={loadIconButton}>
-              <IdeaHelpContainer />
-            </React.Suspense>
+            <IdeaHelpContainer />
           </Box>
-          <React.Suspense fallback={loadIconButton}>
-            <CreateIdeaIcon />
-          </React.Suspense>
+          <CreateIdeaIcon />
         </Toolbar>
       </AppBar>
       <Drawer
@@ -104,9 +87,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               <ChevronLeft />
             </IconButton>
           </Box>
-          <React.Suspense fallback={<NavSkeleton />}>
-            <Nav onClick={setDrawerOpen.setFalse} />
-          </React.Suspense>
+          <Nav onClick={setDrawerOpen.setFalse} />
         </Box>
       </Drawer>
       {children}
