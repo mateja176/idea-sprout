@@ -2,8 +2,6 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
 import { Step } from 'react-joyride';
-import appleLogo1977 from '../../assets/img/apple-logo-1977.png';
-import appleLogo2003 from '../../assets/img/apple-logo-2003.png';
 import { getAppleIdea } from '../../utils/idea/idea';
 
 const logoSize = 150;
@@ -63,14 +61,14 @@ export const ideaTourSteps: Step[] = [
         >
           <Box mb={1} mx={'auto'}>
             <img
-              src={appleLogo1977}
+              src={'./img/apple-logo-1977.png'}
               height={logoSize}
               alt="Apple's logo from 1977"
             />
           </Box>
           <Box mx={'auto'}>
             <img
-              src={appleLogo2003}
+              src={'./img/apple-logo-2003.png'}
               height={logoSize}
               alt="Apple's latest logo"
             />
