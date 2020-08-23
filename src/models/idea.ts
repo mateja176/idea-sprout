@@ -87,7 +87,7 @@ export enum NameLength {
 }
 
 export enum TaglineLength {
-  min = 20,
+  min = 16,
   max = 60,
 }
 
