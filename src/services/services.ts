@@ -82,3 +82,9 @@ export const setMetaTagValues = (values: MaybeMetaTagValues) => {
     metaTags.metaDescription?.setAttribute('content', description);
   }
 };
+
+export const removeJSSStyle = () => {
+  const jssStyles = globalThis.document.querySelector('#jss-server-side');
+
+  jssStyles?.parentElement?.removeChild(jssStyles);
+};

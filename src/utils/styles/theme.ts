@@ -1,4 +1,5 @@
 import teal from '@material-ui/core/colors/teal';
+import { createMuiTheme } from '@material-ui/core/styles';
 
 export const themePalette = {
   palette: {
@@ -14,3 +15,5 @@ export const themePalette = {
     },
   },
 };
+
+export default createMuiTheme(themePalette);

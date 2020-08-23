@@ -1,6 +1,6 @@
 import LogRocket from 'logrocket';
 import setupLogRocketReact from 'logrocket-react';
-import init from 'ramda/es/init';
+import { init } from 'ramda';
 import React from 'react';
 import { Provider as ReduxProvider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
@@ -64,11 +64,9 @@ export const Provider: React.FC<ProviderProps> = ({ children }) => {
   const app = (
     <ReduxProvider store={store}>
       <FirebaseAppProvider firebaseConfig={firebaseConfig}>
-        <ThemeProvider>
-          <SnackbarContext.Provider value={snackbarContext}>
-            {children}
-          </SnackbarContext.Provider>
-        </ThemeProvider>
+        <SnackbarContext.Provider value={snackbarContext}>
+          {children}
+        </SnackbarContext.Provider>
       </FirebaseAppProvider>
     </ReduxProvider>
   );
@@ -76,6 +74,8 @@ export const Provider: React.FC<ProviderProps> = ({ children }) => {
   return typeof window === 'undefined' ? (
     app
   ) : (
-    <BrowserRouter>{app}</BrowserRouter>
+    <BrowserRouter>
+      <ThemeProvider>{app}</ThemeProvider>
+    </BrowserRouter>
   );
 };
