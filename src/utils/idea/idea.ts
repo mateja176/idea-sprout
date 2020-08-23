@@ -95,6 +95,7 @@ export const getAppleIdea = (author: IdeaModel['author']) => ({
   ...initialIdea,
   author,
   name: 'Apple Computers',
+  tagline: 'Think different.',
   problemSolution:
     'Computers are an invaluable source of information, they save precious time and help us connect with other people. Computers make our lives better.',
   rationale:
