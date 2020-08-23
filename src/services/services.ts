@@ -1,5 +1,7 @@
 import { isNil } from 'ramda';
 
+export const hasWindow = () => typeof window !== 'undefined';
+
 export function assertRequired<O extends {}>(
   object: O,
 ): asserts object is Required<O> {

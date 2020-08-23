@@ -11,6 +11,7 @@ import {
   SnackbarContext,
 } from '../../context/snackbar';
 import { useGetEnv } from '../../hooks/env';
+import { hasWindow } from '../../services/services';
 import { store } from '../../services/store/store';
 import { ThemeProvider } from './ThemeProvider';
 
@@ -71,11 +72,11 @@ export const Provider: React.FC<ProviderProps> = ({ children }) => {
     </ReduxProvider>
   );
 
-  return typeof window === 'undefined' ? (
-    app
-  ) : (
+  return hasWindow() ? (
     <BrowserRouter>
       <ThemeProvider>{app}</ThemeProvider>
     </BrowserRouter>
+  ) : (
+    app
   );
 };

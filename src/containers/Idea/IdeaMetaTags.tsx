@@ -5,7 +5,7 @@ import { useIdeaUrl } from '../../hooks/idea';
 import { IdeaModel } from '../../models/idea';
 import { saveMetaTagValues, setMetaTagValues } from '../../services/services';
 
-const IdeaMetaTagsComponent: React.FC<{ idea: IdeaModel }> = ({ idea }) => {
+const IdeaMetaTags: React.FC<{ idea: IdeaModel }> = ({ idea }) => {
   const url = useIdeaUrl(idea.id);
 
   const storage = useStorage();
@@ -34,10 +34,8 @@ const IdeaMetaTagsComponent: React.FC<{ idea: IdeaModel }> = ({ idea }) => {
   return null;
 };
 
-export const IdeaMetaTags = (
-  props: React.ComponentProps<typeof IdeaMetaTagsComponent>,
-) => (
+export default (props: React.ComponentProps<typeof IdeaMetaTags>) => (
   <React.Suspense fallback={null}>
-    <IdeaMetaTagsComponent {...props} />
+    <IdeaMetaTags {...props} />
   </React.Suspense>
 );

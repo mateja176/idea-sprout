@@ -8,9 +8,10 @@ import { useFirestoreDoc, useIdeaRef } from '../../hooks/firebase';
 import { useActions } from '../../hooks/hooks';
 import { WithMaybeUser } from '../../models/auth';
 import { IdeaModel, IdeaSprout } from '../../models/idea';
+import { hasWindow } from '../../services/services';
 import { createUpdateIdea } from '../../services/store/slices/ideas';
 import { Idea, IdeaProps } from './Idea';
-import { IdeaMetaTags } from './IdeaMetaTags';
+import IdeaMetaTags from './IdeaMetaTags';
 import { IdeaTabs } from './IdeaTabs';
 
 export interface IdeaContainerProps
@@ -72,7 +73,7 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({
       overflow={'auto'}
       onScroll={handleScroll}
     >
-      <IdeaMetaTags idea={idea} />
+      {hasWindow() && <IdeaMetaTags idea={idea} />}
       <IdeaTabs user={user} idea={idea} showName={showName} update={update} />
       <Idea user={user} idea={idea} update={update} />
     </Box>
