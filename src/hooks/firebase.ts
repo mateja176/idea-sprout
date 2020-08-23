@@ -200,7 +200,7 @@ const shareIdeaActionCreators = { updateIdea: createUpdateIdea };
 export const useShareIdea = (idea: IdeaModel) => {
   const { updateIdea } = useActions(shareIdeaActionCreators);
 
-  const user = useUser();
+  const user = useMaybeUser();
 
   const ideaRef = useIdeaRef(idea.id);
 

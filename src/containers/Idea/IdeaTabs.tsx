@@ -20,6 +20,7 @@ import React from 'react';
 import { StorageImage } from 'reactfire';
 import { ShareMenu } from '../../containers/Share/ShareMenu';
 import LazySignin from '../../containers/Signin/LazySignin';
+import { PreloadContext } from '../../context/preload';
 import { useShareIdea } from '../../hooks/firebase';
 import { useActions } from '../../hooks/hooks';
 import { useIdeaUrl } from '../../hooks/idea';
@@ -70,6 +71,7 @@ export const IdeaTabs: React.FC<
   } & WithMaybeUser &
     Pick<IdeaProps, 'update'>
 > = ({ user, idea, showName, update }) => {
+  const preloaded = React.useContext(PreloadContext);
   const { addIdea, deleteIdea } = useActions(actionCreators);
 
   const shareCount = Object.keys(idea.sharedBy).length;
@@ -253,22 +255,26 @@ export const IdeaTabs: React.FC<
               {idea.name}
             </Typography>
           </Box>
-          <React.Suspense
-            fallback={
-              <Skeleton
-                variant={'circle'}
+          {preloaded.logoUrl ? (
+            <img src={preloaded.logoUrl} alt={idea.name} />
+          ) : (
+            <React.Suspense
+              fallback={
+                <Skeleton
+                  variant={'circle'}
+                  width={tabsLogoHeight}
+                  height={tabsLogoHeight}
+                />
+              }
+            >
+              <StorageImage
+                style={imageStyle}
+                storagePath={idea.logo.path}
                 width={tabsLogoHeight}
                 height={tabsLogoHeight}
               />
-            }
-          >
-            <StorageImage
-              style={imageStyle}
-              storagePath={idea.logo.path}
-              width={tabsLogoHeight}
-              height={tabsLogoHeight}
-            />
-          </React.Suspense>
+            </React.Suspense>
+          )}
         </Box>
       </Box>
       <ShareMenu

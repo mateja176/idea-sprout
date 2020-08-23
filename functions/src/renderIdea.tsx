@@ -18,6 +18,7 @@ import * as url from 'url';
 import assetManifest from '../../build/asset-manifest.json';
 import { App } from '../../src/App/App';
 import { EnvContext } from '../../src/context/env';
+import { PreloadContext } from '../../src/context/preload';
 import type { RawIdea } from '../../src/models/idea';
 import theme from '../../src/utils/styles/theme';
 import * as models from './models/models';
@@ -45,7 +46,7 @@ export const renderIdea = functions.https.onRequest(async (req, res) => {
       return res.redirect('/ideas');
     }
 
-    const image: string = url
+    const logoUrl: string = url
       .format({
         protocol: 'https',
         hostname: 'firebasestorage.googleapis.com',
@@ -57,7 +58,7 @@ export const renderIdea = functions.https.onRequest(async (req, res) => {
       })
       .toString();
 
-    const ideaURL = url
+    const ideaUrl = url
       .format({
         protocol: req.protocol,
         hostname: req.hostname,
@@ -106,7 +107,9 @@ export const renderIdea = functions.https.onRequest(async (req, res) => {
                   driftId: drift.id,
                 }}
               >
-                <App />
+                <PreloadContext.Provider value={{ ideaUrl, logoUrl }}>
+                  <App />
+                </PreloadContext.Provider>
               </EnvContext.Provider>
             </ThemeProvider>
           </StaticRouter>
@@ -121,10 +124,10 @@ export const renderIdea = functions.https.onRequest(async (req, res) => {
 
     $('meta[name="description"]').attr('content', ideaData.tagline);
     $('title').html(ideaData.name);
-    $('link[rel="icon"]').attr('href', image);
-    $('meta[name="twitter:image"]').attr('property', image);
-    $('meta[property="og:image"]').attr('content', image);
-    $('meta[property="og:url"]').attr('content', ideaURL);
+    $('link[rel="icon"]').attr('href', logoUrl);
+    $('meta[name="twitter:image"]').attr('property', logoUrl);
+    $('meta[property="og:image"]').attr('content', logoUrl);
+    $('meta[property="og:url"]').attr('content', ideaUrl);
     $('meta[property="og:title"]').attr('content', ideaData.name);
     $('meta[property="og:description"]').attr('content', ideaData.tagline);
 

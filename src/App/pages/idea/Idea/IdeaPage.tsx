@@ -5,7 +5,7 @@ import RedirectToIdeas from '../../../../components/Idea/RedirectToIdeas';
 import { IdeaContainer } from '../../../../containers/Idea/IdeaContainer';
 import { IdeaContainerSkeleton } from '../../../../containers/Idea/IdeaContainerSkeleton';
 import { SnackbarContext } from '../../../../context/snackbar';
-import { useUser } from '../../../../hooks/firebase';
+import { useMaybeUser } from '../../../../hooks/firebase';
 import { GlobalWithPreloadedIdea, IdeaModel } from '../../../../models/idea';
 
 export interface IdeaPageProps
@@ -21,7 +21,7 @@ const IdeaPage: React.FC<IdeaPageProps> = ({
   },
   location: { state },
 }) => {
-  const user = useUser();
+  const user = useMaybeUser();
 
   const initialIdea =
     state?.idea || (globalThis as GlobalWithPreloadedIdea).__PRELOADED_IDEA__;
@@ -36,19 +36,19 @@ const IdeaPage: React.FC<IdeaPageProps> = ({
     });
   }, [queueSnackbar]);
 
-  return (
+  const ideaContainer = (
+    <ErrorBoundary FallbackComponent={RedirectToIdeas} onError={handleError}>
+      <IdeaContainer id={id} initialIdea={initialIdea} user={user} />
+    </ErrorBoundary>
+  );
+
+  return initialIdea ? (
+    ideaContainer
+  ) : (
     <React.Suspense fallback={<IdeaContainerSkeleton />}>
-      <ErrorBoundary FallbackComponent={RedirectToIdeas} onError={handleError}>
-        <IdeaContainer id={id} initialIdea={initialIdea} user={user} />
-      </ErrorBoundary>
+      {ideaContainer}
     </React.Suspense>
   );
 };
 
-export default (props: IdeaPageProps) => {
-  return (
-    <React.Suspense fallback={<IdeaContainerSkeleton />}>
-      <IdeaPage {...props} />
-    </React.Suspense>
-  );
-};
+export default IdeaPage;
