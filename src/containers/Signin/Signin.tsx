@@ -144,7 +144,6 @@ const Signin: React.FC<SigninProps> = ({ user }) => {
       return user
         ?.sendEmailVerification()
         .catch((error: FirebaseError) => {
-          console.log(error);
           setSigninOrCreateError(error.message);
         })
         .finally(() => {
