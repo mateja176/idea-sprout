@@ -97,7 +97,7 @@ const IdeasPageWithUser = (props: IdeasPageProps) => {
 
 const IdeasPageSuspender = (props: IdeasPageProps) => {
   return (
-    <React.Suspense fallback={IdeasPageSkeleton}>
+    <React.Suspense fallback={<IdeasPageSkeleton />}>
       <IdeasPageWithUser {...props} />
     </React.Suspense>
   );
