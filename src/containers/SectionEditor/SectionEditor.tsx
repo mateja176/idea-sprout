@@ -11,7 +11,6 @@ import {
   EditorState,
   getDefaultKeyBinding,
 } from 'draft-js';
-import 'draft-js/dist/Draft.css';
 import React from 'react';
 import {
   IdeaSection,
