@@ -2,7 +2,7 @@ import { currency } from '../models/upgrade';
 
 export const formatCurrency: ReturnType<
   typeof Intl['NumberFormat']
->['format'] = (value) =>
+>['format'] = (value: number) =>
   new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency,
