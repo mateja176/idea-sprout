@@ -5,13 +5,13 @@ import React from 'react';
 import { Provider as ReduxProvider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { FirebaseAppProvider } from 'reactfire';
+import { PreloadContext } from '../../context/preload';
 import {
   initialSnackbarContext,
   ISnackbarContext,
   SnackbarContext,
 } from '../../context/snackbar';
 import { useGetEnv } from '../../hooks/env';
-import { hasWindow } from '../../services/services';
 import { store } from '../../services/store/store';
 import { ThemeProvider } from './ThemeProvider';
 
