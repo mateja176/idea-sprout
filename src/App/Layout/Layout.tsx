@@ -51,7 +51,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               height={'2em'}
               borderRadius={'50%'}
               boxSizing={'initial'}
-              border={`3px solid${teal[50]}`}
+              border={`3px solid ${teal[50]}`}
             >
               <IdeaSprout width={'100%'} height={'100%'} />
             </Box>
