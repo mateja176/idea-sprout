@@ -30,7 +30,17 @@ export const Image: React.FC<ImageProps> = ({
 
   const alt = `${ideaName} ${i}`;
 
-  return (
+  const preloadedImageStyle: React.CSSProperties = React.useMemo(
+    () => ({
+      ...imageStyle,
+      width,
+    }),
+    [width],
+  );
+
+  return src ? (
+    <img src={src} style={preloadedImageStyle} alt={alt} />
+  ) : (
     <Box
       key={path}
       display={'flex'}
@@ -38,28 +48,24 @@ export const Image: React.FC<ImageProps> = ({
       height={`calc(100vw * ${height / width})`}
       maxHeight={'100%'}
     >
-      {src ? (
-        <img src={src} alt={alt} />
-      ) : (
-        <React.Suspense
-          fallback={
-            <Skeleton
-              variant={'rect'}
-              height={'100%'}
-              width={'100%'}
-              style={skeletonStyle}
-            />
-          }
-        >
-          <StorageImage
-            storagePath={path}
+      <React.Suspense
+        fallback={
+          <Skeleton
+            variant={'rect'}
             height={'100%'}
-            style={imageStyle}
-            onClick={onClick}
-            alt={alt}
+            width={'100%'}
+            style={skeletonStyle}
           />
-        </React.Suspense>
-      )}
+        }
+      >
+        <StorageImage
+          storagePath={path}
+          height={'100%'}
+          style={imageStyle}
+          onClick={onClick}
+          alt={alt}
+        />
+      </React.Suspense>
     </Box>
   );
 };
