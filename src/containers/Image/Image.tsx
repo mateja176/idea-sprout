@@ -10,7 +10,6 @@ export interface ImageProps
   ideaName: IdeaModel['name'];
   i: number;
   src?: string;
-  isLast?: boolean;
 }
 
 const imageStyle: React.CSSProperties = { maxWidth: '100%' };
