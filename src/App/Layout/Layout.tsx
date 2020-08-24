@@ -10,12 +10,15 @@ import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import { useBoolean } from 'ahooks';
 import React from 'react';
 import { IdeaSprout } from '../../components/icons/IdeaSprout';
+import IconSuspender from '../../components/IconSuspender';
 import { Link } from '../../components/Link';
 import { CreateIdeaIcon } from '../../containers/Idea/Create/CreateIdeaIcon';
 import { IdeaHelpContainer } from '../../containers/Idea/Help/IdeaHelpContainer';
 import { MenuButton } from '../../containers/MenuButton';
+import { PreloadContext } from '../../context/preload';
 import { absolutePrivateRoute } from '../../elements/routes';
 import { minNavWidth, Nav } from './Nav/Nav';
+import { NavSkeleton } from './Nav/NavSkeleton';
 
 export interface LayoutProps {}
 
@@ -30,6 +33,8 @@ const useDrawerStyles = makeStyles(() => ({
 }));
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
+  const preloaded = React.useContext(PreloadContext);
+
   const classes = useStyles();
 
   const [drawerOpen, setDrawerOpen] = useBoolean();
@@ -41,7 +46,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <AppBar position="static">
         <Toolbar>
           <Box mr={2}>
-            <MenuButton onClick={setDrawerOpen.setTrue} />
+            {preloaded.hasWindow && (
+              <IconSuspender>
+                <MenuButton onClick={setDrawerOpen.setTrue} />
+              </IconSuspender>
+            )}
           </Box>
           <Box flex={1} display={'flex'}>
             <Box
@@ -60,9 +69,17 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             </Link>
           </Box>
           <Box mr={1}>
-            <IdeaHelpContainer />
+            {preloaded.hasWindow && (
+              <IconSuspender>
+                <IdeaHelpContainer />
+              </IconSuspender>
+            )}
           </Box>
-          <CreateIdeaIcon />
+          {preloaded.hasWindow && (
+            <IconSuspender>
+              <CreateIdeaIcon />
+            </IconSuspender>
+          )}
         </Toolbar>
       </AppBar>
       <Drawer
@@ -87,7 +104,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               <ChevronLeft />
             </IconButton>
           </Box>
-          <Nav onClick={setDrawerOpen.setFalse} />
+          {preloaded.hasWindow && (
+            <React.Suspense fallback={<NavSkeleton />}>
+              <Nav onClick={setDrawerOpen.setFalse} />
+            </React.Suspense>
+          )}
         </Box>
       </Drawer>
       {children}

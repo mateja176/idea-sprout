@@ -4,7 +4,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/icons/Menu';
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { useMaybeUser } from '../hooks/firebase';
+import { useUser } from '../hooks/firebase';
 import { selectEmailVerified } from '../services/store/slices/auth';
 import { getIsSignedIn } from '../utils/auth';
 
@@ -17,7 +17,7 @@ export const MenuButton: React.FC<Pick<ButtonProps, 'onClick'>> = ({
 }) => {
   useSelector(selectEmailVerified); // * user.reload() does not trigger a re-render
 
-  const user = useMaybeUser();
+  const user = useUser();
   const isSignedIn = getIsSignedIn(user);
 
   const wrapperStyle: React.CSSProperties = React.useMemo(
