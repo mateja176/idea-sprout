@@ -34,6 +34,8 @@ export const Image: React.FC<ImageProps> = ({
     [width],
   );
 
+  const alt = `${ideaName} ${i}`;
+
   return (
     <Box
       key={path}
@@ -45,7 +47,7 @@ export const Image: React.FC<ImageProps> = ({
       maxHeight={'100%'}
     >
       {src ? (
-        <img src={src} alt={`${ideaName} ${i}`} />
+        <img src={src} alt={alt} />
       ) : (
         <React.Suspense
           fallback={
@@ -62,6 +64,7 @@ export const Image: React.FC<ImageProps> = ({
             height={'100%'}
             style={imageStyle}
             onClick={onClick}
+            alt={alt}
           />
         </React.Suspense>
       )}
