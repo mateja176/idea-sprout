@@ -4,9 +4,9 @@ import ButtonGroup from '@material-ui/core/ButtonGroup';
 import CloudUpload from '@material-ui/icons/CloudUpload';
 import Remove from '@material-ui/icons/Remove';
 import React from 'react';
+import { PreloadContext } from '../context/preload';
 import { StoragePath } from '../models/firebase';
 import { UpdateStorageFile } from '../models/idea';
-import { hasWindow } from '../services/services';
 import { UploadButtonSuspender } from './UploadButtonSuspender';
 
 export const bottomButtonStyle: React.CSSProperties = {
@@ -38,6 +38,8 @@ export const FileOptions: React.FC<{
   variant = 'bottom',
   justify = 'flex-end',
 }) => {
+  const preloaded = React.useContext(PreloadContext);
+
   const buttonStyle =
     variant === 'bottom' ? bottomButtonStyle : rightButtonStyle;
 
@@ -62,7 +64,7 @@ export const FileOptions: React.FC<{
         color={'primary'}
         orientation={variant === 'bottom' ? 'horizontal' : 'vertical'}
       >
-        {hasWindow() ? (
+        {preloaded.hasWindow ? (
           <UploadButtonSuspender
             storagePath={storagePath}
             update={update}

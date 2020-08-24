@@ -112,6 +112,7 @@ export const renderIdea = functions.https.onRequest(async (req, res) => {
               >
                 <PreloadContext.Provider
                   value={{
+                    hasWindow: false,
                     ideaUrl,
                     logoUrl,
                     storyUrl: getFileUrl(ideaData.story.path),

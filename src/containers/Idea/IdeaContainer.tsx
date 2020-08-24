@@ -2,13 +2,13 @@ import Box from '@material-ui/core/Box';
 import { useBoolean } from 'ahooks';
 import React from 'react';
 import { Redirect } from 'react-router-dom';
+import { PreloadContext } from '../../context/preload';
 import { SnackbarContext } from '../../context/snackbar';
 import { absolutePrivateRoute } from '../../elements/routes';
 import { useFirestoreDoc, useIdeaRef } from '../../hooks/firebase';
 import { useActions } from '../../hooks/hooks';
 import { WithMaybeUser } from '../../models/auth';
 import { IdeaModel, IdeaSprout } from '../../models/idea';
-import { hasWindow } from '../../services/services';
 import { createUpdateIdea } from '../../services/store/slices/ideas';
 import { Idea, IdeaProps } from './Idea';
 import IdeaMetaTags from './IdeaMetaTags';
@@ -29,6 +29,8 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({
   initialIdea,
   user,
 }) => {
+  const preloaded = React.useContext(PreloadContext);
+
   const { updateIdea } = useActions(actionCreators);
 
   const { queueSnackbar } = React.useContext(SnackbarContext);
@@ -73,7 +75,7 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({
       overflow={'auto'}
       onScroll={handleScroll}
     >
-      {hasWindow() && <IdeaMetaTags idea={idea} />}
+      {preloaded.hasWindow && <IdeaMetaTags idea={idea} />}
       <IdeaTabs user={user} idea={idea} showName={showName} update={update} />
       <Idea user={user} idea={idea} update={update} />
     </Box>

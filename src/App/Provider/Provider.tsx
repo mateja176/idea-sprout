@@ -18,6 +18,8 @@ import { ThemeProvider } from './ThemeProvider';
 export interface ProviderProps {}
 
 export const Provider: React.FC<ProviderProps> = ({ children }) => {
+  const preloaded = React.useContext(PreloadContext);
+
   const getEnv = useGetEnv();
 
   const firebaseConfig = React.useMemo(
@@ -72,7 +74,7 @@ export const Provider: React.FC<ProviderProps> = ({ children }) => {
     </ReduxProvider>
   );
 
-  return hasWindow() ? (
+  return preloaded.hasWindow ? (
     <BrowserRouter>
       <ThemeProvider>{app}</ThemeProvider>
     </BrowserRouter>

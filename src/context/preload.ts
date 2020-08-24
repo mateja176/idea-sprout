@@ -1,6 +1,7 @@
 import React from 'react';
 
 export interface IPreloadContext {
+  hasWindow: boolean;
   ideaUrl: string;
   logoUrl: string;
   storyUrl: string;
@@ -8,6 +9,7 @@ export interface IPreloadContext {
 }
 
 export const initialPreloadContext: IPreloadContext = {
+  hasWindow: true,
   ideaUrl: '',
   logoUrl: '',
   storyUrl: '',
