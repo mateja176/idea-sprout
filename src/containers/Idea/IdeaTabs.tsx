@@ -31,6 +31,7 @@ import {
   createAddIdea,
   createDeleteIdea,
 } from '../../services/store/slices/ideas';
+import { getIsSignedIn } from '../../utils/auth';
 import {
   getRatingTooltip,
   getShareCountHelperText,
@@ -91,6 +92,7 @@ export const IdeaTabs: React.FC<
   const [reviewsOpen, setReviewsOpen] = useBoolean();
 
   const isAuthor = user?.uid === idea.author;
+  const isSignedIn = getIsSignedIn(user);
 
   const publish = React.useCallback(() => {
     const withStatus = { status: 'sprout' } as const;
@@ -117,17 +119,17 @@ export const IdeaTabs: React.FC<
 
   const [signinDialogOpen, setSigninDialogOpen] = useBoolean();
   React.useEffect(() => {
-    if (user && signinDialogOpen) {
+    if (isSignedIn && signinDialogOpen) {
       setSigninDialogOpen.setFalse();
     }
-  }, [user, signinDialogOpen, setSigninDialogOpen]);
+  }, [isSignedIn, signinDialogOpen, setSigninDialogOpen]);
 
   const reviewPromptClasses = useReviewPromptStyles();
 
   return (
     <Box boxShadow={showName ? boxShadow : 'none'}>
       <Tabs value={false} variant={'fullWidth'}>
-        {user ? (
+        {isSignedIn ? (
           <IdeasLink style={ideaTabStyle} />
         ) : (
           <Tab
@@ -192,7 +194,7 @@ export const IdeaTabs: React.FC<
             }
             aria-label={'Publish or unpublish'}
           />
-        ) : user ? (
+        ) : getIsSignedIn(user) ? (
           <ReviewButtonSuspender
             reviewOpen={reviewOpen}
             ideaId={idea.id}
@@ -222,7 +224,7 @@ export const IdeaTabs: React.FC<
             }
           />
         )}
-        {user ? (
+        {getIsSignedIn(user) ? (
           <ExportReviewSuspender idea={idea} user={user} style={ideaTabStyle} />
         ) : (
           <Tab
@@ -291,7 +293,7 @@ export const IdeaTabs: React.FC<
         open={reviewsOpen}
         onClose={setReviewsOpen.setFalse}
       />
-      {user && (
+      {getIsSignedIn(user) && (
         <ReviewDialog
           uid={user.uid}
           idea={idea}
