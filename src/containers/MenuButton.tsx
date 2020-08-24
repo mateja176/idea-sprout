@@ -20,8 +20,13 @@ export const MenuButton: React.FC<Pick<ButtonProps, 'onClick'>> = ({
   const user = useMaybeUser();
   const isSignedIn = getIsSignedIn(user);
 
+  const wrapperStyle: React.CSSProperties = React.useMemo(
+    () => ({ visibility: isSignedIn ? 'visible' : 'hidden' }),
+    [isSignedIn],
+  );
+
   return (
-    <Box visibility={isSignedIn ? 'visible' : 'hidden'}>
+    <Box style={wrapperStyle}>
       <IconButton
         onClick={onClick}
         edge="start"
