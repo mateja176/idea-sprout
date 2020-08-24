@@ -1,10 +1,8 @@
 import Box from '@material-ui/core/Box';
-import useTheme from '@material-ui/core/styles/useTheme';
 import Skeleton from '@material-ui/lab/Skeleton';
 import React from 'react';
 import { StorageImage } from 'reactfire';
 import { IdeaModel, StorageFile } from '../../models/idea';
-import { mediaBgGreyVariant } from '../../utils/styles/styles';
 
 export interface ImageProps
   extends StorageFile,
@@ -25,10 +23,7 @@ export const Image: React.FC<ImageProps> = ({
   ideaName,
   i,
   src,
-  isLast = false,
 }) => {
-  const theme = useTheme();
-
   const skeletonStyle: React.CSSProperties = React.useMemo(
     () => ({ maxWidth: width }),
     [width],
@@ -41,8 +36,6 @@ export const Image: React.FC<ImageProps> = ({
       key={path}
       display={'flex'}
       justifyContent={'center'}
-      bgcolor={theme.palette.grey[mediaBgGreyVariant]}
-      borderBottom={isLast ? 'none' : `1px solid ${theme.palette.grey[900]}`}
       height={`calc(100vw * ${height / width})`}
       maxHeight={'100%'}
     >

@@ -1,9 +1,10 @@
 import Box from '@material-ui/core/Box';
+import { useTheme } from '@material-ui/core/styles';
 import React from 'react';
 import { FileOptions } from '../../containers/FileOptions';
 import { PreloadContext } from '../../context/preload';
-import { ideaSelector } from '../../elements/idea/tour';
 import { IdeaModel, UpdateIdea } from '../../models/idea';
+import { mediaBgGreyVariant } from '../../utils/styles/styles';
 import { Image } from './Image';
 
 export interface ImagesProps extends Pick<IdeaModel, 'images'> {
@@ -18,6 +19,8 @@ export const Images: React.FC<ImagesProps> = ({
   isAuthor,
   update,
 }) => {
+  const theme = useTheme();
+
   const preloaded = React.useContext(PreloadContext);
 
   const handleUpdate: React.ComponentProps<
@@ -29,18 +32,23 @@ export const Images: React.FC<ImagesProps> = ({
       }),
     [update],
   );
+
   return (
     <>
       {images.map(({ path, ...image }, i) => (
         <Box
-          id={ideaSelector.image}
           height={'100%'}
           key={`${path}${i}`}
           display="flex"
-          flexDirection="column"
+          justifyContent={'center'}
+          borderBottom={
+            i === images.length - 1
+              ? 'none'
+              : `1px solid ${theme.palette.grey[900]}`
+          }
+          bgcolor={theme.palette.grey[mediaBgGreyVariant]}
         >
           <Image
-            isLast={i === images.length - 1}
             {...image}
             path={path}
             src={preloaded.imageUrls[i]}
