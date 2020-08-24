@@ -230,7 +230,7 @@ export const useStorageDownloadUrl: typeof useFirebaseStorageDownloadUrl = (
 };
 
 export const useCreateIdea = () => {
-  const user = useMaybeUser();
+  const user = useUser();
 
   const { queueSnackbar } = useContext(SnackbarContext);
 
