@@ -72,7 +72,9 @@ export const FileOptions: React.FC<{
             label={label}
           />
         ) : (
-          <Button style={uploadButtonStyle} startIcon={<CloudUpload />} />
+          <Button style={uploadButtonStyle} startIcon={<CloudUpload />}>
+            New logo
+          </Button>
         )}
         {Embed && <Embed style={buttonStyle} />}
         {remove ? (
