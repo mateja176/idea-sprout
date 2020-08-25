@@ -4,9 +4,10 @@ import { RouteComponentProps } from 'react-router-dom';
 import RedirectToIdeas from '../../../../components/Idea/RedirectToIdeas';
 import { IdeaContainer } from '../../../../containers/Idea/IdeaContainer';
 import { IdeaContainerSkeleton } from '../../../../containers/Idea/IdeaContainerSkeleton';
+import { PreloadContext } from '../../../../context/preload';
 import { SnackbarContext } from '../../../../context/snackbar';
 import { useMaybeUser } from '../../../../hooks/firebase';
-import { GlobalWithPreloadedIdea, IdeaModel } from '../../../../models/idea';
+import { IdeaModel } from '../../../../models/idea';
 
 export interface IdeaPageProps
   extends RouteComponentProps<
@@ -21,10 +22,11 @@ const IdeaPage: React.FC<IdeaPageProps> = ({
   },
   location: { state },
 }) => {
+  const preloaded = React.useContext(PreloadContext);
+
   const user = useMaybeUser();
 
-  const initialIdea =
-    state?.idea || (globalThis as GlobalWithPreloadedIdea).__PRELOADED_IDEA__;
+  const initialIdea = state?.idea || preloaded.idea;
 
   const { queueSnackbar } = React.useContext(SnackbarContext);
 

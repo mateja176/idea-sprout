@@ -168,8 +168,8 @@ export interface IdeaFilter<Key extends keyof IdeaModel> {
   value: IdeaModel[Key];
 }
 
-export interface WithPreloadedIdea {
-  __PRELOADED_IDEA__?: IdeaModel;
+export interface WithPreloaded {
+  preloaded: { idea: IdeaModel; imageUrls: string[] };
 }
 
-export type GlobalWithPreloadedIdea = typeof globalThis & WithPreloadedIdea;
+export type GlobalWithPreloadedIdea = typeof globalThis & WithPreloaded;

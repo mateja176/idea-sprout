@@ -2,17 +2,25 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { preloadReady } from 'react-loadable';
 import { App } from './App/App';
+import { initialPreloadContext, PreloadContext } from './context/preload';
 import './index.css';
-import { WithPreloadedIdea } from './models/idea';
+import { WithPreloaded } from './models/idea';
 import * as serviceWorker from './serviceWorker';
 
-if ((globalThis as typeof globalThis & WithPreloadedIdea).__PRELOADED_IDEA__) {
+if ('preloaded' in globalThis) {
+  const preloadedValue = {
+    ...initialPreloadContext,
+    ...(globalThis as typeof globalThis & WithPreloaded).preloaded,
+  };
+
   globalThis.addEventListener('load', () => {
     preloadReady().then(() => {
       ReactDOM.hydrate(
-        <React.StrictMode>
-          <App />
-        </React.StrictMode>,
+        <PreloadContext.Provider value={preloadedValue}>
+          <React.StrictMode>
+            <App />
+          </React.StrictMode>
+        </PreloadContext.Provider>,
         document.getElementById('root'),
       );
     });

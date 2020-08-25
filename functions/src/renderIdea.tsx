@@ -88,6 +88,8 @@ export const renderIdea = functions.https.onRequest(async (req, res) => {
 
     await Loadable.preloadAll();
 
+    const imageUrls = ideaData.images.map((image) => getFileUrl(image.path));
+
     const app = ReactDOMServer.renderToString(
       sheets.collect(
         <Loadable.Capture
@@ -116,9 +118,8 @@ export const renderIdea = functions.https.onRequest(async (req, res) => {
                     ideaUrl,
                     logoUrl,
                     storyUrl: getFileUrl(ideaData.story.path),
-                    imageUrls: ideaData.images.map((image) =>
-                      getFileUrl(image.path),
-                    ),
+                    imageUrls,
+                    idea,
                   }}
                 >
                   <App />
@@ -145,7 +146,9 @@ export const renderIdea = functions.https.onRequest(async (req, res) => {
     $('meta[property="og:description"]').attr('content', ideaData.tagline);
 
     $('#root').after(
-      `<script>window.__PRELOADED_IDEA__ = ${JSON.stringify(idea)}</script>`,
+      `<script>
+        window.preloaded = ${JSON.stringify({ idea, imageUrls })}
+      </script>`,
     );
 
     modules

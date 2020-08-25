@@ -38,7 +38,7 @@ export const Image: React.FC<ImageProps> = ({
     [width],
   );
 
-  return src ? (
+  return src ? ( // TODO if image preloaded.idea.id === idea.id
     <img src={src} style={preloadedImageStyle} alt={alt} />
   ) : (
     <Box
