@@ -147,7 +147,7 @@ export const renderIdea = functions.https.onRequest(async (req, res) => {
 
     $('#root').after(
       `<script>
-        window.preloaded = ${JSON.stringify({ idea, imageUrls })}
+        window.preloaded = ${JSON.stringify({ idea, logoUrl, imageUrls })}
       </script>`,
     );
 

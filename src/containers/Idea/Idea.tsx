@@ -76,6 +76,11 @@ export const Idea = React.forwardRef<HTMLDivElement, IdeaProps>(
       [update],
     );
 
+    const logoOptionsStyle: React.CSSProperties = React.useMemo(
+      () => ({ visibility: isAuthor ? 'visible' : 'hidden' }),
+      [isAuthor],
+    );
+
     return (
       <Box
         flex={1}
@@ -86,14 +91,14 @@ export const Idea = React.forwardRef<HTMLDivElement, IdeaProps>(
       >
         <Tour steps={ideaTourSteps} />
         <Box id={ideaSelector.logo} display={'flex'} mx={ideaSectionMl}>
-          {preloaded.logoUrl ? (
+          {preloaded.logoUrl ? ( // TODO if image preloaded.idea.id === idea.id
             <IdeaPreviewWrapper>
-              <img src={preloaded.logoUrl} alt={idea.name} height={'100%'} />
+              <img src={preloaded.logoUrl} alt={'Preview'} height={'100%'} />
             </IdeaPreviewWrapper>
           ) : (
             <IdeaImagePreviewSuspender path={idea.logo.path} />
           )}
-          <Box visibility={isAuthor ? 'visible' : 'hidden'}>
+          <Box style={logoOptionsStyle}>
             <FileOptions
               storagePath={'images'}
               update={saveLogo}
