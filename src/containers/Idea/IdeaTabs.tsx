@@ -258,7 +258,7 @@ export const IdeaTabs: React.FC<
             </Typography>
           </Box>
           {preloaded.logoUrl ? (
-            <img src={preloaded.logoUrl} alt={idea.name} />
+            <img src={preloaded.logoUrl} alt={idea.name} height={'100%'} />
           ) : (
             <React.Suspense
               fallback={
