@@ -150,7 +150,6 @@ export const renderIdea = functions.https.onRequest(async (req, res) => {
 
     modules
       .map((moduleName) => moduleName.match(/\w+$/)?.[0])
-      .filter(Boolean)
       .map((name) => `${name}.js`)
       .map(
         (key) =>
