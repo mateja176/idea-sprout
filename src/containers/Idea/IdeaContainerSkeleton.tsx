@@ -18,6 +18,15 @@ export const IdeaContainerSkeleton: React.FC<IdeaContainerSkeletonProps> = () =>
           <Load boxFlex={1}>
             <Tab />
           </Load>
+          <Load boxFlex={1}>
+            <Tab />
+          </Load>
+          <Load boxFlex={1}>
+            <Tab />
+          </Load>
+          <Load boxFlex={1}>
+            <Tab />
+          </Load>
         </Tabs>
         <Box height={tabsTitleSectionHeight} />
       </Box>
