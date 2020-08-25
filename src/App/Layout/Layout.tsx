@@ -7,10 +7,11 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
+import Menu from '@material-ui/icons/Menu';
 import { useBoolean } from 'ahooks';
 import React from 'react';
+import IconButtonSuspender from '../../components/IconButtonSuspender';
 import { IdeaSprout } from '../../components/icons/IdeaSprout';
-import IconSuspender from '../../components/IconSuspender';
 import { Link } from '../../components/Link';
 import { CreateIdeaIcon } from '../../containers/Idea/Create/CreateIdeaIcon';
 import { IdeaHelpContainer } from '../../containers/Idea/Help/IdeaHelpContainer';
@@ -46,10 +47,16 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <AppBar position="static">
         <Toolbar>
           <Box mr={2}>
-            {preloaded.hasWindow && (
-              <IconSuspender>
+            {preloaded.hasWindow ? (
+              <IconButtonSuspender>
                 <MenuButton onClick={setDrawerOpen.setTrue} />
-              </IconSuspender>
+              </IconButtonSuspender>
+            ) : (
+              <Box visibility={'hidden'}>
+                <IconButton>
+                  <Menu />
+                </IconButton>
+              </Box>
             )}
           </Box>
           <Box flex={1} display={'flex'}>
@@ -70,15 +77,15 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           </Box>
           <Box mr={1}>
             {preloaded.hasWindow && (
-              <IconSuspender>
+              <IconButtonSuspender>
                 <IdeaHelpContainer />
-              </IconSuspender>
+              </IconButtonSuspender>
             )}
           </Box>
           {preloaded.hasWindow && (
-            <IconSuspender>
+            <IconButtonSuspender>
               <CreateIdeaIcon />
-            </IconSuspender>
+            </IconButtonSuspender>
           )}
         </Toolbar>
       </AppBar>
