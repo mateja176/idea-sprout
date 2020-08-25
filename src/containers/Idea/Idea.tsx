@@ -2,6 +2,7 @@ import Box from '@material-ui/core/Box';
 import useTheme from '@material-ui/core/styles/useTheme';
 import { EditorProps } from 'draft-js';
 import React from 'react';
+import { IdeaPreviewWrapper } from '../../components/Idea/IdeaPreviewWrapper';
 import { SectionEditor } from '../../containers/SectionEditor/SectionEditor';
 import { Tour } from '../../containers/Tour';
 import { PreloadContext } from '../../context/preload';
@@ -86,7 +87,9 @@ export const Idea = React.forwardRef<HTMLDivElement, IdeaProps>(
         <Tour steps={ideaTourSteps} />
         <Box id={ideaSelector.logo} display={'flex'} mx={ideaSectionMl}>
           {preloaded.logoUrl ? (
-            <img src={preloaded.logoUrl} alt={idea.name} />
+            <IdeaPreviewWrapper>
+              <img src={preloaded.logoUrl} alt={idea.name} height={'100%'} />
+            </IdeaPreviewWrapper>
           ) : (
             <IdeaImagePreviewSuspender path={idea.logo.path} />
           )}
