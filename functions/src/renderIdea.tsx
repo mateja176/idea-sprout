@@ -151,9 +151,13 @@ export const renderIdea = functions.https.onRequest(async (req, res) => {
     modules
       .map((moduleName) => moduleName.match(/\w+$/)?.[0])
       .filter(Boolean)
-      .map((name) => assetManifest[`${name}.js` as keyof typeof assetManifest])
+      .map((name) => `${name}.js`)
+      .map(
+        (key) =>
+          assetManifest.files[key as keyof typeof assetManifest['files']],
+      )
       .forEach((src) => {
-        $('#root').after(`<script src="${src}"></script>`);
+        $('#root').after(`<script src="${src}" data-src="${src}"></script>`);
       });
 
     $('#root').append(app);
