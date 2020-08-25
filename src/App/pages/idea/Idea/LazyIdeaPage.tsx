@@ -4,7 +4,7 @@ import { IdeaContainerSkeleton } from '../../../../containers/Idea/IdeaContainer
 const LazyIdeaPage = Loadable({
   loader: () => import(/* webpackChunkName: "IdeaPage" */ './IdeaPage'),
   loading: IdeaContainerSkeleton,
-  modules: ['./IdeaPage.tsx'],
-  webpack: () => [require.resolveWeak('./IdeaPage.tsx')],
+  modules: ['./IdeaPage'],
+  webpack: () => [require.resolveWeak('./IdeaPage')],
 });
 export default LazyIdeaPage;
