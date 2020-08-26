@@ -272,8 +272,7 @@ export const IdeaTabs: React.FC<
               <StorageImage
                 style={imageStyle}
                 storagePath={idea.logo.path}
-                width={tabsLogoHeight}
-                height={tabsLogoHeight}
+                height={'100%'}
               />
             </React.Suspense>
           )}
