@@ -8,10 +8,9 @@ import { InfiniteLoader } from 'react-virtualized/dist/commonjs/InfiniteLoader';
 import { List } from 'react-virtualized/dist/commonjs/List';
 import { useFirestoreDocData } from 'reactfire';
 import { getType } from 'typesafe-actions';
-import { useIdeasCountRef } from '../../../hooks/firebase';
+import { useIdeasAggregateRef } from '../../../hooks/firebase';
 import { useActions } from '../../../hooks/hooks';
-import { IdeaBatchError, IdeaFilter } from '../../../models/idea';
-import { WithCount } from '../../../models/models';
+import { IdeaBatchError, IdeaFilter, IdeaModel } from '../../../models/idea';
 import { createPromisedAction } from '../../../services/store/middleware/promisedAction';
 import {
   fetchIdeasAsync,
@@ -76,11 +75,15 @@ const RowError: React.FC<{
 const Ideas = ({ user }: IdeasProps) => {
   const ideas = useSelector(selectIdeas);
 
-  const ideasCountRef = useIdeasCountRef();
+  const ideasAggregateRef = useIdeasAggregateRef();
 
-  const { count: rowCount = 1000 } = useFirestoreDocData<WithCount>(
-    ideasCountRef,
+  const aggregate = useFirestoreDocData<Record<IdeaModel['id'], boolean>>(
+    ideasAggregateRef,
   );
+
+  const rowCount = React.useMemo(() => Object.keys(aggregate).length, [
+    aggregate,
+  ]);
 
   const dispatch = useDispatch();
 

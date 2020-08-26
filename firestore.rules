@@ -152,6 +152,9 @@ service cloud.firestore {
     match /{document=**} {
       allow read, write: if false;
     }
+    match /ideas/aggregate {
+      allow read;
+    }
     match /ideas/{ideaId} {
       allow read: if (isAuthor() || resource.data.status == 'sprout');
         // && (!('query' in request) || request.query.limit <= 30) // * my ideas aren't yet being lazy loaded;
@@ -163,10 +166,6 @@ service cloud.firestore {
         allow read: if true;
         allow write: if isSignedIn() && userId == request.auth.uid && isReviewType();
       }
-    }
-
-    match /counts/ideas {
-      allow read: if isSignedIn();
     }
 
     match /users/{userId} {

@@ -62,19 +62,10 @@ export const useUserRef = (uid: User['uid']) => {
   return useMemo(() => usersRef.doc(uid), [usersRef, uid]);
 };
 
-export const useCountsRef = () => {
-  const firestore = useFirestore();
+export const useIdeasAggregateRef = () => {
+  const ideasRef = useIdeasRef();
 
-  return useMemo(() => firestore.collection(firestoreCollections.counts.path), [
-    firestore,
-  ]);
-};
-
-export const useIdeasCountRef = () => {
-  const countsRef = useCountsRef();
-  return useMemo(() => countsRef.doc(firestoreCollections.ideas.path), [
-    countsRef,
-  ]);
+  return React.useMemo(() => ideasRef.doc('aggregate'), [ideasRef]);
 };
 
 export const useIdeasRef = () => {

@@ -11,10 +11,6 @@ export const firestoreCollections = {
     path: 'ideas',
     collections: { reviews: { path: 'reviews' } },
   },
-  counts: {
-    path: 'counts',
-    collections: {},
-  },
   orders: {
     path: 'orders',
     collections: {},
