@@ -1,6 +1,7 @@
 import Box from '@material-ui/core/Box';
 import Button, { ButtonProps } from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
+import { makeStyles } from '@material-ui/core/styles';
 import CloudUpload from '@material-ui/icons/CloudUpload';
 import Remove from '@material-ui/icons/Remove';
 import React from 'react';
@@ -9,17 +10,16 @@ import { StoragePath } from '../models/firebase';
 import { UpdateStorageFile } from '../models/idea';
 import { UploadButtonSuspender } from './UploadButtonSuspender';
 
-export const bottomButtonStyle: React.CSSProperties = {
-  borderTop: 'none',
-  borderTopLeftRadius: 0,
-  borderTopRightRadius: 0,
-};
+const uploadStyle: React.CSSProperties = { minWidth: 135 };
 
-export const rightButtonStyle: React.CSSProperties = {
-  borderLeft: 'none',
-  borderTopLeftRadius: 0,
-  borderBottomLeftRadius: 0,
-};
+const useStyles = makeStyles(() => ({
+  groupedVertical: {
+    borderLeft: 'none !important',
+  },
+  groupedHorizontal: {
+    borderTop: 'none !important',
+  },
+}));
 
 export const FileOptions: React.FC<{
   update: UpdateStorageFile;
@@ -40,15 +40,30 @@ export const FileOptions: React.FC<{
 }) => {
   const preloaded = React.useContext(PreloadContext);
 
-  const buttonStyle =
-    variant === 'bottom' ? bottomButtonStyle : rightButtonStyle;
+  const classes = useStyles(variant);
+
+  const firstButtonStyle: React.CSSProperties = React.useMemo(
+    () => ({
+      borderTopRightRadius: variant === 'bottom' ? 0 : 4,
+      borderBottomLeftRadius: variant === 'bottom' ? 4 : 0,
+    }),
+    [variant],
+  );
 
   const uploadButtonStyle: React.CSSProperties = React.useMemo(
     () => ({
-      ...buttonStyle,
-      minWidth: 135,
+      ...uploadStyle,
+      ...firstButtonStyle,
     }),
-    [buttonStyle],
+    [firstButtonStyle],
+  );
+
+  const lastButtonStyle: React.CSSProperties = React.useMemo(
+    () => ({
+      borderTopRightRadius: variant === 'bottom' ? 0 : 4,
+      borderBottomLeftRadius: 0,
+    }),
+    [variant],
   );
 
   return (
@@ -63,6 +78,7 @@ export const FileOptions: React.FC<{
       <ButtonGroup
         color={'primary'}
         orientation={variant === 'bottom' ? 'horizontal' : 'vertical'}
+        classes={classes}
       >
         {preloaded.hasWindow ? (
           <UploadButtonSuspender
@@ -76,12 +92,16 @@ export const FileOptions: React.FC<{
             New logo
           </Button>
         )}
-        {Embed && <Embed style={buttonStyle} />}
-        {remove ? (
-          <Button style={buttonStyle} onClick={remove} startIcon={<Remove />}>
+        {Embed && <Embed style={remove ? undefined : lastButtonStyle} />}
+        {!!remove && (
+          <Button
+            onClick={remove}
+            startIcon={<Remove />}
+            style={lastButtonStyle}
+          >
             Remove
           </Button>
-        ) : null}
+        )}
       </ButtonGroup>
     </Box>
   );
