@@ -9,7 +9,7 @@
     "rewrites": [
       {
         "source": "/sitemap.txt",
-        "function": "sitemap"
+        "function": "getSitemap"
       },
       {
         "source": "**",
