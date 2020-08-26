@@ -1,7 +1,6 @@
-import Help from '@material-ui/icons/Help';
 import React from 'react';
 import { useRouteMatch } from 'react-router-dom';
-import { Load } from '../../../components/Load';
+import IconButtonSuspender from '../../../components/IconButtonSuspender';
 import { ideaPath } from '../../../elements/routes';
 import { useUser } from '../../../hooks/firebase';
 import { WithId } from '../../../models/models';
@@ -17,14 +16,8 @@ export const IdeaHelpContainer = () => {
   const user = useUser();
 
   return match && user ? (
-    <React.Suspense
-      fallback={
-        <Load>
-          <Help />
-        </Load>
-      }
-    >
+    <IconButtonSuspender>
       <IdeaHelp id={match.params.id} user={user} />
-    </React.Suspense>
+    </IconButtonSuspender>
   ) : null;
 };
