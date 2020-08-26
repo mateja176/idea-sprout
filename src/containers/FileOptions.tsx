@@ -1,7 +1,7 @@
 import Box from '@material-ui/core/Box';
 import Button, { ButtonProps } from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import CloudUpload from '@material-ui/icons/CloudUpload';
 import Remove from '@material-ui/icons/Remove';
 import React from 'react';
@@ -50,12 +50,24 @@ export const FileOptions: React.FC<{
     [variant],
   );
 
+  const theme = useTheme();
+
+  const buttonStyle: React.CSSProperties = React.useMemo(
+    () => ({
+      color: theme.palette.primary.main,
+      borderColor: theme.palette.primary.main,
+      boxSizing: 'border-box',
+    }),
+    [theme],
+  );
+
   const uploadButtonStyle: React.CSSProperties = React.useMemo(
     () => ({
       ...uploadStyle,
+      ...buttonStyle,
       ...firstButtonStyle,
     }),
-    [firstButtonStyle],
+    [firstButtonStyle, buttonStyle],
   );
 
   const lastButtonStyle: React.CSSProperties = React.useMemo(
@@ -64,6 +76,16 @@ export const FileOptions: React.FC<{
       borderBottomLeftRadius: 0,
     }),
     [variant],
+  );
+
+  const embedStyle: React.CSSProperties = React.useMemo(
+    () => (remove ? buttonStyle : { ...buttonStyle, ...lastButtonStyle }),
+    [buttonStyle, remove, lastButtonStyle],
+  );
+
+  const removeStyle: React.CSSProperties = React.useMemo(
+    () => ({ ...buttonStyle, ...lastButtonStyle }),
+    [buttonStyle, lastButtonStyle],
   );
 
   return (
@@ -76,7 +98,6 @@ export const FileOptions: React.FC<{
       height={variant === 'bottom' ? 'auto' : '100%'}
     >
       <ButtonGroup
-        color={'primary'}
         orientation={variant === 'bottom' ? 'horizontal' : 'vertical'}
         classes={classes}
       >
@@ -92,13 +113,9 @@ export const FileOptions: React.FC<{
             New logo
           </Button>
         )}
-        {Embed && <Embed style={remove ? undefined : lastButtonStyle} />}
+        {Embed && <Embed style={embedStyle} />}
         {!!remove && (
-          <Button
-            onClick={remove}
-            startIcon={<Remove />}
-            style={lastButtonStyle}
-          >
+          <Button onClick={remove} startIcon={<Remove />} style={removeStyle}>
             Remove
           </Button>
         )}
