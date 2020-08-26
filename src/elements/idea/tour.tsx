@@ -61,14 +61,14 @@ export const ideaTourSteps: Step[] = [
         >
           <Box mb={1} mx={'auto'}>
             <img
-              src={'./img/apple-logo-1977.png'}
+              src={'/img/apple-logo-1977.png'}
               height={logoSize}
               alt="Apple's logo from 1977"
             />
           </Box>
           <Box mx={'auto'}>
             <img
-              src={'./img/apple-logo-2003.png'}
+              src={'/img/apple-logo-2003.png'}
               height={logoSize}
               alt="Apple's latest logo"
             />
