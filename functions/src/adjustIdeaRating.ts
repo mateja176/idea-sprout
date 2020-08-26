@@ -13,9 +13,9 @@ interface WithRating {
 
 export const adjustIdeaRating = functions.firestore
   .document('ideas/{ideaId}/reviews/{uid}')
-  .onWrite(async (handler, context) => {
-    const dataBefore = handler.before.data() as Review | undefined;
-    const dataAfter: Review = handler.after.data() as Review;
+  .onWrite(async (change, context) => {
+    const dataBefore = change.before.data() as Review | undefined;
+    const dataAfter: Review = change.after.data() as Review;
 
     const ideaId: string = context.params.ideaId;
 
