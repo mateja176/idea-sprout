@@ -8,10 +8,6 @@
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "rewrites": [
       {
-        "source": "/ideas/*",
-        "function": "renderIdea"
-      },
-      {
         "source": "**",
         "destination": "/index.html"
       }
