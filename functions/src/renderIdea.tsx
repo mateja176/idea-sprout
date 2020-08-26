@@ -1,3 +1,5 @@
+/* tslint:disable */
+
 /// <reference types="react-scripts" />
 /// <reference types="react" />
 /// <reference path="../../src/global.d.ts" />
