@@ -7,8 +7,8 @@ import { headerZIndex } from '../utils/styles/styles';
 
 export const Tour: React.FC<Pick<
   React.ComponentProps<typeof ReactJoyride>,
-  'steps'
->> = ({ steps }) => {
+  'steps' | 'run'
+>> = ({ steps, run }) => {
   const { queueSnackbar } = React.useContext(SnackbarContext);
 
   const shouldRunTour = useLocalStorageSubscribe('shouldRunTour');
@@ -57,7 +57,7 @@ export const Tour: React.FC<Pick<
     <div ref={ref}>
       <ReactJoyride
         steps={steps}
-        run={shouldRunTour === null || !!shouldRunTour}
+        run={(shouldRunTour === null || !!shouldRunTour) && run}
         continuous
         showProgress
         showSkipButton

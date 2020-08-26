@@ -89,7 +89,7 @@ export const Idea = React.forwardRef<HTMLDivElement, IdeaProps>(
         overflow={'auto'}
         bgcolor={theme.palette.background.paper}
       >
-        <Tour steps={ideaTourSteps} />
+        <Tour steps={ideaTourSteps} run={isAuthor} />
         <Box id={ideaSelector.logo} display={'flex'} mx={ideaSectionMl}>
           {preloaded.logoUrl ? ( // TODO if image preloaded.idea.id === idea.id
             <IdeaPreviewWrapper>
