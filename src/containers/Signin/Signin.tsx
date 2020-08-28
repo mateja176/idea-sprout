@@ -30,6 +30,7 @@ import { Google } from '../../components/icons/Google';
 import { PageWrapper } from '../../components/PageWrapper';
 import { SigninDivider } from '../../components/SigninDivider';
 import { SnackbarContext } from '../../context/snackbar';
+import { useAnalytics } from '../../hooks/analytics';
 import {
   useActions,
   useLocalStorageItem,
@@ -89,13 +90,22 @@ const Signin: React.FC<SigninProps> = ({ user }) => {
 
   const { saveUser, setEmailVerified } = useActions(actionCreators);
 
+  const { log } = useAnalytics();
+
   const saveUserCredential = React.useCallback(
     (credential: firebase.auth.UserCredential) => {
       if (credential.user) {
         saveUser(credential.user);
+        log({
+          name: 'signin',
+          params: {
+            from: globalThis.document?.referrer ?? '',
+            uid: credential.user.uid,
+          },
+        });
       }
     },
-    [saveUser],
+    [saveUser, log],
   );
 
   const { queueSnackbar } = React.useContext(SnackbarContext);

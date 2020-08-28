@@ -13,7 +13,7 @@ import {
 } from 'react-share';
 import { ShareButtonProps, ShareIconProps } from '../../models/models';
 
-export interface ShareConfig {
+interface RawShareConfig {
   label: string;
   Button: React.ComponentType<ShareButtonProps>;
   Icon: React.ComponentType<ShareIconProps>;
@@ -30,7 +30,7 @@ export const shareKeys = [
 export type ShareKeys = typeof shareKeys;
 export type ShareKey = ShareKeys[number];
 
-export const rawShareOption: Record<ShareKey, ShareConfig> = {
+export const rawShareOption: Record<ShareKey, RawShareConfig> = {
   // * there's no way of determining whether the user actually shared the link
   // copyLink: {
   //   label: 'Copy Link',
@@ -64,17 +64,27 @@ export const rawShareOption: Record<ShareKey, ShareConfig> = {
   },
 };
 
+type RawShareOption = typeof rawShareOption;
+
+export type ShareOption = {
+  [key in keyof RawShareOption]: RawShareOption[key] & { provider: key };
+};
+
+export type ShareOptionProvider = keyof ShareOption;
+export type ShareOptionConfig = ShareOption[ShareOptionProvider];
+
 export const shareOption = Object.fromEntries(
   Object.entries(rawShareOption).map(([key, { Button, Icon, ...config }]) => [
     key,
     {
       ...config,
+      provider: key,
       Button: ({ type = 'button', ...props }) => (
         <Button {...props} type={type} />
       ),
       Icon: ({ round = true, ...props }) => <Icon {...props} round={round} />,
     },
   ]),
-) as typeof rawShareOption;
+) as ShareOption;
 
 export const shareOptions = Object.values(shareOption);

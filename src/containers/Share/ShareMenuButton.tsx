@@ -4,6 +4,7 @@ import Share from '@material-ui/icons/Share';
 import { useBoolean } from 'ahooks';
 import React from 'react';
 import { FacebookShareButton } from 'react-share';
+import { ShareOptionProvider } from '../../components/share/share';
 import { getShareCountHelperText } from '../../utils/idea/idea';
 import { ShareMenu } from './ShareMenu';
 
@@ -11,7 +12,7 @@ export const ShareMenuButton = React.memo<
   Pick<React.ComponentProps<typeof FacebookShareButton>, 'url'> &
     Pick<ButtonProps, 'style'> & {
       shareCount: number;
-      shareIdea: () => void;
+      shareIdea: (provider: ShareOptionProvider) => void;
     }
 >(({ shareCount, url, style, shareIdea }) => {
   const [menuOpen, { toggle }] = useBoolean();

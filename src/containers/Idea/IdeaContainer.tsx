@@ -5,6 +5,7 @@ import { Redirect } from 'react-router-dom';
 import { PreloadContext } from '../../context/preload';
 import { SnackbarContext } from '../../context/snackbar';
 import { absolutePrivateRoute } from '../../elements/routes';
+import { useAnalytics } from '../../hooks/analytics';
 import { useFirestoreDoc, useIdeaRef } from '../../hooks/firebase';
 import { useActions } from '../../hooks/hooks';
 import { WithMaybeUser } from '../../models/auth';
@@ -41,6 +42,8 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({
     startWithValue: initialIdea,
   });
 
+  const { log } = useAnalytics();
+
   const update: IdeaProps['update'] = React.useCallback(
     (partialIdea) => {
       return ideaRef.update(partialIdea).then(() => {
@@ -53,9 +56,25 @@ export const IdeaContainer: React.FC<IdeaContainerProps> = ({
         if (idea?.status === 'sprout') {
           updateIdea({ id, ...(partialIdea as Partial<IdeaSprout>) });
         }
+
+        if (user) {
+          log({
+            name: 'editIdea',
+            params: {
+              id,
+              uid: user.uid,
+              type:
+                partialIdea.status === 'sprout'
+                  ? 'publish'
+                  : partialIdea.status === 'seed'
+                  ? 'unpublish'
+                  : 'edit',
+            },
+          });
+        }
       });
     },
-    [id, idea, ideaRef, queueSnackbar, updateIdea],
+    [id, idea, ideaRef, queueSnackbar, updateIdea, log, user],
   );
 
   const [showName, setShowName] = useBoolean();

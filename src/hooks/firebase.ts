@@ -13,6 +13,7 @@ import {
   useStorageDownloadURL as useFirebaseStorageDownloadUrl,
   useUser as useFirebaseUser,
 } from 'reactfire';
+import { ShareOptionProvider } from '../components/share/share';
 import { SnackbarContext } from '../context/snackbar';
 import { absolutePrivateRoute } from '../elements/routes';
 import { User } from '../models/auth';
@@ -28,6 +29,7 @@ import {
   hasOnlyId,
 } from '../utils/firebase';
 import { getInitialIdea } from '../utils/idea/idea';
+import { useAnalytics } from './analytics';
 import { useActions } from './hooks';
 
 export const useUser = <U = User>(options?: ReactFireOptions<U | null>) =>
@@ -152,6 +154,8 @@ export const useReviewSubmit = ({
 
   const reviewsRef = useReviewsRef(idea.id);
 
+  const { log } = useAnalytics();
+
   return ({ rating, feedback }: Pick<Review, 'rating' | 'feedback'>) => {
     const countIncrement = Number(!currentReview);
     const count = idea.ratingCount + countIncrement;
@@ -180,6 +184,8 @@ export const useReviewSubmit = ({
           severity: 'success',
           message: 'Review submitted',
         });
+
+        log({ name: 'reviewIdea', params: { uid: user.uid } });
       });
     // * the promise is not rejected even if the client is offline
     // * the promise is pending until it resolves or the tab is closed
@@ -195,10 +201,12 @@ export const useShareIdea = (idea: IdeaModel) => {
 
   const ideaRef = useIdeaRef(idea.id);
 
+  const { log } = useAnalytics();
+
   if (!user || Object.keys(idea.sharedBy).includes(user.uid)) {
-    return () => {};
+    return (provider: ShareOptionProvider) => {};
   } else {
-    return () => {
+    return (provider: ShareOptionProvider) => {
       return ideaRef
         .update({
           [`sharedBy.${user.uid}`]: true,
@@ -208,6 +216,8 @@ export const useShareIdea = (idea: IdeaModel) => {
             id: idea.id,
             sharedBy: { ...idea.sharedBy, [user.uid]: true },
           });
+
+          log({ name: 'shareIdea', params: { uid: user.uid, provider } });
         });
     };
   }
@@ -231,6 +241,8 @@ export const useCreateIdea = () => {
 
   const [loading, setLoading] = useBoolean();
 
+  const { log } = useAnalytics();
+
   return React.useMemo(
     () => ({
       create: user
@@ -249,18 +261,23 @@ export const useCreateIdea = () => {
             return ideasRef
               .add(newIdea)
               .finally(setLoading.setFalse)
-              .then(() => {
+              .then((doc) => {
                 queueSnackbar({
                   severity: 'success',
                   message: 'Update, publish and share to get feedback!',
                   autoHideDuration: 10000,
+                });
+
+                log({
+                  name: 'createIdea',
+                  params: { id: doc.id, uid: user.uid },
                 });
               });
           }
         : () => Promise.resolve(),
       loading,
     }),
-    [loading, ideasRef, user, queueSnackbar, history, setLoading],
+    [loading, ideasRef, user, queueSnackbar, history, setLoading, log],
   );
 };
 
