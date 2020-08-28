@@ -330,15 +330,12 @@ describe('Firestore rules', () => {
     const db = getFirestore(myAuth);
 
     await getAdminFirestore()
-      .collection(firestoreCollections.counts.path)
-      .doc(firestoreCollections.ideas.path)
+      .collection(firestoreCollections.ideas.path)
+      .doc('aggregate')
       .set({ count: 0 });
 
     await assertSucceeds(
-      db
-        .collection(firestoreCollections.counts.path)
-        .doc(firestoreCollections.ideas.path)
-        .get(),
+      db.collection(firestoreCollections.ideas.path).doc('aggregate').get(),
     );
   });
 
