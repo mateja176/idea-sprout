@@ -21,12 +21,12 @@ export type FirestoreUser = Pick<
 > &
   WithId;
 
-export const providerIds = [
-  'password',
+export const oauthProviderIds = [
   'google.com',
   'facebook.com',
   'twitter.com',
 ] as const;
+export const providerIds = [...oauthProviderIds, 'password'] as const;
 
 export type ProviderIds = typeof providerIds;
 export type ProviderId = ProviderIds[number];
