@@ -228,6 +228,7 @@ export const SectionEditorWithRef: React.RefForwardingComponent<
             handleKeyCommand={handleKeyCommand}
             onFocus={handleFocus}
             onBlur={handleBlur}
+            spellCheck
           />
         </div>
       </div>
