@@ -32,12 +32,12 @@ export const useLocalStorageSubscribe = (key: LocalStorageKey) => {
   );
 
   useEffect(() => {
-    const sub = storage.subscribe('shouldRunTour', (_, value) => {
+    const unsubscribe = storage.subscribe(key, (_, value) => {
       setValue(value);
     });
 
-    return sub;
-  }, []);
+    return unsubscribe;
+  }, [key]);
 
   return value;
 };
